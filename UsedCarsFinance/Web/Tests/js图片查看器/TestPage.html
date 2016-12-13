@@ -54,10 +54,12 @@
     </style>
 
     <script type="text/javascript">
-       
-
         $(function () {
-            setTimeout(function () { TestFunction() }, 100);
+            setTimeout(
+                function () {
+                    TestFunction()
+                },
+            100);
         });
 
         var viewer = null;
@@ -79,11 +81,13 @@
                 return null;
             }
 
-            var viewer = new Viewer($(Obj)[0], {
-                url: 'data-original'
-            });
+            //var viewer = new Viewer($(Obj)[0], {
+            //    url: 'data-original'
+            //});
 
-            return viewer;
+            //return viewer;
+
+            return new Viewer($(Obj)[0],options);
         }
 
         // 启动照片查看器 viewer：照片查看器
@@ -119,11 +123,13 @@
     </script>
 </head>
 <body>
-    <template id="viewerContainer">
-        <div id="li"><img data-original="" src="" alt="" ondblclick=""></div>
-    </template>
+    <div id="viewerContainer">
+        <template id="viewerContainer">
+            <div id="li"><img data-original="" src="" alt="" ondblclick=""></div>
+        </template>
+    </div>
 
-    <div id="viewerContainer"></div>
+
 
     <h1 style="text-align:center">Test Viewer</h1>
     <style type="text/css">
