@@ -259,7 +259,9 @@
     <Compile Include="Repositories\FinanceRepository.cs" />
     <Compile Include="Repositories\PartnerRepository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ModelConfigurations\CreditInvestigation\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
