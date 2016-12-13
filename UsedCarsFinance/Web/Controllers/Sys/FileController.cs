@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Web;
-using System.Web.Http;
-
-namespace Web.Controllers.Sys
+﻿namespace Web.Controllers.Sys
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web;
+    using System.Web.Http;
+
     [RoutePrefix("download")]
     public class FileController : ApiController
     {
@@ -54,15 +53,15 @@ namespace Web.Controllers.Sys
             Models.Sys.FileInfo file = _file.Get(fileId);
             string fullname = HttpContext.Current.Server.MapPath(file.FullName);
 
-            if (System.IO.File.Exists(fullname))
+            if (File.Exists(fullname))
             {
                 response.StatusCode = HttpStatusCode.OK;
 
-                System.IO.FileStream stream = new System.IO.FileStream(
+                FileStream stream = new System.IO.FileStream(
                     fullname,
-                    System.IO.FileMode.Open,
-                    System.IO.FileAccess.Read,
-                    System.IO.FileShare.Read
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.Read
                 );
 
                 response.Headers.AcceptRanges.Add("bytes");
@@ -146,7 +145,7 @@ namespace Web.Controllers.Sys
             {
                 string filename = fileinfo.FilePath + fileinfo.ExtName;
                 var FilePath = System.Web.Hosting.HostingEnvironment.MapPath(filename);
-                string ResponseFileName="图片压缩包.zip";
+                string ResponseFileName = "图片压缩包.zip";
 
                 var stream = new FileStream(FilePath, FileMode.Open);
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
@@ -158,7 +157,7 @@ namespace Web.Controllers.Sys
                     FileName = ResponseFileName,
                     FileNameStar = ResponseFileName
                 };
- 
+
                 return response;
             }
             catch

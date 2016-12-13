@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using Models.Sys;
-using System.Linq;
 
 namespace BLL.Sys
 {
@@ -43,9 +42,33 @@ namespace BLL.Sys
         public int Add(HttpPostedFile file, int referenceId, out string message)
         {
             message = "";
+
+            ////string filename = file.FileName;
+            ////string[] str = { ".jpg", ".bmp", ".gif", ".rar", ".xls", ".pdf", ".psd", ".avi", ".zip", ".doc", ".ai", ".ppt", ".mp4", ".mp3", ".png", ".swf", ".docx" };
+
+            // 图片格式
+            var picTypeExts = "*.jpg;*.png;*.jpeg;*.gif;*.bmp;*.psd;";
+
+            // office格式
+            var wordTypeExts = "*.pdf;*.doc;*.docx;*.docm;*.dotx;*.dotm;*.dot;*.html;*.rtf;*.mht;*.mhtml;*.xml;*.odt;";
+            var excelTypeExts = "*.xl;*.xlsx;*.xlsm;*.xlsb;*.xlam;*.xltx;*.xls;*.xlt;*.xla;*.xlm;*.xlw;*odc;*.ods;";
+            var powerPointTypeExts = "*.pptx;*.ppt;*.pptm;*.ppsx;*.pps;*.ppsm;*.potx;*.pot;*.potm;*.odp;";
+
+            // 视频格式
+            var videoTypeExts = "*.mp4;*.wmv;*.avi;*.3gp;*.rm;*.rmvb;*.amv;*.dmv;*.ai;";
+
+            // 压缩包格式
+            var zipTypeExts = "*.rar;*.zip;*.7z;";
+
+            var extType = new List<string>();
+            extType.AddRange(picTypeExts.Split('*', ';'));
+            extType.AddRange(wordTypeExts.Split('*', ';'));
+            extType.AddRange(excelTypeExts.Split('*', ';'));
+            extType.AddRange(powerPointTypeExts.Split('*', ';'));
+            extType.AddRange(videoTypeExts.Split('*', ';'));
+            extType.AddRange(zipTypeExts.Split('*', ';'));
+
             string filename = file.FileName;
-            string[] str = { ".jpg", ".bmp", ".gif", ".rar", ".xls", ".pdf", ".psd", ".avi", ".zip", ".doc", ".ai", ".ppt", ".mp4", ".mp3", ".png", ".swf", ".docx" };
-            List<string> extType = str.ToList();
 
             int pos = filename.LastIndexOf('.');
 
@@ -53,7 +76,8 @@ namespace BLL.Sys
             {
                 OldName = filename.Substring(0, pos),
                 ExtName = filename.Substring(pos).ToLower(),
-                NewName = this.RandomName(),
+                ////NewName = this.RandomName(),
+                NewName = Guid.NewGuid().ToString(),
                 FilePath = Path + DateTime.Now.ToString("yyyyMM\\\\"),
                 ReferenceId = referenceId,
                 AddDate = DateTime.Now
@@ -82,7 +106,7 @@ namespace BLL.Sys
         {
             message = "";
 
-            if (referenceId.Equals(Guid.Empty))
+            if (referenceId == 0)
             {
                 return false;
             }
