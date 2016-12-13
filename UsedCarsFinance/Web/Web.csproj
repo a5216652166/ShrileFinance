@@ -824,6 +824,7 @@
     <Content Include="Tests\HtmlPage2.html" />
     <Content Include="Tests\HtmlPage3.html" />
     <Content Include="Tests\js图片查看器\css\viewer.min.css" />
+    <Content Include="Tests\js图片查看器\Demo.html" />
     <Content Include="Tests\js图片查看器\img\thumbnails\tibet-1.jpg" />
     <Content Include="Tests\js图片查看器\img\thumbnails\tibet-2.jpg" />
     <Content Include="Tests\js图片查看器\img\thumbnails\tibet-3.jpg" />
@@ -836,6 +837,7 @@
     <Content Include="Tests\js图片查看器\img\tibet-4.jpg" />
     <Content Include="Tests\js图片查看器\img\tibet-5.jpg" />
     <Content Include="Tests\js图片查看器\img\tibet-6.jpg" />
+    <Content Include="Tests\js图片查看器\img\田型图片.png" />
     <Content Include="Tests\js图片查看器\index.html" />
     <Content Include="Tests\js图片查看器\index2.html" />
     <Content Include="Tests\js图片查看器\index3.html" />
