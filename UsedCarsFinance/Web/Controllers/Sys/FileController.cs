@@ -94,14 +94,15 @@
             if (!Request.Content.IsMimeMultipartContent())
                 return BadRequest("不支持的媒体类型!");
 
+            var files = HttpContext.Current.Request.Files;
             var referenceId = Convert.ToInt32(HttpContext.Current.Request.Form["ReferenceId"]);
 
-            bool result = _file.Add(HttpContext.Current.Request.Files, referenceId, out message);
+            bool result = _file.Add(files, referenceId, out message);
 
             if (message != "")
                 return BadRequest("文件格式不合法!");
 
-            return result ? (IHttpActionResult)Ok() : BadRequest("引用标识不正确");
+            return result ? (IHttpActionResult)Ok(new { referenceId = referenceId, filesCount = files.Count }) : BadRequest("引用标识不正确");
         }
 
         /// <summary>
