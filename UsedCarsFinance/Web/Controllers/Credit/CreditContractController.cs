@@ -28,7 +28,7 @@
         {
             service.Modify(model);
 
-            return Ok(model);
+            return Ok();
         }
 
         public IHttpActionResult Get(Guid id)
@@ -57,6 +57,30 @@
             var list = service.GetPageList(Search, page, rows);
 
             return Ok(new PagedListViewModel<CreditContractViewModel>(list));
+        }
+
+        [HttpGet]
+        public IHttpActionResult CheckCreditContractNumber(string creditContractNumber)
+        {
+            var result = service.CheckCreditContractNumber(creditContractNumber);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public IHttpActionResult ChangeLimit(decimal limit, Guid id)
+        {
+            service.ChangeLimit(limit, id);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult StopStatus(Guid id)
+        {
+            service.StopStatus(id);
+
+            return Ok();
         }
     }
 }

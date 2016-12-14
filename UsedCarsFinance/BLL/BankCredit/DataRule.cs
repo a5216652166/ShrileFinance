@@ -323,8 +323,11 @@ namespace BLL.BankCredit
                         }
                     }
                 }
-                // 去掉最后一个换行符（"\r\n"）
-                reportData = reportData.Substring(0, reportData.Length - 4);
+                if (reportData.Length > 4)
+                {
+                    // 去掉最后一个换行符（"\r\n"）
+                    reportData = reportData.Substring(0, reportData.Length - 4);
+                }
             }
 
             return reportData;

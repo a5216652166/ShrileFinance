@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using AutoMapper;
     using Core.Entities.Loan;
     using Core.Exceptions;
@@ -41,6 +42,26 @@
             var model = Mapper.Map<LoanViewModel>(loan);
 
             return model;
+        }
+
+        public bool CheckLoanNumber(string loanNumber)
+        {
+            var result = true;
+
+            var list = repository.GetAll();
+            if (!string.IsNullOrEmpty(loanNumber))
+            {
+                var loan = list.Where(m => m.ContractNumber == loanNumber).FirstOrDefault();
+                if (loan != null)
+                {
+                    result = false;
+                }
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
+            }
+            return result;
         }
 
         /// <summary>

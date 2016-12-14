@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>贷款合同</title>
     <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
     <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
@@ -22,7 +22,7 @@
         function CreditEdit() {
             var url = "Loan/CreditContractEdit.html";
             if (this.id == "creditadd") {
-                url =url
+                url = url
             }
             else if (this.id == "creditmod" || this.id == "creditview") {
                 var row = $("#dg").datagrid("getSelected");
@@ -41,6 +41,65 @@
                 }
             }
             uc.ShowWindow("授信申请", url);
+        }
+        function ChangeAmount() {
+            var row = $("#dg").datagrid("getSelected");
+            if (row == null) {
+                top.$.messager.show({ msg: "请选择一行" });
+                return false;
+            }
+            else {
+                $("#dl").dialog("open");
+                $("#dl").panel({ top: $(document).scrollTop() + (($(window).height() - 100) * 0.5) });
+                $("#CreditLimit").textbox("setValue", row.CreditLimit);
+                $("#creditcontractId").val(row.Id);
+            }
+        }
+
+        function StopStatus() {
+            var row = $("#dg").datagrid("getSelected");
+            if (row == null) {
+                top.$.messager.show({ msg: "请选择一行" });
+                return false;
+            }
+            else {
+                if (row.EffectiveStatus != "失效") {
+                    $.ajax({
+                        async: false,
+                        data: { id: row.Id },
+                        type: "GET",
+                        url: "../api/CreditContract/StopStatus",
+                        statusCode: {
+                            200: function (data) {
+                                $("#dl").dialog("close");
+                                $("#dg").datagrid("reload");
+                                top.$.messager.show({ msg: "合同已终止" });
+                            }
+                        }
+                    });
+                }
+                else {
+                    $.messager.alert('提示', '合同已经是失效状态，无需在处理!', 'info');
+                }
+            }
+        }
+
+        function Submit() {
+            var limit = $("#CreditLimit").textbox("getValue");
+            var Id = $("#creditcontractId").val();
+            $.ajax({
+                async: false,
+                data: { limit: limit,id:Id },
+                type: "GET",
+                url: "../api/CreditContract/ChangeLimit",
+                statusCode: {
+                    200: function (data) {
+                        $("#dl").dialog("close");
+                        $("#dg").datagrid("reload");
+                        top.$.messager.show({ msg: "修改成功" });
+                    }
+                }
+            });
         }
     </script>
 </head>
@@ -61,8 +120,8 @@
                 <th data-options="field:'CreditContractCode',width:150,align:'center'">合同编码</th>
                 <th data-options="field:'CreditLimit',width:100,align:'center'">授信额度</th>
                 <th data-options="field:'CreditBalance',width:200,align:'center'">授信余额</th>
-                <th data-options="field:'EffectiveDate',width:120,align:'center'">合同生效日期</th>
-                <th data-options="field:'ExpirationDate',width:120,align:'center'">合同终止日期</th>
+                <th data-options="field:'EffectiveDate',width:180,align:'center'">合同生效日期</th>
+                <th data-options="field:'ExpirationDate',width:180,align:'center'">合同终止日期</th>
                 <th data-options="field:'EffectiveStatus',width:120,align:'center'">合同状态</th>
             </tr>
         </thead>
@@ -78,7 +137,23 @@
         <div style="height:30px; width:auto;">
             <a id="creditadd" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:CreditEdit,iconCls:'icon-add',plain:true">添加</a>
             <a id="creditmod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:CreditEdit,iconCls:'icon-edit',plain:true">修改</a>
+            <a id="ChangeAmount" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:ChangeAmount,iconCls:'icon-edit',plain:true">修改授信额度</a>
+            <a id="stopstatus" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:StopStatus,iconCls:'icon-edit',plain:true">终止合同</a>
             <a id="creditview" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:CreditEdit,iconCls:'icon-search',plain:true">查看详情</a>
+        </div>
+    </div>
+
+    <div id="dl" class="easyui-dialog" data-options="title:'修改授信额度',width:'340px',height:'100px',top:10,modal:true,closed:true">
+        <div>
+            <input name="creditcontractId" id="creditcontractId" hidden/>
+        </div>
+        <div  style="margin-top:20px;margin-left:10px ">
+            <div class="col-12">
+                <label>授信额度:</label>
+                <input name="CreditLimit" id="CreditLimit" class="easyui-textbox"/>
+                <span class="unit">元</span>
+                <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',plain:true,onClick:Submit">保存</a>
+            </div>
         </div>
     </div>
 </body>

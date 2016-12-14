@@ -99,14 +99,50 @@
         }
 
         /// <summary>
-        /// 额度变更
+        /// 合同编号唯一性校验
         /// </summary>
-        /// <param name="model">授信实体</param>
-        public void ChangeEffective(CreditContract model)
+        /// <param name="creditContractNumber">授信合同编号</param>
+        /// <returns></returns>
+        public bool CheckCreditContractNumber(string creditContractNumber)
         {
-            model.ChangeLimit(model.CreditLimit);
-            repository.Modify(model);
-            repository.Commit();
+            // 用于记录是否有值
+            var result = true;
+            var list = repository.GetAll();
+            CreditContract creditContract = new CreditContract();
+            if (!string.IsNullOrEmpty(creditContractNumber))
+            {
+                creditContract = list.Where(m => m.CreditContractCode == creditContractNumber).FirstOrDefault();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeAppException(string.Empty, "授信合同编号不能为空.");
+            }
+
+            if (creditContract != null)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 修改授信金额
+        /// </summary>
+        /// <param name="limit">金额</param>
+        /// <param name="id">标识</param>
+        public void ChangeLimit(decimal limit, Guid id)
+        {
+            var credit = repository.Get(id);
+            if (credit.EffectiveStatus.ToString() != "失效")
+            {
+                credit.CreditLimit = limit;
+                ChangeEffective(credit);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeAppException(string.Empty, "授信合同状态已经失效不允许修改.");
+            }
         }
 
         /// <summary>
@@ -129,6 +165,18 @@
         {
             CreditContract credit = new CreditContract();
             return credit.CanApplyLoan(limit);
+        }
+
+        /// <summary>
+        /// 终止授信合同
+        /// </summary>
+        /// <param name="id">标识</param>
+        public void StopStatus(Guid id)
+        {
+            var credit = repository.Get(id);
+            credit.ChangeStutus();
+            repository.Modify(credit);
+            repository.Commit();
         }
 
         /// <summary>
@@ -274,6 +322,17 @@
                 // 担保合同（服务页面）集合 接收数据
                 model.GuranteeContract.Add(guranteeContractViewModel);
             });
+        }
+
+        /// <summary>
+        /// 额度变更
+        /// </summary>
+        /// <param name="model">授信实体</param>
+        private void ChangeEffective(CreditContract model)
+        {
+            model.ChangeLimit(model.CreditLimit);
+            repository.Modify(model);
+            repository.Commit();
         }
     }
 }
