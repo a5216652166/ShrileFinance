@@ -98,6 +98,28 @@
             return creditViewModel;
         }
 
+        public bool CheckCreditContractNumber(string creditContractNumber)
+        {
+            // 用于记录是否有值
+            var result = true;
+            var list = repository.GetAll();
+            CreditContract creditContract = new CreditContract();
+            if (!string.IsNullOrEmpty(creditContractNumber))
+            {
+                creditContract = list.Where(m => m.CreditContractCode == creditContractNumber).FirstOrDefault();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeAppException(string.Empty, "授信合同编号不能为空.");
+            }
+            if (creditContract != null)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 额度变更
         /// </summary>

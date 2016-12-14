@@ -58,5 +58,13 @@
 
             return Ok(new PagedListViewModel<CreditContractViewModel>(list));
         }
+
+        [HttpGet]
+        public IHttpActionResult CheckCreditContractNumber(string creditContractNumber)
+        {
+            var result = service.CheckCreditContractNumber(creditContractNumber);
+
+            return Ok(result);
+        }
     }
 }

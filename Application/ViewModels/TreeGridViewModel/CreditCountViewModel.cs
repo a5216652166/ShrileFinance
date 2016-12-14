@@ -15,6 +15,11 @@
         public Guid Id { get; set; }
 
         /// <summary>
+        /// 机构名称
+        /// </summary>
+        public string InstitutionChName { get; set; }
+
+        /// <summary>
         /// 编号
         /// </summary>
         public string Code { get; set; }

@@ -70,5 +70,13 @@
 
             return Ok(new PagedListViewModel<LoanViewModel>(models));
         }
+
+        [HttpGet]
+        public IHttpActionResult CheckLoanNumber(string loanNumber)
+        {
+            var result = service.CheckLoanNumber(loanNumber);
+
+            return Ok(result);
+        }
     }
 }
