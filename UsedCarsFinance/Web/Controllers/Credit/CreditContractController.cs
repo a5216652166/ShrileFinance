@@ -28,7 +28,7 @@
         {
             service.Modify(model);
 
-            return Ok(model);
+            return Ok();
         }
 
         public IHttpActionResult Get(Guid id)
@@ -65,6 +65,22 @@
             var result = service.CheckCreditContractNumber(creditContractNumber);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        public IHttpActionResult ChangeLimit(decimal limit, Guid id)
+        {
+            service.ChangeLimit(limit, id);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult StopStatus(Guid id)
+        {
+            service.StopStatus(id);
+
+            return Ok();
         }
     }
 }
