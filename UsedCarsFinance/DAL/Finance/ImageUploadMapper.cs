@@ -75,6 +75,7 @@
             SqlCommand comm = DHelper.GetSqlCommand(@"
                SELECT FL_ID,ReferenceId,OldName,[NewName],ExtName,FilePath  FROM SYS_FileList
 	            WHERE ReferenceId=@ReferenceId
+                ORDER BY FL_ID DESC
             ");
             DHelper.AddParameter(comm, "@ReferenceId", SqlDbType.Int, ReferenceId);
 

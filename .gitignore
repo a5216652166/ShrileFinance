@@ -244,3 +244,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /UsedCarsFinance/Web/upload/PDF
+/UsedCarsFinance/Web/Upload/201612

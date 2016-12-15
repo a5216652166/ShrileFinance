@@ -68,6 +68,8 @@ namespace BLL.Sys
             extType.AddRange(videoTypeExts.Split('*', ';'));
             extType.AddRange(zipTypeExts.Split('*', ';'));
 
+            extType.RemoveAll(m=>string.IsNullOrEmpty(m));
+
             string filename = file.FileName;
 
             int pos = filename.LastIndexOf('.');
