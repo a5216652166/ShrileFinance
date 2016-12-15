@@ -134,15 +134,9 @@
         public void ChangeLimit(decimal limit, Guid id)
         {
             var credit = repository.Get(id);
-            if (credit.EffectiveStatus.ToString() != "失效")
-            {
-                credit.CreditLimit = limit;
-                ChangeEffective(credit);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeAppException(string.Empty, "授信合同状态已经失效不允许修改.");
-            }
+
+            credit.CreditLimit = limit;
+            ChangeEffective(credit);
         }
 
         /// <summary>
