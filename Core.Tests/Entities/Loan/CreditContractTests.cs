@@ -40,5 +40,16 @@
 
             Assert.Fail();
         }
+
+        /// <summary>
+        /// 额度变更
+        /// </summary>
+        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeAppException))]
+        public void ChangeLimit()
+        {
+            var creditContract = new CreditContract(DateTime.MaxValue, DateTime.MinValue, 10000, CreditContractStatusEnum.失效);
+            creditContract.ChangeLimit(5000);
+            Assert.Fail();
+        }
     }
 }
