@@ -157,7 +157,10 @@
     <Compile Include="Services\Loan\PaymentService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\Borrower\" />
+    <Folder Include="Entities\Message\BorrowMessage\Concern\" />
+    <Folder Include="Entities\Message\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Entities\Message\BorrowMessage\Organizate\" />
+    <Folder Include="Entities\Message\CreditMessage\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
