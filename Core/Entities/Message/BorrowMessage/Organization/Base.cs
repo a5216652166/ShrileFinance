@@ -5,8 +5,6 @@
 
     public class Base
     {
-        public Guid Id { get; set; }
-
         /// <summary>
         /// 类别
         /// </summary>
@@ -85,7 +83,7 @@
 
         public string 数据提取日期
         {
-            get { return DateTime.Now.ToString("YYYYMMDD"); }
+            get { return DateTime.Now.ToString("yyyyMMdd"); }
         }
 
         public string 预留字段

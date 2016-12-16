@@ -7,7 +7,7 @@
     {
         public string 信息类别
         {
-            get { return "B"; }
+            get { return "C"; }
         }
 
         /// <summary>
@@ -42,13 +42,13 @@
         /// 成立日期
         /// </summary>
         [Display(Name = "成立日期")]
-        public DateTime? SetupDate { get; set; }
+        public string SetupDate { get; set; }
 
         /// <summary>
         /// 证书到期日期
         /// </summary>
         [Display(Name = "证书到期日期")]
-        public DateTime? CertificateDueDate { get; set; }
+        public string CertificateDueDate { get; set; }
 
         /// <summary>
         /// 经营（业务）范围
@@ -65,8 +65,7 @@
         /// 注册资本（万元）
         /// </summary>
         [Display(Name = "注册资本（万元）"), DataType(DataType.Currency)]
-        ////[Amount(ErrorMessage = "注册资本 保留两位小数")]
-        public decimal? RegisterCapital { get; set; }
+        public string RegisterCapital { get; set; }
 
         /// <summary>
         /// 组织机构类别
@@ -91,5 +90,13 @@
         /// </summary>
         [Display(Name = "经济类型"), StringLength(2)]
         public string EconomicType { get; set; }
+
+        [StringLength(8)]
+        public string 信息更新日期 { get; set; }
+
+        public string 预留字段
+        {
+            get { return string.Empty.PadLeft(40, ' '); }
+        }
     }
 }
