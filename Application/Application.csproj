@@ -212,7 +212,6 @@
     <Compile Include="Startup\Startup.AutoMapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\MessageViewModel\" />
     <Folder Include="ViewModels\Unused\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

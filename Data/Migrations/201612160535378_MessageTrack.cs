@@ -19,7 +19,6 @@ namespace Data.Migrations
                         MessageData = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
-            
         }
         
         public override void Down()

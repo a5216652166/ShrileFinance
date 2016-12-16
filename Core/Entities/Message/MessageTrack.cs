@@ -15,7 +15,7 @@
         欠息 = 7,
     }
 
-    public  enum MessageStatusEmum : byte
+    public enum MessageStatusEmum : byte
     {
         待生成 = 0,
         待发送 = 1,
@@ -23,9 +23,9 @@
         待反馈 = 3,
         不发送 = 4,
     }
+
     public class MessageTrack : Entity, IAggregateRoot
     {
-
         /// <summary>
         /// 名称
         /// </summary>

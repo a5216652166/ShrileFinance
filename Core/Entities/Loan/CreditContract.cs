@@ -22,14 +22,7 @@
             Loans = new HashSet<Loan>();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="effectiveDate">生效日期</param>
-        /// <param name="expirationDate">终止日期</param>
-        /// <param name="creditLimit">授信金额</param>
-        /// <param name="status"></param>
-        public CreditContract(DateTime effectiveDate, DateTime expirationDate,decimal creditLimit, CreditContractStatusEnum status)
+        public CreditContract(DateTime effectiveDate, DateTime expirationDate, decimal creditLimit, CreditContractStatusEnum status)
         {
             Loans = new HashSet<Loan>();
 
@@ -206,7 +199,7 @@
         {
             var today = DateTime.Now.Date;
 
-            return (EffectiveDate <= today) 
+            return (EffectiveDate <= today)
                 && (today <= ExpirationDate);
         }
 

@@ -61,6 +61,7 @@
             {
                 throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
             }
+
             return result;
         }
 

@@ -13,11 +13,16 @@
             this.respository = respository;
         }
 
+        /// <summary>
+        /// 报文追踪
+        /// </summary>
+        /// <param name="id">引用ID</param>
+        /// <param name="operationType">操作类型</param>
+        /// <param name="name">默认名称</param>
         public void Credit(Guid id, MessageOperationTypeEnum operationType, string name)
         {
             var track = new MessageTrack()
             {
-                // 报文数据
                 MessageStatus = MessageStatusEmum.待生成,
                 Name = name,
                 OperationType = operationType,
