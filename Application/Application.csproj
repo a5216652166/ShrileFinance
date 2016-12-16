@@ -98,6 +98,7 @@
     <Compile Include="Mappings\LoanDomainToViewModelProfile.cs" />
     <Compile Include="Mappings\LoanViewModelToDomianProfile.cs" />
     <Compile Include="Mappings\PagedListTypeConverter.cs" />
+    <Compile Include="MessageAppService.cs" />
     <Compile Include="PartnerAppService.cs" />
     <Compile Include="ProcessAppService.cs" />
     <Compile Include="OrganizationAppService.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="Startup\Startup.AutoMapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ViewModels\MessageViewModel\" />
     <Folder Include="ViewModels\Unused\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

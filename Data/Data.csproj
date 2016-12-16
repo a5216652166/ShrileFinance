@@ -91,6 +91,10 @@
     <Compile Include="Migrations\201612050735464_OrgainzationModel.Designer.cs">
       <DependentUpon>201612050735464_OrgainzationModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612160535378_MessageTrack.cs" />
+    <Compile Include="Migrations\201612160535378_MessageTrack.Designer.cs">
+      <DependentUpon>201612160535378_MessageTrack.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -125,6 +129,7 @@
     <Compile Include="ModelConfigurations\Customer\ManagerConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\FamilyMemberConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\MortgageGuarantyContractConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Message\MessageTrackConfiguration.cs" />
     <Compile Include="ModelConfigurations\NodeConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\OrganizationConfiguration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -299,6 +304,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612050735464_OrgainzationModel.resx">
       <DependentUpon>201612050735464_OrgainzationModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612160535378_MessageTrack.resx">
+      <DependentUpon>201612160535378_MessageTrack.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

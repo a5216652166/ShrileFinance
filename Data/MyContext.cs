@@ -5,6 +5,7 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
     using ModelConfigurations.Loan;
+    using ModelConfigurations.Message;
 
     public class MyContext : IdentityDbContext
     {
@@ -84,6 +85,8 @@
                 .Add(new LoanConfiguration())
                 .Add(new PaymentHistoryConfiguration());
 
+
+            modelBuilder.Configurations.Add(new MessageTrackConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

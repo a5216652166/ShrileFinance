@@ -73,6 +73,7 @@
     <Compile Include="Entities\Loan\GuarantyContractPledge.cs" />
     <Compile Include="Entities\Loan\Loan.cs" />
     <Compile Include="Entities\Loan\PaymentHistory.cs" />
+    <Compile Include="Entities\Message\MessageTrack.cs" />
     <Compile Include="Entities\Other\Draft.cs" />
     <Compile Include="Entities\Finance\FinanceProduce.cs" />
     <Compile Include="Entities\Flow\Action.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Interfaces\Repositories\IPartnerRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUnitOfWork.cs" />
+    <Compile Include="Interfaces\Repositories\MessageRepository\IMessageTrackRepostitory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -159,7 +161,7 @@
   <ItemGroup>
     <Folder Include="Entities\Message\BorrowMessage\Concern\" />
     <Folder Include="Entities\Message\BorrowMessage\FinancialAffair\" />
-    <Folder Include="Entities\Message\BorrowMessage\Organizate\" />
+    <Folder Include="Entities\Message\BorrowMessage\Organization\" />
     <Folder Include="Entities\Message\CreditMessage\" />
   </ItemGroup>
   <ItemGroup>
