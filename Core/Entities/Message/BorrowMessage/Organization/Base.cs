@@ -1,13 +1,22 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace Core.Entities.Message.BorrowMessage.Organization
+﻿namespace Core.Entities.Message.BorrowMessage.Organization
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     public class Base
     {
         public Guid Id { get; set; }
 
-        public int MyProperty { get; set; }
+        /// <summary>
+        /// 类别
+        /// </summary>
+        public string 信息类别
+        {
+            get
+            {
+                return "B";
+            }
+        }
 
         /// <summary>
         /// 客户号
@@ -63,10 +72,25 @@ namespace Core.Entities.Message.BorrowMessage.Organization
         [Display(Name = "纳税人识别号（地税）"), StringLength(20)]
         public string TaxpayerIdentifyLandNumber { get; set; }
 
+        public string 开户许可证核准号
+        {
+            get { return string.Empty.PadLeft(30, ' '); }
+        }
+
         /// <summary>
         /// 中征码
         /// </summary>
         [Display(Name = "中征码"), StringLength(16), Required]
         public string LoanCardCode { get; set; }
+
+        public string 数据提取日期
+        {
+            get { return DateTime.Now.ToString("YYYYMMDD"); }
+        }
+
+        public string 预留字段
+        {
+            get { return string.Empty.PadLeft(40, ' '); }
+        }
     }
 }

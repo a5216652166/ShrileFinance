@@ -74,6 +74,7 @@
     <Compile Include="Entities\Loan\Loan.cs" />
     <Compile Include="Entities\Loan\PaymentHistory.cs" />
     <Compile Include="Entities\Message\BorrowMessage\Organization\Base.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\Property.cs" />
     <Compile Include="Entities\Message\MessageTrack.cs" />
     <Compile Include="Entities\Other\Draft.cs" />
     <Compile Include="Entities\Finance\FinanceProduce.cs" />
