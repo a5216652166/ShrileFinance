@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities.Message.BorrowMessage.Organization
 {
     public class Base
     {
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
+
+        public int MyProperty { get; set; }
 
         /// <summary>
         /// 客户号
