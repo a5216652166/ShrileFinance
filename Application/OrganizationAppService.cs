@@ -13,10 +13,12 @@
     public class OrganizationAppService
     {
         private readonly IOrganizationRepository repository;
+        private readonly MessageAppService appService;
 
-        public OrganizationAppService(IOrganizationRepository repository)
+        public OrganizationAppService(IOrganizationRepository repository,MessageAppService appService)
         {
             this.repository = repository;
+            this.appService = appService;
         }
 
         public void Create(OrganizationViewModel model)
@@ -49,7 +51,7 @@
             }
 
             repository.Create(customer);
-
+            appService.MessageTrack(customer.Id, Core.Entities.Message.MessageOperationTypeEnum.添加机构, customer.Property.InstitutionChName);
             repository.Commit();
         }
 

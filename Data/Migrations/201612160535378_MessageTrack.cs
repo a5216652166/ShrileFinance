@@ -8,7 +8,7 @@ namespace Data.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Mess_MessageTrack",
+                "dbo.MESS_MessageTrack",
                 c => new
                     {
                         Id = c.Guid(nullable: false, identity: true),
@@ -19,11 +19,12 @@ namespace Data.Migrations
                         MessageData = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
         }
         
         public override void Down()
         {
-            DropTable("dbo.Mess_MessageTrack");
+            DropTable("dbo.MESS_MessageTrack");
         }
     }
 }

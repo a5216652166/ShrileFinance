@@ -17,7 +17,7 @@ namespace Data.ModelConfigurations.Message
             Property(m => m.OperationType);
             Property(m => m.ReferenceId);
 
-            ToTable("Mess_MessageTrack");
+            ToTable("MESS_MessageTrack");
         }
     }
 }
