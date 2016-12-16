@@ -17,17 +17,20 @@
         private readonly LoanService loanService;
         private readonly PaymentService paymentService;
         private readonly ILoanRepository repository;
+        private readonly MessageAppService messageAppService;
 
         public LoanAppService(
             LoanService loanService,
             PaymentService paymentService,
             ILoanRepository repository,
-            ICreditContractRepository creditRepository)
+            ICreditContractRepository creditRepository,
+            MessageAppService messageAppService)
         {
             this.loanService = loanService;
             this.paymentService = paymentService;
             this.repository = repository;
             this.creditRepository = creditRepository;
+            this.messageAppService = messageAppService;
         }
 
         /// <summary>
@@ -100,6 +103,10 @@
             loan.LoanTypes = model.LoanTypes;
 
             repository.Modify(loan);
+
+            // 报文追踪
+            messageAppService.MessageTrack(id:loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.借款, name:loan.ContractNumber);
+
             repository.Commit();
         }
 
@@ -120,9 +127,30 @@
             foreach (var payment in payments)
             {
                 paymentService.Payment(loan, payment);
+
+                if (payment.ScheduledPaymentPrincipal == payment.ActualPaymentPrincipal
+                && payment.ScheduledPaymentInterest == payment.ActualPaymentInterest)
+                {
+                    // 还款
+                    // 报文追踪
+                    messageAppService.MessageTrack(id:payment.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.还款, name:"借据："+loan.ContractNumber+"还款");
+                }
+                else if (payment.ScheduledPaymentPrincipal > payment.ActualPaymentPrincipal)
+                {
+                    // 逾期
+                    // 报文追踪
+                    messageAppService.MessageTrack(id: payment.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.逾期, name: "借据：" + loan.ContractNumber + "逾期");
+                }
+                else
+                {
+                    // 欠息
+                    // 报文追踪
+                    messageAppService.MessageTrack(id: payment.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.欠息, name: "借据：" + loan.ContractNumber + "欠息");
+                }
             }
 
             repository.Modify(loan);
+
             repository.Commit();
         }
 

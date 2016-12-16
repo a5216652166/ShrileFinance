@@ -13,14 +13,18 @@
     public class OrganizationAppService
     {
         private readonly IOrganizationRepository repository;
-        private readonly MessageAppService appService;
+        private readonly MessageAppService messageAppService;
 
-        public OrganizationAppService(IOrganizationRepository repository,MessageAppService appService)
+        public OrganizationAppService(IOrganizationRepository repository, MessageAppService messageAppService)
         {
             this.repository = repository;
-            this.appService = appService;
+            this.messageAppService = messageAppService;
         }
 
+        /// <summary>
+        /// 创建机构
+        /// </summary>
+        /// <param name="model">机构Model</param>
         public void Create(OrganizationViewModel model)
         {
             var customer = Mapper.Map<Organization>(model.Base);
@@ -51,7 +55,10 @@
             }
 
             repository.Create(customer);
-            appService.MessageTrack(customer.Id, Core.Entities.Message.MessageOperationTypeEnum.添加机构, customer.Property.InstitutionChName);
+
+            // 报文追踪
+            messageAppService.MessageTrack(id: customer.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.添加机构, name: "添加机构："+customer.Property.InstitutionChName);
+
             repository.Commit();
         }
 
