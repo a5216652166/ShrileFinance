@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>征信报文管理</title>
+    <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+    <link href="../Content/form-bootstrap.css" rel="stylesheet" />
+    <script src="../Scripts/jquery/jquery.js"></script>
+    <script src="../Scripts/easyui/jquery.easyui.js"></script>
+    <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="../Scripts/usedcars.js"></script>
+    <meta charset="utf-8" />
+    <script>
+        uc.grid = new UCGrid("#dg");
+
+        function BeforeLoad(param) {
+        }
+    </script>
+</head>
+<body>
+    <table id="dg" class="easyui-datagrid" data-options="height:630,toolbar:'#tb',rownumbers:true,
+        singleSelect: true,
+        pagination: true,
+        pageSize: 20,
+        pageList: [10,20,30,40,50],
+        method: 'GET',
+        url: '../api/Message/GetPageList',
+        loadMsg: '正在加载，请稍候...',
+        onBeforeLoad: BeforeLoad
+        ">
+        <thead>
+            <tr>
+                <th data-options="field:'Id',hidden:true">Id</th>
+                <!--<th data-options="field:'Name',width:180,align:'center',editor:{type:'validatebox',options:{required:true,validType:'Numerical'}}">名称</th>-->
+                <th data-options="field:'OperationType',width:120,align:'center',hidden:true">操作类型</th>
+                <th data-options="field:'MessageStatus',width:120,align:'center',hidden:true">报文状态</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb">
+        <div style="height:30px;width:auto;">
+            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-edit',plain:true">修改</a>
+            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">下载</a>
+        </div>
+    </div>
+</body>
+</html>

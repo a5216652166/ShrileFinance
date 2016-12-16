@@ -130,6 +130,7 @@
     <Compile Include="ViewModels\IEntityViewModel.cs" />
     <Compile Include="ViewModels\Loan\CreditViewModels\GuarantorViewModel.cs" />
     <Compile Include="ViewModels\Loan\LoanViewModels\PaymentViewModel.cs" />
+    <Compile Include="ViewModels\Message\MessageTrackViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\CreditOraganizateViewModel.cs" />
     <Compile Include="ViewModels\TreeGridViewModel\CreditCountViewModel.cs" />
     <Compile Include="ViewModels\Loan\CreditViewModels\CreditContractViewModel.cs" />
