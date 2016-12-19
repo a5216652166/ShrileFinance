@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Message.BorrowMessage.Organization
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
     using System.ComponentModel.DataAnnotations;
 
