@@ -65,6 +65,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\InfomationRecords\BaseParagraph.cs" />
+    <Compile Include="Entities\InfomationRecords\CashFlowRecord.cs" />
+    <Compile Include="Entities\InfomationRecords\IncomeExpenditureRecord.cs" />
+    <Compile Include="Entities\InfomationRecords\InstitutionLiabilitiesRecord.cs" />
+    <Compile Include="Entities\InfomationRecords\LiabilitiesRecord.cs" />
+    <Compile Include="Entities\InfomationRecords\ProfitsRecord.cs" />
     <Compile Include="Entities\Loan\GuarantorOrganization.cs" />
     <Compile Include="Entities\Loan\GuarantorPerson.cs" />
     <Compile Include="Entities\Loan\Guarantor.cs" />
@@ -182,8 +188,8 @@
     <Folder Include="Entities\CreditInvestigation\Datagram\" />
     <Folder Include="Entities\CreditInvestigation\Record\" />
     <Folder Include="Entities\CreditInvestigation\Segment\" />
-    <Folder Include="Services\CreditInvestigation\" />
     <Folder Include="Entities\Message\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

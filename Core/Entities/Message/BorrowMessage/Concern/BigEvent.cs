@@ -7,7 +7,7 @@
         /// <summary>
         /// 大事件流水号
         /// </summary>
-        [Display(Name = "大事件流水号"), Required, MaxLength(60)]
+        [Display(Name = "大事件流水号"), Required, MaxLength(60),IsRequiredAndType(true,)]
         public string BigEventNumber { get; set; }
 
         /// <summary>
