@@ -1,35 +1,29 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
-    /// <summary>
-    /// 担保
-    /// </summary>
-    public class Guarantee
+    public class NaturalGuarantee
     {
-        [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
-            get { return "D"; }
+            get { return "G"; }
         }
 
         /// <summary>
         /// 保证合同编号
         /// </summary>
-        [MetaCode(60, MetaCodeTypeEnum.ANC), SegmentRule(2, true, Describe = "金融机构标识一笔保证合同的唯一编号")]
         public string Id { get; set; }
 
         /// <summary>
-        /// 保证人姓名
+        /// 保证人名称
         /// </summary>
-        [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(62, true)]
         public string Name { get; set; }
 
         /// <summary>
-        /// 贷款卡编码
+        /// 证件类型
         /// </summary>
-        [MetaCode(16, MetaCodeTypeEnum.AN), SegmentRule(142, true)]
-        public string CreditcardCode { get; set; }
+        public string CertificateType { get; set; }
 
-        [MetaCode(3, MetaCodeTypeEnum.AN), SegmentRule(158, true)]
+        public string CertificateNumber { get; set; }
+
         public string 币种
         {
             get { return "CNY"; }
@@ -38,25 +32,21 @@
         /// <summary>
         /// 保证金额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(161, true)]
         public string Margin { get; set; }
 
         /// <summary>
         /// 合同签订日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(181, true)]
         public string SigningDate { get; set; }
 
         /// <summary>
         /// 担保形式
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(189, true)]
         public string GuaranteeForm { get; set; }
 
         /// <summary>
         /// 合同有效状态
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(190, true)]
         public string EffectiveState { get; set; }
     }
 }

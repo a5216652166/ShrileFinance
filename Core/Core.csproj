@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreditInvestigation\Segment\AbsSegment.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerCapitalStructureDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerConcernDatagram.cs" />
@@ -98,6 +99,11 @@
     <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\Guarantee.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeBase.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeMortgage.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteePledge.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\NaturalGuarantee.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\NaturalMortgage.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\NaturalPledge.cs" />
     <Compile Include="Entities\Loan\GuarantorOrganization.cs" />
     <Compile Include="Entities\Loan\GuarantorPerson.cs" />
     <Compile Include="Entities\Loan\Guarantor.cs" />
@@ -210,6 +216,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
+    <Folder Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Entities\CreditInvestigation\DatagramFile\" />
+    <Folder Include="Entities\CreditInvestigation\Datagram\" />
+    <Folder Include="Entities\CreditInvestigation\Record\" />
     <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>

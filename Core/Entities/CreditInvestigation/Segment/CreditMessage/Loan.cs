@@ -5,6 +5,7 @@
 
     public class Loan
     {
+        [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
             get { return "F"; }
@@ -13,9 +14,10 @@
         /// <summary>
         /// 借据编号
         /// </summary>
-        [StringLength(60),Required]
+        [MetaCode(60, MetaCodeTypeEnum.ANC), SegmentRule(2, true, Describe = "用来标识同一笔贷款合同项下的多笔放款借据的编号")]
         public string Id { get; set; }
 
+        [MetaCode(3, MetaCodeTypeEnum.AN), SegmentRule(62, true)]
         public string 币种
         {
             get { return "CNY"; }
@@ -24,57 +26,58 @@
         /// <summary>
         /// 借据金额
         /// </summary>
-        [StringLength(20),Required]
+        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(65, true)]
         public decimal Principle { get; private set; }
 
         /// <summary>
         /// 借据余额
         /// </summary>
-        [StringLength(20),Required]
+        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(85, true)]
         public decimal Balance { get; set; }
 
         /// <summary>
         /// 放款日期
         /// </summary>
-        [StringLength(8),Required]
+        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(105, true)]
         public DateTime SpecialDate { get; private set; }
 
         /// <summary>
         /// 到期日期
         /// </summary>
-        [StringLength(8),Required]
-        public DateTime MatureDate { get; private set; }
+        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(113, true)]
+        public DateTime MatureDate { get; set; }
 
         /// <summary>
         /// 贷款业务种类
         /// </summary>
-        [StringLength(1),Required]
+        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(121, true)]
         public string LoanBusinessTypes { get; set; }
 
         /// <summary>
         /// 贷款形式
         /// </summary>
-        [StringLength(1),Required]
+        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(122, true)]
         public string LoanForm { get; set; }
 
         /// <summary>
         /// 贷款性质
         /// </summary>
-        [StringLength(1), Required]
+        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(123, true)]
         public string LoanNature { get; set; }
 
         /// <summary>
         /// 贷款投向
         /// </summary>
-        [StringLength(5), Required]
+        [MetaCode(5, MetaCodeTypeEnum.AN), SegmentRule(124, true)]
         public string LoansTo { get; set; }
 
         /// <summary>
         /// 贷款种类
         /// </summary>
-        [StringLength(2), Required]
+        [MetaCode(2, MetaCodeTypeEnum.N), SegmentRule(129, true)]
         public string LoanTypes { get; set; }
 
+        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(131, true)]
         public string 展期标志
         {
             get
@@ -86,13 +89,13 @@
         /// <summary>
         /// 四级分类
         /// </summary>
-        [StringLength(2)]
+        [MetaCode(2, MetaCodeTypeEnum.N), SegmentRule(132, false)]
         public string FourCategoryAssetsClassification { get; set; }
 
         /// <summary>
         /// 五级分类
         /// </summary>
-        [StringLength(1), Required]
-        public string FiveCategoryAssetsClassification { get; private set; }
+        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(134, true)]
+        public string FiveCategoryAssetsClassification { get; set; }
     }
 }
