@@ -1,7 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
     using System.ComponentModel.DataAnnotations;
-    using Infrastructure;
 
     /// <summary>
     /// 诉讼事件
