@@ -10,7 +10,7 @@
         /// <summary>
         /// 借据编号
         /// </summary>
-        public string ContractNumber { get; set; }
+        public string LoanId { get; set; }
 
         /// <summary>
         /// 还款日期

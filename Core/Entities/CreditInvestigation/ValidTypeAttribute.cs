@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Message
+﻿namespace Core.Entities.CreditInvestigation
 {
     using System;
     using System.Text.RegularExpressions;

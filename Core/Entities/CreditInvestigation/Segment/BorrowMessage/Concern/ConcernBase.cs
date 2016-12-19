@@ -5,6 +5,8 @@
     public class ConcernBase
     {
         [StringLength(4), MinLength(4), Required]
+        [IsRequiredAndType(true, IsRequiredAndTypeAttribute.DataTypeEnum.AN), LocationAndLength(1, 4, Describe = "段标")]
+
         public string 信息记录长度 { get; set; }
 
         [StringLength(2), MinLength(2), Required]

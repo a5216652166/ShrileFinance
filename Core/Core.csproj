@@ -73,8 +73,7 @@
     <Compile Include="Entities\Loan\GuarantyContractPledge.cs" />
     <Compile Include="Entities\Loan\Loan.cs" />
     <Compile Include="Entities\Loan\PaymentHistory.cs" />
-
-    <Compile Include="Entities\Message\ValidTypeAttribute.cs" />
+    <Compile Include="Entities\CreditInvestigation\ValidTypeAttribute.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\BigEvent.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBase.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\Litigation.cs" />
