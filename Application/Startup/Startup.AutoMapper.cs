@@ -16,6 +16,7 @@
                 config.AddProfile<ViewModelToDomainMappingProfile>();
                 config.AddProfile<LoanDomainToViewModelProfile>();
                 config.AddProfile<LoanViewModelToDomianProfile>();
+                config.AddProfile<DomainToCreditInvestigationProfile>();
             });
         }
     }
