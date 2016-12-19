@@ -98,6 +98,11 @@
     <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\Guarantee.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeBase.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeMortgage.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteePledge.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\NaturalGuarantee.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\NaturalMortgage.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\NaturalPledge.cs" />
     <Compile Include="Entities\Loan\GuarantorOrganization.cs" />
     <Compile Include="Entities\Loan\GuarantorPerson.cs" />
     <Compile Include="Entities\Loan\Guarantor.cs" />
