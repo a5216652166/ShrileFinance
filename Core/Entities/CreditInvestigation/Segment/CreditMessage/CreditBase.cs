@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using DatagramFile;
     using Infrastructure;
 
     public class CreditBase
@@ -19,7 +20,7 @@
 
         public string 金融机构代码
         {
-            get { return "33207991216"; }
+            get { return AbsDatagramFile.FinancialOrganizationCode; }
         }
 
         /// <summary>
