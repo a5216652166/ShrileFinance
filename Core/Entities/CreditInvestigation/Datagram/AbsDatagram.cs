@@ -7,7 +7,7 @@
     using DatagramFile;
     using Record;
 
-    public enum DatagramType
+    public enum DatagramTypeEnum
     {
         借款人基本信息文件 = 11,
         信贷业务信息文件 = 12
@@ -63,7 +63,7 @@
         /// <summary>
         /// 报文类型
         /// </summary>
-        public abstract DatagramType Type { get; }
+        public abstract DatagramTypeEnum Type { get; }
 
         /// <summary>
         /// 预留字段
@@ -76,7 +76,7 @@
         /// <summary>
         /// 信息记录集合
         /// </summary>
-        public abstract ICollection<AbsRecord> Records { get; }
+        public abstract ICollection<AbsRecord> Records { get; protected set; }
 
         public void Packaging(StringBuilder builder)
         {

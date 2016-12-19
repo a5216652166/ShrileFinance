@@ -15,7 +15,7 @@
     {
         public RecordTypeEnum Type { get; set; }
 
-        public abstract ICollection<AbsSegment> Segments { get; }
+        public abstract ICollection<AbsSegment> Segments { get; protected set; }
 
         public void Packaging(StringBuilder builder)
         {

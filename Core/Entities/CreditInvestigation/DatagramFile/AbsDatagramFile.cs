@@ -46,7 +46,7 @@
         /// <summary>
         /// 报文集合
         /// </summary>
-        public abstract ICollection<AbsDatagram> Datagrams { get; }
+        public abstract ICollection<AbsDatagram> Datagrams { get; protected set; }
 
         /// <summary>
         /// 生成文件名
