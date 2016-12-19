@@ -1,6 +1,6 @@
 ﻿namespace Core.Interfaces.Repositories.MessageRepository
 {
-    using Core.Entities.Message;
+    using Entities.CreditInvestigation;
 
     public interface IMessageTrackRepostitory : IRepository<MessageTrack>
     {
