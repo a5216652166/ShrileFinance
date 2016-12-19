@@ -7,6 +7,7 @@
     {
         public void Packaging(StringBuilder builder)
         {
+            // TODO: 反射遍历属性
             throw new NotImplementedException();
         }
     }
