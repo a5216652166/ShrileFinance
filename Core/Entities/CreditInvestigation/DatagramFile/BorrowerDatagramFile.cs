@@ -1,11 +1,11 @@
 ﻿namespace Core.Entities.CreditInvestigation.DatagramFile
 {
     /// <summary>
-    /// 信贷业务信息文件
+    /// 借款人基本信息文件
     /// </summary>
-    public class CreditDatagramFile : AbsDatagramFile
+    public class BorrowerDatagramFile : AbsDatagramFile
     {
-        public CreditDatagramFile(string serialNumber) : base(serialNumber)
+        public BorrowerDatagramFile(string serialNumber) : base(serialNumber)
         {
         }
 
@@ -13,7 +13,7 @@
         {
             get
             {
-                return DatagramFileType.信贷业务信息文件;
+                return DatagramFileType.借款人基本信息文件;
             }
         }
     }
