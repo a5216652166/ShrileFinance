@@ -158,6 +158,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
+    <Folder Include="Entities\CreditInvestigation\DatagramFile\" />
+    <Folder Include="Entities\CreditInvestigation\Datagram\" />
+    <Folder Include="Entities\CreditInvestigation\Record\" />
+    <Folder Include="Entities\CreditInvestigation\Segment\" />
+    <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
