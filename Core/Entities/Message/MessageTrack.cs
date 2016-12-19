@@ -26,6 +26,11 @@
 
     public class MessageTrack : Entity, IAggregateRoot
     {
+        public MessageTrack()
+        {
+            TrackDate = DateTime.Now;
+        }
+
         /// <summary>
         /// 名称
         /// </summary>
@@ -50,5 +55,10 @@
         /// 报文数据
         /// </summary>
         public string MessageData { get; set; }
+
+        /// <summary>
+        /// 跟踪日期
+        /// </summary>
+        public DateTime TrackDate { get; set; }
     }
 }

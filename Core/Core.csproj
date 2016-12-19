@@ -85,6 +85,11 @@
     <Compile Include="Entities\Message\BorrowMessage\Organization\Parent.cs" />
     <Compile Include="Entities\Message\BorrowMessage\Organization\Property.cs" />
     <Compile Include="Entities\Message\BorrowMessage\Organization\Stockholder.cs" />
+    <Compile Include="Entities\Message\CreditMessage\CreditBase.cs" />
+    <Compile Include="Entities\Message\CreditMessage\CreditContract.cs" />
+    <Compile Include="Entities\Message\CreditMessage\CreditContractAmount.cs" />
+    <Compile Include="Entities\Message\CreditMessage\Loan.cs" />
+    <Compile Include="Entities\Message\CreditMessage\Repayment.cs" />
     <Compile Include="Entities\Message\MessageTrack.cs" />
     <Compile Include="Entities\Other\Draft.cs" />
     <Compile Include="Entities\Finance\FinanceProduce.cs" />
@@ -172,7 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Message\BorrowMessage\FinancialAffair\" />
-    <Folder Include="Entities\Message\CreditMessage\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
