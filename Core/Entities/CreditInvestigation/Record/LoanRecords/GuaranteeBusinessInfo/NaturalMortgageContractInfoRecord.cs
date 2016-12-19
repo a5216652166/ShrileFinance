@@ -1,9 +1,9 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     /// <summary>
-    /// 自然人质押合同信息记录
+    /// 自然人抵押合同信息记录
     /// </summary>
-    public class PersonPledgeContractInfoRecord:AbsRecord
+    public class NaturalMortgageContractInfoRecord : AbsRecord
     {
     }
 }

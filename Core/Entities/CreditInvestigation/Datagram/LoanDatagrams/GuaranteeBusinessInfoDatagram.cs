@@ -33,16 +33,16 @@
         /// <summary>
         /// 自然人保证合同信息记录
         /// </summary>
-        public PersonEnsureContractInfoRecord PersonEnsureContractInfo { get; set; }
+        public NaturalEnsureContractInfoRecord NaturalEnsureContractInfo { get; set; }
 
         /// <summary>
         /// 自然人抵押合同信息记录
         /// </summary>
-        public PersonMortgageContractInfoRecord PersonMortgageContractInfo { get; set; }
+        public NaturalMortgageContractInfoRecord NaturalMortgageContractInfo { get; set; }
 
         /// <summary>
         /// 自然人质押合同信息记录
         /// </summary>
-        public PersonPledgeContractInfoRecord PersonPledgeContractInfo { get; set; }
+        public NaturalPledgeContractInfoRecord NaturalPledgeContractInfo { get; set; }
     }
 }

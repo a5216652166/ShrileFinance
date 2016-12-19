@@ -81,9 +81,9 @@
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\LoanBusinessInfo\LoanRepayInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\LoanBusinessInfo\LoanIousInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\LoanBusinessInfo\LoanContractInfoRecord.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\PersonEnsureContractInfoRecord.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\PersonMortgageContractInfoRecord.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\PersonPledgeContractInfoRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\NaturalEnsureContractInfoRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\NaturalMortgageContractInfoRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\NaturalPledgeContractInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\BaseParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\CashFlowParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\IncomeExpenditureParagraph.cs" />
