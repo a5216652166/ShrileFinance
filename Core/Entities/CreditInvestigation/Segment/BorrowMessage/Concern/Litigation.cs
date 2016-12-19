@@ -37,7 +37,7 @@
         /// <summary>
         /// 判决执行日期
         /// </summary>
-        [Display(Name = "判决执行日期"),MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(165, true)]
+        [Display(Name = "判决执行日期"), MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(165, true)]
         public string DateTime { get; set; }
 
         /// <summary>

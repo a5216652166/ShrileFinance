@@ -12,6 +12,7 @@
         {
             get { return "D"; }
         }
+
         /// <summary>
         /// 大事件流水号
         /// </summary>
