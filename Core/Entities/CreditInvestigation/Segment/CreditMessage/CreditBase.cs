@@ -2,13 +2,14 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using Infrastructure;
 
     public class CreditBase
     {
-        [StringLength(4)]
+        [MetaCode(4, MetaCodeAttribute.DataTypeEnum.N), SectionRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 
-        [StringLength(2)]
+        [MetaCode(2, MetaCodeAttribute.DataTypeEnum.N), SectionRule(5, true, Describe = "本信息记录的长度")]
         public string 信息记录类型 { get; set; }
 
         public string 信息类别
