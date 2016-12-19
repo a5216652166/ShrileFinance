@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Message.BorrowMessage.Concern
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
     using System.ComponentModel.DataAnnotations;
 
