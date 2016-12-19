@@ -1,4 +1,4 @@
-﻿using Core.Entities.Message;
+﻿using Core.Entities.CreditInvestigation;
 namespace Data.Repositories
 {
     using Core.Interfaces.Repositories.MessageRepository;

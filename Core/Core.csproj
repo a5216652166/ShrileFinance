@@ -65,6 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\AbsDatagramFile.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\AbsDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\Guarantee.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeBase.cs" />
     <Compile Include="Entities\Loan\GuarantorOrganization.cs" />
@@ -184,6 +187,8 @@
     <Folder Include="Entities\CreditInvestigation\Datagram\" />
     <Folder Include="Entities\CreditInvestigation\Record\" />
     <Folder Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Entities\CreditInvestigation\Segment\" />
+    <Folder Include="Entities\CreditInvestigation\Infrastructure\" />
     <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>

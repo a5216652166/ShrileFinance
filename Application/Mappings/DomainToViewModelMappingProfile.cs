@@ -6,7 +6,7 @@
     using Core.Entities.Finance;
     using Core.Entities.Flow;
     using Core.Entities.Loan;
-    using Core.Entities.Message;
+    using Core.Entities.CreditInvestigation;
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;

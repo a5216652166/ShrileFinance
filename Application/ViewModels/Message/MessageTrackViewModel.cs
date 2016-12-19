@@ -2,7 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using Core.Entities.Message;
+    using Core.Entities.CreditInvestigation;
 
     public class MessageTrackViewModel : IEntityViewModel
     {
