@@ -30,7 +30,7 @@
         /// 判决执行金额
         /// </summary>
         [Display(Name = "判决执行金额"), Required]
-        public decimal? Money { get; set; }
+        public string Money { get; set; }
 
         /// <summary>
         /// 判决执行日期

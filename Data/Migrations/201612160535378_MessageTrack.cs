@@ -17,6 +17,7 @@ namespace Data.Migrations
                         OperationType = c.Byte(nullable: false),
                         MessageStatus = c.Byte(nullable: false),
                         MessageData = c.String(),
+                        TrackDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
