@@ -6,10 +6,10 @@
 
     public class CreditBase
     {
-        [MetaCode(4, MetaCodeAttribute.DataTypeEnum.N), SectionRule(1, true, Describe = "本信息记录的长度")]
+        [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 
-        [MetaCode(2, MetaCodeAttribute.DataTypeEnum.N), SectionRule(5, true, Describe = "本信息记录的长度")]
+        [MetaCode(2, MetaCodeTypeEnum.N), SegmentRule(5, true, Describe = "本信息记录的长度")]
         public string 信息记录类型 { get; set; }
 
         public string 信息类别

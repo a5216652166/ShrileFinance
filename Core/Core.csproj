@@ -73,6 +73,9 @@
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\ProfitsParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\AbsDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\AbsDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Infrastructure\MetaCodeAttribute.cs" />
+    <Compile Include="Entities\CreditInvestigation\Infrastructure\MetaCodeTypeEnum.cs" />
+    <Compile Include="Entities\CreditInvestigation\Infrastructure\SegmentRuleAttribute.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\Guarantee.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeBase.cs" />
@@ -84,7 +87,6 @@
     <Compile Include="Entities\Loan\GuarantyContractPledge.cs" />
     <Compile Include="Entities\Loan\Loan.cs" />
     <Compile Include="Entities\Loan\PaymentHistory.cs" />
-    <Compile Include="Entities\CreditInvestigation\Infrastructure\ValidTypeAttribute.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\BigEvent.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBase.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\Litigation.cs" />
