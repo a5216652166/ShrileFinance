@@ -66,18 +66,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
-    <Compile Include="Entities\CreditInvestigation\DatagramFile\CreditDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerCapitalStructureDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerConcernDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerFinancialStatementsDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerProfileDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\CreditDatagrams\DebitInterestInfoDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\CreditDatagrams\GuaranteeBusinessInfoDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\CreditDatagrams\CreditBusinessInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\LoanDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\DebitInterestInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\GuaranteeBusinessInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\LoanBusinessInfoDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\Class1.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\LoanContractInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\BaseParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\CashFlowParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\IncomeExpenditureParagraph.cs" />
@@ -204,7 +202,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
-    <Folder Include="Entities\CreditInvestigation\Record\CreditRecords\" />
     <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>
