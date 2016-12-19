@@ -45,9 +45,8 @@
         /// <summary>
         /// 自然人质押合同信息记录
         /// </summary>
-        public PersonPledgeContractInfoRecord PersonPledgeContractInfo { get; set; }
+        public NaturalPledgeContractInfoRecord NaturalPledgeContractInfo { get; set; }
 
         public override ICollection<AbsRecord> Records { get; protected set; }
-        public NaturalPledgeContractInfoRecord NaturalPledgeContractInfo { get; set; }
     }
 }

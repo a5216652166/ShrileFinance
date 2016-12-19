@@ -1,5 +1,8 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
+    using System;
+    using System.Collections.Generic;
+    using Segment;
     using Segment.CreditMessage;
 
     /// <summary>
@@ -16,5 +19,7 @@
         /// 还款信息段
         /// </summary>
         public Repayment RepayInfo { get; set; }
+
+        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
+    using System;
     using System.Collections.Generic;
+    using Segment;
     using Segment.CreditMessage;
 
     /// <summary>
@@ -22,5 +24,7 @@
         /// 合同金额信息段（可多个）
         /// </summary>
         public ICollection<CreditContractAmount> ContractAmounts { get; set; }
+
+        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }
