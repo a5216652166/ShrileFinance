@@ -20,11 +20,6 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         }
 
         /// <summary>
-        /// 报表类型
-        /// </summary>
-        public int Type { get; set; }
-
-        /// <summary>
         /// 销售商品和提供劳务收到的现金
         /// </summary>
         public decimal? SaleGoodsCash { get; set; }
