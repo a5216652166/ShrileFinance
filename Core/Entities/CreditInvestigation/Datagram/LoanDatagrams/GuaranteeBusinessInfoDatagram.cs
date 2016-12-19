@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.CreditInvestigation.Datagram.CreditDatagrams
+﻿namespace Core.Entities.CreditInvestigation.Datagram.LoanDatagrams
 {
     /// <summary>
     /// 担保业务信息采集报文

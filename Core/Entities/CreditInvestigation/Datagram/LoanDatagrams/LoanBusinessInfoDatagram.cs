@@ -1,9 +1,9 @@
-﻿namespace Core.Entities.CreditInvestigation.Datagram.CreditDatagrams
+﻿namespace Core.Entities.CreditInvestigation.Datagram.LoanDatagrams
 {
     /// <summary>
-    /// 欠息信息采集报文
+    /// 贷款业务信息采集报文
     /// </summary>
-    class DebitInterestInfoDatagram : AbsDatagram
+    public class LoanBusinessInfoDatagram : AbsDatagram
     {
         public override byte Type
         {
