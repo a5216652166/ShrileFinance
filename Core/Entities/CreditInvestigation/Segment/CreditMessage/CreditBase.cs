@@ -1,5 +1,6 @@
-﻿namespace Core.Entities.Message.CreditMessage
+﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class CreditBase
@@ -33,10 +34,16 @@
         public string CreditContractCode { get; set; }
 
         [StringLength(1)]
-        public string 信息记录操作类型 { get; set; }
+        public string 信息记录操作类型
+        {
+            get { return "1"; }
+        }
 
         [StringLength(8)]
-        public string 业务发生日期 { get; set; }
+        public string 业务发生日期
+        {
+            get { return DateTime.Now.ToString("yyyyMMdd"); }
+        }
 
         public string 信息记录跟踪编号
         {

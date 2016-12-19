@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Message.CreditMessage
+﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
     using System.ComponentModel.DataAnnotations;
