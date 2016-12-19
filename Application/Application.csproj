@@ -95,6 +95,7 @@
     <Compile Include="FinanceScriptService.cs" />
     <Compile Include="FinancingProjectAppService.cs" />
     <Compile Include="LoanAppService.cs" />
+    <Compile Include="Mappings\DomainToCreditInvestigationProfile.cs" />
     <Compile Include="Mappings\LoanDomainToViewModelProfile.cs" />
     <Compile Include="Mappings\LoanViewModelToDomianProfile.cs" />
     <Compile Include="Mappings\PagedListTypeConverter.cs" />
