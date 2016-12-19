@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record
 {
-    using System;
     using System.Collections.Generic;
     using System.Text;
     using Segment;
@@ -19,7 +18,10 @@
 
         public void Packaging(StringBuilder builder)
         {
-            throw new NotImplementedException();
+            foreach (var segment in Segments)
+            {
+                segment.Packaging(builder);
+            }
         }
     }
 }
