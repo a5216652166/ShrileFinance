@@ -3,13 +3,11 @@
     using System;
     using System.Text.RegularExpressions;
 
-    public class ValidTypeAttribute : Attribute
+    public class IsRequiredAndTypeAttribute : Attribute
     {
-        public ValidTypeAttribute(int dataLength, int dataLocation, string errorMessage, DataTypeEnum dataType)
+        public IsRequiredAndTypeAttribute(bool isRequired, DataTypeEnum dataType)
         {
-            DataLength = dataLength;
-            DataLocation = dataLocation;
-            ErrorMessage = errorMessage;
+            IsRequired = isRequired;
             DataType = dataType;
         }
 
@@ -21,16 +19,40 @@
             Amount = 3
         }
 
+        /// <summary>
+        /// 类型
+        /// </summary>
         public DataTypeEnum DataType { get; set; }
 
-        public int DataLength { get; set; }
+        /// <summary>
+        /// 是否必填
+        /// </summary>
+        public bool IsRequired { get; set; }
 
-        public int DataLocation { get; set; }
-
+        /// <summary>
+        /// 错误提示
+        /// </summary>
         public string ErrorMessage { get; set; }
 
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Describe { get; set; }
+
+        /// <summary>
+        /// 校验函数
+        /// </summary>
+        /// <param name="value">被校验对象</param>
+        /// <returns>校验结果</returns>
         public bool IsValid(object value)
         {
+            if (IsRequired && value == null)
+            {
+                ErrorMessage = "必填验证未通过";
+
+                return false;
+            }
+
             var data = value == null ? string.Empty : value.ToString();
 
             var validTypeR = true;
@@ -76,15 +98,55 @@
                 return false;
             }
 
-            // 校验长度
-            validTypeR = data.Length == DataLength;
+            return validTypeR;
+        }
+    }
 
-            if (!validTypeR)
+    public class LocationAndLengthAttribute : Attribute
+    {
+        public LocationAndLengthAttribute(int dataLocation, int dataLength)
+        {
+            DataLocation = dataLocation;
+            DataLength = dataLength;
+        }
+
+        /// <summary>
+        /// 位置
+        /// </summary>
+        public int DataLocation { get; set; }
+
+        /// <summary>
+        /// 长度
+        /// </summary>
+        public int DataLength { get; set; }
+
+        /// <summary>
+        /// 错误提示
+        /// </summary>
+        public string ErrorMessage { get; set; }
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Describe { get; set; }
+
+        /// <summary>
+        /// 校验函数
+        /// </summary>
+        /// <param name="value">被校验对象</param>
+        /// <returns>校验结果</returns>
+        public bool IsValid(object value)
+        {
+            var data = value == null ? string.Empty : value.ToString();
+
+            if (data.Length != DataLength)
             {
+                ErrorMessage = "长度校验未通过！";
+
                 return false;
             }
 
-            return validTypeR;
+            return true;
         }
     }
 }
