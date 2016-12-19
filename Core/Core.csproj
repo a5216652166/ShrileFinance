@@ -65,6 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\AbsDatagramFile.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\AbsDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
     <Compile Include="Entities\Loan\GuarantorOrganization.cs" />
     <Compile Include="Entities\Loan\GuarantorPerson.cs" />
     <Compile Include="Entities\Loan\Guarantor.cs" />
@@ -177,12 +180,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
-    <Folder Include="Entities\CreditInvestigation\DatagramFile\" />
-    <Folder Include="Entities\CreditInvestigation\Datagram\" />
-    <Folder Include="Entities\CreditInvestigation\Record\" />
+    <Folder Include="Entities\CreditInvestigation\Infrastructure\" />
     <Folder Include="Entities\CreditInvestigation\Segment\" />
-    <Folder Include="Services\CreditInvestigation\" />
     <Folder Include="Entities\Message\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
