@@ -81,11 +81,12 @@
 
             repository.Create(loan);
 
+            repository.Commit();
+
             // 报文追踪（放款）
             messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.借款, name: "借据编号：" + loan.ContractNumber + "（放款）");
             messageAppService.MessageTrack(id: loan.CreditId, operationType: Core.Entities.Message.MessageOperationTypeEnum.借款, name: "贷款合同编号：" + creditRepository.Get(loan.CreditId).CreditContractCode + "（放款）");
 
-            repository.Commit();
         }
 
         /// <summary>
@@ -129,7 +130,14 @@
             foreach (var payment in payments)
             {
                 paymentService.Payment(loan, payment);
+            }
 
+            repository.Modify(loan);
+
+            repository.Commit();
+
+            foreach (var payment in payments)
+            {
                 if (payment.ScheduledPaymentPrincipal == payment.ActualPaymentPrincipal
                 && payment.ScheduledPaymentInterest == payment.ActualPaymentInterest)
                 {
@@ -153,10 +161,6 @@
                     messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.欠息, name: "借据：" + loan.ContractNumber + "欠息");
                 }
             }
-
-            repository.Modify(loan);
-
-            repository.Commit();
         }
 
         /// <summary>
