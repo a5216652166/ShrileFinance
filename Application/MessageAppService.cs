@@ -4,7 +4,7 @@
     using System.Data;
     using System.Linq;
     using AutoMapper;
-    using Core.Entities.Message;
+    using Core.Entities.CreditInvestigation;
     using Core.Interfaces.Repositories.MessageRepository;
     using ViewModels.Message;
     using X.PagedList;

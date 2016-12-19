@@ -5,7 +5,7 @@
     using Core.Entities;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Finance;
-    using Core.Entities.Message;
+    using Core.Entities.CreditInvestigation;
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;

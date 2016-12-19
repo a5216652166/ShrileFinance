@@ -1,40 +1,45 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
     using System.ComponentModel.DataAnnotations;
+    using DatagramFile;
+    using Infrastructure;
 
     public class ConcernBase
     {
-        [StringLength(4), MinLength(4), Required]
-        [IsRequiredAndType(true, IsRequiredAndTypeAttribute.DataTypeEnum.AN), LocationAndLength(1, 4, Describe = "段标")]
-
+        [MetaCode(4, MetaCodeAttribute.DataTypeEnum.N), SectionRule(1, true)]
         public string 信息记录长度 { get; set; }
 
-        [StringLength(2), MinLength(2), Required]
+        [MetaCode(2, MetaCodeAttribute.DataTypeEnum.N), SectionRule(5, true)]
         public string 信息记录类型 { get; set; }
 
+        [MetaCode(1, MetaCodeAttribute.DataTypeEnum.AN), SectionRule(7, true)]
         public string 信息类别
         {
             get { return "B"; }
         }
 
-        [StringLength(11), Required, MinLength(11)]
+        [MetaCode(11, MetaCodeAttribute.DataTypeEnum.AN), SectionRule(8, true)]
         public string 金融机构代码
         {
-            get { return "33207991216"; }
+            get { return AbsDatagramFile.FinancialOrganizationCode; }
         }
 
-        [StringLength(80), Required]
+        [MetaCode(80, MetaCodeAttribute.DataTypeEnum.ANC), SectionRule(19, true)]
         public string 借款人名称 { get; set; }
 
-        [StringLength(16), MinLength(16), Required]
+        [MetaCode(16, MetaCodeAttribute.DataTypeEnum.AN), SectionRule(99, true)]
         public string 贷款卡编码 { get; set; }
 
-        [StringLength(1), Required]
-        public string 信息记录操作类型 { get; set; }
+        [MetaCode(1, MetaCodeAttribute.DataTypeEnum.N), SectionRule(115, true)]
+        public string 信息记录操作类型
+        {
+            get { return "1"; }
+        }
 
-        [StringLength(8), Required]
+        [MetaCode(8, MetaCodeAttribute.DataTypeEnum.N), SectionRule(116, true)]
         public string 业务发生日期 { get; set; }
 
+        [MetaCode(20, MetaCodeAttribute.DataTypeEnum.AN), SectionRule(124, true)]
         public string 信息记录跟踪编号
         {
             get { return string.Empty.PadLeft(20, '0'); }
