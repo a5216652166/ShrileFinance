@@ -15,11 +15,19 @@
         }
 
         [HttpGet]
-        public IHttpActionResult GetPageList(int page, int rows)
+        public IHttpActionResult GetPageList(string search, int page, int rows)
         {
-            var list = messageAppService.GetPageList(page, rows);
+            var list = messageAppService.GetPageList(search, page, rows);
 
             return Ok(new PagedListViewModel<MessageTrackViewModel>(list));
+        }
+
+        [HttpPost]
+        public IHttpActionResult Modify(MessageTrackViewModel model)
+        {
+            messageAppService.Modify(model);
+
+            return Ok();
         }
     }
 }

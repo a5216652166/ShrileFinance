@@ -14,12 +14,113 @@
     <script>
         uc.grid = new UCGrid("#dg");
 
-        function BeforeLoad(param) {
+        function Reload() {
+            uc.grid.Reload();
         }
+
+        function BeforeLoad(param) {
+            param.search = $("#Name").textbox("getValue");
+        }
+
+        //键盘enter键
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) { // enter 键
+                //只是在datagrid中回车时候回去datagrid的ID
+                var id = $(e.target).parents(".panel.datagrid").find(".easyui-datagrid").attr("id")
+                //防止在其他文本框按enter建时候报错
+                if (id != undefined) {
+                    accept(id);
+                }
+            }
+        };
+
+        $.extend($.fn.datagrid.methods, {
+            getEditingRowIndexs: function (jq) {
+                var id = $(jq).attr("id");
+                var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
+                var indexs = [];
+                rows.each(function (i, rows) {
+                    accept(id)
+                });
+            }
+        });
+
+        //双击编辑行
+        function onEditor(index, field, value) {
+            $('#dg').datagrid('getEditingRowIndexs');
+            if (editIndex != index) {
+                var row = $('#' + this.id).datagrid("getSelected");
+                //不可编辑状态
+                if (row["IsEdit"] == false) {
+                    $('#' + this.id).datagrid('selectRow', editIndex);
+                }
+                else {
+                    if (endEditing(this.id)) {
+                        $('#' + this.id).datagrid('selectRow', index)
+                                .datagrid('beginEdit', index);
+                        var ed = $('#' + this.id).datagrid('getEditor', { index: index, field: field });
+                        if (ed != null) {
+                            $(ed.target).focus();
+                            editIndex = index;
+                        }
+                    } else {
+                        $('#' + this.id).datagrid('selectRow', editIndex);
+                    }
+                }
+            }
+        }
+
+        //结束编辑状态
+        function endEditing(id) {
+            if (editIndex == undefined) { return true }
+
+            if ($('#' + id).datagrid('validateRow', editIndex)) {
+                var ed = $('#' + id).datagrid('getEditors', editIndex);
+                var name = $(ed[0].target).val();
+                $('#' + id).datagrid('getRows')[editIndex]['Name'] = name;
+                $('#' + id).datagrid('endEdit', editIndex);
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //结束编辑状态后保存数据在datagrid
+        function accept(id) {
+            if (endEditing(id)) {
+                $('#' + id).datagrid('acceptChanges');
+            }
+        }
+
+        //保存
+        function Save()
+        {
+            $.ajax({
+                async: false,
+                method: "POST",
+                data: model,
+                url: "../api/CreditContract/Modify",
+                statusCode: {
+                    200: function (data) {
+                        uc.form.Cancel();
+                        $.messager.show({ msg: "提交成功" });
+                    },
+                    400: function (data) {
+                        $.messager.show({ msg: data.responseJSON.Message });
+                    }
+                }
+            });
+
+            $("#save").linkbutton("enable");
+        }
+
     </script>
 </head>
 <body>
     <table id="dg" class="easyui-datagrid" data-options="height:630,toolbar:'#tb',rownumbers:true,
+        onDblClickCell:onEditor,
         singleSelect: true,
         pagination: true,
         pageSize: 20,
@@ -32,16 +133,20 @@
         <thead>
             <tr>
                 <th data-options="field:'Id',hidden:true">Id</th>
-                <!--<th data-options="field:'Name',width:180,align:'center',editor:{type:'validatebox',options:{required:true,validType:'Numerical'}}">名称</th>-->
-                <th data-options="field:'OperationType',width:120,align:'center',hidden:true">操作类型</th>
-                <th data-options="field:'MessageStatus',width:120,align:'center',hidden:true">报文状态</th>
+                <th data-options="field:'Name',width:180,align:'center',editor:{type:'validatebox'}">名称</th>
+                <th data-options="field:'OperationType',width:120,align:'center'">操作类型</th>
+                <th data-options="field:'MessageStatus',width:120,align:'center'">报文状态</th>
+                <th data-options="field:'IsEdit',width:120,align:'center',hidden:true">是否可编辑</th>
             </tr>
         </thead>
     </table>
     <div id="tb">
         <div style="height:30px;width:auto;">
-            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-edit',plain:true">修改</a>
-            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">下载</a>
+            <input id="Name" name="Name" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入名称'" />
+            <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
+
+            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true">保存</a>
+            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Save">下载</a>
         </div>
     </div>
 </body>
