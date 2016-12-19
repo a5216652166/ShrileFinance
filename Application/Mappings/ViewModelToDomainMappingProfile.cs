@@ -5,10 +5,12 @@
     using Core.Entities;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Finance;
+    using Core.Entities.Message;
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;
     using ViewModels.FinanceViewModels;
+    using ViewModels.Message;
     using ViewModels.OrganizationViewModels;
     using ViewModels.PartnerViewModels;
     using ViewModels.ProduceViewModel;
@@ -76,6 +78,9 @@
                 .ForMember(d => d.FinanceProduce, opt => opt.Ignore())
                 .ForMember(d => d.Applicant, opt => opt.Ignore());
             CreateMap<FinanceProduceViewModel, FinanceProduce>();
+
+            // 征信报文
+            CreateMap<MessageTrackViewModel, MessageTrack>();
         }
     }
 }
