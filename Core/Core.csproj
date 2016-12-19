@@ -86,6 +86,7 @@
     <Compile Include="Entities\Message\BorrowMessage\Organization\Property.cs" />
     <Compile Include="Entities\Message\BorrowMessage\Organization\Stockholder.cs" />
     <Compile Include="Entities\Message\MessageTrack.cs" />
+    <Compile Include="Entities\Message\ValidTypeAttribute.cs" />
     <Compile Include="Entities\Other\Draft.cs" />
     <Compile Include="Entities\Finance\FinanceProduce.cs" />
     <Compile Include="Entities\Flow\Action.cs" />
