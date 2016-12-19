@@ -13,7 +13,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return DatagramTypeEnum.家庭成员信息报文;
             }
         }
 

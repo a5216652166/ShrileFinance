@@ -13,7 +13,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return DatagramTypeEnum.财务报表信息采集报文;
             }
         }
 

@@ -13,7 +13,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return DatagramTypeEnum.机构基本信息报文;
             }
         }
 
