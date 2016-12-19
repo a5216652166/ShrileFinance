@@ -66,17 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\AbsDatagramFile.cs" />
-    <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
-    <Compile Include="Entities\CreditInvestigation\DatagramFile\LoanDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\AbsDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerCapitalStructureDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerConcernDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerFinancialStatementsDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerProfileDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Loan\DebitInterestDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Loan\GuaranteeDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Loan\LoanDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Loan\OtherDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
     <Compile Include="Entities\Loan\GuarantorOrganization.cs" />
     <Compile Include="Entities\Loan\GuarantorPerson.cs" />
@@ -191,8 +181,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
-    <Folder Include="Entities\CreditInvestigation\Infrastructure\" />
+    <Folder Include="Entities\CreditInvestigation\DatagramFile\" />
+    <Folder Include="Entities\CreditInvestigation\Datagram\" />
+    <Folder Include="Entities\CreditInvestigation\Record\" />
     <Folder Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Entities\CreditInvestigation\Segment\" />
+    <Folder Include="Entities\CreditInvestigation\Infrastructure\" />
     <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>
