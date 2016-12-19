@@ -1,13 +1,10 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
-    /// <summary>
-    /// 抵押
-    /// </summary>
-    public class GuaranteeMortgage
+    public class NaturalMortgage
     {
         public string 信息类别
         {
-            get { return "E"; }
+            get { return "H"; }
         }
 
         /// <summary>
@@ -26,9 +23,14 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// 贷款卡编码
+        /// 证件类型
         /// </summary>
-        public string CreditcardCode { get; set; }
+        public string CertificateType { get; set; }
+
+        /// <summary>
+        /// 证件号码
+        /// </summary>
+        public string CertificateNumber { get; set; }
 
         public string 币种
         {
