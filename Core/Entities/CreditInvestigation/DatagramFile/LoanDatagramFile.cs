@@ -1,5 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.DatagramFile
 {
+    using System.Collections.Generic;
+    using Datagram;
     using Datagram.LoanDatagrams;
 
     /// <summary>
@@ -33,5 +35,7 @@
         /// 欠息信息采集报文
         /// </summary>
         public DebitInterestInfoDatagram DebitInterestInfo { get; set; }
+
+        public override ICollection<AbsDatagram> Datagrams { get; protected set; }
     }
 }

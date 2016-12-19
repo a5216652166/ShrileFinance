@@ -65,15 +65,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerCapitalStructureDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerConcernDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerFinancialStatementsDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerProfileDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\AbsSegment.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\LoanDatagramFile.cs" />
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\OrganizationDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\DebitInterestInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\GuaranteeBusinessInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\LoanBusinessInfoDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\OrganizationDatagrams\ConcernDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\OrganizationDatagrams\FamilyMemberDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\OrganizationDatagrams\FinancialStatementsDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\OrganizationDatagrams\OrganizationBaseDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\DebitInterestInfo\DebitInterestInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\PledgeContractInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\MortgageContractInfoRecord.cs" />
@@ -81,9 +82,9 @@
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\LoanBusinessInfo\LoanRepayInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\LoanBusinessInfo\LoanIousInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\LoanBusinessInfo\LoanContractInfoRecord.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\PersonEnsureContractInfoRecord.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\PersonMortgageContractInfoRecord.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\PersonPledgeContractInfoRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\NaturalEnsureContractInfoRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\NaturalMortgageContractInfoRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\NaturalPledgeContractInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\BaseParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\CashFlowParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\IncomeExpenditureParagraph.cs" />
@@ -217,6 +218,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
+    <Folder Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Entities\CreditInvestigation\DatagramFile\" />
+    <Folder Include="Entities\CreditInvestigation\Datagram\" />
+    <Folder Include="Entities\CreditInvestigation\Record\" />
     <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,14 +1,14 @@
-﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
+﻿using System;
+namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
 
     /// <summary>
-    /// 保证合同信息记录
+    /// 自然人抵押合同信息记录
     /// </summary>
-    public class EnsureContractInfoRecord : AbsRecord
+    public class NaturalMortgageContractInfoRecord : AbsRecord
     {
         /// <summary>
         /// 基础段
@@ -16,9 +16,10 @@
         public GuaranteeBase Base { get; set; }
 
         /// <summary>
-        /// 保证合同信息段
+        /// 自然人抵押合同信息段
         /// </summary>
-        public Guarantee GuaranteeInfo { get; set; }
+        public NaturalMortgage NaturalMortgageInfo { get; set; }
+
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
     }

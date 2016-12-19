@@ -1,17 +1,19 @@
 ﻿namespace Core.Entities.CreditInvestigation.Datagram.LoanDatagrams
 {
+    using System.Collections.Generic;
     using Core.Entities.CreditInvestigation.Record.LoanRecords;
+    using Record;
 
     /// <summary>
     /// 贷款业务信息采集报文
     /// </summary>
     public class LoanBusinessInfoDatagram : AbsDatagram
     {
-        public override byte Type
+        public override DatagramTypeEnum Type
         {
             get
             {
-                return (byte)DatagramType.信贷业务信息文件;
+                return DatagramTypeEnum.信贷业务信息文件;
             }
         }
 
@@ -29,5 +31,7 @@
         /// 贷款业务还款信息记录
         /// </summary>
         public LoanRepayInfoRecord LoanRepayInfo { get; set; }
+
+        public override ICollection<AbsRecord> Records { get; protected set; }
     }
 }

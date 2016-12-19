@@ -1,5 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Datagram.LoanDatagrams
 {
+    using System.Collections.Generic;
+    using Record;
     using Record.LoanRecords;
 
     /// <summary>
@@ -7,11 +9,11 @@
     /// </summary>
     public class GuaranteeBusinessInfoDatagram : AbsDatagram
     {
-        public override byte Type
+        public override DatagramTypeEnum Type
         {
             get
             {
-                return (byte)DatagramType.信贷业务信息文件;
+                return DatagramTypeEnum.信贷业务信息文件;
             }
         }
 
@@ -33,16 +35,18 @@
         /// <summary>
         /// 自然人保证合同信息记录
         /// </summary>
-        public PersonEnsureContractInfoRecord PersonEnsureContractInfo { get; set; }
+        public NaturalEnsureContractInfoRecord NaturalEnsureContractInfo { get; set; }
 
         /// <summary>
         /// 自然人抵押合同信息记录
         /// </summary>
-        public PersonMortgageContractInfoRecord PersonMortgageContractInfo { get; set; }
+        public NaturalMortgageContractInfoRecord NaturalMortgageContractInfo { get; set; }
 
         /// <summary>
         /// 自然人质押合同信息记录
         /// </summary>
-        public PersonPledgeContractInfoRecord PersonPledgeContractInfo { get; set; }
+        public NaturalPledgeContractInfoRecord NaturalPledgeContractInfo { get; set; }
+
+        public override ICollection<AbsRecord> Records { get; protected set; }
     }
 }
