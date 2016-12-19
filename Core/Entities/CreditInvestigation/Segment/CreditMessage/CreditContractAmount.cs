@@ -17,13 +17,13 @@
         /// <summary>
         /// 贷款合同金额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(5, true)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(5, true)]
         public string CreditLimit { get; set; }
 
         /// <summary>
         /// 贷款余额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(25, true)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(25, true)]
         public string CreditBalance { get; set; }
     }
 }

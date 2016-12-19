@@ -99,6 +99,8 @@
     <Compile Include="Entities\CreditInvestigation\Infrastructure\MetaCodeTypeEnum.cs" />
     <Compile Include="Entities\CreditInvestigation\Infrastructure\SegmentRuleAttribute.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\DebitInterest.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\DebitInterestBase.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\Guarantee.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeBase.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeMortgage.cs" />
