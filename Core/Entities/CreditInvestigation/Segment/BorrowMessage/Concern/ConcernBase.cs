@@ -2,7 +2,6 @@
 {
     using System.ComponentModel.DataAnnotations;
     using DatagramFile;
-    using Infrastructure;
 
     public class ConcernBase
     {
