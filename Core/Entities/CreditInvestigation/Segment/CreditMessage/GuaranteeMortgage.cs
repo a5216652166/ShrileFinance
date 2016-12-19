@@ -44,7 +44,7 @@
         /// <summary>
         /// 抵押物评估价值
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(163, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(163, false)]
         public string AssessmentValue { get; set; }
 
         /// <summary>
@@ -62,7 +62,7 @@
         /// <summary>
         /// 评估机构组织机构代码
         /// </summary>
-        [MetaCode(10, MetaCodeTypeEnum.AN), SegmentRule(271, false,Describe = "技监局颁发的组织机构代码")]
+        [MetaCode(10, MetaCodeTypeEnum.AN), SegmentRule(271, false, Describe = "技监局颁发的组织机构代码")]
         public string AssessmentOrganizationCode { get; set; }
 
         /// <summary>
@@ -86,13 +86,13 @@
         /// <summary>
         /// 抵押物金额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(293, true,Describe = "金融机构认可的抵押物评估价值折算后能承受的风险金额")]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(293, true, Describe = "金融机构认可的抵押物评估价值折算后能承受的风险金额")]
         public string Margin { get; set; }
 
         /// <summary>
         /// 登记机关
         /// </summary>
-        [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(313, true,Describe = "该处填写抵押物登记机构名称，若无明确的登记机关，填写“本机构”")]
+        [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(313, true, Describe = "该处填写抵押物登记机构名称，若无明确的登记机关，填写“本机构”")]
         public string RegistrateAuthorit { get; set; }
 
         /// <summary>
