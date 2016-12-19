@@ -6,7 +6,7 @@
     using Datagram;
     using Interfaces;
 
-    public enum DatagramFileType 
+    public enum DatagramFileType
     {
         机构基本信息采集报文文件 = 51,
         信贷业务信息文件 = 12
@@ -46,7 +46,7 @@
         /// <summary>
         /// 报文集合
         /// </summary>
-        public ICollection<AbsDatagram> Datagrams { get; protected set; }
+        public abstract ICollection<AbsDatagram> Datagrams { get; protected set; }
 
         /// <summary>
         /// 生成文件名
@@ -75,13 +75,22 @@
         /// <returns></returns>
         public string Packaging()
         {
-            throw new NotImplementedException();
-
             var builder = new StringBuilder();
 
             foreach (var datagram in Datagrams)
             {
+                // 封装报文
                 datagram.Packaging(builder);
+
+                // 报文之间用两个换行符分隔
+                builder.AppendLine();
+                builder.AppendLine();
+            }
+
+            if (Datagrams.Count > 0)
+            {
+                // 移除最后的换行分隔符
+                builder.Remove(builder.Length - 4, 4);
             }
 
             return builder.ToString();

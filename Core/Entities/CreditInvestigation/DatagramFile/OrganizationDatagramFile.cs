@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.Entities.CreditInvestigation.Datagram;
 
 namespace Core.Entities.CreditInvestigation.DatagramFile
@@ -26,5 +27,7 @@ namespace Core.Entities.CreditInvestigation.DatagramFile
                 return DatagramFileType.机构基本信息采集报文文件;
             }
         }
+
+        public override ICollection<AbsDatagram> Datagrams { get; protected set; }
     }
 }
