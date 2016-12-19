@@ -9,6 +9,15 @@
     /// </summary>
     public class DebitInterestInfoRecord : AbsRecord
     {
+        public DebitInterestInfoRecord() : base()
+        {
+            Segments = new List<AbsSegment>() {
+                // 基础段
+
+                // 欠息业务信息段
+            };
+        }
+
         /// <summary>
         /// 基础段
         /// </summary>

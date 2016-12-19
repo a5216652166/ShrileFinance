@@ -9,6 +9,15 @@
     /// </summary>
     public class DebitInterestInfoDatagram : AbsDatagram
     {
+        public DebitInterestInfoDatagram() : base()
+        {
+            Records = new List<AbsRecord>()
+            {
+                // 欠息信息记录
+                new DebitInterestInfoRecord()
+            };
+        }
+
         public override DatagramTypeEnum Type
         {
             get
@@ -16,12 +25,7 @@
                 return DatagramTypeEnum.信贷业务信息文件;
             }
         }
-
-        /// <summary>
-        /// 欠息信息记录
-        /// </summary>
-        public DebitInterestInfoRecord DebitInterestInfo { get; set; }
-
+        
         public override ICollection<AbsRecord> Records { get; protected set; }
     }
 }

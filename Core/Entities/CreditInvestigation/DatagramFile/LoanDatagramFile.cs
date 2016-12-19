@@ -11,6 +11,17 @@
     {
         public LoanDatagramFile(string serialNumber) : base(serialNumber)
         {
+            Datagrams = new List<AbsDatagram>
+            {
+                // 贷款业务信息采集报文
+                new LoanBusinessInfoDatagram(),
+
+                // 担保业务信息采集报文
+                new GuaranteeBusinessInfoDatagram(),
+
+                // 欠息信息采集报文
+                new DebitInterestInfoDatagram()
+            };
         }
 
         public override DatagramFileType Type

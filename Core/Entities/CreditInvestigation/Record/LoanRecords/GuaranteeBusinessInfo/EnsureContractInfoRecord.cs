@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
@@ -10,6 +9,19 @@
     /// </summary>
     public class EnsureContractInfoRecord : AbsRecord
     {
+        public EnsureContractInfoRecord() : base()
+        {
+            Segments = new List<AbsSegment>()
+            {
+                // 基础段
+                //new GuaranteeBase(),
+
+                // 保证合同信息段
+                //new Guarantee()
+            };
+        }
+
+
         /// <summary>
         /// 基础段
         /// </summary>
