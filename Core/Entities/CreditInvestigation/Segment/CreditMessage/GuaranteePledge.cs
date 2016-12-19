@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     /// <summary>
     /// 质押
@@ -15,6 +9,7 @@ namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
         {
             get { return "F"; }
         }
+
         /// <summary>
         /// 质押合同编号
         /// </summary>

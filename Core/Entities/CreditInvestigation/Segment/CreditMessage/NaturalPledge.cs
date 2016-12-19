@@ -3,12 +3,13 @@
     /// <summary>
     /// 自然人质押
     /// </summary>
-    class NaturalPledge
+    public class NaturalPledge
     {
         public string 信息类别
         {
             get { return "I"; }
         }
+
         /// <summary>
         /// 质押合同编号
         /// </summary>
