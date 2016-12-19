@@ -65,6 +65,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\BaseParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\CashFlowParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\IncomeExpenditureParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\InstitutionLiabilitiesParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\LiabilitiesParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\ProfitsParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\AbsDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\AbsDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Infrastructure\MetaCodeAttribute.cs" />
@@ -186,6 +192,9 @@
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
     <Folder Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Entities\CreditInvestigation\DatagramFile\" />
+    <Folder Include="Entities\CreditInvestigation\Datagram\" />
+    <Folder Include="Entities\CreditInvestigation\Record\" />
     <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>
