@@ -12,6 +12,7 @@
     <script src="../Scripts/usedcars.js"></script>
     <meta charset="utf-8" />
     <script>
+        var editIndex = undefined;
         uc.grid = new UCGrid("#dg");
 
         function Reload() {
@@ -37,6 +38,7 @@
 
         $.extend($.fn.datagrid.methods, {
             getEditingRowIndexs: function (jq) {
+                debugger
                 var id = $(jq).attr("id");
                 var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
                 var indexs = [];
@@ -48,6 +50,7 @@
 
         //双击编辑行
         function onEditor(index, field, value) {
+            debugger
             $('#dg').datagrid('getEditingRowIndexs');
             if (editIndex != index) {
                 var row = $('#' + this.id).datagrid("getSelected");
@@ -95,26 +98,29 @@
         }
 
         //保存
-        function Save()
-        {
-            $.ajax({
-                async: false,
-                method: "POST",
-                data: model,
-                url: "../api/CreditContract/Modify",
-                statusCode: {
-                    200: function (data) {
-                        uc.form.Cancel();
-                        $.messager.show({ msg: "提交成功" });
-                    },
-                    400: function (data) {
-                        $.messager.show({ msg: data.responseJSON.Message });
-                    }
-                }
-            });
+        //function Save()
+        //{
+        //    debugger
+        //    var model = BuildData();
 
-            $("#save").linkbutton("enable");
-        }
+        //    $.ajax({
+        //        async: false,
+        //        method: "POST",
+        //        data: model,
+        //        url: "../api/Message/Modify",
+        //        statusCode: {
+        //            200: function (data) {
+        //                debugger
+        //                $.messager.show({ msg: "提交成功" });
+        //            },
+        //            400: function (data) {
+        //                $.messager.show({ msg: data.responseJSON.Message });
+        //            }
+        //        }
+        //    });
+
+        //    $("#save").linkbutton("enable");
+        //}
 
     </script>
 </head>
@@ -134,8 +140,8 @@
             <tr>
                 <th data-options="field:'Id',hidden:true">Id</th>
                 <th data-options="field:'Name',width:180,align:'center',editor:{type:'validatebox'}">名称</th>
-                <th data-options="field:'OperationType',width:120,align:'center'">操作类型</th>
-                <th data-options="field:'MessageStatus',width:120,align:'center'">报文状态</th>
+                <th data-options="field:'OperationTypeDesc',width:120,align:'center'">操作类型</th>
+                <th data-options="field:'MessageStatusDesc',width:120,align:'center'">报文状态</th>
                 <th data-options="field:'IsEdit',width:120,align:'center',hidden:true">是否可编辑</th>
             </tr>
         </thead>
@@ -146,7 +152,8 @@
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
 
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true">保存</a>
-            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Save">下载</a>
+            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">生成</a>
+            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">下载</a>
         </div>
     </div>
 </body>

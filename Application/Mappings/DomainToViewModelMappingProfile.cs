@@ -6,11 +6,13 @@
     using Core.Entities.Finance;
     using Core.Entities.Flow;
     using Core.Entities.Loan;
+    using Core.Entities.Message;
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;
     using ViewModels.FinanceViewModels;
     using ViewModels.Loan.CreditViewModel;
+    using ViewModels.Message;
     using ViewModels.OrganizationViewModels;
     using ViewModels.PartnerViewModels;
     using ViewModels.VehicleViewModel;
@@ -80,6 +82,9 @@
             CreateMap<CreditExamine, CreditExamineViewModel>();
             CreateMap<FinanceExtension, OperationViewModel>();
             CreateMap<FinanceProduce, FinanceProduceViewModel>();
+            
+            // 征信报文
+            CreateMap<MessageTrack, MessageTrackViewModel>();
         }
     }
 }
