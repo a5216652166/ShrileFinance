@@ -65,8 +65,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\BaseParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\CashFlowParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\IncomeExpenditureParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\InstitutionLiabilitiesParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\LiabilitiesParagraph.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\ProfitsParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\AbsDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\AbsDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Infrastructure\MetaCodeAttribute.cs" />
+    <Compile Include="Entities\CreditInvestigation\Infrastructure\MetaCodeTypeEnum.cs" />
+    <Compile Include="Entities\CreditInvestigation\Infrastructure\SegmentRuleAttribute.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\Guarantee.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeBase.cs" />
@@ -79,7 +88,6 @@
     <Compile Include="Entities\Loan\GuarantyContractPledge.cs" />
     <Compile Include="Entities\Loan\Loan.cs" />
     <Compile Include="Entities\Loan\PaymentHistory.cs" />
-    <Compile Include="Entities\CreditInvestigation\Infrastructure\ValidTypeAttribute.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\BigEvent.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBase.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\Concern\Litigation.cs" />
@@ -185,6 +193,9 @@
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
     <Folder Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\" />
+    <Folder Include="Entities\CreditInvestigation\DatagramFile\" />
+    <Folder Include="Entities\CreditInvestigation\Datagram\" />
+    <Folder Include="Entities\CreditInvestigation\Record\" />
     <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>
