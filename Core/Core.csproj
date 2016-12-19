@@ -65,6 +65,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\CreditDatagramFile.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerCapitalStructureDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerConcernDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerFinancialStatementsDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerProfileDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\CreditDatagrams\DebitInterestInfoDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\CreditDatagrams\GuaranteeBusinessInfoDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\CreditDatagrams\CreditBusinessInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\LoanDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\DebitInterestInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\GuaranteeBusinessInfoDatagram.cs" />
