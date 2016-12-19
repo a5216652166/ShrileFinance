@@ -1,15 +1,15 @@
-﻿namespace Core.Entities.CreditInvestigation.Datagram.Borrower
+﻿namespace Core.Entities.CreditInvestigation.Datagram.OrganizationDatagrams
 {
     using System;
     using System.Collections.Generic;
     using Record;
 
     /// <summary>
-    /// 借款人关注信息报文
+    /// 关注信息报文
     /// </summary>
-    public class BorrowerConcernDatagram : AbsDatagram
+    public class ConcernDatagram : AbsDatagram
     {
-        public BorrowerConcernDatagram()
+        public ConcernDatagram()
         {
         }
 
@@ -17,7 +17,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return DatagramTypeEnum.关注信息采集报文;
             }
         }
 

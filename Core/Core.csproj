@@ -66,15 +66,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CreditInvestigation\Segment\AbsSegment.cs" />
-    <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerCapitalStructureDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerConcernDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerFinancialStatementsDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\Borrower\BorrowerProfileDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\LoanDatagramFile.cs" />
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\OrganizationDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\DebitInterestInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\GuaranteeBusinessInfoDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\LoanBusinessInfoDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\OrganizationDatagrams\ConcernDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\OrganizationDatagrams\FamilyMemberDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\OrganizationDatagrams\FinancialStatementsDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\OrganizationDatagrams\OrganizationBaseDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\DebitInterestInfo\DebitInterestInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\PledgeContractInfoRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\GuaranteeBusinessInfo\MortgageContractInfoRecord.cs" />

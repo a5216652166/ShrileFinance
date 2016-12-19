@@ -1,23 +1,19 @@
-﻿namespace Core.Entities.CreditInvestigation.Datagram.Loan
+﻿namespace Core.Entities.CreditInvestigation.Datagram.OrganizationDatagrams
 {
     using System;
     using System.Collections.Generic;
     using Record;
 
     /// <summary>
-    /// 借款人概况信息报文
+    /// 财务报表信息报文
     /// </summary>
-    public class BorrowerProfileDatagram : AbsDatagram
+    public class FinancialStatementsDatagram : AbsDatagram
     {
-        public BorrowerProfileDatagram()
-        {
-        }
-
         public override DatagramTypeEnum Type
         {
             get
             {
-                throw new NotImplementedException();
+                return DatagramTypeEnum.财务报表信息采集报文;
             }
         }
 
