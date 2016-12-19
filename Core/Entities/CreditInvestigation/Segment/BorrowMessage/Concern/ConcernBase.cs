@@ -1,10 +1,12 @@
-﻿namespace Core.Entities.Message.BorrowMessage.Concern
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
     using System.ComponentModel.DataAnnotations;
 
     public class ConcernBase
     {
         [StringLength(4), MinLength(4), Required]
+        [IsRequiredAndType(true, IsRequiredAndTypeAttribute.DataTypeEnum.AN), LocationAndLength(1, 4, Describe = "段标")]
+
         public string 信息记录长度 { get; set; }
 
         [StringLength(2), MinLength(2), Required]

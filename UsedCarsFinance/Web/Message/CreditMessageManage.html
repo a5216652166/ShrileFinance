@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>征信报文管理</title>
+    <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+    <link href="../Content/form-bootstrap.css" rel="stylesheet" />
+    <script src="../Scripts/jquery/jquery.js"></script>
+    <script src="../Scripts/easyui/jquery.easyui.js"></script>
+    <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="../Scripts/usedcars.js"></script>
+    <meta charset="utf-8" />
+    <script>
+        var editIndex = undefined;
+        uc.grid = new UCGrid("#dg");
+
+        function Reload() {
+            uc.grid.Reload();
+        }
+
+        function BeforeLoad(param) {
+            param.search = $("#Name").textbox("getValue");
+        }
+
+        //键盘enter键
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) { // enter 键
+                //只是在datagrid中回车时候回去datagrid的ID
+                var id = $(e.target).parents(".panel.datagrid").find(".easyui-datagrid").attr("id")
+                //防止在其他文本框按enter建时候报错
+                if (id != undefined) {
+                    accept(id);
+                }
+            }
+        };
+
+        $.extend($.fn.datagrid.methods, {
+            getEditingRowIndexs: function (jq) {
+                debugger
+                var id = $(jq).attr("id");
+                var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
+                var indexs = [];
+                rows.each(function (i, rows) {
+                    accept(id)
+                });
+            }
+        });
+
+        //双击编辑行
+        function onEditor(index, field, value) {
+            debugger
+            $('#dg').datagrid('getEditingRowIndexs');
+            if (editIndex != index) {
+                var row = $('#' + this.id).datagrid("getSelected");
+                //不可编辑状态
+                if (row["IsEdit"] == false) {
+                    $('#' + this.id).datagrid('selectRow', editIndex);
+                }
+                else {
+                    if (endEditing(this.id)) {
+                        $('#' + this.id).datagrid('selectRow', index)
+                                .datagrid('beginEdit', index);
+                        var ed = $('#' + this.id).datagrid('getEditor', { index: index, field: field });
+                        if (ed != null) {
+                            $(ed.target).focus();
+                            editIndex = index;
+                        }
+                    } else {
+                        $('#' + this.id).datagrid('selectRow', editIndex);
+                    }
+                }
+            }
+        }
+
+        //结束编辑状态
+        function endEditing(id) {
+            if (editIndex == undefined) { return true }
+
+            if ($('#' + id).datagrid('validateRow', editIndex)) {
+                var ed = $('#' + id).datagrid('getEditors', editIndex);
+                var name = $(ed[0].target).val();
+                $('#' + id).datagrid('getRows')[editIndex]['Name'] = name;
+                $('#' + id).datagrid('endEdit', editIndex);
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //结束编辑状态后保存数据在datagrid
+        function accept(id) {
+            if (endEditing(id)) {
+                $('#' + id).datagrid('acceptChanges');
+            }
+        }
+
+        //保存
+        //function Save()
+        //{
+        //    debugger
+        //    var model = BuildData();
+
+        //    $.ajax({
+        //        async: false,
+        //        method: "POST",
+        //        data: model,
+        //        url: "../api/Message/Modify",
+        //        statusCode: {
+        //            200: function (data) {
+        //                debugger
+        //                $.messager.show({ msg: "提交成功" });
+        //            },
+        //            400: function (data) {
+        //                $.messager.show({ msg: data.responseJSON.Message });
+        //            }
+        //        }
+        //    });
+
+        //    $("#save").linkbutton("enable");
+        //}
+
+    </script>
+</head>
+<body>
+    <table id="dg" class="easyui-datagrid" data-options="height:630,toolbar:'#tb',rownumbers:true,
+        onDblClickCell:onEditor,
+        singleSelect: true,
+        pagination: true,
+        pageSize: 20,
+        pageList: [10,20,30,40,50],
+        method: 'GET',
+        url: '../api/Message/GetPageList',
+        loadMsg: '正在加载，请稍候...',
+        onBeforeLoad: BeforeLoad
+        ">
+        <thead>
+            <tr>
+                <th data-options="field:'Id',hidden:true">Id</th>
+                <th data-options="field:'Name',width:180,align:'center',editor:{type:'validatebox'}">名称</th>
+                <th data-options="field:'OperationTypeDesc',width:120,align:'center'">操作类型</th>
+                <th data-options="field:'MessageStatusDesc',width:120,align:'center'">报文状态</th>
+                <th data-options="field:'IsEdit',width:120,align:'center',hidden:true">是否可编辑</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb">
+        <div style="height:30px;width:auto;">
+            <input id="Name" name="Name" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入名称'" />
+            <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
+
+            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true">保存</a>
+            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">生成</a>
+            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">下载</a>
+        </div>
+    </div>
+</body>
+</html>
