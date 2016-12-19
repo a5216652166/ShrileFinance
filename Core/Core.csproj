@@ -73,6 +73,24 @@
     <Compile Include="Entities\Loan\GuarantyContractPledge.cs" />
     <Compile Include="Entities\Loan\Loan.cs" />
     <Compile Include="Entities\Loan\PaymentHistory.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Concern\BigEvent.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Concern\ConcernBase.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Concern\Litigation.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\AssociatedEnterprise.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\Base.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\Family.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\Manager.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\OrganizationContact.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\OrganizationState.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\Parent.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\Property.cs" />
+    <Compile Include="Entities\Message\BorrowMessage\Organization\Stockholder.cs" />
+    <Compile Include="Entities\Message\CreditMessage\CreditBase.cs" />
+    <Compile Include="Entities\Message\CreditMessage\CreditContract.cs" />
+    <Compile Include="Entities\Message\CreditMessage\CreditContractAmount.cs" />
+    <Compile Include="Entities\Message\CreditMessage\Loan.cs" />
+    <Compile Include="Entities\Message\CreditMessage\Repayment.cs" />
+    <Compile Include="Entities\Message\MessageTrack.cs" />
     <Compile Include="Entities\Other\Draft.cs" />
     <Compile Include="Entities\Finance\FinanceProduce.cs" />
     <Compile Include="Entities\Flow\Action.cs" />
@@ -150,6 +168,7 @@
     <Compile Include="Interfaces\Repositories\IPartnerRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUnitOfWork.cs" />
+    <Compile Include="Interfaces\Repositories\MessageRepository\IMessageTrackRepostitory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -163,6 +182,7 @@
     <Folder Include="Entities\CreditInvestigation\Record\" />
     <Folder Include="Entities\CreditInvestigation\Segment\" />
     <Folder Include="Services\CreditInvestigation\" />
+    <Folder Include="Entities\Message\BorrowMessage\FinancialAffair\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

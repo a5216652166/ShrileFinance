@@ -55,6 +55,7 @@
                         Id = credit.Id,
                         Children = children,
                         Type = CreditCountType.授信.ToString(),
+                        InstitutionChName = credit.Organization.Property.InstitutionChName,
                         State = "closed"
                     });
                 }

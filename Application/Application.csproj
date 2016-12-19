@@ -98,6 +98,7 @@
     <Compile Include="Mappings\LoanDomainToViewModelProfile.cs" />
     <Compile Include="Mappings\LoanViewModelToDomianProfile.cs" />
     <Compile Include="Mappings\PagedListTypeConverter.cs" />
+    <Compile Include="MessageAppService.cs" />
     <Compile Include="PartnerAppService.cs" />
     <Compile Include="ProcessAppService.cs" />
     <Compile Include="OrganizationAppService.cs" />

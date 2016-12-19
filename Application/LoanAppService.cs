@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using AutoMapper;
     using Core.Entities.Loan;
     using Core.Exceptions;
@@ -16,17 +17,20 @@
         private readonly LoanService loanService;
         private readonly PaymentService paymentService;
         private readonly ILoanRepository repository;
+        private readonly MessageAppService messageAppService;
 
         public LoanAppService(
             LoanService loanService,
             PaymentService paymentService,
             ILoanRepository repository,
-            ICreditContractRepository creditRepository)
+            ICreditContractRepository creditRepository,
+            MessageAppService messageAppService)
         {
             this.loanService = loanService;
             this.paymentService = paymentService;
             this.repository = repository;
             this.creditRepository = creditRepository;
+            this.messageAppService = messageAppService;
         }
 
         /// <summary>
@@ -43,6 +47,27 @@
             return model;
         }
 
+        public bool CheckLoanNumber(string loanNumber)
+        {
+            var result = true;
+
+            var list = repository.GetAll();
+            if (!string.IsNullOrEmpty(loanNumber))
+            {
+                var loan = list.Where(m => m.ContractNumber == loanNumber).FirstOrDefault();
+                if (loan != null)
+                {
+                    result = false;
+                }
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 申请借据
         /// </summary>
@@ -55,6 +80,11 @@
             loanService.Loan(loan, credit);
 
             repository.Create(loan);
+
+            // 报文追踪（放款）
+            messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.借款, name: "借据编号：" + loan.ContractNumber + "（放款）");
+            messageAppService.MessageTrack(id: loan.CreditId, operationType: Core.Entities.Message.MessageOperationTypeEnum.借款, name: "贷款合同编号：" + creditRepository.Get(loan.CreditId).CreditContractCode + "（放款）");
+
             repository.Commit();
         }
 
@@ -78,6 +108,7 @@
             loan.LoanTypes = model.LoanTypes;
 
             repository.Modify(loan);
+
             repository.Commit();
         }
 
@@ -98,9 +129,33 @@
             foreach (var payment in payments)
             {
                 paymentService.Payment(loan, payment);
+
+                if (payment.ScheduledPaymentPrincipal == payment.ActualPaymentPrincipal
+                && payment.ScheduledPaymentInterest == payment.ActualPaymentInterest)
+                {
+                    // 还款
+                    // 报文追踪（还款信息记录）
+                    messageAppService.MessageTrack(id: payment.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.还款, name: "借据：" + loan.ContractNumber + "还款");
+
+                    // 报文追踪（五级分类调整 借据信息记录）
+                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.还款, name: "借据编号：" + loan.ContractNumber + "（放款）");
+                }
+                else if (payment.ScheduledPaymentPrincipal > payment.ActualPaymentPrincipal)
+                {
+                    // 逾期
+                    // 报文追踪（五级分类调整 借据信息记录）
+                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.逾期, name: "借据：" + loan.ContractNumber + "逾期");
+                }
+                else
+                {
+                    // 欠息
+                    // 报文追踪（五级分类调整 借据信息记录）
+                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.欠息, name: "借据：" + loan.ContractNumber + "欠息");
+                }
             }
 
             repository.Modify(loan);
+
             repository.Commit();
         }
 

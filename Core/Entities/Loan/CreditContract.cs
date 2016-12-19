@@ -22,6 +22,26 @@
             Loans = new HashSet<Loan>();
         }
 
+        public CreditContract(DateTime effectiveDate, DateTime expirationDate, decimal creditLimit, CreditContractStatusEnum status)
+        {
+            Loans = new HashSet<Loan>();
+
+            if (effectiveDate > expirationDate)
+            {
+                throw new ArgumentOutOfRangeAppException(nameof(ExpirationDate), "合同终止日期必须小于等于生效日期.");
+            }
+
+            if (CreditBalance > creditLimit)
+            {
+                throw new ArgumentOutOfRangeAppException(nameof(CreditBalance), "授信余额不能大于授信额度.");
+            }
+
+            EffectiveDate = effectiveDate;
+            ExpirationDate = expirationDate;
+            CreditLimit = creditLimit;
+            EffectiveStatus = status;
+        }
+
         public Guid OrganizationId { get; set; }
 
         /// <summary>
@@ -165,7 +185,7 @@
         {
             if (CreditBalance < amount)
             {
-                return false;
+                throw new ArgumentOutOfRangeAppException(nameof(CreditBalance), "融资余额已不足.");
             }
 
             return true;
@@ -179,7 +199,7 @@
         {
             var today = DateTime.Now.Date;
 
-            return (EffectiveDate <= today) 
+            return (EffectiveDate <= today)
                 && (today <= ExpirationDate);
         }
 

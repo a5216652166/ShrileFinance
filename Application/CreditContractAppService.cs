@@ -13,12 +13,18 @@
     public class CreditContractAppService
     {
         private readonly ICreditContractRepository repository;
+        private readonly MessageAppService messageAppService;
 
-        public CreditContractAppService(ICreditContractRepository repository)
+        public CreditContractAppService(ICreditContractRepository repository, MessageAppService messageAppService)
         {
             this.repository = repository;
+            this.messageAppService = messageAppService;
         }
 
+        /// <summary>
+        /// 创建授信合同
+        /// </summary>
+        /// <param name="model">授信合同Model</param>
         public void Create(CreditContractViewModel model)
         {
             if (model == null)
@@ -43,6 +49,16 @@
 
             credit.ValidateEffective(credit);
             repository.Create(credit);
+
+            // 报文追踪(贷款合同信息记录)
+            messageAppService.MessageTrack(id: credit.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.签订授信合同, name: "签订授信合同：" + credit.CreditContractCode);
+
+            // 报文追踪(担保合同信息记录)
+            credit.GuarantyContract.ToList().ForEach(m =>
+            {
+                messageAppService.MessageTrack(id: m.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.签订授信合同, name: "签订担保合同,担保人：" + m.Guarantor.Name);
+            });
+
             repository.Commit();
         }
 
@@ -62,6 +78,45 @@
 
             // 贷款合同ViewModel数据对接
             DataConvert_CreditContractVM(model);
+
+            // 追加担保、解除担保
+            if (credit.GuarantyContract.Count == 0 && model.GuarantyContract.Count > 0)
+            {
+                // 报文追踪(追加担保)
+                model.GuarantyContract.ToList().ForEach(m =>
+                {
+                    messageAppService.MessageTrack(id: m.Id.Value, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + credit.CreditContractCode + "追加担保，担保人：" + m.Guarantor.Name);
+                });
+
+                // 报文追踪(主业务信息记录)
+                messageAppService.MessageTrack(id: credit.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + credit.CreditContractCode + "变更");
+            }
+            else if (credit.GuarantyContract.Count > 0 && model.GuarantyContract.Count == 0)
+            {
+                // 报文追踪(解除担保)
+                model.GuarantyContract.ToList().ForEach(m =>
+                {
+                    messageAppService.MessageTrack(id: m.Id.Value, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + credit.CreditContractCode + "解除担保，担保人：" + m.Guarantor.Name);
+                });
+
+                // 报文追踪(主业务信息记录)
+                messageAppService.MessageTrack(id: credit.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + credit.CreditContractCode + "变更");
+            }
+            else if (credit.GuarantyContract.Count > 0 && credit.GuarantyContract.Count == model.GuarantyContract.Count)
+            {
+                var mortgages = credit.GuarantyContract.Where(m => (m is GuarantyContractMortgage));
+
+                mortgages.ToList().ForEach(m =>
+                {
+                    var mortgage = model.GuarantyContract.First(g => (g.Id.Equals(m.Id) && g is GuarantyContractMortgageViewModel));
+
+                    if (mortgage != null && (mortgage as GuarantyContractMortgageViewModel).AssessmentValue.Value != (m as GuarantyContractMortgage).AssessmentValue.Value)
+                    {
+                        // 担保物价值等发生变化
+                        messageAppService.MessageTrack(id: mortgage.Id.Value, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + credit.CreditContractCode + "解除担保，担保人：" + m.Guarantor.Name);
+                    }
+                });
+            }
 
             Mapper.Map(model, credit);
 
@@ -99,14 +154,44 @@
         }
 
         /// <summary>
-        /// 额度变更
+        /// 合同编号唯一性校验
         /// </summary>
-        /// <param name="model">授信实体</param>
-        public void ChangeEffective(CreditContract model)
+        /// <param name="creditContractNumber">授信合同编号</param>
+        /// <returns></returns>
+        public bool CheckCreditContractNumber(string creditContractNumber)
         {
-            model.ChangeLimit(model.CreditLimit);
-            repository.Modify(model);
-            repository.Commit();
+            // 用于记录是否有值
+            var result = true;
+            var list = repository.GetAll();
+            CreditContract creditContract = new CreditContract();
+            if (!string.IsNullOrEmpty(creditContractNumber))
+            {
+                creditContract = list.Where(m => m.CreditContractCode == creditContractNumber).FirstOrDefault();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeAppException(string.Empty, "授信合同编号不能为空.");
+            }
+
+            if (creditContract != null)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 修改授信金额
+        /// </summary>
+        /// <param name="limit">金额</param>
+        /// <param name="id">标识</param>
+        public void ChangeLimit(decimal limit, Guid id)
+        {
+            var credit = repository.Get(id);
+
+            credit.CreditLimit = limit;
+            ChangeEffective(credit);
         }
 
         /// <summary>
@@ -117,6 +202,10 @@
         {
             model.ChangeExpirationDate(model.ExpirationDate);
             repository.Modify(model);
+
+            // 报文追踪(合同关键数据项有效日期发生变化)
+            messageAppService.MessageTrack(id: model.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + model.CreditContractCode + "有效日期变更");
+
             repository.Commit();
         }
 
@@ -129,6 +218,22 @@
         {
             CreditContract credit = new CreditContract();
             return credit.CanApplyLoan(limit);
+        }
+
+        /// <summary>
+        /// 终止授信合同
+        /// </summary>
+        /// <param name="id">标识</param>
+        public void StopStatus(Guid id)
+        {
+            var credit = repository.Get(id);
+            credit.ChangeStutus();
+            repository.Modify(credit);
+
+            // 报文追踪
+            messageAppService.MessageTrack(id: credit.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.终止合同, name: "授信合同：" + credit.CreditContractCode + "终止");
+
+            repository.Commit();
         }
 
         /// <summary>
@@ -274,6 +379,21 @@
                 // 担保合同（服务页面）集合 接收数据
                 model.GuranteeContract.Add(guranteeContractViewModel);
             });
+        }
+
+        /// <summary>
+        /// 额度变更
+        /// </summary>
+        /// <param name="model">授信实体</param>
+        private void ChangeEffective(CreditContract model)
+        {
+            model.ChangeLimit(model.CreditLimit);
+            repository.Modify(model);
+
+            // 报文追踪(合同关键数据项金额发生变化)
+            messageAppService.MessageTrack(id: model.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + model.CreditContractCode + "金额变更");
+
+            repository.Commit();
         }
     }
 }
