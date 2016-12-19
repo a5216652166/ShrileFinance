@@ -16,6 +16,7 @@ namespace Data.ModelConfigurations.Message
             Property(m => m.Name).HasMaxLength(20);
             Property(m => m.OperationType);
             Property(m => m.ReferenceId);
+            Property(m => m.TrackDate);
 
             ToTable("MESS_MessageTrack");
         }

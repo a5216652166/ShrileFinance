@@ -80,6 +80,11 @@
             loanService.Loan(loan, credit);
 
             repository.Create(loan);
+
+            // 报文追踪（放款）
+            messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.借款, name: "借据编号：" + loan.ContractNumber + "（放款）");
+            messageAppService.MessageTrack(id: loan.CreditId, operationType: Core.Entities.Message.MessageOperationTypeEnum.借款, name: "贷款合同编号：" + creditRepository.Get(loan.CreditId).CreditContractCode + "（放款）");
+
             repository.Commit();
         }
 
@@ -103,9 +108,6 @@
             loan.LoanTypes = model.LoanTypes;
 
             repository.Modify(loan);
-
-            // 报文追踪
-            messageAppService.MessageTrack(id:loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.借款, name:loan.ContractNumber);
 
             repository.Commit();
         }
@@ -132,20 +134,23 @@
                 && payment.ScheduledPaymentInterest == payment.ActualPaymentInterest)
                 {
                     // 还款
-                    // 报文追踪
-                    messageAppService.MessageTrack(id:payment.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.还款, name:"借据："+loan.ContractNumber+"还款");
+                    // 报文追踪（还款信息记录）
+                    messageAppService.MessageTrack(id: payment.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.还款, name: "借据：" + loan.ContractNumber + "还款");
+
+                    // 报文追踪（五级分类调整 借据信息记录）
+                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.还款, name: "借据编号：" + loan.ContractNumber + "（放款）");
                 }
                 else if (payment.ScheduledPaymentPrincipal > payment.ActualPaymentPrincipal)
                 {
                     // 逾期
-                    // 报文追踪
-                    messageAppService.MessageTrack(id: payment.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.逾期, name: "借据：" + loan.ContractNumber + "逾期");
+                    // 报文追踪（五级分类调整 借据信息记录）
+                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.逾期, name: "借据：" + loan.ContractNumber + "逾期");
                 }
                 else
                 {
                     // 欠息
-                    // 报文追踪
-                    messageAppService.MessageTrack(id: payment.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.欠息, name: "借据：" + loan.ContractNumber + "欠息");
+                    // 报文追踪（五级分类调整 借据信息记录）
+                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.欠息, name: "借据：" + loan.ContractNumber + "欠息");
                 }
             }
 
