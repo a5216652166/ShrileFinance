@@ -21,6 +21,11 @@
         /// <param name="name">默认名称</param>
         public void MessageTrack(Guid id, MessageOperationTypeEnum operationType, string name)
         {
+            if (respository.Get(id) != null)
+            {
+                return;
+            }
+
             var track = new MessageTrack()
             {
                 MessageStatus = MessageStatusEmum.待生成,
