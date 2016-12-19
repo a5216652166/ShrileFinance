@@ -13,12 +13,18 @@
     public class CreditContractAppService
     {
         private readonly ICreditContractRepository repository;
+        private readonly MessageAppService messageAppService;
 
-        public CreditContractAppService(ICreditContractRepository repository)
+        public CreditContractAppService(ICreditContractRepository repository, MessageAppService messageAppService)
         {
             this.repository = repository;
+            this.messageAppService = messageAppService;
         }
 
+        /// <summary>
+        /// 创建授信合同
+        /// </summary>
+        /// <param name="model">授信合同Model</param>
         public void Create(CreditContractViewModel model)
         {
             if (model == null)
@@ -43,6 +49,10 @@
 
             credit.ValidateEffective(credit);
             repository.Create(credit);
+
+            // 报文追踪
+            messageAppService.MessageTrack(id: credit.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.签订授信合同, name: "签订授信合同：" + credit.CreditContractCode);
+
             repository.Commit();
         }
 
@@ -75,6 +85,9 @@
             }
 
             repository.Modify(credit);
+
+            // 报文追踪
+            messageAppService.MessageTrack(id: credit.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同："+credit.CreditContractCode+"变更");
 
             repository.Commit();
         }
@@ -147,6 +160,10 @@
         {
             model.ChangeExpirationDate(model.ExpirationDate);
             repository.Modify(model);
+
+            // 报文追踪
+            messageAppService.MessageTrack(id: model.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + model.CreditContractCode + "变更");
+
             repository.Commit();
         }
 
@@ -170,6 +187,10 @@
             var credit = repository.Get(id);
             credit.ChangeStutus();
             repository.Modify(credit);
+
+            // 报文追踪
+            messageAppService.MessageTrack(id: credit.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.终止合同, name: "授信合同：" + credit.CreditContractCode + "终止");
+
             repository.Commit();
         }
 
@@ -326,6 +347,10 @@
         {
             model.ChangeLimit(model.CreditLimit);
             repository.Modify(model);
+
+            // 报文追踪
+            messageAppService.MessageTrack(id: model.Id, operationType: Core.Entities.Message.MessageOperationTypeEnum.合同变更, name: "授信合同：" + model.CreditContractCode + "变更");
+
             repository.Commit();
         }
     }
