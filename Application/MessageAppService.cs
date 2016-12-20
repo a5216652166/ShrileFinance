@@ -47,8 +47,10 @@
 
         public void Generate()
         {
-            factory.Generate(new List<MessageTrack> {
+            var df = factory.Generate(new List<MessageTrack> {
                 new MessageTrack { ReferenceId = Guid.Parse("0727FF76-8BC2-E611-80C7-507B9DE4A488"), OperationType = MessageOperationTypeEnum.借款 } });
+
+            df.Packaging();
         }
 
         /// <summary>

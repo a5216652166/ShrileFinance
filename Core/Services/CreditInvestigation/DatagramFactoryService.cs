@@ -22,7 +22,7 @@
             this.loanRepository = loanRepository;
         }
 
-        public void Generate(IEnumerable<MessageTrack> traces)
+        public AbsDatagramFile Generate(IEnumerable<MessageTrack> traces)
         {
             foreach (var trace in traces)
             {
@@ -33,7 +33,7 @@
                     case MessageOperationTypeEnum.签订授信合同:
                         break;
                     case MessageOperationTypeEnum.借款:
-                        CreateLoan(trace.ReferenceId);
+                        return CreateLoan(trace.ReferenceId);
                         break;
                     case MessageOperationTypeEnum.还款:
                         break;
@@ -54,6 +54,8 @@
                     trace.MessageStatus = MessageStatusEmum.待发送;
                 }
             }
+
+            throw new NotImplementedException();
         }
 
         private LoanDatagramFile CreateLoan(Guid id)
