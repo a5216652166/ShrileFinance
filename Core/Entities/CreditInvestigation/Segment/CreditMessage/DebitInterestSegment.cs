@@ -4,6 +4,15 @@
 
     public class DebitInterestSegment : AbsSegment
     {
+        public DebitInterestSegment()
+        {
+        }
+
+        public DebitInterestSegment(string amount)
+        {
+            欠息余额 = amount;
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
         public string 信息类别
         {
