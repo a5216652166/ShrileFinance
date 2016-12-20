@@ -10,15 +10,17 @@
     /// </summary>
     public class MortgageContractInfoRecord : AbsRecord
     {
-        /// <summary>
-        /// 基础段
-        /// </summary>
-        public GuaranteeBaseSegment Base { get; set; }
+        public MortgageContractInfoRecord()
+        {
+            Segments = new List<AbsSegment>()
+            {
+                // 基础段
+                new GuaranteeBaseSegment(),
 
-        /// <summary>
-        /// 抵押合同信息段
-        /// </summary>
-        public GuaranteeMortgageSegment GuaranteeMortgageInfo { get; set; }
+                // 抵押合同信息段
+                new GuaranteeMortgageSegment()
+            };
+        }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
 
@@ -26,7 +28,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.抵押合同信息记录;
             }
         }
     }

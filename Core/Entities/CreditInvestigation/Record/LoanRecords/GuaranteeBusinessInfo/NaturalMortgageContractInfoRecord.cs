@@ -1,5 +1,4 @@
-﻿using System;
-namespace Core.Entities.CreditInvestigation.Record.LoanRecords
+﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     using System.Collections.Generic;
     using Segment;
@@ -10,16 +9,17 @@ namespace Core.Entities.CreditInvestigation.Record.LoanRecords
     /// </summary>
     public class NaturalMortgageContractInfoRecord : AbsRecord
     {
-        /// <summary>
-        /// 基础段
-        /// </summary>
-        public GuaranteeBaseSegment Base { get; set; }
+        public NaturalMortgageContractInfoRecord()
+        {
+            Segments = new List<AbsSegment>()
+            {
+                // 基础段
+                new GuaranteeBaseSegment(),
 
-        /// <summary>
-        /// 自然人抵押合同信息段
-        /// </summary>
-        public NaturalMortgageSegment NaturalMortgageInfo { get; set; }
-
+                // 自然人抵押合同信息段
+                new NaturalMortgageSegment()
+            };
+        }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
 
@@ -27,7 +27,7 @@ namespace Core.Entities.CreditInvestigation.Record.LoanRecords
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.自然人抵押合同信息记录;
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
@@ -15,23 +14,12 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                //new GuaranteeBase(),
+                new GuaranteeBaseSegment(),
 
                 // 保证合同信息段
-                //new Guarantee()
+                new GuaranteeSegment()
             };
         }
-
-
-        /// <summary>
-        /// 基础段
-        /// </summary>
-        public GuaranteeBaseSegment Base { get; set; }
-
-        /// <summary>
-        /// 保证合同信息段
-        /// </summary>
-        public GuaranteeSegment GuaranteeInfo { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
 
@@ -39,7 +27,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.保证合同信息记录;
             }
         }
     }

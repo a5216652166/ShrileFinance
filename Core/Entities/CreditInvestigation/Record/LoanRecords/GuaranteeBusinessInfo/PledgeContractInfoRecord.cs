@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
@@ -10,15 +9,17 @@
     /// </summary>
     public class PledgeContractInfoRecord : AbsRecord
     {
-        /// <summary>
-        /// 基础段
-        /// </summary>
-        public GuaranteeBaseSegment Base { get; set; }
+        public PledgeContractInfoRecord()
+        {
+            Segments = new List<AbsSegment>()
+            {
+                // 基础段
+                new GuaranteeBaseSegment(),
 
-        /// <summary>
-        /// 质押合同信息段
-        /// </summary>
-        public GuaranteePledgeSegment GuaranteePledgeInfo { get; set; }
+                // 自然人质押合同信息段
+                new GuaranteePledgeSegment()
+            };
+        }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
 
@@ -26,7 +27,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.质押合同信息记录;
             }
         }
     }

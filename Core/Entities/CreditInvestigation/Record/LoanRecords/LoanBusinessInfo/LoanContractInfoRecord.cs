@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
@@ -10,15 +9,19 @@
     /// </summary>
     public class LoanContractInfoRecord : AbsRecord
     {
-        /// <summary>
-        /// 基础段
-        /// </summary>
-        public CreditBaseSegment Base { get; set; }
+        public LoanContractInfoRecord()
+        {
+            Segments = new List<AbsSegment>()
+            {
+                // 基础段
+                new CreditBaseSegment(),
 
-        /// <summary>
-        /// 合同信息段
-        /// </summary>
-        public CreditContractSegment ContractInfo { get; set; }
+                // 合同信息段
+                new CreditContractSegment(),
+
+                // 合同金额信息段（可多个）
+            };
+        }
 
         /// <summary>
         /// 合同金额信息段（可多个）
@@ -31,7 +34,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.贷款业务合同信息记录;
             }
         }
     }
