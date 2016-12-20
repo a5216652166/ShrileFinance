@@ -9,12 +9,12 @@
     using Entities.CreditInvestigation.Record.LoanRecords;
     using Interfaces.Repositories;
 
-    public class DatagramFactory
+    public class DatagramFactoryService
     {
         private readonly ICreditContractRepository creditRepository;
         private readonly ILoanRepository loanRepository;
 
-        public DatagramFactory(
+        public DatagramFactoryService(
             ICreditContractRepository creditRepository,
             ILoanRepository loanRepository)
         {
@@ -33,6 +33,7 @@
                     case MessageOperationTypeEnum.签订授信合同:
                         break;
                     case MessageOperationTypeEnum.借款:
+                        CreateLoan(trace.ReferenceId);
                         break;
                     case MessageOperationTypeEnum.还款:
                         break;
@@ -61,15 +62,12 @@
             var credit = creditRepository.Get(loan.CreditId);
 
             var df = new LoanDatagramFile("0001");
-            var d = df.Datagrams.Single(m => m.Type == DatagramTypeEnum.信贷业务信息文件);
-            var loanRecord = new LoanIousInfoRecord();
-            var creditRecord = new LoanContractInfoRecord();
+            var d = df.Datagrams.Single(m => m.Type == DatagramTypeEnum.贷款业务信息采集报文);
+            var loanRecord = new LoanIousInfoRecord(loan, credit);
+            var creditRecord = new LoanContractInfoRecord(credit);
 
-            // Mapper.Map(loan, loanRecord);
-            // Mapper.Map(credit, creditRecord);
-
-            // d.Add(loanRecord);
-            // d.Add(creditRecord);
+            d.AddRecord(creditRecord);
+            d.AddRecord(loanRecord);
 
             return df;
         }
