@@ -1,10 +1,27 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
-    using System.ComponentModel.DataAnnotations;
     using DatagramFile;
 
-    public class ConcernBaseSegment
+    public class ConcernBaseSegment : AbsSegment
     {
+        public ConcernBaseSegment()
+        {
+        }
+
+        public ConcernBaseSegment(string type, string name, string creditcode)
+        {
+            if (type == "大事件")
+            {
+                信息记录类型 = "07";
+            }
+            else if (type == "诉讼")
+            {
+                信息记录类型 = "06";
+            }
+
+            贷款卡编码 = creditcode;
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true)]
         public string 信息记录长度 { get; set; }
 

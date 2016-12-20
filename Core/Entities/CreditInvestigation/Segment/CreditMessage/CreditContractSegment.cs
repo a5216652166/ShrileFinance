@@ -1,10 +1,35 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
+    using Loan;
 
-    public class CreditContractSegment
+    public class CreditContractSegment : AbsSegment
     {
+        public CreditContractSegment(CreditContractStatusEnum effectiveStatus, bool hasGuarantee)
+        {
+            if (effectiveStatus.ToString() == "生效" || effectiveStatus.ToString() == "未结清")
+            {
+                EffectiveStatus = "1";
+            }
+            else if (effectiveStatus.ToString() == "失效")
+            {
+                EffectiveStatus = "2";
+            }
+
+            if (hasGuarantee == true)
+            {
+                HasGuarantee = "1";
+            }
+            else
+            {
+                HasGuarantee = "2";
+            }
+        }
+
+        public CreditContractSegment()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {

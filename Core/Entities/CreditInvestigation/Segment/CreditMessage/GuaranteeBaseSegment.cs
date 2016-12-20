@@ -6,36 +6,41 @@
     /// <summary>
     /// 保证合同基础段
     /// </summary>
-    public class GuaranteeBaseSegment
+    public class GuaranteeBaseSegment : AbsSegment
     {
         public GuaranteeBaseSegment(string type, string loanCardCode, string creditId)
         {
-            if (type == "担保")
+            if (type == "保证")
             {
-                信息记录类型 = "";
+                信息记录类型 = "22";
             }
-            else if(type == "抵押")
+            else if (type == "抵押")
             {
-                信息记录类型 = "";
+                信息记录类型 = "23";
             }
             else if (type == "质押")
             {
-                信息记录类型 = "";
+                信息记录类型 = "24";
             }
-            else if (type == "自然人担保")
+            else if (type == "自然人保证")
             {
-                信息记录类型 = "";
+                信息记录类型 = "32";
             }
             else if (type == "自然人抵押")
             {
-                信息记录类型 = "";
+                信息记录类型 = "33";
             }
             else if (type == "自然人质押")
             {
-                信息记录类型 = "";
+                信息记录类型 = "34";
             }
+
             LoanCardCode = loanCardCode;
             CreditId = creditId;
+        }
+
+        public GuaranteeBaseSegment()
+        {
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]

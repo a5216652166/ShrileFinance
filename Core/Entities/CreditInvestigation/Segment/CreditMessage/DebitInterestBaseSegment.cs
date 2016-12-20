@@ -1,14 +1,27 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
+    using DatagramFile;
 
-    public class DebitInterestBaseSegment
+    public class DebitInterestBaseSegment : AbsSegment
     {
+        public DebitInterestBaseSegment(string loanCardCode)
+        {
+            LoanCardCode = loanCardCode;
+        }
+
+        public DebitInterestBaseSegment()
+        {
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 
         [MetaCode(2, MetaCodeTypeEnum.N), SegmentRule(5, true, Describe = "本信息记录的类型")]
-        public string 信息记录类型 { get; set; }
+        public string 信息记录类型
+        {
+            get { return "26"; }
+        }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(7, true, Describe = "本信息记录的类别")]
         public string 信息类别
@@ -17,7 +30,10 @@
         }
 
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true, Describe = "填写数据发生机构的代码，细化到县（区）级机构")]
-        public string 金融机构代码 { get; set; }
+        public string 金融机构代码
+        {
+            get { return AbsDatagramFile.FinancialOrganizationCode; }
+        }
 
         /// <summary>
         /// 中征码/贷款卡编码

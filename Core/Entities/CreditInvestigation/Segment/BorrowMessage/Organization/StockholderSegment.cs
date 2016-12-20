@@ -1,9 +1,8 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class StockholderSegment
+    public class StockholderSegment : AbsSegment
     {
         public string 信息类别
         {
