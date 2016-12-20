@@ -22,5 +22,13 @@ namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
+
+        public override RecordTypeEnum Type
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@
 
     public abstract class AbsRecord : Entity
     {
-        public RecordTypeEnum Type { get; set; }
+        public abstract RecordTypeEnum Type { get; }
 
         public abstract ICollection<AbsSegment> Segments { get; protected set; }
 
