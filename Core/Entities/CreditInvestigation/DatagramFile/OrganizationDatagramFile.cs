@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Core.Entities.CreditInvestigation.Datagram;
-
-namespace Core.Entities.CreditInvestigation.DatagramFile
+﻿namespace Core.Entities.CreditInvestigation.DatagramFile
 {
+    using System.Collections.Generic;
+    using Datagram;
+    using Datagram.OrganizationDatagrams;
+
     /// <summary>
     /// 机构基本信息采集报文文件
     /// </summary>
@@ -13,10 +13,17 @@ namespace Core.Entities.CreditInvestigation.DatagramFile
         {
             Datagrams = new List<AbsDatagram>
             {
-                new Datagram.OrganizationDatagrams.FinancialStatementsDatagram(),
-                new Datagram.OrganizationDatagrams.FamilyMemberDatagram(),
-                new Datagram.OrganizationDatagrams.OrganizationBaseDatagram(),
-                new Datagram.OrganizationDatagrams.ConcernDatagram()
+                // 财务报表信息报文
+                new FinancialStatementsDatagram(),
+
+                // 家族成员信息报文
+                new FamilyMemberDatagram(),
+
+                // 机构基本信息报文
+                new OrganizationBaseDatagram(),
+
+                // 关注信息报文
+                new ConcernDatagram()
             };
         }
 

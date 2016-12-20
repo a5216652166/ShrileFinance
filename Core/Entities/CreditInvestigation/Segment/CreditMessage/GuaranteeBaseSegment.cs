@@ -8,6 +8,10 @@
     /// </summary>
     public class GuaranteeBaseSegment : AbsSegment
     {
+        public GuaranteeBaseSegment()
+        {
+        }
+
         public GuaranteeBaseSegment(string type, string loanCardCode, string creditId)
         {
             if (type == "保证")
@@ -37,10 +41,6 @@
 
             LoanCardCode = loanCardCode;
             CreditId = creditId;
-        }
-
-        public GuaranteeBaseSegment()
-        {
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]

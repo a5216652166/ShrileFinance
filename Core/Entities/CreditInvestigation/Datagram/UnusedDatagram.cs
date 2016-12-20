@@ -4,7 +4,7 @@
     using Record;
 
     /// <summary>
-    /// 未使用报文
+    /// 未使用信息采集报文
     /// </summary>
     public class UnusedDatagram : AbsDatagram
     {
@@ -15,6 +15,12 @@
 
         public override ICollection<AbsRecord> Records { get; protected set; }
 
-        public override DatagramTypeEnum Type { get;}
+        public override DatagramTypeEnum Type
+        {
+            get
+            {
+                return DatagramTypeEnum.未使用信息采集报文;
+            }
+        }
     }
 }
