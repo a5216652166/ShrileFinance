@@ -9,7 +9,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
     /// <summary>
     /// 事业单位收入支出表信息记录
     /// </summary>
-    public class IncomeExpenditureParagraph
+    public class IncomeExpenditureParagraph : AbsSegment
     {
         /// <summary>
         /// 报表类型

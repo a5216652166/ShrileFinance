@@ -9,7 +9,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
     /// <summary>
     /// 信息记录基础段
     /// </summary>
-    public class BaseParagraph
+    public class BaseParagraph : AbsSegment
     {
         /// <summary>
         /// 信息记录长度
