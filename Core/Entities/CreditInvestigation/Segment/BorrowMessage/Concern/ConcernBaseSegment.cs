@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using DatagramFile;
 
-    public class ConcernBaseSegment
+    public class ConcernBaseSegment : AbsSegment
     {
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true)]
         public string 信息记录长度 { get; set; }

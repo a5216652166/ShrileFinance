@@ -3,7 +3,7 @@
     /// <summary>
     /// 抵押
     /// </summary>
-    public class GuaranteeMortgageSegment
+    public class GuaranteeMortgageSegment : AbsSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
