@@ -3,7 +3,7 @@
     /// <summary>
     /// 事业单位资产负债表信息记录
     /// </summary>
-    public class InstitutionLiabilitiesParagraph
+    public class InstitutionLiabilitiesParagraph : AbsSegment
     {
         /// <summary>
         /// 报表类型

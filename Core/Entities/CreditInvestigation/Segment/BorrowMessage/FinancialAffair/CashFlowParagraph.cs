@@ -3,7 +3,7 @@
     /// <summary>
     /// 2007版现金流量表信息记录
     /// </summary>
-    public class CashFlowParagraph
+    public class CashFlowParagraph : AbsSegment
     {
         /// <summary>
         /// 信息类别

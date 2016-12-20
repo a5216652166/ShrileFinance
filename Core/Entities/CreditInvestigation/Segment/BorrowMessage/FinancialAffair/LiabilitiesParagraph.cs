@@ -3,7 +3,7 @@
     /// <summary>
     /// 2007版资产负债表信息记录
     /// </summary>
-    public class LiabilitiesParagraph
+    public class LiabilitiesParagraph : AbsSegment
     {
         /// <summary>
         /// 信息类别
