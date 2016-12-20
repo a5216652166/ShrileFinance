@@ -36,6 +36,7 @@
     {
         protected AbsDatagram()
         {
+            Records = new HashSet<AbsRecord>();
             DateCreated = DateTime.Now;
         }
 
