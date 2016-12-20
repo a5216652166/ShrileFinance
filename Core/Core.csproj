@@ -65,8 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\UnusedDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\UnusedDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\UnusedRecords.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\UnusedRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\ConcernInfo\BigEventRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\ConcernInfo\LitigationRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\FinancialAffiarInfo\BalanceSheetRecord.cs" />

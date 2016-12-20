@@ -19,14 +19,10 @@
                 // 合同信息段
                 new CreditContractSegment(),
 
-                // 合同金额信息段（可多个）
+                // 合同金额信息段（币种CNY）
+                new CreditContractAmountSegment()
             };
         }
-
-        /// <summary>
-        /// 合同金额信息段（可多个）
-        /// </summary>
-        public ICollection<CreditContractAmountSegment> ContractAmounts { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
 
