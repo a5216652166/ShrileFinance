@@ -4,10 +4,6 @@
 
     public class DebitInterestSegment : AbsSegment
     {
-        public DebitInterestSegment()
-        {
-        }
-
         public DebitInterestSegment(string amount)
         {
             欠息余额 = amount;

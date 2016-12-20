@@ -1,9 +1,9 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
+    using Loan;
 
 
     /// <summary>
@@ -11,15 +11,15 @@
     /// </summary>
     public class NaturalEnsureContractInfoRecord : AbsRecord
     {
-        public NaturalEnsureContractInfoRecord()
+        public NaturalEnsureContractInfoRecord(CreditContract credit, GuarantyContract guaranty) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment(),
+                new GuaranteeBaseSegment("自然人保证",credit.Organization.LoanCardCode,credit.Id.ToString()),
 
                 // 自然人保证合同信息段
-                new NaturalGuaranteeSegment()
+                new NaturalGuaranteeSegment(guaranty.Id.ToString())
             };
         }
 

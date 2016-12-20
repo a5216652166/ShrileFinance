@@ -10,11 +10,7 @@
             保证合同编号 = id;
             CreditcardCode = creditcardCode;
         }
-
-        public GuaranteeSegment()
-        {
-        }
-
+       
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {

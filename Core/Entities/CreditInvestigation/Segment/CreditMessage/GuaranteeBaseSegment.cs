@@ -8,10 +8,6 @@
     /// </summary>
     public class GuaranteeBaseSegment : AbsSegment
     {
-        public GuaranteeBaseSegment()
-        {
-        }
-
         public GuaranteeBaseSegment(string type, string loanCardCode, string creditId)
         {
             if (type == "保证")
