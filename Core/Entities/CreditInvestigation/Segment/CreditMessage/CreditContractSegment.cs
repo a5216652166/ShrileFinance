@@ -48,13 +48,13 @@
         /// 授信合同生效日期
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(142, true)]
-        public DateTime EffectiveDate { get; set; }
+        public string EffectiveDate { get; set; }
 
         /// <summary>
         /// 授信合同终止日期
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(150, true)]
-        public DateTime ExpirationDate { get; set; }
+        public string ExpirationDate { get; set; }
 
         [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(158, true)]
         public string 银团标志

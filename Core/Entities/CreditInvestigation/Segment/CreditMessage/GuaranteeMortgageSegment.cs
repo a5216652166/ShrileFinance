@@ -5,7 +5,7 @@
     /// </summary>
     public class GuaranteeMortgageSegment : AbsSegment
     {
-        public GuaranteeMortgageSegment(string id, string creditcardCode, string signingDate)
+        public GuaranteeMortgageSegment(string id,string name, string creditcardCode, string signingDate)
         {
             抵押合同编号 = id;
             CreditcardCode = creditcardCode;
