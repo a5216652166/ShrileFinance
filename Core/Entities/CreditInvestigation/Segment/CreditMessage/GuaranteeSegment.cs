@@ -1,11 +1,14 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
-    public class NaturalGuarantee
+    /// <summary>
+    /// 担保
+    /// </summary>
+    public class GuaranteeSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
-            get { return "G"; }
+            get { return "D"; }
         }
 
         /// <summary>
@@ -15,24 +18,18 @@
         public string Id { get; set; }
 
         /// <summary>
-        /// 保证人名称
+        /// 保证人姓名
         /// </summary>
         [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(62, true)]
         public string Name { get; set; }
 
         /// <summary>
-        /// 证件类型
+        /// 贷款卡编码
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(142, true)]
-        public string CertificateType { get; set; }
+        [MetaCode(16, MetaCodeTypeEnum.AN), SegmentRule(142, true)]
+        public string CreditcardCode { get; set; }
 
-        /// <summary>
-        /// 证件号码
-        /// </summary>
-        [MetaCode(18, MetaCodeTypeEnum.ANC), SegmentRule(143, true)]
-        public string CertificateNumber { get; set; }
-
-        [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(161, true)]
+        [MetaCode(3, MetaCodeTypeEnum.AN), SegmentRule(158, true)]
         public string 币种
         {
             get { return "CNY"; }
@@ -41,25 +38,25 @@
         /// <summary>
         /// 保证金额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(164, true)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(161, true)]
         public string Margin { get; set; }
 
         /// <summary>
         /// 合同签订日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(184, true)]
+        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(181, true)]
         public string SigningDate { get; set; }
 
         /// <summary>
         /// 担保形式
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(192, true)]
+        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(189, true)]
         public string GuaranteeForm { get; set; }
 
         /// <summary>
         /// 合同有效状态
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(193, true)]
+        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(190, true)]
         public string EffectiveState { get; set; }
     }
 }

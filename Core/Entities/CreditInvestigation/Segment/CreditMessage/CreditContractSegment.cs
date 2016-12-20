@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class CreditContract
+    public class CreditContractSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
@@ -12,7 +12,7 @@
         }
 
         /// <summary>
-        /// 借款人姓名
+        /// 借款人姓名(根据贷款合同中机构ID获取中征码手动映射)
         /// </summary>
         [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(2, true, Describe = "借款人在工商部门的注册名称")]
         public string InstitutionChName { get; set; }

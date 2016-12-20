@@ -12,17 +12,17 @@
         /// <summary>
         /// 基础段
         /// </summary>
-        public CreditBase Base { get; set; }
+        public CreditBaseSegment Base { get; set; }
 
         /// <summary>
         /// 合同信息段
         /// </summary>
-        public CreditContract ContractInfo { get; set; }
+        public CreditContractSegment ContractInfo { get; set; }
 
         /// <summary>
         /// 合同金额信息段（可多个）
         /// </summary>
-        public ICollection<CreditContractAmount> ContractAmounts { get; set; }
+        public ICollection<CreditContractAmountSegment> ContractAmounts { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
     }

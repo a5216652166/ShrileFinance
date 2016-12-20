@@ -1,12 +1,43 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
+    using DatagramFile;
 
     /// <summary>
     /// 保证合同基础段
     /// </summary>
-    public class GuaranteeBase
+    public class GuaranteeBaseSegment
     {
+        public GuaranteeBaseSegment(string type, string loanCardCode, string creditId)
+        {
+            if (type == "担保")
+            {
+                信息记录类型 = "";
+            }
+            else if(type == "抵押")
+            {
+                信息记录类型 = "";
+            }
+            else if (type == "质押")
+            {
+                信息记录类型 = "";
+            }
+            else if (type == "自然人担保")
+            {
+                信息记录类型 = "";
+            }
+            else if (type == "自然人抵押")
+            {
+                信息记录类型 = "";
+            }
+            else if (type == "自然人质押")
+            {
+                信息记录类型 = "";
+            }
+            LoanCardCode = loanCardCode;
+            CreditId = creditId;
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 
@@ -20,16 +51,19 @@
         }
 
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true, Describe = "填写数据发生机构的代码，细化到县（区）级机构")]
-        public string 金融机构代码 { get; set; }
+        public string 金融机构代码
+        {
+            get { return AbsDatagramFile.FinancialOrganizationCode; }
+        }
 
         /// <summary>
-        /// 中征码/贷款卡编码
+        /// 中征码/贷款卡编码(根据贷款合同中机构ID获取中征码手动映射)
         /// </summary>
         [MetaCode(16, MetaCodeTypeEnum.AN), SegmentRule(19, true, Describe = "主业务借款人的贷款卡编码，借款人在企业征信系统的唯一标识")]
         public string LoanCardCode { get; set; }
 
         /// <summary>
-        /// 主合同编码
+        /// 主合同编码(贷款合同ID手动映射)
         /// </summary>
         [MetaCode(60, MetaCodeTypeEnum.ANC), SegmentRule(35, true, Describe = "金融机构自己定义和使用的，标识一笔信贷业务的唯一号码")]
         public string CreditId { get; set; }

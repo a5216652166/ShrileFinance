@@ -1,6 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
-    public class Repayment
+    public class RepaymentSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
@@ -32,7 +32,7 @@
         /// <summary>
         /// 还款金额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(76, true)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(76, true)]
         public string ActualPaymentPrincipal { get; set; }
     }
 }

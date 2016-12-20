@@ -5,7 +5,7 @@
     /// <summary>
     /// 诉讼事件
     /// </summary>
-    public class Litigation
+    public class LitigationSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别

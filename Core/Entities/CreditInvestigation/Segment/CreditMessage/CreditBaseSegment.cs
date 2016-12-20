@@ -1,13 +1,12 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using DatagramFile;
 
     /// <summary>
     /// 信贷业务基础段
     /// </summary>
-    public class CreditBase
+    public class CreditBaseSegment
     {
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
@@ -28,7 +27,7 @@
         }
 
         /// <summary>
-        /// 贷款卡编码/中征码
+        /// 贷款卡编码/中征码(根据贷款合同中机构ID获取中征码手动映射)
         /// </summary>
         [MetaCode(16, MetaCodeTypeEnum.AN), SegmentRule(19, true, Describe = "中国人民银行统一编发给借款人、担保人、出资人的代码，作为其在企业征信系统的唯一标识")]
         public string LoanCardCode { get; set; }

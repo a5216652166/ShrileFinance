@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Family
+    public class FamilySegment
     {
         public string 信息类别
         {

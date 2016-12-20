@@ -25,12 +25,12 @@
         /// <summary>
         /// 基础段
         /// </summary>
-        public GuaranteeBase Base { get; set; }
+        public GuaranteeBaseSegment Base { get; set; }
 
         /// <summary>
         /// 保证合同信息段
         /// </summary>
-        public Guarantee GuaranteeInfo { get; set; }
+        public GuaranteeSegment GuaranteeInfo { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
     }

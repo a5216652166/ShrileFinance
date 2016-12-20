@@ -13,12 +13,12 @@
         /// <summary>
         ///  基础段
         /// </summary>
-        public CreditBase Base { get; set; }
+        public CreditBaseSegment Base { get; set; }
 
         /// <summary>
         /// 还款信息段
         /// </summary>
-        public Repayment RepayInfo { get; set; }
+        public RepaymentSegment RepayInfo { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
     }

@@ -13,12 +13,12 @@
         /// <summary>
         ///  基础段
         /// </summary>
-        public CreditBase Base { get; set; }
+        public CreditBaseSegment Base { get; set; }
 
         /// <summary>
         /// 借据信息段
         /// </summary>
-        public Loan IousInfo { get; set; }
+        public LoanSegment IousInfo { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
     }

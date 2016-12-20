@@ -13,12 +13,12 @@
         /// <summary>
         /// 基础段
         /// </summary>
-        public GuaranteeBase Base { get; set; }
+        public GuaranteeBaseSegment Base { get; set; }
 
         /// <summary>
         /// 自然人保证合同信息段
         /// </summary>
-        public NaturalGuarantee NaturalGuaranteeInfo { get; set; }
+        public NaturalGuaranteeSegment NaturalGuaranteeInfo { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
     }

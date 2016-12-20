@@ -12,12 +12,12 @@
         /// <summary>
         /// 基础段
         /// </summary>
-        public GuaranteeBase Base { get; set; }
+        public GuaranteeBaseSegment Base { get; set; }
 
         /// <summary>
         /// 抵押合同信息段
         /// </summary>
-        public GuaranteeMortgage GuaranteeMortgageInfo { get; set; }
+        public GuaranteeMortgageSegment GuaranteeMortgageInfo { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
     }

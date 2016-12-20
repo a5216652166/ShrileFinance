@@ -13,12 +13,12 @@ namespace Core.Entities.CreditInvestigation.Record.LoanRecords
         /// <summary>
         /// 基础段
         /// </summary>
-        public GuaranteeBase Base { get; set; }
+        public GuaranteeBaseSegment Base { get; set; }
 
         /// <summary>
         /// 自然人抵押合同信息段
         /// </summary>
-        public NaturalMortgage NaturalMortgageInfo { get; set; }
+        public NaturalMortgageSegment NaturalMortgageInfo { get; set; }
 
 
         public override ICollection<AbsSegment> Segments { get; protected set; }

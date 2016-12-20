@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class OrganizationState
+    public class OrganizationStateSegment
     {
         public string 信息类别
         {

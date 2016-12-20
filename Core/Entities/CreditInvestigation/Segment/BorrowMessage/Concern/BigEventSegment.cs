@@ -5,7 +5,7 @@
     /// <summary>
     /// 大事件
     /// </summary>
-    public class BigEvent
+    public class BigEventSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别

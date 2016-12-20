@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class DebitInterest
+    public class DebitInterestSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
         public string 信息类别
