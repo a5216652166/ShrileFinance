@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
@@ -10,15 +9,17 @@
     /// </summary>
     public class LoanIousInfoRecord : AbsRecord
     {
-        /// <summary>
-        ///  基础段
-        /// </summary>
-        public CreditBase Base { get; set; }
+        public LoanIousInfoRecord()
+        {
+            Segments = new List<AbsSegment>()
+            {
+                // 基础段
+                new CreditBaseSegment(),
 
-        /// <summary>
-        /// 借据信息段
-        /// </summary>
-        public Loan IousInfo { get; set; }
+                // 借据信息段
+                new LoanSegment()
+            };
+        }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
 
@@ -26,7 +27,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.贷款业务借据信息记录;
             }
         }
     }

@@ -9,7 +9,8 @@
     public enum DatagramFileType
     {
         机构基本信息采集报文文件 = 51,
-        信贷业务信息文件 = 12
+        信贷业务信息文件 = 12,
+        未使用信息采集报文文件 = 99
     }
 
     /// <summary>

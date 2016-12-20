@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Segment;
+    using Segment.CreditMessage;
 
 
     /// <summary>
@@ -14,20 +15,12 @@
         {
             Segments = new List<AbsSegment>() {
                 // 基础段
+                new DebitInterestBaseSegment(),
 
                 // 欠息业务信息段
+                new DebitInterestSegment()
             };
         }
-
-        /// <summary>
-        /// 基础段
-        /// </summary>
-        public int Base { get; set; }
-
-        /// <summary>
-        /// 欠息业务信息段
-        /// </summary>
-        public int MyProperty { get; set; }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
 
@@ -35,7 +28,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.欠息信息记录;
             }
         }
     }

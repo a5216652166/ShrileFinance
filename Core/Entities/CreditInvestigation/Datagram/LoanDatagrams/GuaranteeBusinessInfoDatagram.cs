@@ -36,7 +36,7 @@
         {
             get
             {
-                return DatagramTypeEnum.信贷业务信息文件;
+                return DatagramTypeEnum.担保业务信息采集报文;
             }
         }
 

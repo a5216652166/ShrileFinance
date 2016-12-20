@@ -11,15 +11,17 @@
     /// </summary>
     public class NaturalEnsureContractInfoRecord : AbsRecord
     {
-        /// <summary>
-        /// 基础段
-        /// </summary>
-        public GuaranteeBase Base { get; set; }
+        public NaturalEnsureContractInfoRecord()
+        {
+            Segments = new List<AbsSegment>()
+            {
+                // 基础段
+                new GuaranteeBaseSegment(),
 
-        /// <summary>
-        /// 自然人保证合同信息段
-        /// </summary>
-        public NaturalGuarantee NaturalGuaranteeInfo { get; set; }
+                // 自然人保证合同信息段
+                new NaturalGuaranteeSegment()
+            };
+        }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }
 
@@ -27,7 +29,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.自然人保证合同信息记录;
             }
         }
     }

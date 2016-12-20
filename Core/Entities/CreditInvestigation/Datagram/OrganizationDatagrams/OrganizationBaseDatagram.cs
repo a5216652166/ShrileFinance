@@ -1,14 +1,23 @@
 ﻿namespace Core.Entities.CreditInvestigation.Datagram.OrganizationDatagrams
 {
-    using System;
     using System.Collections.Generic;
     using Record;
+    using Record.OrganizationRecords;
 
     /// <summary>
     /// 机构基本信息报文
     /// </summary>
     public class OrganizationBaseDatagram : AbsDatagram
     {
+        public OrganizationBaseDatagram()
+        {
+            Records = new List<AbsRecord>()
+            {
+                // 机构基本信息记录
+                new OrganizationBaseRecord()
+            };
+        }
+
         public override DatagramTypeEnum Type
         {
             get
