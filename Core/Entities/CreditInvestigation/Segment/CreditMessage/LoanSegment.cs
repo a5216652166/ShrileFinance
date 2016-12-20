@@ -1,10 +1,18 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
 
     public class LoanSegment : AbsSegment
     {
+        public LoanSegment()
+        {
+        }
+
+        public LoanSegment(string id)
+        {
+            借据编号 = id;
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
@@ -15,7 +23,7 @@
         /// 借据编号
         /// </summary>
         [MetaCode(60, MetaCodeTypeEnum.ANC), SegmentRule(2, true, Describe = "用来标识同一笔贷款合同项下的多笔放款借据的编号")]
-        public string Id { get; set; }
+        public string 借据编号 { get; set; }
 
         [MetaCode(3, MetaCodeTypeEnum.AN), SegmentRule(62, true)]
         public string 币种

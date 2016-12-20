@@ -1,5 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class AssociatedEnterpriseSegment : AbsSegment
@@ -45,7 +46,10 @@
         [Display(Name = "机构信用代码"), StringLength(18), MinLength(18)]
         public string InstitutionCreditCode { get; set; }
 
-        public string 信息更新日期 { get; set; }
+        public string 信息更新日期
+        {
+            get { return DateTime.Now.ToString("yyyyMMdd"); }
+        }
 
         public string 预留字段
         {

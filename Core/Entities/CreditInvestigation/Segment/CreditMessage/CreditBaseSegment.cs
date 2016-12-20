@@ -8,6 +8,29 @@
     /// </summary>
     public class CreditBaseSegment : AbsSegment
     {
+        public CreditBaseSegment(string type, string loanCardCode, string creditContractCode)
+        {
+            if (type == "签订授信合同")
+            {
+                信息记录类型 = "08";
+            }
+            else if (type == "借款")
+            {
+                信息记录类型 = "09";
+            }
+            else if (type == "还款")
+            {
+                信息记录类型 = "10";
+            }
+
+            LoanCardCode = loanCardCode;
+            CreditContractCode = creditContractCode;
+        }
+
+        public CreditBaseSegment()
+        {
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 

@@ -11,8 +11,6 @@
             CreateMap<CreditBaseSegment, CreditContract>();
             CreateMap<CreditContractSegment, CreditContract>();
             CreateMap<CreditContractAmountSegment, CreditContract>();
-
-
         }
     }
 }
