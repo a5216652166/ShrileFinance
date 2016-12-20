@@ -68,10 +68,7 @@
         }
 
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(96, true)]
-        public string 业务发生日期
-        {
-            get { return DateTime.Now.ToString("yyyyMMdd"); }
-        }
+        public string CreateDate { get; set; }
 
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(104, true)]
         public string 信息记录跟踪编号

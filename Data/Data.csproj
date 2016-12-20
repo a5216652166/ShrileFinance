@@ -100,6 +100,12 @@
     </Compile>
     <Compile Include="ModelConfigurations\ActionConfiguration.cs" />
     <Compile Include="ModelConfigurations\ApplicantConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBaseSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\LitigationSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\CreditBaseSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\CreditContractAmountSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\CreditContractSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\AssociatedEnterpriseConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\BigEventConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\CashFlowConfiguration.cs" />
@@ -129,7 +135,7 @@
     <Compile Include="ModelConfigurations\Customer\ManagerConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\FamilyMemberConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\MortgageGuarantyContractConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Message\MessageTrackConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\MessageTrackConfiguration.cs" />
     <Compile Include="ModelConfigurations\NodeConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\OrganizationConfiguration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -266,9 +272,7 @@
     <Compile Include="Repositories\PartnerRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ModelConfigurations\CreditInvestigation\" />
-    <Folder Include="ModelConfigurations\Message\BorrowerMessage\" />
-    <Folder Include="ModelConfigurations\Message\CreditMessage\" />
+    <Folder Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
