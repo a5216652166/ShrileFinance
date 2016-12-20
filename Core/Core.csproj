@@ -74,6 +74,7 @@
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\FinancialAffiarInfo\InstitutionIncomeExpenditureRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\FinancialAffiarInfo\InstitutionLiabilitiesRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\FinancialAffiarInfo\ProfitRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\OrganizationInfo\FamilyMemberRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\OrganizationInfo\OrganizationBaseRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\AbsSegment.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\LoanDatagramFile.cs" />

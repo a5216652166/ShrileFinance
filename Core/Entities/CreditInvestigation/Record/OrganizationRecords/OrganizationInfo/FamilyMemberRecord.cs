@@ -1,15 +1,15 @@
-﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.ConcernInfo
+﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.OrganizationInfo
 {
     using System;
     using System.Collections.Generic;
     using Segment;
 
     /// <summary>
-    /// 诉讼信息记录
+    /// 家族成员信息记录
     /// </summary>
-    public class LitigationRecord : AbsRecord
+    public class FamilyMemberRecord : AbsRecord
     {
-        public LitigationRecord()
+        public FamilyMemberRecord()
         {
         }
 
@@ -20,7 +20,6 @@
                 throw new NotImplementedException();
             }
         }
-
         public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }
