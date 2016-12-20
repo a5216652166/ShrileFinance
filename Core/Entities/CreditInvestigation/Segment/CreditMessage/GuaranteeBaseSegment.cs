@@ -6,7 +6,7 @@
     /// <summary>
     /// 保证合同基础段
     /// </summary>
-    public class GuaranteeBaseSegment
+    public class GuaranteeBaseSegment : AbsSegment
     {
         public GuaranteeBaseSegment(string type, string loanCardCode, string creditId)
         {

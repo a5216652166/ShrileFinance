@@ -9,7 +9,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
     /// <summary>
     /// 2007版利润及利润分配表信息记录
     /// </summary>
-    public class ProfitsParagraph
+    public class ProfitsParagraph : AbsSegment
     {
         /// <summary>
         /// 信息类别

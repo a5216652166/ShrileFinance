@@ -1,6 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
-    public class CreditContractAmountSegment
+    public class CreditContractAmountSegment : AbsSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别

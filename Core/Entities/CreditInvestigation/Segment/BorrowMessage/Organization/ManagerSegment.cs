@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class ManagerSegment
+    public class ManagerSegment : AbsSegment
     {
         public string 信息类别
         {

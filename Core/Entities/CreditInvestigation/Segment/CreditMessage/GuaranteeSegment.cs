@@ -3,7 +3,7 @@
     /// <summary>
     /// 担保
     /// </summary>
-    public class GuaranteeSegment
+    public class GuaranteeSegment : AbsSegment
     {
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别

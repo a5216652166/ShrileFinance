@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class BaseSegment
+    public class BaseSegment : AbsSegment
     {
         /// <summary>
         /// 类别

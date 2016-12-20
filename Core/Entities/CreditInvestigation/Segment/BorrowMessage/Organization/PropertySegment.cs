@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class PropertySegment
+    public class PropertySegment : AbsSegment
     {
         public string 信息类别
         {
