@@ -8,21 +8,13 @@
     /// </summary>
     public class UnusedDatagram : AbsDatagram
     {
-        public UnusedDatagram()
+        public UnusedDatagram(DatagramTypeEnum type)
         {
-            Records = new List<AbsRecord>() {
-                new UnusedRecord()
-            };
+            Type = type;
         }
 
         public override ICollection<AbsRecord> Records { get; protected set; }
 
-        public override DatagramTypeEnum Type
-        {
-            get
-            {
-                return DatagramTypeEnum.未使用信息采集报文;
-            }
-        }
+        public override DatagramTypeEnum Type { get;}
     }
 }
