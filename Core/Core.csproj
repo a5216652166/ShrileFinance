@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\CreditInvestigation\DatagramFactory.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\UnusedDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\LoanRecords\UnusedRecords.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\AbsSegment.cs" />
@@ -220,7 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\Borrower\" />
-    <Folder Include="Services\CreditInvestigation\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
