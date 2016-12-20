@@ -17,7 +17,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.大事件信息记录;
             }
         }
 

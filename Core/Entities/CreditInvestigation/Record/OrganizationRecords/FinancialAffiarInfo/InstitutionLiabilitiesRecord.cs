@@ -17,7 +17,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.事业单位资产负债表信息记录;
             }
         }
 

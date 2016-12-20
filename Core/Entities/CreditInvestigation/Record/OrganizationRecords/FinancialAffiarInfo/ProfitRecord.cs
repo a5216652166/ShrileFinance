@@ -17,7 +17,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.利润及利润分配表信息记录2007版;
             }
         }
 

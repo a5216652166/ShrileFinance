@@ -17,7 +17,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.现金流量表信息记录2007版;
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
 
@@ -17,7 +16,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.机构基本信息记录;
             }
         }
 

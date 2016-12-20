@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.FinancialAffiarInfo
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
 
@@ -17,7 +16,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return RecordTypeEnum.资产负债表信息记录2007版;
             }
         }
 
