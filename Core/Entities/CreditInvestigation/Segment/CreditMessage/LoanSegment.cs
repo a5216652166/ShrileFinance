@@ -1,16 +1,16 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
+    using AutoMapper;
+    using Loan;
 
     public class LoanSegment : AbsSegment
     {
-        public LoanSegment()
+        public LoanSegment(Loan loan)
         {
-        }
+            Mapper.Map(loan, this);
 
-        public LoanSegment(string id)
-        {
-            借据编号 = id;
+            借据编号 = loan.Id.ToString();
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

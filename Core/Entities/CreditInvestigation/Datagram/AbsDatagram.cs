@@ -94,6 +94,11 @@
         /// </summary>
         public abstract ICollection<AbsRecord> Records { get; protected set; }
 
+        public virtual void AddRecord(AbsRecord record)
+        {
+            Records.Add(record);
+        }
+
         public void Packaging(StringBuilder builder)
         {
             var header = GenerateHeader();

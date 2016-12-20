@@ -5,7 +5,7 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
     using ModelConfigurations.Loan;
-    using ModelConfigurations.Message;
+    using ModelConfigurations.CreditInvestigation;
 
     public class MyContext : IdentityDbContext
     {

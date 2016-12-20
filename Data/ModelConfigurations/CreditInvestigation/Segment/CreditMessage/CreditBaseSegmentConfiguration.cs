@@ -18,7 +18,7 @@
             Property(m => m.LoanCardCode).HasMaxLength(16);
             Property(m => m.CreditContractCode).HasMaxLength(60);
             Property(m => m.信息记录操作类型).HasMaxLength(1);
-            Property(m => m.CreateDate).HasMaxLength(8);
+            Property(m => m.业务发生日期).HasMaxLength(8);
             Property(m => m.信息记录跟踪编号).HasMaxLength(20);
 
             ToTable("CIDG_CreditBaseSegment");
