@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     using System.Collections.Generic;
+    using Loan;
     using Segment;
     using Segment.CreditMessage;
 
@@ -9,15 +10,15 @@
     /// </summary>
     public class LoanIousInfoRecord : AbsRecord
     {
-        public LoanIousInfoRecord()
+        public LoanIousInfoRecord(Loan loan, CreditContract credit)
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new CreditBaseSegment(),
+                new CreditBaseSegment(Type, loan.SpecialDate, credit.Organization.LoanCardCode, credit.Id.ToString()),
 
                 // 借据信息段
-                new LoanSegment()
+                new LoanSegment(loan)
             };
         }
 
