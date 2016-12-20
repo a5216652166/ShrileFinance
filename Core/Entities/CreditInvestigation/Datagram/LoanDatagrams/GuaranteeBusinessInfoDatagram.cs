@@ -12,23 +12,23 @@
         public GuaranteeBusinessInfoDatagram() : base()
         {
             Records = new List<AbsRecord>() {
-                // 保证合同信息记录
-                new EnsureContractInfoRecord(),
+                ////// 保证合同信息记录
+                ////new EnsureContractInfoRecord(),
 
-                // 抵押合同信息记录
-                new MortgageContractInfoRecord(),
+                ////// 抵押合同信息记录
+                ////new MortgageContractInfoRecord(),
 
-                // 质押合同信息记录
-                new PledgeContractInfoRecord(),
+                ////// 质押合同信息记录
+                ////new PledgeContractInfoRecord(),
                 
-                // 自然人保证合同信息记录
-                new NaturalEnsureContractInfoRecord(),
+                ////// 自然人保证合同信息记录
+                ////new NaturalEnsureContractInfoRecord(),
 
-                // 自然人抵押合同信息记录
-                new NaturalMortgageContractInfoRecord(),
+                ////// 自然人抵押合同信息记录
+                ////new NaturalMortgageContractInfoRecord(),
 
-                // 自然人质押合同信息记录
-                new NaturalPledgeContractInfoRecord()
+                ////// 自然人质押合同信息记录
+                ////new NaturalPledgeContractInfoRecord()
             };
         }
 

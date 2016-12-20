@@ -1,9 +1,9 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
-    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
+    using Loan;
 
 
     /// <summary>
@@ -11,14 +11,14 @@
     /// </summary>
     public class DebitInterestInfoRecord : AbsRecord
     {
-        public DebitInterestInfoRecord() : base()
+        public DebitInterestInfoRecord(CreditContract credit, PaymentHistory payment) : base()
         {
             Segments = new List<AbsSegment>() {
                 // 基础段
-                new DebitInterestBaseSegment(),
+                new DebitInterestBaseSegment(credit.Organization.LoanCardCode),
 
                 // 欠息业务信息段
-                new DebitInterestSegment()
+                new DebitInterestSegment((payment.ScheduledPaymentInterest-payment.ActualPaymentPrincipal).ToString())
             };
         }
 

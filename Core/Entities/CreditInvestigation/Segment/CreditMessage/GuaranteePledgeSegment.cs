@@ -5,10 +5,6 @@
     /// </summary>
     public class GuaranteePledgeSegment : AbsSegment
     {
-        public GuaranteePledgeSegment()
-        {
-        }
-
         public GuaranteePledgeSegment(string id, string creditcardCode)
         {
             质押合同编号 = id;

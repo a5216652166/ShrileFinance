@@ -3,21 +3,22 @@
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
+    using Loan;
 
     /// <summary>
     /// 质押合同信息记录
     /// </summary>
     public class PledgeContractInfoRecord : AbsRecord
     {
-        public PledgeContractInfoRecord()
+        public PledgeContractInfoRecord(CreditContract credit, GuarantyContractMortgage guaranty) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment(),
+                new GuaranteeBaseSegment("质押",credit.Organization.LoanCardCode,credit.Id.ToString()),
 
                 // 自然人质押合同信息段
-                new GuaranteePledgeSegment()
+                new GuaranteePledgeSegment(guaranty.Id.ToString(),credit.Organization.LoanCardCode)
             };
         }
 
