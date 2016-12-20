@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class PropertySegment : AbsSegment

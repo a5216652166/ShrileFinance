@@ -2,6 +2,15 @@
 {
     public class NaturalMortgageSegment : AbsSegment
     {
+        public NaturalMortgageSegment()
+        {
+        }
+
+        public NaturalMortgageSegment(string id)
+        {
+            抵押合同编号 = id;
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
@@ -12,7 +21,7 @@
         /// 抵押合同编号
         /// </summary>
         [MetaCode(60, MetaCodeTypeEnum.ANC), SegmentRule(2, true, Describe = "金融机构标识一笔抵押合同的唯一编号")]
-        public string Id { get; set; }
+        public string 抵押合同编号 { get; set; }
 
         /// <summary>
         /// 抵押序号
