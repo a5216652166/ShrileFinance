@@ -10,7 +10,9 @@
     {
         public UnusedDatagram()
         {
-            Records = new List<AbsRecord>();
+            Records = new List<AbsRecord>() {
+                new UnusedRecord()
+            };
         }
 
         public override ICollection<AbsRecord> Records { get; protected set; }
