@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.OrganizationInfo
+﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
     using Segment;
