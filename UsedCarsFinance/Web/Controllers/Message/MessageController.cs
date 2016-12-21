@@ -24,7 +24,7 @@
         }
 
         [HttpPost]
-        public IHttpActionResult Modify(ModifyNameViewModel model)
+        public IHttpActionResult ModifyName(ModifyNameViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -32,6 +32,14 @@
             }
 
             messageAppService.ModifyName(model);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult Generate()
+        {
+            messageAppService.Generate();
 
             return Ok();
         }

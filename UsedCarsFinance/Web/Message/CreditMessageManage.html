@@ -13,6 +13,7 @@
     <meta charset="utf-8" />
     <script>
         var editIndex = undefined;
+
         uc.grid = new UCGrid("#dg");
 
         function Reload() {
@@ -23,22 +24,23 @@
             param.search = $("#Name").textbox("getValue");
         }
 
-        //键盘enter键
+        // 键盘enter键
         document.onkeydown = function (event) {
             var e = event || window.event || arguments.callee.caller.arguments[0];
             if (e && e.keyCode == 13) { // enter 键
-                //只是在datagrid中回车时候回去datagrid的ID
+                // 只是在datagrid中回车时候回去datagrid的ID
                 var id = $(e.target).parents(".panel.datagrid").find(".easyui-datagrid").attr("id")
-                //防止在其他文本框按enter建时候报错
+                // 防止在其他文本框按enter建时候报错
                 if (id != undefined) {
                     accept(id);
                 }
+                // 按回车保存修改结果
+                Save();
             }
         };
 
         $.extend($.fn.datagrid.methods, {
             getEditingRowIndexs: function (jq) {
-                debugger
                 var id = $(jq).attr("id");
                 var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
                 var indexs = [];
@@ -48,7 +50,7 @@
             }
         });
 
-        //双击编辑行
+        // 双击编辑行
         function onEditor(index, field, value) {
             debugger
             $('#dg').datagrid('getEditingRowIndexs');
@@ -74,7 +76,7 @@
             }
         }
 
-        //结束编辑状态
+        // 结束编辑状态
         function endEditing(id) {
             if (editIndex == undefined) { return true }
 
@@ -90,38 +92,58 @@
             }
         }
 
-        //结束编辑状态后保存数据在datagrid
+        // 结束编辑状态后保存数据在datagrid
         function accept(id) {
+            debugger
             if (endEditing(id)) {
                 $('#' + id).datagrid('acceptChanges');
             }
         }
 
-        //保存
-        //function Save()
-        //{
-        //    debugger
-        //    var model = BuildData();
+        // 保存修改后的名称
+        function Save()
+        {
+            var row = $("#dg").datagrid("getSelected");
 
-        //    $.ajax({
-        //        async: false,
-        //        method: "POST",
-        //        data: model,
-        //        url: "../api/Message/Modify",
-        //        statusCode: {
-        //            200: function (data) {
-        //                debugger
-        //                $.messager.show({ msg: "提交成功" });
-        //            },
-        //            400: function (data) {
-        //                $.messager.show({ msg: data.responseJSON.Message });
-        //            }
-        //        }
-        //    });
+            $.ajax({
+                async: false,
+                method: "POST",
+                data: { Id:row.Id, Name:row.Name },
+                url: "../api/Message/ModifyName",
+                statusCode: {
+                    200: function (data) {
+                        accept("dg");
+                        $.messager.show({ msg: "修改成功" });
+                    },
+                    400: function (data) {
+                        $.messager.show({ msg: data.responseJSON.Message });
+                    }
+                }
+            });
 
-        //    $("#save").linkbutton("enable");
-        //}
+            $("#mod").linkbutton("enable");
+        }
 
+        // 生成
+        function Generate() {
+            debugger
+            $.ajax({
+                async: false,
+                method: "GET",
+                data: {},
+                url: "../api/Message/Generate",
+                statusCode: {
+                    200: function (data) {
+                        $.messager.show({ msg: "生成成功" });
+                    },
+                    400: function (data) {
+                        $.messager.show({ msg: data.responseJSON.Message });
+                    }
+                }
+            });
+
+            $("#add").linkbutton("enable");
+        }
     </script>
 </head>
 <body>
@@ -142,6 +164,7 @@
                 <th data-options="field:'Name',width:180,align:'center',editor:{type:'validatebox'}">名称</th>
                 <th data-options="field:'OperationTypeDesc',width:120,align:'center'">操作类型</th>
                 <th data-options="field:'MessageStatusDesc',width:120,align:'center'">报文状态</th>
+                <th data-options="field:'TrackDate',width:180,align:'center'">跟踪日期</th>
                 <th data-options="field:'IsEdit',width:120,align:'center',hidden:true">是否可编辑</th>
             </tr>
         </thead>
@@ -150,9 +173,8 @@
         <div style="height:30px;width:auto;">
             <input id="Name" name="Name" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入名称'" />
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
-
-            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true">保存</a>
-            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">生成</a>
+            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
+            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>
             <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">下载</a>
         </div>
     </div>

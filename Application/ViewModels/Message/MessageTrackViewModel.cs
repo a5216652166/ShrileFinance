@@ -2,7 +2,6 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using Core.Entities.CreditInvestigation;
 
     public class MessageTrackViewModel : IEntityViewModel
     {
@@ -33,6 +32,7 @@
         /// 名称
         /// </summary>
         [Display(Name = "名称")]
+        [StringLength(20)]
         public string Name { get; set; }
 
         /// <summary>
@@ -58,5 +58,8 @@
             get
             { return MessageStatus.ToString(); }
         }
+
+        [Display(Name = "跟踪日期")]
+        public DateTime TrackDate { get; set; }
     }
 }
