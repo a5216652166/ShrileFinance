@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.FinancialAffiarInfo
 {
     using System.Collections.Generic;
+    using Loan;
     using Segment;
     using Segment.BorrowMessage.FinancialAffair;
 
@@ -9,16 +10,19 @@
     /// </summary>
     public class InstitutionLiabilitiesRecord : AbsRecord
     {
-        public InstitutionLiabilitiesRecord() : base()
+        public InstitutionLiabilitiesRecord(CreditContract credit) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph(),
-
-                // 事业单位资产负债表信息记录
-                new InstitutionLiabilitiesParagraph(),
+                new BaseParagraph()
             };
+
+            // 事业单位资产负债表信息记录
+            foreach (var item in credit.Organization.FinancialAffairs.InstitutionLiabilities)
+            {
+                Segments.Add(new InstitutionLiabilitiesParagraph());
+            }
         }
 
         public override RecordTypeEnum Type

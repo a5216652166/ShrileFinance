@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.ConcernInfo
 {
     using System.Collections.Generic;
+    using Loan;
     using Segment;
     using Segment.BorrowMessage.Concern;
 
@@ -9,16 +10,19 @@
     /// </summary>
     public class LitigationRecord : AbsRecord
     {
-        public LitigationRecord() : base()
+        public LitigationRecord(CreditContract credit) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new ConcernBaseSegment(),
-
-                // 诉讼信息记录
-                new LitigationSegment()
+                new ConcernBaseSegment(Type, credit.Organization.Property.InstitutionChName, credit.Organization.LoanCardCode)
             };
+
+            // 诉讼信息段
+            foreach (var item in credit.Organization.BigEvent)
+            {
+                Segments.Add(new BigEventSegment());
+            }
         }
 
         public override RecordTypeEnum Type

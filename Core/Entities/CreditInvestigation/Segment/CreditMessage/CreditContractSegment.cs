@@ -1,33 +1,31 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
+    using AutoMapper;
     using Loan;
 
     public class CreditContractSegment : AbsSegment
     {
-        public CreditContractSegment(CreditContractStatusEnum effectiveStatus, bool hasGuarantee)
+        public CreditContractSegment(CreditContract credit)
         {
-            if (effectiveStatus.ToString() == "生效" || effectiveStatus.ToString() == "未结清")
+            Mapper.Map(credit, this);
+
+            InstitutionChName = credit.Organization.Property.InstitutionChName;
+
+            switch (credit.EffectiveStatus)
             {
-                EffectiveStatus = "1";
-            }
-            else if (effectiveStatus.ToString() == "失效")
-            {
-                EffectiveStatus = "2";
+                case CreditContractStatusEnum.生效:
+                case CreditContractStatusEnum.未结清:
+                    EffectiveStatus = "1";
+                    break;
+                case CreditContractStatusEnum.失效:
+                    EffectiveStatus = "2";
+                    break;
+                default:
+                    break;
             }
 
-            if (hasGuarantee == true)
-            {
-                HasGuarantee = "1";
-            }
-            else
-            {
-                HasGuarantee = "2";
-            }
-        }
-
-        public CreditContractSegment()
-        {
+            HasGuarantee = credit.HasGuarantee ? "1" : "2";
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
@@ -52,13 +50,13 @@
         /// 授信合同生效日期
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(142, true)]
-        public DateTime EffectiveDate { get; set; }
+        public string EffectiveDate { get; set; }
 
         /// <summary>
         /// 授信合同终止日期
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(150, true)]
-        public DateTime ExpirationDate { get; set; }
+        public string ExpirationDate { get; set; }
 
         [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(158, true)]
         public string 银团标志

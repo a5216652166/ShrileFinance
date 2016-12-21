@@ -5,15 +5,12 @@
     /// </summary>
     public class GuaranteeMortgageSegment : AbsSegment
     {
-        public GuaranteeMortgageSegment(string id, string creditcardCode, string signingDate)
+        public GuaranteeMortgageSegment(string id, string name, string creditcardCode, string signingDate)
         {
             抵押合同编号 = id;
+            Name = name;
             CreditcardCode = creditcardCode;
             SigningDate = signingDate;
-        }
-
-        public GuaranteeMortgageSegment()
-        {
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

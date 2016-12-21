@@ -36,6 +36,7 @@
     {
         protected AbsDatagram()
         {
+            Records = new HashSet<AbsRecord>();
             DateCreated = DateTime.Now;
         }
 
@@ -94,6 +95,11 @@
         /// </summary>
         public abstract ICollection<AbsRecord> Records { get; protected set; }
 
+        public virtual void AddRecord(AbsRecord record)
+        {
+            Records.Add(record);
+        }
+
         public void Packaging(StringBuilder builder)
         {
             var header = GenerateHeader();
@@ -133,7 +139,7 @@
             builder.Append(FormatVersion);
             builder.Append(FinancialOrganizationCode);
             builder.Append(DateCreated.ToString("yyyyMMddHHmmss"));
-            builder.Append(Type.ToString("D2"));
+            builder.Append(Type.ToString("D").PadLeft(2));
             builder.Append(Reserved.PadLeft(30));
 
             return builder;

@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.FinancialAffiarInfo
 {
     using System.Collections.Generic;
+    using Loan;
     using Segment;
     using Segment.BorrowMessage.FinancialAffair;
 
@@ -9,16 +10,19 @@
     /// </summary>
     public class CashFlowRecord : AbsRecord
     {
-        public CashFlowRecord() : base()
+        public CashFlowRecord(CreditContract credit) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph(),
-
-                // 2007版现金流量表段
-                new CashFlowParagraph()
+                new BaseParagraph()
             };
+
+            // 2007版现金流量表段
+            foreach (var item in credit.Organization.FinancialAffairs.CashFlow)
+            {
+                Segments.Add(new CashFlowParagraph());
+            }
         }
 
         public override RecordTypeEnum Type

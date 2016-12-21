@@ -2,10 +2,6 @@
 {
     public class NaturalMortgageSegment : AbsSegment
     {
-        public NaturalMortgageSegment()
-        {
-        }
-
         public NaturalMortgageSegment(string id)
         {
             抵押合同编号 = id;

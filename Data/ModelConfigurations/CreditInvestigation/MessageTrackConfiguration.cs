@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using Core.Entities.CreditInvestigation;
-
-namespace Data.ModelConfigurations.Message
+﻿namespace Data.ModelConfigurations.CreditInvestigation
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
+    using Core.Entities.CreditInvestigation;
+
     public class MessageTrackConfiguration : EntityTypeConfiguration<MessageTrack>
     {
        public MessageTrackConfiguration()
@@ -18,7 +18,7 @@ namespace Data.ModelConfigurations.Message
             Property(m => m.ReferenceId);
             Property(m => m.TrackDate);
 
-            ToTable("MESS_MessageTrack");
+            ToTable("CIDG_MessageTrack");
         }
     }
 }

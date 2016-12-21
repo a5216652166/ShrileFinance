@@ -1,20 +1,28 @@
 ﻿namespace Application
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
     using Core.Interfaces.Repositories.MessageRepository;
+    using Core.Services.CreditInvestigation;
     using ViewModels.Message;
     using X.PagedList;
+
+    /// <summary>
+    /// 报文追踪服务
+    /// </summary>
     public class MessageAppService
     {
         private readonly IMessageTrackRepostitory respository;
+        private readonly DatagramFactoryService factory;
 
-        public MessageAppService(IMessageTrackRepostitory respository)
+        public MessageAppService(IMessageTrackRepostitory respository, DatagramFactoryService factory)
         {
             this.respository = respository;
+            this.factory = factory;
         }
 
         /// <summary>
@@ -25,21 +33,45 @@
         /// <param name="name">默认名称</param>
         public void MessageTrack(Guid id, MessageOperationTypeEnum operationType, string name)
         {
-            if (respository.Get(id) != null)
+            var messageTrack = respository.Get(id);
+
+            if (messageTrack != null)
             {
-                return;
+                messageTrack.MessageData = PackagingMessageData(referenceId: id, operationType: operationType);
+                respository.Modify(messageTrack);
+            }
+            else
+            {
+                messageTrack = new MessageTrack()
+                {
+                    MessageStatus = MessageStatusEmum.待生成,
+                    Name = name,
+                    OperationType = operationType,
+                    ReferenceId = id,
+                    MessageData = PackagingMessageData(referenceId: id, operationType: operationType)
+                };
+
+                respository.Create(messageTrack);
             }
 
-            var track = new MessageTrack()
-            {
-                MessageStatus = MessageStatusEmum.待生成,
-                Name = name,
-                OperationType = operationType,
-                ReferenceId = id,
-            };
+            ////var track = new MessageTrack()
+            ////{
+            ////    MessageStatus = MessageStatusEmum.待生成,
+            ////    Name = name,
+            ////    OperationType = operationType,
+            ////    ReferenceId = id,
+            ////};
 
-            respository.Create(track);
+            ////respository.Create(track);
             respository.Commit();
+        }
+
+        public void Generate()
+        {
+            var df = factory.Generate(new List<MessageTrack> {
+                new MessageTrack { ReferenceId = Guid.Parse("0727FF76-8BC2-E611-80C7-507B9DE4A488"), OperationType = MessageOperationTypeEnum.借款 } });
+
+            df.Packaging();
         }
 
         /// <summary>
@@ -67,9 +99,9 @@
         }
 
         /// <summary>
-        /// 修改名称后保存
+        /// 修改名称后保存(修改Name)
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">报文追踪记录Model</param>
         public void Modify(MessageTrackViewModel model)
         {
             if (model == null || model.Id == null)
@@ -81,14 +113,34 @@
 
             if (messageTrack == null)
             {
-                return;
+                throw new Exception("未找到该报文追踪记录");
+                ////return;
             }
 
-            Mapper.Map(model, messageTrack);
+            // 修改Name
+            messageTrack.Name = model.Name ?? string.Empty;
+            ////Mapper.Map(model, messageTrack);
 
             respository.Modify(messageTrack);
 
             respository.Commit();
+        }
+
+        /// <summary>
+        /// 封装报文数据
+        /// </summary>
+        /// <param name="referenceId">引用标识</param>
+        /// <param name="operationType">操作类型</param>
+        /// <returns>报文数据</returns>
+        private string PackagingMessageData(Guid referenceId, MessageOperationTypeEnum operationType)
+        {
+            var traces = new List<MessageTrack>() {
+                new MessageTrack { ReferenceId = referenceId, OperationType = operationType }
+            };
+
+            var datagramFile = factory.Generate(traces);
+
+            return datagramFile.Packaging();
         }
     }
 }

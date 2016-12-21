@@ -1,7 +1,14 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
+    using Core.Entities.Loan;
+
     public class CreditContractAmountSegment : AbsSegment
     {
+        public CreditContractAmountSegment(CreditContract credit)
+        {
+            AutoMapper.Mapper.Map(credit, this);
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {

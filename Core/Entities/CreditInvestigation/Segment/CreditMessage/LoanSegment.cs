@@ -1,16 +1,16 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using System;
+    using AutoMapper;
+    using Loan;
 
     public class LoanSegment : AbsSegment
     {
-        public LoanSegment()
+        public LoanSegment(Loan loan)
         {
-        }
+            Mapper.Map(loan, this);
 
-        public LoanSegment(string id)
-        {
-            借据编号 = id;
+            借据编号 = loan.Id.ToString();
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
@@ -35,25 +35,25 @@
         /// 借据金额
         /// </summary>
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(65, true)]
-        public decimal Principle { get; private set; }
+        public string Principle { get; private set; }
 
         /// <summary>
         /// 借据余额
         /// </summary>
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(85, true)]
-        public decimal Balance { get; set; }
+        public string Balance { get; set; }
 
         /// <summary>
         /// 放款日期
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(105, true)]
-        public DateTime SpecialDate { get; private set; }
+        public string SpecialDate { get; private set; }
 
         /// <summary>
         /// 到期日期
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(113, true)]
-        public DateTime MatureDate { get; set; }
+        public string MatureDate { get; set; }
 
         /// <summary>
         /// 贷款业务种类

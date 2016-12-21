@@ -2,33 +2,20 @@
 {
     using System;
     using DatagramFile;
+    using Record;
 
     /// <summary>
     /// 信贷业务基础段
     /// </summary>
     public class CreditBaseSegment : AbsSegment
     {
-        public CreditBaseSegment(string type, string loanCardCode, string creditContractCode)
+        public CreditBaseSegment(RecordTypeEnum type, DateTime specialDate, string loanCardCode, string creditContractCode)
         {
-            if (type == "签订授信合同")
-            {
-                信息记录类型 = "08";
-            }
-            else if (type == "借款")
-            {
-                信息记录类型 = "09";
-            }
-            else if (type == "还款")
-            {
-                信息记录类型 = "10";
-            }
+            信息记录类型 = type.ToString("D");
+            业务发生日期 = specialDate.ToString("yyyyMMdd");
 
             LoanCardCode = loanCardCode;
             CreditContractCode = creditContractCode;
-        }
-
-        public CreditBaseSegment()
-        {
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
@@ -68,10 +55,7 @@
         }
 
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(96, true)]
-        public string 业务发生日期
-        {
-            get { return DateTime.Now.ToString("yyyyMMdd"); }
-        }
+        public string 业务发生日期 { get; set; }
 
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(104, true)]
         public string 信息记录跟踪编号

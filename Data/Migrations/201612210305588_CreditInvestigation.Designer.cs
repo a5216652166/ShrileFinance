@@ -7,13 +7,13 @@ namespace Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class MessageTrack : IMigrationMetadata
+    public sealed partial class CreditInvestigation : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(MessageTrack));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreditInvestigation));
         
         string IMigrationMetadata.Id
         {
-            get { return "201612160535378_MessageTrack"; }
+            get { return "201612210305588_CreditInvestigation"; }
         }
         
         string IMigrationMetadata.Source

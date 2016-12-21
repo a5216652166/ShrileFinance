@@ -11,14 +11,14 @@
     {
         public ConcernDatagram() : base()
         {
-            Records = new List<AbsRecord>()
-            {
-                // 大事件信息记录
-                new BigEventRecord(),
+            //Records = new List<AbsRecord>()
+            //{
+            //    // 大事件信息记录
+            //    new BigEventRecord(),
 
-                // 诉讼信息记录
-                new LitigationRecord()
-            };
+            //    // 诉讼信息记录
+            //    new LitigationRecord()
+            //};
         }
 
         public override DatagramTypeEnum Type

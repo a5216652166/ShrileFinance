@@ -12,92 +12,19 @@
 
     public class TestController : ApiController
     {
-        private AccountAppService service;
+        private readonly MessageAppService service;
 
-        private IAuthenticationManager AuthManager
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
-
-        public TestController(AccountAppService service)
+        public TestController(MessageAppService service)
         {
             this.service = service;
         }
 
-        public IHttpActionResult Get()
+        [HttpGet]
+        public IHttpActionResult Generate()
         {
-            return Ok();
-        }
-
-        [AllowAnonymous]
-        public async Task<IHttpActionResult> Login(LoginViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                var ident = await service.Login(model);
-
-                AuthManager.SignOut();
-                AuthManager.SignIn(new AuthenticationProperties {
-                    IsPersistent = false
-                }, ident);
-
-                return Ok();
-            }
-            catch (ApplicationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        public async Task<IHttpActionResult> Create(UserViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var result = await service.CreateUserAsync(model);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+            service.Generate();
 
             return Ok();
-        }
-
-        private IHttpActionResult GetErrorResult(IdentityResult result)
-        {
-            if (result == null)
-            {
-                return InternalServerError();
-            }
-
-            if (!result.Succeeded)
-            {
-                if (result.Errors != null)
-                {
-                    foreach (string error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
-
-                if (ModelState.IsValid)
-                {
-                    // 没有可发送的 ModelState 错误，因此仅返回空 BadRequest。
-                    return BadRequest();
-                }
-
-                return BadRequest(ModelState);
-            }
-
-            return null;
         }
     }
 }
