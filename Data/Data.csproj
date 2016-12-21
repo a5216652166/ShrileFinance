@@ -91,9 +91,9 @@
     <Compile Include="Migrations\201612050735464_OrgainzationModel.Designer.cs">
       <DependentUpon>201612050735464_OrgainzationModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612160535378_MessageTrack.cs" />
-    <Compile Include="Migrations\201612160535378_MessageTrack.Designer.cs">
-      <DependentUpon>201612160535378_MessageTrack.cs</DependentUpon>
+    <Compile Include="Migrations\201612210305588_CreditInvestigation.cs" />
+    <Compile Include="Migrations\201612210305588_CreditInvestigation.Designer.cs">
+      <DependentUpon>201612210305588_CreditInvestigation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -103,9 +103,29 @@
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBaseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\LitigationSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\AssociatedEnterpriseSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\BaseSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\FamilySegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\ManagerSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\OrganizationContactSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\OrganizationStateSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\ParentSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\PropertySegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\StockholderSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\CreditBaseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\CreditContractAmountSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\CreditContractSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\DebitInterestBaseSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\DebitInterestSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\GuaranteeBaseSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\GuaranteeMortgageSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\GuaranteePledgeSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\GuaranteeSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\LoanSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\NaturalGuaranteeSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\NaturalMortgageSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\NaturalPledgeSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\RepaymentSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\AssociatedEnterpriseConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\BigEventConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\CashFlowConfiguration.cs" />
@@ -271,9 +291,7 @@
     <Compile Include="Repositories\FinanceRepository.cs" />
     <Compile Include="Repositories\PartnerRepository.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -310,8 +328,8 @@
     <EmbeddedResource Include="Migrations\201612050735464_OrgainzationModel.resx">
       <DependentUpon>201612050735464_OrgainzationModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612160535378_MessageTrack.resx">
-      <DependentUpon>201612160535378_MessageTrack.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612210305588_CreditInvestigation.resx">
+      <DependentUpon>201612210305588_CreditInvestigation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

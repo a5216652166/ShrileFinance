@@ -1,5 +1,4 @@
-﻿using System;
-namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Concern
+﻿namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Concern
 {
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
@@ -15,7 +14,6 @@ namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Con
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(m => m.信息类别).HasMaxLength(1);
             Property(m => m.BigEventNumber).HasMaxLength(60);
             Property(m => m.BigEventDescription).HasMaxLength(250);
 

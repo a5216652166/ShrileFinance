@@ -5,7 +5,10 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
     using ModelConfigurations.Loan;
-    using ModelConfigurations.Message;
+    using ModelConfigurations.CreditInvestigation;
+    using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Concern;
+    using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Organization;
+    using ModelConfigurations.CreditInvestigation.Segment.CreditMessage;
 
     public class MyContext : IdentityDbContext
     {
@@ -85,8 +88,36 @@
                 .Add(new LoanConfiguration())
                 .Add(new PaymentHistoryConfiguration());
 
-
-            modelBuilder.Configurations.Add(new MessageTrackConfiguration());
+            // CreditInvestigations
+            modelBuilder.Configurations
+                .Add(new MessageTrackConfiguration())
+                .Add(new BigEventSegmentConfiguration())
+                .Add(new ConcernBaseSegmentConfiguration())
+                .Add(new LitigationSegmentConfiguration())
+                .Add(new AssociatedEnterpriseSegmentConfiguration())
+                .Add(new BaseSegmentConfiguration())
+                .Add(new FamilySegmentConfiguration())
+                .Add(new ManagerSegmentConfiguration())
+                .Add(new OrganizationContactSegmentConfiguration())
+                .Add(new OrganizationStateSegmentConfiguration())
+                .Add(new ParentSegmentConfiguration())
+                .Add(new PropertySegmentConfiguration())
+                .Add(new StockholderSegmentConfiguration())
+                .Add(new CreditBaseSegmentConfiguration())
+                .Add(new CreditContractAmountSegmentConfiguration())
+                .Add(new CreditContractSegmentConfiguration())
+                .Add(new DebitInterestBaseSegmentConfiguration())
+                .Add(new DebitInterestSegmentConfiguration())
+                .Add(new GuaranteeBaseSegmentConfiguration())
+                .Add(new GuaranteeMortgageSegmentConfiguration())
+                .Add(new GuaranteePledgeSegmentConfiguration())
+                .Add(new GuaranteeSegmentConfiguration())
+                .Add(new LoanSegmentConfiguration())
+                .Add(new NaturalGuaranteeSegmentConfiguration())
+                .Add(new NaturalMortgageSegmentConfiguration())
+                .Add(new NaturalPledgeSegmentConfiguration())
+                .Add(new RepaymentSegmentConfiguration())
+                ;
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -3,11 +3,15 @@
     using System;
     using DatagramFile;
 
+    /// <summary>
+    /// 欠息基础段
+    /// </summary>
     public class DebitInterestBaseSegment : AbsSegment
     {
         public DebitInterestBaseSegment(string loanCardCode)
         {
             LoanCardCode = loanCardCode;
+            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
         public DebitInterestBaseSegment()
@@ -48,10 +52,7 @@
         }
 
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(36, true)]
-        public string 业务发生日期
-        {
-            get { return DateTime.Now.ToString("yyyyMMdd"); }
-        }
+        public string 业务发生日期 { get; set; }
 
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(44, true)]
         public string 信息记录跟踪编号
