@@ -37,8 +37,11 @@
 
             if (count == 0)
             {
-                // var serialNumber = SerialNumberGenerator.GetInstance(() => respository.Get()).GetNext();
-                var messageTrack = new Trace(referenceId, traceType, defaultName);
+                // 生成序列号
+                var serialNumberGenerator = SerialNumberGenerator.GetInstance(() => repository.MaxSerialNumberByTraceDate(DateTime.Now.Date));
+                var serialNumber = serialNumberGenerator.GetNext();
+
+                var messageTrack = new Trace(referenceId, traceType, serialNumber, defaultName);
 
                 repository.Create(messageTrack);
                 repository.Commit();
