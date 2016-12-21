@@ -176,7 +176,7 @@
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanIousInfoRecord(loan, credit))
-                .AddRecord(new LoanRepayInfoRecord(credit));
+                .AddRecord(new LoanRepayInfoRecord(credit, payment));
 
             return datagramFile;
         }
