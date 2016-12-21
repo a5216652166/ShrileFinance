@@ -1,7 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
-    using Loan;
+    using Customers.Enterprise;
     using Segment;
     using Segment.BorrowMessage.FinancialAffair;
 
@@ -10,7 +10,7 @@
     /// </summary>
     public class InstitutionLiabilitiesRecord : AbsRecord
     {
-        public InstitutionLiabilitiesRecord(CreditContract credit) : base()
+        public InstitutionLiabilitiesRecord(Organization organization) : base()
         {
             Segments = new List<AbsSegment>()
             {
@@ -19,7 +19,7 @@
             };
 
             // 事业单位资产负债表信息记录
-            foreach (var item in credit.Organization.FinancialAffairs.InstitutionLiabilities)
+            foreach (var item in organization.FinancialAffairs.InstitutionLiabilities)
             {
                 Segments.Add(new InstitutionLiabilitiesParagraph());
             }
