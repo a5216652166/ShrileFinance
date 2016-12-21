@@ -4,7 +4,6 @@
 
     public class OrganizationStateSegment : AbsSegment
     {
-
         public OrganizationStateSegment()
         {
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");

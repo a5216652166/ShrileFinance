@@ -5,11 +5,11 @@
 
     public class BaseSegment : AbsSegment
     {
-
         public BaseSegment()
         {
             数据提取日期 = DateTime.Now.ToString("yyyyMMdd");
         }
+
         /// <summary>
         /// 类别
         /// </summary>

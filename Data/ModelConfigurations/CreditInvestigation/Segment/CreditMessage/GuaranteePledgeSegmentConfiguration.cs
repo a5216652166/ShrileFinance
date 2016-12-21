@@ -4,7 +4,7 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.CreditInvestigation.Segment.CreditMessage;
 
-    class GuaranteePledgeSegmentConfiguration : EntityTypeConfiguration<GuaranteePledgeSegment>
+    public class GuaranteePledgeSegmentConfiguration : EntityTypeConfiguration<GuaranteePledgeSegment>
     {
         public GuaranteePledgeSegmentConfiguration()
         {

@@ -3,7 +3,8 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.CreditInvestigation.Segment.CreditMessage;
-    class NaturalGuaranteeSegmentConfiguration : EntityTypeConfiguration<NaturalGuaranteeSegment>
+
+    public class NaturalGuaranteeSegmentConfiguration : EntityTypeConfiguration<NaturalGuaranteeSegment>
     {
         public NaturalGuaranteeSegmentConfiguration()
         {

@@ -203,7 +203,7 @@ namespace Data.Migrations
                         信息记录类型 = c.String(maxLength: 2),
                         LoanCardCode = c.String(maxLength: 16),
                         CreditContractCode = c.String(maxLength: 60),
-                        CreateDate = c.String(maxLength: 8),
+                        业务发生日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -409,7 +409,6 @@ namespace Data.Migrations
                         ActualPaymentPrincipal = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id);
-            
         }
         
         public override void Down()

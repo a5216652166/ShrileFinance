@@ -4,11 +4,11 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization;
 
+    /// <summary>
+    /// 高管
+    /// </summary>
     public class ManagerSegmentConfiguration : EntityTypeConfiguration<ManagerSegment>
     {
-        /// <summary>
-        /// 高管
-        /// </summary>
         public ManagerSegmentConfiguration()
         {
             HasKey(m => m.Id);

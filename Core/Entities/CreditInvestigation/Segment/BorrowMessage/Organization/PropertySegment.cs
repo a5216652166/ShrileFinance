@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
+    using System;
+
     public class PropertySegment : AbsSegment
     {
         public PropertySegment()

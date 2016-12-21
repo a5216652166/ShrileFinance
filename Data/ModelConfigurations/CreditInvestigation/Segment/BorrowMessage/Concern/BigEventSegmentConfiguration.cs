@@ -7,7 +7,7 @@
     /// <summary>
     /// 大事件
     /// </summary>
-    class BigEventSegmentConfiguration: EntityTypeConfiguration<BigEventSegment>
+    public class BigEventSegmentConfiguration : EntityTypeConfiguration<BigEventSegment>
     {
         public BigEventSegmentConfiguration()
         {

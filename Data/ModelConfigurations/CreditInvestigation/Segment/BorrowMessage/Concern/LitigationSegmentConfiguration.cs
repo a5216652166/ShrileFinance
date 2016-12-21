@@ -4,7 +4,7 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern;
 
-    public class LitigationSegmentConfiguration: EntityTypeConfiguration<LitigationSegment>
+    public class LitigationSegmentConfiguration : EntityTypeConfiguration<LitigationSegment>
     {
         public LitigationSegmentConfiguration()
         {
