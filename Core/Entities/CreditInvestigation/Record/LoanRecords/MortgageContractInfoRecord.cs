@@ -16,7 +16,7 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment("抵押",credit),
+                new GuaranteeBaseSegment(Type,credit),
 
                 // 抵押合同信息段
                 new GuaranteeMortgageSegment(guaranty,credit)

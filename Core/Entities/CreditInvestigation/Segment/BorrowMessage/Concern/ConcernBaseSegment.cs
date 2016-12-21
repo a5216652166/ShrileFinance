@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
-    using AutoMapper;
     using DatagramFile;
     using Record;
 

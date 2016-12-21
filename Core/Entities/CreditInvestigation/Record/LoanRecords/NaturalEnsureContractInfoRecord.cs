@@ -16,7 +16,7 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment("自然人保证",credit),
+                new GuaranteeBaseSegment(Type,credit),
 
                 // 自然人保证合同信息段
                 new NaturalGuaranteeSegment(guaranty)
