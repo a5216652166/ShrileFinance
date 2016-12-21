@@ -6,7 +6,7 @@
 
     public class TraceConfiguration : EntityTypeConfiguration<Trace>
     {
-       public TraceConfiguration()
+        public TraceConfiguration()
         {
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -16,6 +16,8 @@
             Property(m => m.Type);
             Property(m => m.Name).HasMaxLength(20);
             Property(m => m.Status);
+            Property(m => m.SerialNumber);
+            Property(m => m.DatagramFileId);
 
             HasOptional(m => m.DatagramFile);
 

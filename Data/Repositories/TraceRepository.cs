@@ -17,9 +17,14 @@
             return GetAll().Count(m => m.TraceDate == traceDate && m.ReferenceId == referenceId);
         }
 
+        public int MaxSerialNumberByTraceDate(DateTime traceDate)
+        {
+            return GetByTraceDate(traceDate).Max(m => m.SerialNumber);
+        }
+
         public IEnumerable<Trace> GetByTraceDate(DateTime traceDate)
         {
-            throw new NotImplementedException();
+            return GetAll(m => m.TraceDate == traceDate);
         }
     }
 }

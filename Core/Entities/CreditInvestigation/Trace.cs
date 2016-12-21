@@ -65,6 +65,11 @@
         public TraceStatusEmum Status { get; private set; }
 
         /// <summary>
+        /// 报文顺序号
+        /// </summary>
+        public int SerialNumber { get; set; }
+
+        /// <summary>
         /// 报文文件标识
         /// </summary>
         public Guid DatagramFileId { get; private set; }

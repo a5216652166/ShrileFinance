@@ -8,6 +8,8 @@
     {
         int CountByTraceDateAndReference(DateTime traceDate, Guid referenceId);
 
+        int MaxSerialNumberByTraceDate(DateTime traceDate);
+
         IEnumerable<Trace> GetByTraceDate(DateTime traceDate);
     }
 }
