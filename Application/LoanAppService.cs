@@ -86,7 +86,6 @@
             // 报文追踪（放款）
             ////messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.借款, defaultName: "借据编号：" + loan.ContractNumber + "（放款）");
             messageAppService.Trace(referenceId: loan.CreditId, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.借款, defaultName: "贷款合同编号：" + creditRepository.Get(loan.CreditId).CreditContractCode + "（放款）");
-
         }
 
         /// <summary>

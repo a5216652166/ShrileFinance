@@ -6,9 +6,9 @@
 
     public class AssociatedEnterpriseSegment : AbsSegment
     {
-        public AssociatedEnterpriseSegment(AssociatedEnterprise AssociatedEnterprise)
+        public AssociatedEnterpriseSegment(AssociatedEnterprise associatedEnterprise)
         {
-            Mapper.Map(AssociatedEnterprise, this);
+            Mapper.Map(associatedEnterprise, this);
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

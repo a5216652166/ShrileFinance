@@ -6,9 +6,9 @@
 
     public class PropertySegment : AbsSegment
     {
-        public PropertySegment(OrganizationProperties Property)
+        public PropertySegment(OrganizationProperties property)
         {
-            Mapper.Map(Property, this);
+            Mapper.Map(property, this);
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

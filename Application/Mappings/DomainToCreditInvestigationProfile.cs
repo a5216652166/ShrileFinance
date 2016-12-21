@@ -11,10 +11,10 @@
     {
         public DomainToCreditInvestigationProfile()
         {
-            // 关注
+            //// 关注
             CreateMap<BigEvent, BigEventSegment>();
             CreateMap<Litigation, LitigationSegment>();
-            // 机构
+            //// 机构
             CreateMap<AssociatedEnterprise, AssociatedEnterpriseSegment>();
             CreateMap<Organization, BaseSegment>();
             CreateMap<FamilyMember, FamilySegment>();
@@ -24,7 +24,7 @@
             CreateMap<OrganizationParent, ParentSegment>();
             CreateMap<OrganizationProperties, PropertySegment>();
             CreateMap<Stockholder, StockholderSegment>();
-            //贷款和担保
+            ////贷款和担保
             CreateMap<CreditContract, CreditContractSegment>();
             CreateMap<CreditContract, CreditContractAmountSegment>();
             CreateMap<Loan, LoanSegment>();
@@ -41,7 +41,6 @@
             CreateMap<GuarantyContractMortgage, NaturalMortgageSegment>();
             CreateMap<GuarantorPerson, NaturalPledgeSegment>();
             CreateMap<GuarantyContractPledge, NaturalPledgeSegment>();
-
         }
     }
 }

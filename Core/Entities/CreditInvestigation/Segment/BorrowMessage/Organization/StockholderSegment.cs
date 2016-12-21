@@ -11,7 +11,7 @@
     {
         public StockholderSegment(Stockholder stockholder)
         {
-            Mapper.Map(stockholder,this);
+            Mapper.Map(stockholder, this);
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

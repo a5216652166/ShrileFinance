@@ -59,7 +59,6 @@
             {
                 messageAppService.Trace(referenceId: m.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.签订授信合同, defaultName: "签订担保合同,担保人：" + m.Guarantor.Name);
             });
-
         }
 
         public void Modify(CreditContractViewModel model)

@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using Core.Entities.Loan;
-
-namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
+    using AutoMapper;
+    using Core.Entities.Loan;
+
     public class NaturalGuaranteeSegment : AbsSegment
     {
         public NaturalGuaranteeSegment(GuarantyContract guarantyContract)
