@@ -3,6 +3,7 @@
     using System.Web.Http;
     using Application;
     using Application.ViewModels;
+    using Application.ViewModels.CreditInvesitigation.TraceViewModels;
     using Application.ViewModels.Message;
 
     public class MessageController : ApiController
@@ -23,9 +24,14 @@
         }
 
         [HttpPost]
-        public IHttpActionResult Modify(MessageTrackViewModel model)
+        public IHttpActionResult Modify(ModifyNameViewModel model)
         {
-            messageAppService.Modify(model);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            messageAppService.ModifyName(model);
 
             return Ok();
         }

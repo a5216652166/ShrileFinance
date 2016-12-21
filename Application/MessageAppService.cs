@@ -8,6 +8,7 @@
     using Core.Entities.CreditInvestigation;
     using Core.Interfaces.Repositories.MessageRepository;
     using Core.Services.CreditInvestigation;
+    using ViewModels.CreditInvesitigation.TraceViewModels;
     using ViewModels.Message;
     using X.PagedList;
 
@@ -42,8 +43,8 @@
             }
             else
             {
-                messageTrack = new MessageTrack()
-                {
+            //var serialNumber = SerialNumberGenerator.GetInstance(() => respository.Get()).GetNext();
+                messageTrack = new MessageTrack() {
                     MessageStatus = MessageStatusEmum.待生成,
                     Name = name,
                     OperationType = operationType,
@@ -101,28 +102,14 @@
         /// <summary>
         /// 修改名称后保存(修改Name)
         /// </summary>
-        /// <param name="model">报文追踪记录Model</param>
-        public void Modify(MessageTrackViewModel model)
+        /// <param name="model">视图模型</param>
+        public void ModifyName(ModifyNameViewModel model)
         {
-            if (model == null || model.Id == null)
-            {
-                return;
-            }
+            var trace = respository.Get(model.Id);
 
-            var messageTrack = respository.Get(model.Id.Value);
+            trace.Name = model.Name;
 
-            if (messageTrack == null)
-            {
-                throw new Exception("未找到该报文追踪记录");
-                ////return;
-            }
-
-            // 修改Name
-            messageTrack.Name = model.Name ?? string.Empty;
-            ////Mapper.Map(model, messageTrack);
-
-            respository.Modify(messageTrack);
-
+            respository.Modify(trace);
             respository.Commit();
         }
 
