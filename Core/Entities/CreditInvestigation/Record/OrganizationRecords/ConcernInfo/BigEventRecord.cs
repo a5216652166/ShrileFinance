@@ -21,7 +21,7 @@
             // 其他大事信息段
             foreach (var item in credit.Organization.BigEvent)
             {
-                Segments.Add(new BigEventSegment());
+                Segments.Add(new BigEventSegment(item));
             }
         }
 

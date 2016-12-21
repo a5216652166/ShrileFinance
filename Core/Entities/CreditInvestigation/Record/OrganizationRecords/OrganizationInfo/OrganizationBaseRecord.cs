@@ -45,7 +45,7 @@
             // 主要关联企业段
             foreach (var item in credit.Organization.AssociatedEnterprises)
             {
-                Segments.Add(new AssociatedEnterpriseSegment());
+                Segments.Add(new AssociatedEnterpriseSegment(item));
             }
         }
 
