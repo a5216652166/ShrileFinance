@@ -1,16 +1,18 @@
-﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿using Core.Entities.Loan;
+
+namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     /// <summary>
     /// 抵押
     /// </summary>
     public class GuaranteeMortgageSegment : AbsSegment
     {
-        public GuaranteeMortgageSegment(string id, string name, string creditcardCode, string signingDate)
+        public GuaranteeMortgageSegment(GuarantyContractMortgage guarantyContractMortgage, CreditContract creditContract)
         {
-            抵押合同编号 = id;
-            Name = name;
-            CreditcardCode = creditcardCode;
-            SigningDate = signingDate;
+            抵押合同编号 = guarantyContractMortgage.Id.ToString();
+            Name = guarantyContractMortgage.Guarantor.Name;
+            CreditcardCode = creditContract.Organization.LoanCardCode;
+            SigningDate = guarantyContractMortgage.SigningDate.Value.ToString("yyyyMMdd");
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

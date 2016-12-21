@@ -15,10 +15,10 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment("自然人质押",credit.Organization.LoanCardCode,credit.Id.ToString()),
+                new GuaranteeBaseSegment("自然人质押",credit),
 
                 // 自然人质押合同信息段
-                new NaturalPledgeSegment()
+                new NaturalPledgeSegment(guaranty)
             };
         }
 

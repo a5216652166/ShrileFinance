@@ -17,14 +17,14 @@
         private readonly LoanService loanService;
         private readonly PaymentService paymentService;
         private readonly ILoanRepository repository;
-        private readonly MessageAppService messageAppService;
+        private readonly DatagramAppService messageAppService;
 
         public LoanAppService(
             LoanService loanService,
             PaymentService paymentService,
             ILoanRepository repository,
             ICreditContractRepository creditRepository,
-            MessageAppService messageAppService)
+            DatagramAppService messageAppService)
         {
             this.loanService = loanService;
             this.paymentService = paymentService;
@@ -84,8 +84,8 @@
             repository.Commit();
 
             // 报文追踪（放款）
-            messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.借款, name: "借据编号：" + loan.ContractNumber + "（放款）");
-            messageAppService.MessageTrack(id: loan.CreditId, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.借款, name: "贷款合同编号：" + creditRepository.Get(loan.CreditId).CreditContractCode + "（放款）");
+            messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.借款, defaultName: "借据编号：" + loan.ContractNumber + "（放款）");
+            messageAppService.Trace(referenceId: loan.CreditId, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.借款, defaultName: "贷款合同编号：" + creditRepository.Get(loan.CreditId).CreditContractCode + "（放款）");
 
         }
 
@@ -143,22 +143,22 @@
                 {
                     // 还款
                     // 报文追踪（还款信息记录）
-                    messageAppService.MessageTrack(id: payment.Id, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.还款, name: "借据：" + loan.ContractNumber + "还款");
+                    messageAppService.Trace(referenceId: payment.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.还款, defaultName: "借据：" + loan.ContractNumber + "还款");
 
                     // 报文追踪（五级分类调整 借据信息记录）
-                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.还款, name: "借据编号：" + loan.ContractNumber + "（放款）");
+                    messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.还款, defaultName: "借据编号：" + loan.ContractNumber + "（放款）");
                 }
                 else if (payment.ScheduledPaymentPrincipal > payment.ActualPaymentPrincipal)
                 {
                     // 逾期
                     // 报文追踪（五级分类调整 借据信息记录）
-                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.逾期, name: "借据：" + loan.ContractNumber + "逾期");
+                    messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.逾期, defaultName: "借据：" + loan.ContractNumber + "逾期");
                 }
                 else
                 {
                     // 欠息
                     // 报文追踪（五级分类调整 借据信息记录）
-                    messageAppService.MessageTrack(id: loan.Id, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.欠息, name: "借据：" + loan.ContractNumber + "欠息");
+                    messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.欠息, defaultName: "借据：" + loan.ContractNumber + "欠息");
                 }
             }
         }

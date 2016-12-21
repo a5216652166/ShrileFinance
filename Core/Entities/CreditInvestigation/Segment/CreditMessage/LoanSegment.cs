@@ -1,6 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
-    using System;
     using AutoMapper;
     using Loan;
 

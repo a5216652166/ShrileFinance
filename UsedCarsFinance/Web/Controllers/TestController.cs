@@ -12,9 +12,9 @@
 
     public class TestController : ApiController
     {
-        private readonly MessageAppService service;
+        private readonly DatagramAppService service;
 
-        public TestController(MessageAppService service)
+        public TestController(DatagramAppService service)
         {
             this.service = service;
         }

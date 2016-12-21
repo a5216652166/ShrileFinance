@@ -1,4 +1,4 @@
-﻿namespace Web.Controllers.Message
+﻿namespace Web.Controllers.CreditInvestigation
 {
     using System.Web.Http;
     using Application;
@@ -6,11 +6,11 @@
     using Application.ViewModels.CreditInvesitigation.TraceViewModels;
     using Application.ViewModels.Message;
 
-    public class MessageController : ApiController
+    public class DatagramController : ApiController
     {
-        private readonly MessageAppService messageAppService;
+        private readonly DatagramAppService messageAppService;
 
-        public MessageController(MessageAppService messageAppService)
+        public DatagramController(DatagramAppService messageAppService)
         {
             this.messageAppService = messageAppService;
         }
@@ -24,7 +24,7 @@
         }
 
         [HttpPost]
-        public IHttpActionResult Modify(ModifyNameViewModel model)
+        public IHttpActionResult ModifyName(ModifyNameViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -32,6 +32,14 @@
             }
 
             messageAppService.ModifyName(model);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult Generate()
+        {
+            messageAppService.Generate();
 
             return Ok();
         }

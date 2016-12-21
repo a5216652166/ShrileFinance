@@ -2,6 +2,7 @@
 {
     using System;
     using DatagramFile;
+    using Loan;
 
     /// <summary>
     /// 保证合同基础段
@@ -13,7 +14,7 @@
             业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
-        public GuaranteeBaseSegment(string type, string loanCardCode, string creditId)
+        public GuaranteeBaseSegment(string type, CreditContract creditContract)
         {
             if (type == "保证")
             {
@@ -40,8 +41,8 @@
                 信息记录类型 = "34";
             }
 
-            LoanCardCode = loanCardCode;
-            CreditId = creditId;
+            LoanCardCode = creditContract.Organization.LoanCardCode;
+            CreditId = creditContract.Id.ToString();
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]

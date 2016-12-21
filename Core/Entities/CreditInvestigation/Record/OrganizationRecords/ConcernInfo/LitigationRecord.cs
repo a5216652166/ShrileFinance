@@ -15,7 +15,7 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new ConcernBaseSegment(Type, credit.Organization.Property.InstitutionChName, credit.Organization.LoanCardCode)
+                new ConcernBaseSegment(Type, credit)
             };
 
             // 诉讼信息段

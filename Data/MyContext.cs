@@ -90,7 +90,7 @@
 
             // CreditInvestigations
             modelBuilder.Configurations
-                .Add(new MessageTrackConfiguration())
+                .Add(new TraceConfiguration())
                 .Add(new BigEventSegmentConfiguration())
                 .Add(new ConcernBaseSegmentConfiguration())
                 .Add(new LitigationSegmentConfiguration())
