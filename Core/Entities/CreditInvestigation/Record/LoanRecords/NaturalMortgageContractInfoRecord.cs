@@ -18,7 +18,7 @@
                 new GuaranteeBaseSegment("自然人抵押",credit),
 
                 // 自然人抵押合同信息段
-                new NaturalMortgageSegment(guaranty.Id.ToString())
+                new NaturalMortgageSegment(guaranty)
             };
         }
 

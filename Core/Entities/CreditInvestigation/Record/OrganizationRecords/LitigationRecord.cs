@@ -21,7 +21,7 @@
             // 诉讼信息段
             foreach (var item in credit.Organization.Litigation)
             {
-                Segments.Add(new LitigationSegment());
+                Segments.Add(new LitigationSegment(item));
             }
         }
 

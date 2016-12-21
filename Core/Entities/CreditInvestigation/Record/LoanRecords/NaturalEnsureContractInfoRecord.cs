@@ -19,7 +19,7 @@
                 new GuaranteeBaseSegment("自然人保证",credit),
 
                 // 自然人保证合同信息段
-                new NaturalGuaranteeSegment(guaranty.Id.ToString())
+                new NaturalGuaranteeSegment(guaranty)
             };
         }
 

@@ -1,10 +1,14 @@
-﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿using AutoMapper;
+using Core.Entities.Loan;
+
+namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     public class NaturalGuaranteeSegment : AbsSegment
     {
-        public NaturalGuaranteeSegment(string id)
+        public NaturalGuaranteeSegment(GuarantyContract guarantyContract)
         {
-            保证合同编号 = id;
+            Mapper.Map(guarantyContract, this);
+            保证合同编号 = guarantyContract.Id.ToString();
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

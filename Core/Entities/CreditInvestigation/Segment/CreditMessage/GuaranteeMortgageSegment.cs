@@ -1,4 +1,5 @@
-﻿using Core.Entities.Loan;
+﻿using AutoMapper;
+using Core.Entities.Loan;
 
 namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
@@ -9,6 +10,7 @@ namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
     {
         public GuaranteeMortgageSegment(GuarantyContractMortgage guarantyContractMortgage, CreditContract creditContract)
         {
+            Mapper.Map(guarantyContractMortgage, this);
             抵押合同编号 = guarantyContractMortgage.Id.ToString();
             Name = guarantyContractMortgage.Guarantor.Name;
             CreditcardCode = creditContract.Organization.LoanCardCode;
