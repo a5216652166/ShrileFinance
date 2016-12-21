@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.FinancialAffiarInfo
+﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
     using Loan;

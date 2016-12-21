@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Record;
-    using Record.OrganizationRecords.FinancialAffiarInfo;
 
     /// <summary>
     /// 财务报表信息报文
