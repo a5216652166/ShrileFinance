@@ -103,6 +103,8 @@
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBaseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\LitigationSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\BaseParagraphConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\Model2Entity.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\AssociatedEnterpriseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\BaseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\FamilySegmentConfiguration.cs" />

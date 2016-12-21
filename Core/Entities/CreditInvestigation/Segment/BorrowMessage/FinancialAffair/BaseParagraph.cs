@@ -23,7 +23,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         /// <summary>
         /// 信息类别
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(7, true)]
+        [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(7, true)]
         public string 信息类别
         {
             // 填B表示基础段

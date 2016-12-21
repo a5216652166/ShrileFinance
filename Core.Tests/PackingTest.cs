@@ -3,6 +3,8 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
+using Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
+using System.IO;
 
 namespace Core.Tests
 {
@@ -35,6 +37,27 @@ namespace Core.Tests
             };
             StringBuilder builder = new StringBuilder();
             baseParagraph.Packaging(builder);
+            System.Diagnostics.Debug.WriteLine(builder.ToString());
+        }
+
+        /// <summary>
+        /// 类数据配置封装测试
+        /// </summary>
+        [TestMethod]
+        public void ConvertEntity()
+        {
+            StringBuilder builder = new StringBuilder();
+            Model2Entity.ConvertEntity<BaseParagraph>(builder);
+
+            string filePath = "c:\\Entity.txt";
+            FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate);
+            byte[] data = Encoding.Default.GetBytes(builder.ToString());
+
+            fs.Write(data, 0, data.Length);
+
+            fs.Flush();
+            fs.Close();
+
             System.Diagnostics.Debug.WriteLine(builder.ToString());
         }
     }
