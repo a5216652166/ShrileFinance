@@ -4,9 +4,9 @@
 
     public class DebitInterestSegment : AbsSegment
     {
-        public DebitInterestSegment(string amount)
+        public DebitInterestSegment(Loan.PaymentHistory payment) : base()
         {
-            欠息余额 = amount;
+            欠息余额 = (payment.ScheduledPaymentInterest - payment.ActualPaymentPrincipal).ToString();
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
