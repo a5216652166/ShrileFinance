@@ -1,14 +1,16 @@
-﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿using Core.Entities.Loan;
+
+namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     /// <summary>
     /// 担保
     /// </summary>
     public class GuaranteeSegment : AbsSegment
     {
-        public GuaranteeSegment(string id, string creditcardCode)
+        public GuaranteeSegment(CreditContract credit, GuarantyContract guaranty)
         {
-            保证合同编号 = id;
-            CreditcardCode = creditcardCode;
+            保证合同编号 = guaranty.Id.ToString();
+            CreditcardCode = credit.Organization.LoanCardCode;
         }
        
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

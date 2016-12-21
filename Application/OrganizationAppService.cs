@@ -57,7 +57,7 @@
             repository.Create(customer);
 
             // 报文追踪
-            messageAppService.MessageTrack(id: customer.Id, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.添加机构, name: "添加机构："+customer.Property.InstitutionChName);
+            messageAppService.MessageTrack(referenceId: customer.Id, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.添加机构, name: "添加机构："+customer.Property.InstitutionChName);
 
             repository.Commit();
         }

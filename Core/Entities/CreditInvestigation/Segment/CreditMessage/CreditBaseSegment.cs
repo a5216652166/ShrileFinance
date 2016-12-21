@@ -2,6 +2,7 @@
 {
     using System;
     using DatagramFile;
+    using Loan;
     using Record;
 
     /// <summary>
@@ -9,13 +10,13 @@
     /// </summary>
     public class CreditBaseSegment : AbsSegment
     {
-        public CreditBaseSegment(RecordTypeEnum type, DateTime specialDate, string loanCardCode, string creditContractCode)
+        public CreditBaseSegment(RecordTypeEnum type, CreditContract creditContract)
         {
             信息记录类型 = type.ToString("D");
-            业务发生日期 = specialDate.ToString("yyyyMMdd");
+            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
 
-            LoanCardCode = loanCardCode;
-            CreditContractCode = creditContractCode;
+            LoanCardCode = creditContract.Organization.LoanCardCode;
+            CreditContractCode = creditContract.Id.ToString();
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]

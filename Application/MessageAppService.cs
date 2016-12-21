@@ -28,27 +28,27 @@
         /// <summary>
         /// 报文追踪
         /// </summary>
-        /// <param name="id">引用ID</param>
+        /// <param name="referenceId">引用ID</param>
         /// <param name="operationType">操作类型</param>
         /// <param name="name">默认名称</param>
-        public void MessageTrack(Guid id, MessageOperationTypeEnum operationType, string name)
+        public void MessageTrack(Guid referenceId, MessageOperationTypeEnum operationType, string name)
         {
-            var messageTrack = respository.Get(id);
+            var messageTracks = respository.GetAll().Where(m=>m.ReferenceId == referenceId);
 
-            if (messageTrack != null)
+            if (messageTracks != null)
             {
-                messageTrack.MessageData = PackagingMessageData(referenceId: id, operationType: operationType);
-                respository.Modify(messageTrack);
+                //messageTracks.MessageData = PackagingMessageData(referenceId: referenceId, operationType: operationType);
+                //respository.Modify(messageTracks);
             }
             else
             {
-                messageTrack = new MessageTrack()
+                var messageTrack = new MessageTrack()
                 {
                     MessageStatus = MessageStatusEmum.待生成,
                     Name = name,
                     OperationType = operationType,
-                    ReferenceId = id,
-                    MessageData = PackagingMessageData(referenceId: id, operationType: operationType)
+                    ReferenceId = referenceId,
+                    MessageData = PackagingMessageData(referenceId: referenceId, operationType: operationType)
                 };
 
                 respository.Create(messageTrack);

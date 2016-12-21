@@ -16,10 +16,10 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment("抵押",credit.Organization.LoanCardCode,credit.Id.ToString()),
+                new GuaranteeBaseSegment("抵押",credit),
 
                 // 抵押合同信息段
-                new GuaranteeMortgageSegment(guaranty.Id.ToString(),guaranty.Guarantor.Name,credit.Organization.LoanCardCode,credit.EffectiveDate.ToString("D"))
+                new GuaranteeMortgageSegment(guaranty,credit)
             };
         }
 
