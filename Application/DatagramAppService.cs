@@ -38,7 +38,7 @@
             if (count == 0)
             {
                 // var serialNumber = SerialNumberGenerator.GetInstance(() => respository.Get()).GetNext();
-                messageTrack = new Trace(referenceId, traceType, defaultName);
+                var messageTrack = new Trace(referenceId, traceType, defaultName);
 
                 repository.Create(messageTrack);
                 repository.Commit();
