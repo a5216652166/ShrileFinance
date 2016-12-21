@@ -1,20 +1,24 @@
 ﻿namespace Application
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
     using Core.Interfaces.Repositories.MessageRepository;
+    using Core.Services.CreditInvestigation;
     using ViewModels.Message;
     using X.PagedList;
     public class MessageAppService
     {
         private readonly IMessageTrackRepostitory respository;
+        private readonly DatagramFactoryService factory;
 
-        public MessageAppService(IMessageTrackRepostitory respository)
+        public MessageAppService(IMessageTrackRepostitory respository, DatagramFactoryService factory)
         {
             this.respository = respository;
+            this.factory = factory;
         }
 
         /// <summary>
@@ -30,8 +34,7 @@
                 return;
             }
 
-            var track = new MessageTrack()
-            {
+            var track = new MessageTrack() {
                 MessageStatus = MessageStatusEmum.待生成,
                 Name = name,
                 OperationType = operationType,
@@ -40,6 +43,14 @@
 
             respository.Create(track);
             respository.Commit();
+        }
+
+        public void Generate()
+        {
+            var df = factory.Generate(new List<MessageTrack> {
+                new MessageTrack { ReferenceId = Guid.Parse("0727FF76-8BC2-E611-80C7-507B9DE4A488"), OperationType = MessageOperationTypeEnum.借款 } });
+
+            df.Packaging();
         }
 
         /// <summary>

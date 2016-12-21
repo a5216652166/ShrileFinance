@@ -10,6 +10,8 @@
         {
             Mapper.Map(credit, this);
 
+            InstitutionChName = credit.Organization.Property.InstitutionChName;
+
             switch (credit.EffectiveStatus)
             {
                 case CreditContractStatusEnum.生效:
