@@ -5,7 +5,7 @@
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
-    using Core.Interfaces.Repositories.MessageRepository;
+    using Core.Interfaces.Repositories;
     using Core.Services.CreditInvestigation;
     using ViewModels.CreditInvesitigation.TraceViewModels;
     using ViewModels.Message;
@@ -16,10 +16,10 @@
     /// </summary>
     public class DatagramAppService
     {
-        private readonly IMessageTrackRepostitory repository;
+        private readonly ITraceRepostitory repository;
         private readonly DatagramFactoryService factory;
 
-        public DatagramAppService(IMessageTrackRepostitory repository, DatagramFactoryService factory)
+        public DatagramAppService(ITraceRepostitory repository, DatagramFactoryService factory)
         {
             this.repository = repository;
             this.factory = factory;
