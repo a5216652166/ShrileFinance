@@ -15,7 +15,7 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new CreditBaseSegment(Type, loan.SpecialDate, credit.Organization.LoanCardCode, credit.Id.ToString()),
+                new CreditBaseSegment(Type, credit),
 
                 // 借据信息段
                 new LoanSegment(loan)

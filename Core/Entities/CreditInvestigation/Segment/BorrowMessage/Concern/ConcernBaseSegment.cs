@@ -1,19 +1,16 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
     using DatagramFile;
+    using Loan;
     using Record;
 
     public class ConcernBaseSegment : AbsSegment
     {
-        ////public ConcernBaseSegment()
-        ////{
-        ////}
-
-        public ConcernBaseSegment(RecordTypeEnum type, string name, string creditcode)
+        public ConcernBaseSegment(RecordTypeEnum type, CreditContract creditContract)
         {
             信息记录类型 = type.ToString("D");
-            借款人名称 = name;
-            贷款卡编码 = creditcode;
+            借款人名称 = creditContract.Organization.Property.InstitutionChName;
+            贷款卡编码 = creditContract.Organization.LoanCardCode;
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true)]

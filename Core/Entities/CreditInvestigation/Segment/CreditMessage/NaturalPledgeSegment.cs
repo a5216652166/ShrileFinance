@@ -1,18 +1,16 @@
-﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿using Core.Entities.Loan;
+
+namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     /// <summary>
     /// 自然人质押
     /// </summary>
     public class NaturalPledgeSegment : AbsSegment
     {
-        public NaturalPledgeSegment()
+        public NaturalPledgeSegment(GuarantyContractPledge guaranty)
         {
-        }
-
-        public NaturalPledgeSegment(string id, string signingDate)
-        {
-            质押合同编号 = id;
-            SigningDate = signingDate;
+            质押合同编号 = guaranty.Id.ToString();
+            SigningDate = guaranty.SigningDate.Value.ToString("yyyyMMdd");
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

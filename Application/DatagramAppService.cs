@@ -33,8 +33,6 @@
         /// <param name="defaultName">默认名称</param>
         public void Trace(Guid referenceId, TraceTypeEnum traceType, string defaultName = null)
         {
-            var messageTrack = repository.Get(referenceId);
-
             var count = repository.CountByTraceDateAndReference(DateTime.Now.Date, referenceId);
 
             if (count == 0)
