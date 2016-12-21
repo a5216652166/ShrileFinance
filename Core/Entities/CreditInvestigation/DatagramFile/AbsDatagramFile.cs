@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using Datagram;
     using Interfaces;
@@ -23,10 +24,10 @@
         /// </summary>
         public const string FinancialOrganizationCode = "33207991216";
 
-        protected AbsDatagramFile(string serialNumber)
+        protected AbsDatagramFile(int serialNumber)
         {
             DateCreated = DateTime.Now;
-            SerialNumber = serialNumber;
+            SerialNumber = serialNumber.ToString("D4");
         }
 
         /// <summary>
@@ -68,6 +69,11 @@
             builder.Append(0);
 
             return builder.ToString();
+        }
+
+        public AbsDatagram GetDatagram(DatagramTypeEnum type)
+        {
+            return Datagrams.Single(m => m.Type == type);
         }
 
         /// <summary>

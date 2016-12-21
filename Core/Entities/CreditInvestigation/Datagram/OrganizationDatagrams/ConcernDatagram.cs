@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Record;
-    using Record.OrganizationRecords.ConcernInfo;
 
     /// <summary>
     /// 关注信息报文

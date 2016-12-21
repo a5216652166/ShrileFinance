@@ -1,7 +1,8 @@
-﻿using Core.Entities.Loan;
-
-namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
+    using AutoMapper;
+    using Core.Entities.Loan;
+
     /// <summary>
     /// 自然人质押
     /// </summary>
@@ -9,6 +10,7 @@ namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
     {
         public NaturalPledgeSegment(GuarantyContractPledge guaranty)
         {
+            Mapper.Map(guaranty, this);
             质押合同编号 = guaranty.Id.ToString();
             SigningDate = guaranty.SigningDate.Value.ToString("yyyyMMdd");
         }

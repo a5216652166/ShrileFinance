@@ -9,40 +9,12 @@
     /// </summary>
     public class GuaranteeBaseSegment : AbsSegment
     {
-        public GuaranteeBaseSegment()
+        public GuaranteeBaseSegment(Record.RecordTypeEnum type, CreditContract creditContract)
         {
-            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
-        }
-
-        public GuaranteeBaseSegment(string type, CreditContract creditContract)
-        {
-            if (type == "保证")
-            {
-                信息记录类型 = "22";
-            }
-            else if (type == "抵押")
-            {
-                信息记录类型 = "23";
-            }
-            else if (type == "质押")
-            {
-                信息记录类型 = "24";
-            }
-            else if (type == "自然人保证")
-            {
-                信息记录类型 = "32";
-            }
-            else if (type == "自然人抵押")
-            {
-                信息记录类型 = "33";
-            }
-            else if (type == "自然人质押")
-            {
-                信息记录类型 = "34";
-            }
-
+            信息记录类型 = type.ToString("D");
             LoanCardCode = creditContract.Organization.LoanCardCode;
             CreditId = creditContract.Id.ToString();
+            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
