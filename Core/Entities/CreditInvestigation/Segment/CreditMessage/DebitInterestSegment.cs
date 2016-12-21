@@ -2,6 +2,9 @@
 {
     using System;
 
+    /// <summary>
+    /// 欠息数据段
+    /// </summary>
     public class DebitInterestSegment : AbsSegment
     {
         public DebitInterestSegment(Loan.PaymentHistory payment) : base()
@@ -34,9 +37,6 @@
         }
 
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(26, true)]
-        public string 欠息余额改变日期
-        {
-            get { return DateTime.Now.ToString("yyyyMMdd"); }
-        }
+        public string 欠息余额改变日期 { get; set; }
     }
 }

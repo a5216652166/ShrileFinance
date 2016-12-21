@@ -8,6 +8,11 @@
     /// </summary>
     public class GuaranteeBaseSegment : AbsSegment
     {
+        public GuaranteeBaseSegment()
+        {
+            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
+        }
+
         public GuaranteeBaseSegment(string type, string loanCardCode, string creditId)
         {
             if (type == "保证")
@@ -82,10 +87,7 @@
         }
 
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(97, true)]
-        public string 业务发生日期
-        {
-            get { return DateTime.Now.ToString("yyyyMMdd"); }
-        }
+        public string 业务发生日期 { get; set; }
 
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(105, true)]
         public string 信息记录跟踪编号

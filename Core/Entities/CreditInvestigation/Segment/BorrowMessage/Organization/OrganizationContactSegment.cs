@@ -1,10 +1,15 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
 
     public class OrganizationContactSegment : AbsSegment
     {
+        public OrganizationContactSegment()
+        {
+            信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
+        }
+
+        [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
         public string 信息类别
         {
             get { return "E"; }
@@ -13,24 +18,25 @@
         /// <summary>
         /// 办公（生产、经营）地址
         /// </summary>
-        [Display(Name = "办公（生产、经营）地址"), StringLength(80)]
+        [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(2, false)]
         public string OfficeAddress { get; set; }
 
         /// <summary>
         /// 联系电话
         /// </summary>
-        [Display(Name = "联系电话"), StringLength(35)]
+        [MetaCode(35, MetaCodeTypeEnum.AN), SegmentRule(82, false)]
         public string ContactPhone { get; set; }
 
         /// <summary>
         /// 财务部联系电话
         /// </summary>
-        [Display(Name = "财务部联系电话"), StringLength(35)]
+        [MetaCode(35, MetaCodeTypeEnum.AN), SegmentRule(117, false)]
         public string FinancialContactPhone { get; set; }
 
-        [StringLength(8)]
+        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(152, true)]
         public string 信息更新日期 { get; set; }
 
+        [MetaCode(40, MetaCodeTypeEnum.ANC), SegmentRule(160, true)]
         public string 预留字段
         {
             get { return string.Empty.PadLeft(40, ' '); }

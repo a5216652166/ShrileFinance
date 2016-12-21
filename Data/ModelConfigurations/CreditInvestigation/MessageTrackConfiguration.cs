@@ -18,7 +18,7 @@
             Property(m => m.ReferenceId);
             Property(m => m.TrackDate);
 
-            ToTable("MESS_MessageTrack");
+            ToTable("CIDG_MessageTrack");
         }
     }
 }
