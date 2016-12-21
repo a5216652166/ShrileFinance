@@ -1,11 +1,14 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
     using System;
+    using AutoMapper;
+    using Customers.Enterprise;
 
     public class OrganizationStateSegment : AbsSegment
     {
-        public OrganizationStateSegment()
+        public OrganizationStateSegment(OrganizationState state)
         {
+            Mapper.Map(state, this);
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

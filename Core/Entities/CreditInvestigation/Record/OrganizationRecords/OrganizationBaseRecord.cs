@@ -15,31 +15,31 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseSegment(),
+                new BaseSegment(organization),
 
                 // 基础属性段
-                new PropertySegment(),
+                new PropertySegment(organization.Property),
 
                 // 机构状态段
-                new OrganizationStateSegment(),
+                new OrganizationStateSegment(organization.State),
 
                 // 联络信息段
-                new OrganizationContactSegment(),
+                new OrganizationContactSegment(organization.Contact),
 
                 // 上级机构（主管单位）段
-                new ParentSegment()
+                new ParentSegment(organization.Parent),
             };
 
             // 高管及主要关系人段
             foreach (var item in organization.Managers)
             {
-                Segments.Add(new ManagerSegment());
+                Segments.Add(new ManagerSegment(item));
             }
 
             // 重要股东段
             foreach (var item in organization.Shareholders)
             {
-                Segments.Add(new StockholderSegment());
+                Segments.Add(new StockholderSegment(item));
             }
 
             // 主要关联企业段

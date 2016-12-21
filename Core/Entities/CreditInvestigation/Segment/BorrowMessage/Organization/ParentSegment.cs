@@ -1,11 +1,14 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
     using System;
+    using AutoMapper;
+    using Customers.Enterprise;
 
     public class ParentSegment : AbsSegment
     {
-        public ParentSegment()
+        public ParentSegment(OrganizationParent parent)
         {
+            Mapper.Map(parent, this);
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
