@@ -85,8 +85,7 @@
 
             // 报文追踪（放款）
             ////messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.借款, defaultName: "借据编号：" + loan.ContractNumber + "（放款）");
-            messageAppService.Trace(referenceId: loan.CreditId, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.借款, defaultName: "贷款合同编号：" + creditRepository.Get(loan.CreditId).CreditContractCode + "（放款）");
-
+            messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.借款, defaultName: "贷款合同编号：" + creditRepository.Get(loan.CreditId).CreditContractCode + "（放款）");
         }
 
         /// <summary>
@@ -129,38 +128,12 @@
 
             foreach (var payment in payments)
             {
-                paymentService.Payment(loan, payment);
+                paymentService.Payment(loan, payment, messageAppService.Trace);
             }
 
             repository.Modify(loan);
 
             repository.Commit();
-
-            foreach (var payment in payments)
-            {
-                if (payment.ScheduledPaymentPrincipal == payment.ActualPaymentPrincipal
-                && payment.ScheduledPaymentInterest == payment.ActualPaymentInterest)
-                {
-                    // 还款
-                    // 报文追踪（还款信息记录）
-                    messageAppService.Trace(referenceId: payment.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.还款, defaultName: "借据：" + loan.ContractNumber + "还款");
-
-                    // 报文追踪（五级分类调整 借据信息记录）
-                    messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.还款, defaultName: "借据编号：" + loan.ContractNumber + "（放款）");
-                }
-                else if (payment.ScheduledPaymentPrincipal > payment.ActualPaymentPrincipal)
-                {
-                    // 逾期
-                    // 报文追踪（五级分类调整 借据信息记录）
-                    messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.逾期, defaultName: "借据：" + loan.ContractNumber + "逾期");
-                }
-                else
-                {
-                    // 欠息
-                    // 报文追踪（五级分类调整 借据信息记录）
-                    messageAppService.Trace(referenceId: loan.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.欠息, defaultName: "借据：" + loan.ContractNumber + "欠息");
-                }
-            }
         }
 
         /// <summary>

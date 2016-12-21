@@ -55,11 +55,10 @@
             }
 
             repository.Create(customer);
+            repository.Commit();
 
             // 报文追踪
-            messageAppService.Trace(referenceId: customer.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.添加机构, defaultName: "添加机构："+customer.Property.InstitutionChName);
-
-            repository.Commit();
+            messageAppService.Trace(referenceId: customer.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName);
         }
 
         public void Modify(OrganizationViewModel model)
@@ -90,7 +89,7 @@
 
         public OrganizationViewModel Get(Guid id)
         {
-            Core.Entities.Customers.Enterprise.Organization customer = repository.Get(id);
+            var customer = repository.Get(id);
 
             var model = Mapper.Map<OrganizationViewModel>(customer);
             model.Base = Mapper.Map<BaseViewModel>(customer);
