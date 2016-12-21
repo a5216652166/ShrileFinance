@@ -95,9 +95,16 @@
         /// </summary>
         public abstract ICollection<AbsRecord> Records { get; protected set; }
 
-        public virtual void AddRecord(AbsRecord record)
+        /// <summary>
+        /// 添加信息记录
+        /// </summary>
+        /// <param name="record">信息记录</param>
+        /// <returns>流式 API</returns>
+        public virtual AbsDatagram AddRecord(AbsRecord record)
         {
             Records.Add(record);
+
+            return this;
         }
 
         public void Packaging(StringBuilder builder)
