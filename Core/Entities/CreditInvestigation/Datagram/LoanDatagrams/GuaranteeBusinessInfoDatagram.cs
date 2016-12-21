@@ -11,7 +11,7 @@
     {
         public GuaranteeBusinessInfoDatagram() : base()
         {
-            Records = new List<AbsRecord>() {
+            ////Records = new List<AbsRecord>() {
                 ////// 保证合同信息记录
                 ////new EnsureContractInfoRecord(),
 
@@ -29,7 +29,7 @@
 
                 ////// 自然人质押合同信息记录
                 ////new NaturalPledgeContractInfoRecord()
-            };
+            ////};
         }
 
         public override DatagramTypeEnum Type
