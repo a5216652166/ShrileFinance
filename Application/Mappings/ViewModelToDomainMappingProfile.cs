@@ -78,9 +78,6 @@
                 .ForMember(d => d.FinanceProduce, opt => opt.Ignore())
                 .ForMember(d => d.Applicant, opt => opt.Ignore());
             CreateMap<FinanceProduceViewModel, FinanceProduce>();
-
-            // 征信报文
-            CreateMap<MessageTrackViewModel, MessageTrack>();
         }
     }
 }

@@ -84,7 +84,7 @@
             CreateMap<FinanceProduce, FinanceProduceViewModel>();
             
             // 征信报文
-            CreateMap<MessageTrack, MessageTrackViewModel>();
+            CreateMap<Trace, MessageTrackViewModel>();
         }
     }
 }

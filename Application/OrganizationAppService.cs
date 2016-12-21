@@ -13,9 +13,9 @@
     public class OrganizationAppService
     {
         private readonly IOrganizationRepository repository;
-        private readonly MessageAppService messageAppService;
+        private readonly DatagramAppService messageAppService;
 
-        public OrganizationAppService(IOrganizationRepository repository, MessageAppService messageAppService)
+        public OrganizationAppService(IOrganizationRepository repository, DatagramAppService messageAppService)
         {
             this.repository = repository;
             this.messageAppService = messageAppService;
@@ -57,7 +57,7 @@
             repository.Create(customer);
 
             // 报文追踪
-            messageAppService.MessageTrack(id: customer.Id, operationType: Core.Entities.CreditInvestigation.MessageOperationTypeEnum.添加机构, name: "添加机构："+customer.Property.InstitutionChName);
+            messageAppService.Trace(referenceId: customer.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.添加机构, defaultName: "添加机构："+customer.Property.InstitutionChName);
 
             repository.Commit();
         }

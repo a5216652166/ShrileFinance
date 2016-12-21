@@ -148,7 +148,9 @@
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\CreditContractAmountSegment.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\LoanSegment.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\RepaymentSegment.cs" />
-    <Compile Include="Entities\CreditInvestigation\MessageTrack.cs" />
+    <Compile Include="Entities\CreditInvestigation\Trace.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Entities\Other\Draft.cs" />
     <Compile Include="Entities\Finance\FinanceProduce.cs" />
     <Compile Include="Entities\Flow\Action.cs" />
@@ -226,7 +228,7 @@
     <Compile Include="Interfaces\Repositories\IPartnerRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUnitOfWork.cs" />
-    <Compile Include="Interfaces\Repositories\MessageRepository\IMessageTrackRepostitory.cs" />
+    <Compile Include="Interfaces\Repositories\ITraceRepostitory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
