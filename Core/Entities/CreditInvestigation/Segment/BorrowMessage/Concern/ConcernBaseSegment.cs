@@ -1,23 +1,25 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
     using DatagramFile;
-
+    using Record;
     public class ConcernBaseSegment : AbsSegment
     {
-        public ConcernBaseSegment()
-        {
-        }
+        //public ConcernBaseSegment()
+        //{
+        //}
 
-        public ConcernBaseSegment(string type, string name, string creditcode)
+        public ConcernBaseSegment(RecordTypeEnum type, string name, string creditcode)
         {
-            if (type == "大事件")
-            {
-                信息记录类型 = "07";
-            }
-            else if (type == "诉讼")
-            {
-                信息记录类型 = "06";
-            }
+            //if (type == "大事件")
+            //{
+            //    信息记录类型 = "07";
+            //}
+            //else if (type == "诉讼")
+            //{
+            //    信息记录类型 = "06";
+            //}
+
+            信息记录类型 = type.ToString("D");
 
             借款人名称 = name;
             贷款卡编码 = creditcode;

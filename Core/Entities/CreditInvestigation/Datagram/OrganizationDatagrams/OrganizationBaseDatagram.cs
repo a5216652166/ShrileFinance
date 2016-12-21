@@ -9,13 +9,13 @@
     /// </summary>
     public class OrganizationBaseDatagram : AbsDatagram
     {
-        public OrganizationBaseDatagram()
+        public OrganizationBaseDatagram() : base()
         {
-            Records = new List<AbsRecord>()
-            {
-                // 机构基本信息记录
-                new OrganizationBaseRecord()
-            };
+            //Records = new List<AbsRecord>()
+            //{
+            //    // 机构基本信息记录
+            //    new OrganizationBaseRecord()
+            //};
         }
 
         public override DatagramTypeEnum Type
