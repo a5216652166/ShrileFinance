@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
+﻿namespace Core.Entities.CreditInvestigation.Record
 {
     using System.Collections.Generic;
     using Segment;
@@ -11,11 +11,6 @@
         public UnusedRecord() : base()
         {
             Segments = new List<AbsSegment>();
-        }
-
-        public UnusedRecord(List<AbsSegment> segments, RecordTypeEnum type) : base()
-        {
-            Segments = segments ?? new List<AbsSegment>();
         }
 
         public override ICollection<AbsSegment> Segments { get; protected set; }

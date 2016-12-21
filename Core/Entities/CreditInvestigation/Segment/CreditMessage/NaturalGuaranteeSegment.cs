@@ -2,10 +2,6 @@
 {
     public class NaturalGuaranteeSegment : AbsSegment
     {
-        public NaturalGuaranteeSegment()
-        {
-        }
-
         public NaturalGuaranteeSegment(string id)
         {
             保证合同编号 = id;

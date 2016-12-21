@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Record;
-    using Record.LoanRecords;
 
     /// <summary>
     /// 贷款业务信息采集报文
@@ -11,16 +10,16 @@
     {
         public LoanBusinessInfoDatagram() : base()
         {
-            Records = new List<AbsRecord>() {
-                // 贷款业务合同信息记录
-                new LoanContractInfoRecord(),
+            ////Records = new List<AbsRecord>() {
+            ////    // 贷款业务合同信息记录
+            ////    new LoanContractInfoRecord(),
 
-                // 贷款业务借据信息记录
-                new LoanIousInfoRecord(),
+            ////    // 贷款业务借据信息记录
+            ////    new LoanIousInfoRecord(),
 
-                // 贷款业务还款信息记录
-                new LoanRepayInfoRecord()
-            };
+            ////    // 贷款业务还款信息记录
+            ////    new LoanRepayInfoRecord()
+            ////};
         }
 
         public override DatagramTypeEnum Type

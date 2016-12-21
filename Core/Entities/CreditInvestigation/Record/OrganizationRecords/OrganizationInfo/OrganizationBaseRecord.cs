@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
+    using Loan;
     using Segment;
     using Segment.BorrowMessage.Organization;
 
@@ -9,7 +10,7 @@
     /// </summary>
     public class OrganizationBaseRecord : AbsRecord
     {
-        public OrganizationBaseRecord() : base()
+        public OrganizationBaseRecord(CreditContract credit) : base()
         {
             Segments = new List<AbsSegment>()
             {
@@ -25,18 +26,27 @@
                 // 联络信息段
                 new OrganizationContactSegment(),
 
-                // 高管及主要关系人段
-                new ManagerSegment(),
-
-                // 重要股东段
-                new StockholderSegment(),
-
-                // 主要关联企业段
-                new AssociatedEnterpriseSegment(),
-
                 // 上级机构（主管单位）段
                 new ParentSegment()
             };
+
+            // 高管及主要关系人段
+            foreach (var item in credit.Organization.Managers)
+            {
+                Segments.Add(new ManagerSegment());
+            }
+
+            // 重要股东段
+            foreach (var item in credit.Organization.Shareholders)
+            {
+                Segments.Add(new StockholderSegment());
+            }
+
+            // 主要关联企业段
+            foreach (var item in credit.Organization.AssociatedEnterprises)
+            {
+                Segments.Add(new AssociatedEnterpriseSegment());
+            }
         }
 
         public override RecordTypeEnum Type
