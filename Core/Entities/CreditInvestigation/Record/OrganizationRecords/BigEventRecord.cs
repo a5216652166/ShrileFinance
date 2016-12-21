@@ -1,25 +1,25 @@
-﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.ConcernInfo
+﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
-    using Loan;
+    using Customers.Enterprise;
     using Segment;
     using Segment.BorrowMessage.Concern;
 
     /// <summary>
-    /// 诉讼信息记录
+    /// 大事信息记录
     /// </summary>
-    public class LitigationRecord : AbsRecord
+    public class BigEventRecord : AbsRecord
     {
-        public LitigationRecord(CreditContract credit) : base()
+        public BigEventRecord(Organization organization) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new ConcernBaseSegment(Type, credit)
+                new ConcernBaseSegment(Type, organization)
             };
 
-            // 诉讼信息段
-            foreach (var item in credit.Organization.BigEvent)
+            // 其他大事信息段
+            foreach (var item in organization.BigEvent)
             {
                 Segments.Add(new BigEventSegment());
             }
@@ -29,7 +29,7 @@
         {
             get
             {
-                return RecordTypeEnum.诉讼信息记录;
+                return RecordTypeEnum.大事信息记录;
             }
         }
 
