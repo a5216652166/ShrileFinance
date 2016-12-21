@@ -109,7 +109,7 @@
                 async: false,
                 method: "POST",
                 data: { Id:row.Id, Name:row.Name },
-                url: "../api/Message/ModifyName",
+                url: "../api/Datagram/ModifyName",
                 statusCode: {
                     200: function (data) {
                         accept("dg");
@@ -131,7 +131,7 @@
                 async: false,
                 method: "GET",
                 data: {},
-                url: "../api/Message/Generate",
+                url: "../api/Datagram/Generate",
                 statusCode: {
                     200: function (data) {
                         $.messager.show({ msg: "生成成功" });
@@ -154,7 +154,7 @@
         pageSize: 20,
         pageList: [10,20,30,40,50],
         method: 'GET',
-        url: '../api/Message/GetPageList',
+        url: '../api/Datagram/GetPageList',
         loadMsg: '正在加载，请稍候...',
         onBeforeLoad: BeforeLoad
         ">
