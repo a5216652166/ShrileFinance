@@ -1,7 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
-    using Loan;
+    using Customers.Enterprise;
     using Segment;
     using Segment.BorrowMessage.Organization;
 
@@ -10,7 +10,7 @@
     /// </summary>
     public class OrganizationBaseRecord : AbsRecord
     {
-        public OrganizationBaseRecord(CreditContract credit) : base()
+        public OrganizationBaseRecord(Organization organization) : base()
         {
             Segments = new List<AbsSegment>()
             {
@@ -31,19 +31,19 @@
             };
 
             // 高管及主要关系人段
-            foreach (var item in credit.Organization.Managers)
+            foreach (var item in organization.Managers)
             {
                 Segments.Add(new ManagerSegment());
             }
 
             // 重要股东段
-            foreach (var item in credit.Organization.Shareholders)
+            foreach (var item in organization.Shareholders)
             {
                 Segments.Add(new StockholderSegment());
             }
 
             // 主要关联企业段
-            foreach (var item in credit.Organization.AssociatedEnterprises)
+            foreach (var item in organization.AssociatedEnterprises)
             {
                 Segments.Add(new AssociatedEnterpriseSegment());
             }
