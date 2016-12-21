@@ -46,7 +46,7 @@
         /// <summary>
         /// 保证金额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(164, true)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(164, true)]
         public string Margin { get; set; }
 
         /// <summary>

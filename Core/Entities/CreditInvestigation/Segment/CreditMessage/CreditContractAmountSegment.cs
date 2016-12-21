@@ -1,7 +1,7 @@
-﻿using Core.Entities.Loan;
-
-namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
+    using Core.Entities.Loan;
+
     public class CreditContractAmountSegment : AbsSegment
     {
         public CreditContractAmountSegment(CreditContract credit)

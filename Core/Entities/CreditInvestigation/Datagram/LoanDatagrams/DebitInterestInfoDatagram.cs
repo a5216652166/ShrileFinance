@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Datagram.LoanDatagrams
 {
     using System.Collections.Generic;
+    using Loan;
     using Record;
     using Record.LoanRecords;
 
@@ -11,11 +12,12 @@
     {
         public DebitInterestInfoDatagram() : base()
         {
-            Records = new List<AbsRecord>()
-            {
-                // 欠息信息记录
-                new DebitInterestInfoRecord()
-            };
+        }
+
+        public DebitInterestInfoDatagram(CreditContract credit, PaymentHistory payment) : base()
+        {
+            // 欠息信息记录
+            AddRecord(new DebitInterestInfoRecord(credit, payment));
         }
 
         public override DatagramTypeEnum Type
@@ -25,7 +27,7 @@
                 return DatagramTypeEnum.欠息信息采集报文;
             }
         }
-        
+
         public override ICollection<AbsRecord> Records { get; protected set; }
     }
 }

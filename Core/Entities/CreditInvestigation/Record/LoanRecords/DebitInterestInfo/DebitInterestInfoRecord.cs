@@ -1,10 +1,9 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     using System.Collections.Generic;
+    using Loan;
     using Segment;
     using Segment.CreditMessage;
-    using Loan;
-
 
     /// <summary>
     /// 欠息信息记录
@@ -18,7 +17,8 @@
                 new DebitInterestBaseSegment(credit.Organization.LoanCardCode),
 
                 // 欠息业务信息段
-                new DebitInterestSegment((payment.ScheduledPaymentInterest-payment.ActualPaymentPrincipal).ToString())
+                new DebitInterestSegment(payment)
+                ////new DebitInterestSegment((payment.ScheduledPaymentInterest-payment.ActualPaymentPrincipal).ToString())
             };
         }
 

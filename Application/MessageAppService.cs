@@ -12,6 +12,9 @@
     using ViewModels.Message;
     using X.PagedList;
 
+    /// <summary>
+    /// 报文追踪服务
+    /// </summary>
     public class MessageAppService
     {
         private readonly IMessageTrackRepostitory respository;
@@ -31,21 +34,36 @@
         /// <param name="name">默认名称</param>
         public void MessageTrack(Guid id, MessageOperationTypeEnum operationType, string name)
         {
-            if (respository.Get(id) != null)
+            var messageTrack = respository.Get(id);
+
+            if (messageTrack != null)
             {
-                return;
+                messageTrack.MessageData = PackagingMessageData(referenceId: id, operationType: operationType);
+                respository.Modify(messageTrack);
+            }
+            else
+            {
+            //var serialNumber = SerialNumberGenerator.GetInstance(() => respository.Get()).GetNext();
+                messageTrack = new MessageTrack() {
+                    MessageStatus = MessageStatusEmum.待生成,
+                    Name = name,
+                    OperationType = operationType,
+                    ReferenceId = id,
+                    MessageData = PackagingMessageData(referenceId: id, operationType: operationType)
+                };
+
+                respository.Create(messageTrack);
             }
 
-            //var serialNumber = SerialNumberGenerator.GetInstance(() => respository.Get()).GetNext();
+            ////var track = new MessageTrack()
+            ////{
+            ////    MessageStatus = MessageStatusEmum.待生成,
+            ////    Name = name,
+            ////    OperationType = operationType,
+            ////    ReferenceId = id,
+            ////};
 
-            var track = new MessageTrack() {
-                MessageStatus = MessageStatusEmum.待生成,
-                Name = name,
-                OperationType = operationType,
-                ReferenceId = id,
-            };
-
-            respository.Create(track);
+            ////respository.Create(track);
             respository.Commit();
         }
 
@@ -82,7 +100,7 @@
         }
 
         /// <summary>
-        /// 修改名称后保存
+        /// 修改名称后保存(修改Name)
         /// </summary>
         /// <param name="model">视图模型</param>
         public void ModifyName(ModifyNameViewModel model)
@@ -93,6 +111,23 @@
 
             respository.Modify(trace);
             respository.Commit();
+        }
+
+        /// <summary>
+        /// 封装报文数据
+        /// </summary>
+        /// <param name="referenceId">引用标识</param>
+        /// <param name="operationType">操作类型</param>
+        /// <returns>报文数据</returns>
+        private string PackagingMessageData(Guid referenceId, MessageOperationTypeEnum operationType)
+        {
+            var traces = new List<MessageTrack>() {
+                new MessageTrack { ReferenceId = referenceId, OperationType = operationType }
+            };
+
+            var datagramFile = factory.Generate(traces);
+
+            return datagramFile.Packaging();
         }
     }
 }
