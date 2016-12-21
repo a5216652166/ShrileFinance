@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Core.Entities.CreditInvestigation.DatagramFile;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
@@ -35,7 +36,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true)]
         public string 金融机构代码
         {
-            get { return ""; }
+            get { return AbsDatagramFile.FinancialOrganizationCode; ; }
         }
 
         /// <summary>
@@ -99,6 +100,9 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         /// 信息记录跟踪编号
         /// </summary>
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(249, true)]
-        public string 信息记录跟踪编号 { get; set; }
+        public string 信息记录跟踪编号
+        {
+            get { return string.Empty.PadLeft(20,'0'); }
+        }
     }
 }

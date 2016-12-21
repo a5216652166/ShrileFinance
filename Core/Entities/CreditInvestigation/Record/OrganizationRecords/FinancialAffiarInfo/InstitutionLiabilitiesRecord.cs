@@ -17,7 +17,7 @@
                 new BaseParagraph(),
 
                 // 事业单位资产负债表信息记录
-                new InstitutionLiabilitiesParagraph()
+                new InstitutionLiabilitiesParagraph(),
             };
         }
 
