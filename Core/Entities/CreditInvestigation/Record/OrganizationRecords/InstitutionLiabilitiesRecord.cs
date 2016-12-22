@@ -18,10 +18,10 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph(),
+                new BaseParagraph(financial, organization, item.Type.ToString()),
 
                 // 事业单位资产负债表信息记录
-                new InstitutionLiabilitiesParagraph()
+                new InstitutionLiabilitiesParagraph(item)
             };
         }
 

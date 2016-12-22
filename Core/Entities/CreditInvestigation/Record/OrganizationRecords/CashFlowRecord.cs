@@ -18,10 +18,10 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph(),
+                new BaseParagraph(financial, organization, item.Type.ToString()),
 
                 // 2007版现金流量表段
-                new CashFlowParagraph()
+                new CashFlowParagraph(item)
             };
         }
 

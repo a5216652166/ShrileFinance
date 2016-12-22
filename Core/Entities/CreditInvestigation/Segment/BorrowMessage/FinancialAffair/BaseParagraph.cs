@@ -11,8 +11,9 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
     {
         public BaseParagraph() { }
 
-        public BaseParagraph(FinancialAffairs financialAffairs,Customers.Enterprise.Organization organization)
+        public BaseParagraph(FinancialAffairs financialAffairs,Customers.Enterprise.Organization organization,string type)
         {
+            报表类型 = type;
             借款人名称 = organization.Property.InstitutionChName;
             贷款卡编号 = organization.LoanCardCode;
             报表年份 = financialAffairs.Year.ToString();
