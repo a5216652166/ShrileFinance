@@ -8,6 +8,7 @@
     using Entities.CreditInvestigation.Record.LoanRecords;
     using Entities.CreditInvestigation.Record.OrganizationRecords;
     using Entities.Customers.Enterprise;
+    using Entities.Loan;
     using Exceptions;
     using Interfaces.Repositories;
 
@@ -137,7 +138,41 @@
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanContractInfoRecord(credit));
-            datagramFile.GetDatagram(DatagramTypeEnum.担保业务信息采集报文);
+            var guarantyDatagram = datagramFile.GetDatagram(DatagramTypeEnum.担保业务信息采集报文);
+
+            foreach (var item in credit.GuarantyContract)
+            {
+                if (item.Guarantor is GuarantorOrganization)
+                {
+                    if (item is GuarantyContractPledge)
+                    {
+                        guarantyDatagram.AddRecord(new PledgeContractInfoRecord(credit, (GuarantyContractPledge)item));
+                    }
+                    else if (item is GuarantyContractMortgage)
+                    {
+                        guarantyDatagram.AddRecord(new MortgageContractInfoRecord(credit, (GuarantyContractMortgage)item));
+                    }
+                    else
+                    {
+                        guarantyDatagram.AddRecord(new EnsureContractInfoRecord(credit, (GuarantyContractMortgage)item));
+                    }
+                }
+                else if (item.Guarantor is GuarantorPerson)
+                {
+                    if (item is GuarantyContractPledge)
+                    {
+                        guarantyDatagram.AddRecord(new NaturalPledgeContractInfoRecord(credit, (GuarantyContractPledge)item));
+                    }
+                    else if (item is GuarantyContractMortgage)
+                    {
+                        guarantyDatagram.AddRecord(new NaturalMortgageContractInfoRecord(credit, (GuarantyContractMortgage)item));
+                    }
+                    else
+                    {
+                        guarantyDatagram.AddRecord(new NaturalEnsureContractInfoRecord(credit, (GuarantyContractMortgage)item));
+                    }
+                }
+            }
 
             return datagramFile;
         }
