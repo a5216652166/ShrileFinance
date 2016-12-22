@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data;
+    using System.IO;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
@@ -46,6 +47,23 @@
                 repository.Create(messageTrack);
                 repository.Commit();
             }
+        }
+
+        /// <summary>
+        /// 下载单个报文文件
+        /// </summary>
+        /// <param name="id">报文标识</param>
+        /// <returns>报文文件</returns>
+        public FileInfo Download(Guid id)
+        {
+            var trace = repository.Get(id);
+
+            if (trace == null)
+            {
+                throw new Exception("该报文不存在");
+            }
+
+            return trace.ToFile();
         }
 
         /// <summary>
