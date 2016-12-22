@@ -34,7 +34,7 @@
             };
             StringBuilder builder = new StringBuilder();
             baseParagraph.Packaging(builder);
-            int length = baseParagraph.Length;
+            //int length = baseParagraph.Length;
             System.Diagnostics.Debug.WriteLine(builder.ToString());
         }
 
