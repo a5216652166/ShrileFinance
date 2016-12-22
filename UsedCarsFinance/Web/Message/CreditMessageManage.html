@@ -144,6 +144,28 @@
 
             $("#add").linkbutton("enable");
         }
+
+        // 下载
+        function Download() {
+            var row = $("#dg").datagrid("getSelected");
+            debugger
+            $.ajax({
+                async: false,
+                method: "GET",
+                data: { Id: row.Id},
+                url: "../api/Datagram/Download",
+                statusCode: {
+                    200: function (data) {
+                        $.messager.show({ msg: "下载成功" });
+                    },
+                    400: function (data) {
+                        $.messager.show({ msg: data.responseJSON.Message });
+                    }
+                }
+            });
+
+            $("#save").linkbutton("enable");
+        }
     </script>
 </head>
 <body>
@@ -162,9 +184,9 @@
             <tr>
                 <th data-options="field:'Id',hidden:true">Id</th>
                 <th data-options="field:'Name',width:180,align:'center',editor:{type:'validatebox'}">名称</th>
-                <th data-options="field:'OperationTypeDesc',width:120,align:'center'">操作类型</th>
-                <th data-options="field:'MessageStatusDesc',width:120,align:'center'">报文状态</th>
-                <th data-options="field:'TrackDate',width:180,align:'center'">跟踪日期</th>
+                <th data-options="field:'TypeDesc',width:120,align:'center'">操作类型</th>
+                <th data-options="field:'StatusDesc',width:120,align:'center'">报文状态</th>
+                <th data-options="field:'TraceDate',width:180,align:'center'">跟踪日期</th>
                 <th data-options="field:'IsEdit',width:120,align:'center',hidden:true">是否可编辑</th>
             </tr>
         </thead>
@@ -175,7 +197,7 @@
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
             <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>
-            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true">下载</a>
+            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Download">下载</a>
         </div>
     </div>
 </body>
