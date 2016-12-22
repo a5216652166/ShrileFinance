@@ -19,7 +19,7 @@
             Property(m => m.SerialNumber);
             Property(m => m.DatagramFileId);
 
-            HasOptional(m => m.DatagramFile);
+           // HasOptional(m => m.DatagramFile);
 
             ToTable("CIDG_Trace");
         }

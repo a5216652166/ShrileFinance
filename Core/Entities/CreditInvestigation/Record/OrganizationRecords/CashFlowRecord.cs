@@ -18,14 +18,11 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph()
-            };
+                new BaseParagraph(),
 
-            // 2007版现金流量表段
-            foreach (var item in organization.FinancialAffairs.CashFlow)
-            {
-                Segments.Add(new CashFlowParagraph());
-            }
+                // 2007版现金流量表段
+                new CashFlowParagraph()
+            };
         }
 
         public CashFlowRecord(FinancialAffairs financial, CashFlow item)

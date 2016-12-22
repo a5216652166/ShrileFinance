@@ -19,7 +19,7 @@
             Property(m => m.InstitutionsState).HasMaxLength(1);
             Property(m => m.信息更新日期).HasMaxLength(8);
 
-            ToTable("CUST_OrganizationStateSegment");
+            ToTable("CIDG_OrganizationStateSegment");
         }
     }
 }

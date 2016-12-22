@@ -18,14 +18,11 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph()
-            };
+                new BaseParagraph(),
 
-            // 事业单位资产负债表信息记录
-            foreach (var item in organization.FinancialAffairs.InstitutionLiabilities)
-            {
-                Segments.Add(new InstitutionLiabilitiesParagraph());
-            }
+                // 事业单位资产负债表信息记录
+                new InstitutionLiabilitiesParagraph()
+            };
         }
 
         public InstitutionLiabilitiesRecord(FinancialAffairs financial, InstitutionLiabilities item)

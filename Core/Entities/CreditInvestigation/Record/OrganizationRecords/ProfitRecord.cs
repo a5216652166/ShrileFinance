@@ -18,14 +18,11 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph()
-            };
+                new BaseParagraph(),
 
-            // 2007版利润及利润分配表信息记录
-            foreach (var item in organization.FinancialAffairs.Profit)
-            {
-                Segments.Add(new ProfitsParagraph());
-            }
+                // 2007版利润及利润分配表信息记录
+                new ProfitsParagraph()
+            };
         }
 
         public ProfitRecord(FinancialAffairs financial, Profit item)

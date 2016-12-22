@@ -18,14 +18,11 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph()
-            };
+                new BaseParagraph(),
 
-            // 2007版资产负债表段
-            foreach (var item in organization.FinancialAffairs.Liabilities)
-            {
-                Segments.Add(new LiabilitiesParagraph());
-            }
+                // 2007版资产负债表段
+                new LiabilitiesParagraph()
+            };
         }
 
         public BalanceSheetRecord(FinancialAffairs financial, Liabilities item)
