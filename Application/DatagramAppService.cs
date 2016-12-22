@@ -59,6 +59,26 @@
             factory.Generate(traces);
         }
 
+        public void GenerateTest()
+        {
+            var lastDate = DateTime.Now.Date;
+            var traces = repository.GetByTraceDate(lastDate).Skip(3).Take(1);
+
+            try
+            {
+                factory.Generate(traces);
+
+                repository.Commit();
+
+                var trace = traces.First();
+                var file = trace.ToFile();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// 获取报文跟踪列表
         /// </summary>
