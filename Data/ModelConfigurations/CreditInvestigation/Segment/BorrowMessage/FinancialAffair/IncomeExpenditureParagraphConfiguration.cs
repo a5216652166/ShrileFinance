@@ -1,9 +1,9 @@
-using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-
 namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
+    using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
+
     public class IncomeExpenditureParagraphConfiguration : EntityTypeConfiguration<IncomeExpenditureParagraph>
     {
         public IncomeExpenditureParagraphConfiguration()

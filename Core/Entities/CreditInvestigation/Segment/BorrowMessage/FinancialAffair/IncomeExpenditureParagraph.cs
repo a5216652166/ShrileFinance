@@ -1,17 +1,15 @@
-﻿using Core.Entities.Customers.Enterprise;
-
-namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
+    using Core.Entities.Customers.Enterprise;
+
     /// <summary>
     /// 事业单位收入支出表信息记录
     /// </summary>
     public class IncomeExpenditureParagraph : AbsSegment
     {
-        public IncomeExpenditureParagraph() { }
-
         public IncomeExpenditureParagraph(InstitutionIncomeExpenditure incomeExpenditure)
         {
-            AutoMapper.Mapper.Map(incomeExpenditure,this);
+            AutoMapper.Mapper.Map(incomeExpenditure, this);
         }
 
         /// <summary>
