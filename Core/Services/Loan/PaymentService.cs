@@ -23,15 +23,14 @@
                 // 新增还款记录
                 loan.AddPaymentHistory(payment);
 
-
                 // 调整四级分类
                 loan.SetFourCategoryAssetsClassification(FourCategoryAssetsClassificationEnum.正常);
 
                 // 报文追踪（还款信息记录）
-                trace(payment.Id, TraceTypeEnum.还款,"借据：" + loan.ContractNumber + "还款");
+                trace(payment.Id, TraceTypeEnum.还款,"借据：" + loan.ContractNumber + "还款，还款编号：" + payment.Id);
 
                 // 报文追踪（五级分类调整 借据信息记录）
-                trace(payment.LoanId,TraceTypeEnum.还款, "借据：" + loan.ContractNumber + "还款，还款编号："+payment.Id);
+                trace(payment.LoanId,TraceTypeEnum.还款, "借据：" + loan.ContractNumber + "五级分类调整");
             }
             else if (payment.ScheduledPaymentPrincipal > payment.ActualPaymentPrincipal)
             {
@@ -43,7 +42,7 @@
                 loan.SetFourCategoryAssetsClassification(FourCategoryAssetsClassificationEnum.逾期);
 
                 // 报文追踪（五级分类调整 借据信息记录）
-                trace(payment.LoanId, TraceTypeEnum.逾期, "借据：" + loan.ContractNumber + "逾期");
+                trace(payment.LoanId, TraceTypeEnum.逾期, "借据：" + loan.ContractNumber + "逾期，五级分类调整");
             }
             else
             {
@@ -52,7 +51,7 @@
                 loan.AddPaymentHistory(payment);
 
                 // 报文追踪（五级分类调整 借据信息记录）
-                trace(payment.Id, TraceTypeEnum.欠息, "借据：" + loan.ContractNumber + "欠息");
+                trace(payment.Id, TraceTypeEnum.欠息, "借据：" + loan.ContractNumber + "欠息，五级分类调整");
             }
         }
     }
