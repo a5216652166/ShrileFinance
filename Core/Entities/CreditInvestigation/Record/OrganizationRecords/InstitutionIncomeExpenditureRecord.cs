@@ -15,14 +15,19 @@
 
         public InstitutionIncomeExpenditureRecord(Organization organization) : base()
         {
+            var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
+
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph(financial, organization, item.Type.ToString()),
+               baseParagraph,
 
                 // 事业单位收入支出表段
-                new IncomeExpenditureParagraph(item)
+                new IncomeExpenditureParagraph(item),
             };
+
+            baseParagraph.信息记录长度 = GetLength().ToString();
+
         }
 
         public InstitutionIncomeExpenditureRecord(FinancialAffairs financial, InstitutionIncomeExpenditure item)

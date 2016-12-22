@@ -15,14 +15,18 @@
 
         public CashFlowRecord(Organization organization) : base()
         {
+            var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
+
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph(financial, organization, item.Type.ToString()),
+                baseParagraph,
 
                 // 2007版现金流量表段
                 new CashFlowParagraph(item)
             };
+
+            baseParagraph.信息记录长度 = GetLength().ToString();
         }
 
         public CashFlowRecord(FinancialAffairs financial, CashFlow item)

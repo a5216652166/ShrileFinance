@@ -15,14 +15,17 @@
 
         public BalanceSheetRecord(Organization organization) : base()
         {
+            var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
+
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph(financial, organization, item.Type.ToString()),
-
+                baseParagraph,
                 // 2007版资产负债表段
                 new LiabilitiesParagraph(item)
             };
+
+            baseParagraph.信息记录长度 = GetLength().ToString();
         }
 
         public BalanceSheetRecord(FinancialAffairs financial, Liabilities item)

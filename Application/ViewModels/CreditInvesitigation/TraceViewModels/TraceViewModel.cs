@@ -1,9 +1,9 @@
-﻿namespace Application.ViewModels.Message
+﻿namespace Application.ViewModels.CreditInvesitigation.TraceViewModels
 {
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class MessageTrackViewModel : IEntityViewModel
+    public class TraceViewModel : IEntityViewModel
     {
         public enum MessageOperationTypeEnum : byte
         {

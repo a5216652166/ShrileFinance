@@ -9,8 +9,8 @@
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;
+    using ViewModels.CreditInvesitigation.TraceViewModels;
     using ViewModels.FinanceViewModels;
-    using ViewModels.Message;
     using ViewModels.OrganizationViewModels;
     using ViewModels.PartnerViewModels;
     using ViewModels.VehicleViewModel;
@@ -82,7 +82,7 @@
             CreateMap<FinanceProduce, FinanceProduceViewModel>();
             
             // 征信报文
-            CreateMap<Trace, MessageTrackViewModel>();
+            CreateMap<Trace, TraceViewModel>();
         }
     }
 }

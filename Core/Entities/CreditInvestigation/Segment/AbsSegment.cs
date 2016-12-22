@@ -22,12 +22,7 @@
                 .ForEach(m => builder.Append(m.GetValue()));
         }
 
-        public int Length
-        {
-            get { return GetLength(); }
-        }
-
-        protected int GetLength()
+        public int GetLength()
         {
             var metas = ReflectionAndValid();
 

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
     using Segment;
+    using System;
 
     public enum RecordTypeEnum
     {
@@ -53,6 +54,37 @@
             {
                 segment.Packaging(builder);
             }
+        }
+
+        /// <summary>
+        /// 获取信息记录总长度
+        /// </summary>
+        /// <returns></returns>
+        protected int GetLength()
+        {
+            int length = 0;
+
+            // 新建一个字典存放反射过的类的长度
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+
+            foreach (var segment in Segments)
+            {
+                var className = segment.GetType().Name;
+
+                // 如果不存在指定的键
+                if (!dict.ContainsKey(className))
+                {
+                    var len = segment.GetLength();
+                    dict.Add(className, len);
+                    length += len;
+                }
+                else
+                {
+                    length += Convert.ToInt32(dict[className]);
+                }
+            }
+
+            return length;
         }
     }
 }

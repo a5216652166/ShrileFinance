@@ -7,7 +7,6 @@
     using Application;
     using Application.ViewModels;
     using Application.ViewModels.CreditInvesitigation.TraceViewModels;
-    using Application.ViewModels.Message;
 
     public class DatagramController : ApiController
     {
@@ -23,7 +22,7 @@
         {
             var list = messageAppService.GetPageList(search, page, rows);
 
-            return Ok(new PagedListViewModel<MessageTrackViewModel>(list));
+            return Ok(new PagedListViewModel<TraceViewModel>(list));
         }
 
         [HttpPost]
