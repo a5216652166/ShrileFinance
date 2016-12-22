@@ -90,10 +90,10 @@
         /// <param name="datagramFile">报文文件</param>
         public void AddDatagram(AbsDatagramFile datagramFile)
         {
-            if (Status != TraceStatusEmum.待生成)
-            {
-                throw new InvalidOperationAppException("报文已生成。");
-            }
+            //if (Status != TraceStatusEmum.待生成)
+            //{
+            //    throw new InvalidOperationAppException("报文已生成。");
+            //}
 
             DatagramFile = datagramFile;
             Status = TraceStatusEmum.待发送;
@@ -105,12 +105,12 @@
         /// <returns></returns>
         public FileInfo ToFile()
         {
-            if (Status == TraceStatusEmum.待生成)
-            {
-                throw new InvalidOperationAppException("下载前必须生成报文。");
-            }
+            //if (Status == TraceStatusEmum.待生成)
+            //{
+            //    throw new InvalidOperationAppException("下载前必须生成报文。");
+            //}
 
-            var filename = $"{DatagramFile.GenerateFilename()}.txt";
+            var filename = $"F:\\Temps\\{DatagramFile.GenerateFilename()}.txt";
             var fileInfo = new FileInfo(filename);
 
             if (!fileInfo.Exists)
