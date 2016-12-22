@@ -10,8 +10,7 @@
     public enum DatagramFileType
     {
         机构基本信息采集报文文件 = 51,
-        信贷业务信息文件 = 12,
-        未使用信息采集报文文件 = 99
+        信贷业务信息文件 = 12
     }
 
     /// <summary>
@@ -48,7 +47,7 @@
         /// <summary>
         /// 报文集合
         /// </summary>
-        public abstract ICollection<AbsDatagram> Datagrams { get; protected set; }
+        public virtual ICollection<AbsDatagram> Datagrams { get; protected set; }
 
         /// <summary>
         /// 生成文件名

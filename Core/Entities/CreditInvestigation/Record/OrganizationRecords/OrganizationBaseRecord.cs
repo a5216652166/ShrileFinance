@@ -56,7 +56,5 @@
                 return RecordTypeEnum.机构基本信息记录;
             }
         }
-
-        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }

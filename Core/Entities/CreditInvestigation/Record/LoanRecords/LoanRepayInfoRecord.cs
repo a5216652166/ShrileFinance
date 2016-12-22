@@ -24,8 +24,6 @@
             };
         }
 
-        public override ICollection<AbsSegment> Segments { get; protected set; }
-
         public override RecordTypeEnum Type
         {
             get

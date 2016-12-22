@@ -14,12 +14,12 @@
             Property(m => m.TraceDate);
             Property(m => m.ReferenceId);
             Property(m => m.Type);
-            Property(m => m.Name).HasMaxLength(20);
+            Property(m => m.Name).HasMaxLength(200);
             Property(m => m.Status);
             Property(m => m.SerialNumber);
             Property(m => m.DatagramFileId);
 
-           // HasOptional(m => m.DatagramFile);
+            HasOptional(m => m.DatagramFile);
 
             ToTable("CIDG_Trace");
         }

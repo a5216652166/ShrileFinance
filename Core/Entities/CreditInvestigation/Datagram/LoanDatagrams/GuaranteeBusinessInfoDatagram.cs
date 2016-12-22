@@ -39,7 +39,5 @@
                 return DatagramTypeEnum.担保业务信息采集报文;
             }
         }
-
-        public override ICollection<AbsRecord> Records { get; protected set; }
     }
 }

@@ -11,9 +11,8 @@
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            //Map<LoanBusinessInfoDatagram>(m => m.Requires("Type").HasValue(DatagramTypeEnum.贷款业务信息采集报文));
-
-            HasMany(m => m.Segments);
+            HasMany(m => m.Segments).WithRequired()
+                .HasForeignKey(m => m.RecordId).WillCascadeOnDelete();
 
             ToTable("CIDG_Record");
         }
