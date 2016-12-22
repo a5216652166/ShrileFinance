@@ -10,13 +10,19 @@
 
     public abstract class AbsSegment : Entity
     {
-
         public void Packaging(StringBuilder builder)
         {
             var metas = ReflectionAndValid();
 
             metas.OrderBy(m => m.Position).ToList()
                 .ForEach(m => builder.Append(m.GetValue()));
+        }
+
+        protected int GetLength()
+        {
+            var properties = GetType().GetProperties();
+
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -86,7 +92,10 @@
                 this.type = type;
             }
 
-            public int Position { get { return position; } }
+            public int Position
+            {
+                get { return position; }
+            }
 
             public string GetValue()
             {
