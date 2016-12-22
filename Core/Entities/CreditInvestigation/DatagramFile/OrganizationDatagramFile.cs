@@ -34,7 +34,5 @@
                 return DatagramFileType.机构基本信息采集报文文件;
             }
         }
-
-        public override ICollection<AbsDatagram> Datagrams { get; protected set; }
     }
 }

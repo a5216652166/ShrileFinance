@@ -25,7 +25,5 @@
                 return DatagramTypeEnum.机构基本信息报文;
             }
         }
-
-        public override ICollection<AbsRecord> Records { get; protected set; }
     }
 }
