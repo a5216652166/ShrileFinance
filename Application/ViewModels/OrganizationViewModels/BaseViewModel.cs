@@ -69,7 +69,7 @@
         /// <summary>
         /// 中征码
         /// </summary>
-        [Display(Name = "中征码"), StringLength(16), Required, AN(ErrorMessage = "中征码 类型错误")]
+        [Display(Name = "中征码"), StringLength(16), Required, AN(ErrorMessage = "中征码 类型错误"), CreditCard(ErrorMessage = "中征码（贷款卡编码） 校验未通过")]
         public string LoanCardCode { get; set; }
 
         /// <summary>
