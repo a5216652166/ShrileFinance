@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
+    using Core.Entities.CreditInvestigation;
     using Core.Entities.Loan;
     using Core.Exceptions;
     using Core.Interfaces.Repositories;
@@ -126,14 +127,40 @@
             var loan = repository.Get(model.LoanId);
             var payments = Mapper.Map<IEnumerable<PaymentHistory>>(model.Payments);
 
+            var traces = new Dictionary<PaymentHistory, ICollection<TraceTypeEnum>>();
+
             foreach (var payment in payments)
             {
-                paymentService.Payment(loan, payment, messageAppService.Trace);
+                ICollection<TraceTypeEnum> traceTypes;
+
+                paymentService.Payment(loan, payment, out traceTypes);
+
+                traces.Add(payment, traceTypes);
             }
 
             repository.Modify(loan);
-
             repository.Commit();
+
+            foreach (var payment in traces)
+            {
+                foreach (var type in payment.Value)
+                {
+                    switch (type)
+                    {
+                        case TraceTypeEnum.还款:
+                            messageAppService.Trace(payment.Key.Id, type, $"借据：{loan.ContractNumber}还款，还款金额：{payment.Key.ActualPaymentPrincipal}");
+                            break;
+                        case TraceTypeEnum.逾期:
+                            messageAppService.Trace(loan.Id, type, $"借据：{loan.ContractNumber}五级分类调整");
+                            break;
+                        case TraceTypeEnum.欠息:
+                            messageAppService.Trace(payment.Key.Id, type, $"借据：{loan.ContractNumber}欠息");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -116,13 +116,10 @@
             var footer = GenerateFooter();
 
             builder.Append(header);
+            builder.AppendLine();
 
             if (Records.Count > 0)
             {
-                // 报文体中信息记录为零时，
-                // 报文头后紧跟报文尾，不留空行。
-                builder.AppendLine();
-
                 // 信息记录的组织方式按照“聚类排列”方式进行，
                 // 不同种类的信息记录以规范中的编号先后为准。
                 var records = Records.OrderBy(m => m.Type);
