@@ -10,7 +10,7 @@
     /// </summary>
     public class LoanRepayInfoRecord : AbsRecord
     {
-        public LoanRepayInfoRecord(CreditContract credit, PaymentHistory payment)
+        public LoanRepayInfoRecord(CreditContract credit,Loan loan, PaymentHistory payment)
         {
             Segments = new List<AbsSegment>()
             {
@@ -18,7 +18,7 @@
                 new CreditBaseSegment(Type, credit),
 
                 // 还款信息段
-                new RepaymentSegment(payment)
+                new RepaymentSegment(loan,payment)
             };
         }
 

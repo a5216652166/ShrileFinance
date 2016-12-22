@@ -5,7 +5,7 @@
 
     public class RepaymentSegment : AbsSegment
     {
-        public RepaymentSegment(PaymentHistory payment)
+        public RepaymentSegment(Loan loan,PaymentHistory payment)
         {
             Mapper.Map(payment, this);
         }
