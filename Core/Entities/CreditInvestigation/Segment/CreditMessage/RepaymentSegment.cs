@@ -8,6 +8,7 @@
         public RepaymentSegment(int times, PaymentHistory payment)
         {
             Mapper.Map(payment, this);
+            还款次数 = times;
             DatePayment = payment.DatePayment.ToString("yyyyMMdd");
         }
 
