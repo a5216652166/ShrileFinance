@@ -1,9 +1,9 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     using System.Collections.Generic;
+    using Loan;
     using Segment;
     using Segment.CreditMessage;
-    using Loan;
 
     /// <summary>
     /// 质押合同信息记录
@@ -15,10 +15,10 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment(Type,credit),
+                new GuaranteeBaseSegment(Type, credit),
 
                 // 自然人质押合同信息段
-                new GuaranteePledgeSegment(guaranty,credit)
+                new GuaranteePledgeSegment(guaranty, credit)
             };
         }
 

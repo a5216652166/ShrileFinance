@@ -15,6 +15,6 @@
 
         public override ICollection<AbsRecord> Records { get; protected set; }
 
-        public override DatagramTypeEnum Type { get;}
+        public override DatagramTypeEnum Type { get; }
     }
 }
