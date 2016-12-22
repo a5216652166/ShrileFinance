@@ -11,7 +11,7 @@
     /// </summary>
     public class LoanRepayInfoRecord : AbsRecord
     {
-        public LoanRepayInfoRecord(CreditContract credit,Loan loan, PaymentHistory payment)
+        public LoanRepayInfoRecord(CreditContract credit, Loan loan, PaymentHistory payment)
         {
             int time = loan.Payments.ToList().Count;
             Segments = new List<AbsSegment>()

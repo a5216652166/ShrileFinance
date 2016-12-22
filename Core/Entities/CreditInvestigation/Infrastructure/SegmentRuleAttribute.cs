@@ -36,7 +36,6 @@
         /// </summary>
         /// <param name="value">被校验对象</param>
         /// <returns>校验结果</returns>
-
         public bool IsValid(object value)
         {
             if (IsRequired && value == null)
