@@ -18,7 +18,7 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph(),
+                new BaseParagraph(financial, organization, item.ToString()),
 
                 // 2007版现金流量表段
                 new CashFlowParagraph()
