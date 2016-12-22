@@ -31,6 +31,11 @@
             this.item = item;
         }
 
+        public CashFlowRecord(Organization organization, CashFlow item) : this(organization)
+        {
+            this.item = item;
+        }
+
         public override RecordTypeEnum Type
         {
             get
