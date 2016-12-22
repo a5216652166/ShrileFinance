@@ -96,26 +96,25 @@
                 .ForEach(n => familyDatagram.AddRecord(new FamilyMemberRecord(m, n))));
 
             var financialDatagram = datagramFile.GetDatagram(DatagramTypeEnum.财务报表信息采集报文);
-            var financial = organization.FinancialAffairs;
-            foreach (var item in financial.Liabilities)
+            foreach (var item in organization.FinancialAffairs.Liabilities)
             {
-                financialDatagram.AddRecord(new BalanceSheetRecord(financial, item));
+                financialDatagram.AddRecord(new BalanceSheetRecord(organization, item));
             }
-            foreach (var item in financial.Profit)
+            foreach (var item in organization.FinancialAffairs.Profit)
             {
-                financialDatagram.AddRecord(new ProfitRecord(financial, item));
+                financialDatagram.AddRecord(new ProfitRecord(organization, item));
             }
-            foreach (var item in financial.CashFlow)
+            foreach (var item in organization.FinancialAffairs.CashFlow)
             {
-                financialDatagram.AddRecord(new CashFlowRecord(financial, item));
+                financialDatagram.AddRecord(new CashFlowRecord(organization, item));
             }
-            foreach (var item in financial.InstitutionLiabilities)
+            foreach (var item in organization.FinancialAffairs.InstitutionLiabilities)
             {
-                financialDatagram.AddRecord(new InstitutionLiabilitiesRecord(financial, item));
+                financialDatagram.AddRecord(new InstitutionLiabilitiesRecord(organization, item));
             }
-            foreach (var item in financial.IncomeExpenditur)
+            foreach (var item in organization.FinancialAffairs.IncomeExpenditur)
             {
-                financialDatagram.AddRecord(new InstitutionIncomeExpenditureRecord(financial, item));
+                financialDatagram.AddRecord(new InstitutionIncomeExpenditureRecord(organization, item));
             }
 
             datagramFile.GetDatagram(DatagramTypeEnum.关注信息采集报文)

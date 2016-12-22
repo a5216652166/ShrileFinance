@@ -31,6 +31,11 @@
             this.item = item;
         }
 
+        public BalanceSheetRecord(Organization organization, Liabilities item) : this(organization)
+        {
+            this.item = item;
+        }
+
         public override RecordTypeEnum Type
         {
             get

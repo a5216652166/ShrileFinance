@@ -31,6 +31,11 @@
             this.item = item;
         }
 
+        public InstitutionLiabilitiesRecord(Organization organization, InstitutionLiabilities item) : this(organization)
+        {
+            this.item = item;
+        }
+
         public override RecordTypeEnum Type
         {
             get
