@@ -36,7 +36,5 @@
                 return DatagramTypeEnum.财务报表信息采集报文;
             }
         }
-
-        public override ICollection<AbsRecord> Records { get; protected set; }
     }
 }

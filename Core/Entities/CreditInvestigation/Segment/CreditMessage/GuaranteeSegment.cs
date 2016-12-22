@@ -13,8 +13,9 @@
             Mapper.Map(guaranty, this);
             保证合同编号 = guaranty.Id.ToString();
             CreditcardCode = credit.Organization.LoanCardCode;
+            SigningDate = guaranty.SigningDate == null ? "" : guaranty.SigningDate.Value.ToString("yyyyMMdd");
         }
-       
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {

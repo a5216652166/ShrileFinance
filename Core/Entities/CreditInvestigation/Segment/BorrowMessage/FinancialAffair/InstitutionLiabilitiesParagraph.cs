@@ -1,14 +1,12 @@
-﻿using Core.Entities.Customers.Enterprise;
-
-namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
+    using Core.Entities.Customers.Enterprise;
+
     /// <summary>
     /// 事业单位资产负债表信息记录
     /// </summary>
     public class InstitutionLiabilitiesParagraph : AbsSegment
     {
-        public InstitutionLiabilitiesParagraph() { }
-
         public InstitutionLiabilitiesParagraph(InstitutionLiabilities institutionLiabilities)
         {
             AutoMapper.Mapper.Map(institutionLiabilities, this);
@@ -124,7 +122,6 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         /// </summary>
         [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(322, false)]
         public string 经营支出 { get; set; }
-
 
         /// <summary>
         /// 成本费用

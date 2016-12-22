@@ -43,7 +43,5 @@
                 return RecordTypeEnum.事业单位收入支出表信息记录;
             }
         }
-
-        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }

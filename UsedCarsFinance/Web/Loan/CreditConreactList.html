@@ -97,6 +97,9 @@
                         $("#dl").dialog("close");
                         $("#dg").datagrid("reload");
                         top.$.messager.show({ msg: "修改成功" });
+                    },
+                    400: function (data) {
+                        top.$.messager.show({ msg: data.responseJSON.Message });
                     }
                 }
             });

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data;
+    using System.IO;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
@@ -49,6 +50,23 @@
         }
 
         /// <summary>
+        /// 下载单个报文文件
+        /// </summary>
+        /// <param name="id">报文标识</param>
+        /// <returns>报文文件</returns>
+        public FileInfo Download(Guid id)
+        {
+            var trace = repository.Get(id);
+
+            if (trace == null)
+            {
+                throw new Exception("该报文不存在");
+            }
+
+            return trace.ToFile();
+        }
+
+        /// <summary>
         /// 生成昨日的报文
         /// </summary>
         public void Generate()
@@ -57,6 +75,26 @@
             var traces = repository.GetByTraceDate(lastDate);
 
             factory.Generate(traces);
+        }
+
+        public void GenerateTest()
+        {
+            var lastDate = DateTime.Now.Date;
+            var traces = repository.GetByTraceDate(lastDate).Skip(3).Take(1);
+
+            try
+            {
+                factory.Generate(traces);
+
+                repository.Commit();
+
+                var trace = traces.First();
+                var file = trace.ToFile();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         /// <summary>

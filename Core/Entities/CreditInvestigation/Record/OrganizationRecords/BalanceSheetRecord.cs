@@ -45,7 +45,5 @@
                 return RecordTypeEnum.资产负债表信息记录2007版;
             }
         }
-
-        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }

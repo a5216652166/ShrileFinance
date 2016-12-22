@@ -11,11 +11,14 @@
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(m => m.DateCreated);
-            // Property(m => m.Type);
             Property(m => m.SerialNumber).IsRequired().HasMaxLength(4);
+            Property(m => m.DateCreated);
 
-            HasMany(m => m.Datagrams);
+            Map<OrganizationDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.机构基本信息采集报文文件));
+            Map<LoanDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.信贷业务信息文件));
+
+            HasMany(m => m.Datagrams).WithRequired()
+                .HasForeignKey(m => m.DatagramFileId).WillCascadeOnDelete();
 
             ToTable("CIDG_DatagramFile");
         }

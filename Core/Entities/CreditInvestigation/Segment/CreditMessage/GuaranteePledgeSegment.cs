@@ -13,6 +13,7 @@
             Mapper.Map(mortgage, this);
             质押合同编号 = mortgage.Id.ToString();
             CreditcardCode = credit.Organization.LoanCardCode;
+            SigningDate = mortgage.SigningDate == null ? "" : mortgage.SigningDate.Value.ToString("yyyyMMdd");
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

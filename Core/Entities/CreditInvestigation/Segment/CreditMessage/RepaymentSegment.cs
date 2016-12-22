@@ -5,9 +5,10 @@
 
     public class RepaymentSegment : AbsSegment
     {
-        public RepaymentSegment(int times ,PaymentHistory payment)
+        public RepaymentSegment(int times, PaymentHistory payment)
         {
             Mapper.Map(payment, this);
+            DatePayment = payment.DatePayment.ToString("yyyyMMdd");
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

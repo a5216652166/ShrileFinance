@@ -1,13 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
-using Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
-using System.IO;
-
-namespace Core.Tests
+﻿namespace Core.Tests
 {
+    using System;
+    using System.Text;
+    using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     /// <summary>
     /// PackingTest 的摘要说明
     /// </summary>
@@ -52,14 +49,14 @@ namespace Core.Tests
             Type objType = typeof(ProfitsParagraph);
             string filePath = string.Format("E:\\Configuration\\{0}Configuration.cs", objType.Name);
 
-            //Model2Entity.ConvertEntity<ProfitsParagraph>(builder);
+            ////Model2Entity.ConvertEntity<ProfitsParagraph>(builder);
 
-            //FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate);
-            //byte[] data = Encoding.Default.GetBytes(builder.ToString());
+            ////FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate);
+            ////byte[] data = Encoding.Default.GetBytes(builder.ToString());
 
-            //fs.Write(data, 0, data.Length);
-            //fs.Flush();
-            //fs.Close();
+            ////fs.Write(data, 0, data.Length);
+            ////fs.Flush();
+            ////fs.Close();
         }
     }
 }

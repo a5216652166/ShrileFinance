@@ -40,6 +40,10 @@
             Status = TraceStatusEmum.待生成;
         }
 
+        protected Trace()
+        {
+        }
+
         /// <summary>
         /// 跟踪日期
         /// </summary>
@@ -73,12 +77,12 @@
         /// <summary>
         /// 报文文件标识
         /// </summary>
-        public Guid DatagramFileId { get; private set; }
+        public Guid? DatagramFileId { get; private set; }
 
         /// <summary>
         /// 报文文件
         /// </summary>
-        public AbsDatagramFile DatagramFile { get; private set; }
+        public virtual AbsDatagramFile DatagramFile { get; private set; }
 
         /// <summary>
         /// 添加报文文件

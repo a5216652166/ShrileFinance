@@ -32,7 +32,5 @@
                 return RecordTypeEnum.诉讼信息记录;
             }
         }
-
-        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }

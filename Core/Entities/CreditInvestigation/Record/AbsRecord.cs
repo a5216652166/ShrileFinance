@@ -1,5 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record
 {
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using Segment;
@@ -28,15 +29,24 @@
         自然人保证合同信息记录 = 32,
         自然人抵押合同信息记录 = 33,
         自然人质押合同信息记录 = 34,
-
-        未使用信息记录 = 99
     }
 
     public abstract class AbsRecord : Entity
     {
+        /// <summary>
+        /// 信息记录类型
+        /// </summary>
         public abstract RecordTypeEnum Type { get; }
 
-        public abstract ICollection<AbsSegment> Segments { get; protected set; }
+        /// <summary>
+        /// 报文标识
+        /// </summary>
+        public Guid DatagramId { get; private set; }
+
+        /// <summary>
+        /// 段集合
+        /// </summary>
+        public virtual ICollection<AbsSegment> Segments { get; protected set; }
 
         public void Packaging(StringBuilder builder)
         {

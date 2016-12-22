@@ -14,7 +14,9 @@
             抵押合同编号 = guarantyContractMortgage.Id.ToString();
             Name = guarantyContractMortgage.Guarantor.Name;
             CreditcardCode = creditContract.Organization.LoanCardCode;
-            SigningDate = guarantyContractMortgage.SigningDate.Value.ToString("yyyyMMdd");
+            SigningDate = guarantyContractMortgage.SigningDate == null ? "" : guarantyContractMortgage.SigningDate.Value.ToString("yyyyMMdd");
+            AssessmentDate = guarantyContractMortgage.AssessmentDate == null ? "" : guarantyContractMortgage.AssessmentDate.Value.ToString("yyyyMMdd");
+            RegistrateDate = guarantyContractMortgage.RegistrateDate == null ? "" : guarantyContractMortgage.RegistrateDate.Value.ToString("yyyyMMdd");
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
