@@ -44,28 +44,28 @@
                 switch (trace.Type)
                 {
                     case TraceTypeEnum.添加机构:
-                        datagramFile = CreateLoan(trace);
+                        datagramFile = CreateOrganization(trace);
                         break;
                     case TraceTypeEnum.签订授信合同:
-                        datagramFile = CreateLoan(trace);
+                        datagramFile = CreateContract(trace);
                         break;
                     case TraceTypeEnum.借款:
                         datagramFile = CreateLoan(trace);
                         break;
                     case TraceTypeEnum.还款:
-                        datagramFile = CreateLoan(trace);
+                        datagramFile = CreatePayment(trace);
                         break;
                     case TraceTypeEnum.终止合同:
-                        datagramFile = CreateLoan(trace);
+                        datagramFile = StopContract(trace);
                         break;
                     case TraceTypeEnum.逾期:
-                        datagramFile = CreateLoan(trace);
+                        datagramFile = AdjustLoan(trace);
                         break;
                     case TraceTypeEnum.合同变更:
-                        datagramFile = CreateLoan(trace);
+                        datagramFile = ModifyContract(trace);
                         break;
                     case TraceTypeEnum.欠息:
-                        datagramFile = CreateLoan(trace);
+                        datagramFile = DebitInterest(trace);
                         break;
                     default:
                         throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
@@ -100,18 +100,22 @@
             {
                 financialDatagram.AddRecord(new BalanceSheetRecord(organization, item));
             }
+
             foreach (var item in organization.FinancialAffairs.Profit)
             {
                 financialDatagram.AddRecord(new ProfitRecord(organization, item));
             }
+
             foreach (var item in organization.FinancialAffairs.CashFlow)
             {
                 financialDatagram.AddRecord(new CashFlowRecord(organization, item));
             }
+
             foreach (var item in organization.FinancialAffairs.InstitutionLiabilities)
             {
                 financialDatagram.AddRecord(new InstitutionLiabilitiesRecord(organization, item));
             }
+
             foreach (var item in organization.FinancialAffairs.IncomeExpenditur)
             {
                 financialDatagram.AddRecord(new InstitutionIncomeExpenditureRecord(organization, item));
@@ -263,6 +267,25 @@
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanIousInfoRecord(loan, credit));
+
+            return datagramFile;
+        }
+
+        /// <summary>
+        /// 欠息
+        /// </summary>
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        private AbsDatagramFile DebitInterest(Trace trace)
+        {
+            var payment = paymentRepository.Get(trace.ReferenceId);
+            var loan = loanRepository.Get(payment.LoanId);
+            var credit = creditRepository.Get(loan.CreditId);
+
+            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+
+            datagramFile.GetDatagram(DatagramTypeEnum.欠息信息采集报文)
+                .AddRecord(new DebitInterestInfoRecord(credit, payment));
 
             return datagramFile;
         }

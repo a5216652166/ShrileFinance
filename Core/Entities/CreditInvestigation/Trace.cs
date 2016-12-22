@@ -40,7 +40,7 @@
             Status = TraceStatusEmum.待生成;
         }
 
-        public Trace()
+        protected Trace()
         {
         }
 
