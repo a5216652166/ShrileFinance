@@ -1,16 +1,13 @@
 ﻿namespace Application.Mappings
 {
-    using System.Linq;
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Finance;
-    using Core.Entities.CreditInvestigation;
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;
     using ViewModels.FinanceViewModels;
-    using ViewModels.Message;
     using ViewModels.OrganizationViewModels;
     using ViewModels.PartnerViewModels;
     using ViewModels.ProduceViewModel;

@@ -9,7 +9,6 @@
     using Core.Interfaces.Repositories;
     using Core.Services.CreditInvestigation;
     using ViewModels.CreditInvesitigation.TraceViewModels;
-    using ViewModels.Message;
     using X.PagedList;
 
     /// <summary>
@@ -104,7 +103,7 @@
         /// <param name="page">页码</param>
         /// <param name="size">每页数量</param>
         /// <returns></returns>
-        public IPagedList<MessageTrackViewModel> GetPageList(string search, int page, int size)
+        public IPagedList<TraceViewModel> GetPageList(string search, int page, int size)
         {
             var messageTrack = repository.GetAll();
 
@@ -116,7 +115,7 @@
             messageTrack = messageTrack.OrderByDescending(m => m.Id);
             var pageList = messageTrack.ToPagedList(page, size);
 
-            var models = Mapper.Map<IPagedList<MessageTrackViewModel>>(pageList);
+            var models = Mapper.Map<IPagedList<TraceViewModel>>(pageList);
 
             return models;
         }
