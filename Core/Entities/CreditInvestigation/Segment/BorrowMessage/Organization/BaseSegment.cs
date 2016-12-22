@@ -10,7 +10,7 @@
         public BaseSegment(Organization organization)
         {
             Mapper.Map(organization, this);
-            数据提取日期 = DateTime.Now.ToString("yyyyMMdd");
+            数据提取日期 = organization.CreatedDate.ToString("yyyyMMdd");
         }
 
         /// <summary>

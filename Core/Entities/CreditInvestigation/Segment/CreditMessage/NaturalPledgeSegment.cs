@@ -12,7 +12,7 @@
         {
             Mapper.Map(guaranty, this);
             质押合同编号 = guaranty.Id.ToString();
-            SigningDate = guaranty.SigningDate.Value.ToString("yyyyMMdd");
+            SigningDate = guaranty.SigningDate == null ? "" : guaranty.SigningDate.Value.ToString("yyyyMMdd");
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

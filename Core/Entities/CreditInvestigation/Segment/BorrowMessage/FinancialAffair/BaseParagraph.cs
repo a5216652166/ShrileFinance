@@ -23,6 +23,7 @@
             审计事务所名称 = financialAffairs.AuditFirm;
             审计人员名称 = financialAffairs.AuditorName;
             信息记录操作类型 = "1";
+            审计时间 = financialAffairs.
             业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

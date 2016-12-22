@@ -9,6 +9,8 @@
         public PropertySegment(OrganizationProperties property)
         {
             Mapper.Map(property, this);
+            SetupDate = property.SetupDate == null ? "" : property.SetupDate.Value.ToString("yyyyMMdd");
+            CertificateDueDate = property.CertificateDueDate == null ? "" : property.CertificateDueDate.Value.ToString("yyyyMMdd");
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

@@ -8,7 +8,8 @@
         public LoanSegment(Loan loan)
         {
             Mapper.Map(loan, this);
-
+            SpecialDate = loan.SpecialDate.ToString("yyyyMMdd");
+            MatureDate = loan.MatureDate.ToString("yyyyMMdd");
             借据编号 = loan.Id.ToString();
         }
 
