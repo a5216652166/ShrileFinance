@@ -54,7 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="File\FileHelper.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Http\HttpHelper.cs" />
     <Compile Include="Logger\Log4net.cs" />
     <Compile Include="Logger\LoggingModule.cs" />
     <Compile Include="PDF\PathManager.cs">

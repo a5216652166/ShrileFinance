@@ -9,6 +9,8 @@
     using Application.ViewModels.AccountViewModels;
     using Microsoft.AspNet.Identity;
     using Microsoft.Owin.Security;
+    using global::Infrastructure.File;
+    using global::Infrastructure.Http;
 
     public class TestController : ApiController
     {
@@ -23,6 +25,17 @@
         public IHttpActionResult Generate()
         {
             service.GenerateTest();
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IHttpActionResult DownLoad()
+        {
+            string filePath = @"F:\android.txt";
+            FileHelper.Create(filePath, "测试代码");
+            HttpHelper.DownLoad(filePath);
 
             return Ok();
         }
