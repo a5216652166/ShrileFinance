@@ -16,6 +16,7 @@
         public BalanceSheetRecord(Organization organization) : base()
         {
             var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
+
             Segments = new List<AbsSegment>()
             {
                 // 基础段

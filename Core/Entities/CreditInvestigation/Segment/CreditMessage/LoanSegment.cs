@@ -10,6 +10,8 @@
             Mapper.Map(loan, this);
             SpecialDate = loan.SpecialDate.ToString("yyyyMMdd");
             MatureDate = loan.MatureDate.ToString("yyyyMMdd");
+            FourCategoryAssetsClassification = loan.FourCategoryAssetsClassification?.ToString("D");
+            FiveCategoryAssetsClassification = loan.FiveCategoryAssetsClassification.ToString("D");
             借据编号 = loan.Id.ToString();
         }
 
