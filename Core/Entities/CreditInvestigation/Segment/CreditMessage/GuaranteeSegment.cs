@@ -1,7 +1,8 @@
-﻿using Core.Entities.Loan;
-
-namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
+﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
+    using AutoMapper;
+    using Core.Entities.Loan;
+
     /// <summary>
     /// 担保
     /// </summary>
@@ -9,6 +10,7 @@ namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
     {
         public GuaranteeSegment(CreditContract credit, GuarantyContract guaranty)
         {
+            Mapper.Map(guaranty, this);
             保证合同编号 = guaranty.Id.ToString();
             CreditcardCode = credit.Organization.LoanCardCode;
         }

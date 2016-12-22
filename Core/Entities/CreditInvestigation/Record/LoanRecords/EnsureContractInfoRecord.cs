@@ -6,19 +6,19 @@
     using Loan;
 
     /// <summary>
-    /// 自然人抵押合同信息记录
+    /// 保证合同信息记录
     /// </summary>
-    public class NaturalMortgageContractInfoRecord : AbsRecord
+    public class EnsureContractInfoRecord : AbsRecord
     {
-        public NaturalMortgageContractInfoRecord(CreditContract credit, GuarantyContractMortgage guaranty) : base()
+        public EnsureContractInfoRecord(CreditContract credit,GuarantyContract guaranty) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment("自然人抵押",credit),
+                new GuaranteeBaseSegment(Type,credit),
 
-                // 自然人抵押合同信息段
-                new NaturalMortgageSegment(guaranty.Id.ToString())
+                // 保证合同信息段
+                new GuaranteeSegment(credit,guaranty)
             };
         }
 
@@ -28,7 +28,7 @@
         {
             get
             {
-                return RecordTypeEnum.自然人抵押合同信息记录;
+                return RecordTypeEnum.保证合同信息记录;
             }
         }
     }

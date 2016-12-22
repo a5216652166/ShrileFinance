@@ -1,12 +1,19 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
     using System.ComponentModel.DataAnnotations;
+    using AutoMapper;
+    using Customers.Enterprise;
 
     /// <summary>
     /// 大事件
     /// </summary>
     public class BigEventSegment : AbsSegment
     {
+        public BigEventSegment(BigEvent bigEvent)
+        {
+            Mapper.Map(bigEvent, this);
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {

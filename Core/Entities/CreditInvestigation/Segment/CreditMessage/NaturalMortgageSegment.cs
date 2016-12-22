@@ -1,10 +1,14 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
+    using AutoMapper;
+    using Core.Entities.Loan;
+
     public class NaturalMortgageSegment : AbsSegment
     {
-        public NaturalMortgageSegment(string id)
+        public NaturalMortgageSegment(GuarantyContractMortgage mortgage)
         {
-            抵押合同编号 = id;
+            Mapper.Map(mortgage, this);
+            抵押合同编号 = mortgage.Id.ToString();
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]

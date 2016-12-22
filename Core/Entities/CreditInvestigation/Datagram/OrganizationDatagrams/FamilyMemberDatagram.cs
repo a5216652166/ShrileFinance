@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Record;
-    using Record.OrganizationRecords.OrganizationInfo;
 
     /// <summary>
     /// 家族成员信息报文

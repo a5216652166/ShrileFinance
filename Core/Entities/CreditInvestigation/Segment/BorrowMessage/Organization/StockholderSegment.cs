@@ -1,15 +1,17 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
+    using AutoMapper;
+    using Customers.Enterprise;
 
     /// <summary>
     /// 重要股东
     /// </summary>
     public class StockholderSegment : AbsSegment
     {
-        public StockholderSegment()
+        public StockholderSegment(Stockholder stockholder)
         {
+            Mapper.Map(stockholder, this);
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

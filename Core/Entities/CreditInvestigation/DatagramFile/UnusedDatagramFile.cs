@@ -8,7 +8,7 @@
     /// </summary>
     public class UnusedDatagramFile : AbsDatagramFile
     {
-        public UnusedDatagramFile(string serialNumber) : base(serialNumber)
+        public UnusedDatagramFile(int serialNumber) : base(serialNumber)
         {
         }
 

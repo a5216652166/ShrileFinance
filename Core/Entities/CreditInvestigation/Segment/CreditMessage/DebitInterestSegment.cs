@@ -10,6 +10,7 @@
         public DebitInterestSegment(Loan.PaymentHistory payment) : base()
         {
             欠息余额 = (payment.ScheduledPaymentInterest - payment.ActualPaymentPrincipal).ToString();
+            欠息余额改变日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]

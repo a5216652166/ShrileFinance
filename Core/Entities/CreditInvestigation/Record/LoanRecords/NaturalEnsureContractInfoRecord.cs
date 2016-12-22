@@ -5,20 +5,21 @@
     using Segment.CreditMessage;
     using Loan;
 
+
     /// <summary>
-    /// 自然人质押合同信息记录
+    /// 自然人保证合同信息记录
     /// </summary>
-    public class NaturalPledgeContractInfoRecord : AbsRecord
+    public class NaturalEnsureContractInfoRecord : AbsRecord
     {
-        public NaturalPledgeContractInfoRecord(CreditContract credit, GuarantyContractPledge guaranty) : base()
+        public NaturalEnsureContractInfoRecord(CreditContract credit, GuarantyContract guaranty) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment("自然人质押",credit),
+                new GuaranteeBaseSegment(Type,credit),
 
-                // 自然人质押合同信息段
-                new NaturalPledgeSegment(guaranty)
+                // 自然人保证合同信息段
+                new NaturalGuaranteeSegment(guaranty)
             };
         }
 
@@ -28,7 +29,7 @@
         {
             get
             {
-                return RecordTypeEnum.自然人质押合同信息记录;
+                return RecordTypeEnum.自然人保证合同信息记录;
             }
         }
     }

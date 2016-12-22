@@ -1,16 +1,16 @@
-﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords.FinancialAffiarInfo
+﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
-    using Loan;
+    using Customers.Enterprise;
     using Segment;
     using Segment.BorrowMessage.FinancialAffair;
 
     /// <summary>
-    /// 2007版利润及利润分配表信息记录
+    /// 2007版资产负债表信息记录
     /// </summary>
-    public class ProfitRecord : AbsRecord
+    public class BalanceSheetRecord : AbsRecord
     {
-        public ProfitRecord(CreditContract credit) : base()
+        public BalanceSheetRecord(Organization organization) : base()
         {
             Segments = new List<AbsSegment>()
             {
@@ -18,10 +18,10 @@
                 new BaseParagraph()
             };
 
-            // 2007版利润及利润分配表信息记录
-            foreach (var item in credit.Organization.FinancialAffairs.Profit)
+            // 2007版资产负债表段
+            foreach (var item in organization.FinancialAffairs.Liabilities)
             {
-                Segments.Add(new ProfitsParagraph());
+                Segments.Add(new LiabilitiesParagraph());
             }
         }
 
@@ -29,7 +29,7 @@
         {
             get
             {
-                return RecordTypeEnum.利润及利润分配表信息记录2007版;
+                return RecordTypeEnum.资产负债表信息记录2007版;
             }
         }
 

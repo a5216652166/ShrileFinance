@@ -48,9 +48,13 @@
             }
         }
 
+        /// <summary>
+        /// 生成昨日的报文
+        /// </summary>
         public void Generate()
         {
-            var traces = repository.GetByTraceDate(DateTime.Now.Date);
+            var lastDate = DateTime.Now.Date.AddDays(-1);
+            var traces = repository.GetByTraceDate(lastDate);
 
             factory.Generate(traces);
         }

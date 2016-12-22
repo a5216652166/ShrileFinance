@@ -9,7 +9,7 @@
     /// </summary>
     public class LoanDatagramFile : AbsDatagramFile
     {
-        public LoanDatagramFile(string serialNumber) : base(serialNumber)
+        public LoanDatagramFile(int serialNumber) : base(serialNumber)
         {
             Datagrams = new List<AbsDatagram>
             {

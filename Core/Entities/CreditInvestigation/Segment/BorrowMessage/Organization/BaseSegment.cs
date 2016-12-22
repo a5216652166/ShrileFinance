@@ -2,11 +2,14 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using AutoMapper;
+    using Customers.Enterprise;
 
     public class BaseSegment : AbsSegment
     {
-        public BaseSegment()
+        public BaseSegment(Organization organization)
         {
+            Mapper.Map(organization, this);
             数据提取日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

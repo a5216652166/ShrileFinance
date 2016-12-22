@@ -292,6 +292,7 @@
     <Compile Include="Repositories\InstanceRepository.cs" />
     <Compile Include="Repositories\FinancingProjectRepository.cs" />
     <Compile Include="Repositories\LoanRepository.cs" />
+    <Compile Include="Repositories\PaymentHistoryRepository.cs" />
     <Compile Include="Repositories\TraceRepository.cs" />
     <Compile Include="Repositories\OrganizationRepository.cs" />
     <Compile Include="Repositories\ProduceRepository.cs" />

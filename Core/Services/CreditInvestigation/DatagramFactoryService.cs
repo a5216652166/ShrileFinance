@@ -1,8 +1,6 @@
 ﻿namespace Core.Services.CreditInvestigation
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Entities.CreditInvestigation;
     using Entities.CreditInvestigation.Datagram;
     using Entities.CreditInvestigation.DatagramFile;
@@ -12,17 +10,27 @@
 
     public class DatagramFactoryService
     {
+        private readonly IOrganizationRepository organizationRepository;
         private readonly ICreditContractRepository creditRepository;
         private readonly ILoanRepository loanRepository;
+        private readonly IPaymentHistoryRepository paymentRepository;
 
         public DatagramFactoryService(
+            IOrganizationRepository organizationRepository,
             ICreditContractRepository creditRepository,
-            ILoanRepository loanRepository)
+            ILoanRepository loanRepository,
+            IPaymentHistoryRepository paymentRepository)
         {
+            this.organizationRepository = organizationRepository;
             this.creditRepository = creditRepository;
             this.loanRepository = loanRepository;
+            this.paymentRepository = paymentRepository;
         }
 
+        /// <summary>
+        /// 生成报文
+        /// </summary>
+        /// <param name="traces">跟踪记录集合</param>
         public void Generate(IEnumerable<Trace> traces)
         {
             AbsDatagramFile datagramFile;
@@ -32,28 +40,28 @@
                 switch (trace.Type)
                 {
                     case TraceTypeEnum.添加机构:
-                        datagramFile = CreateLoan(trace.ReferenceId);
+                        datagramFile = CreateLoan(trace);
                         break;
                     case TraceTypeEnum.签订授信合同:
-                        datagramFile = CreateLoan(trace.ReferenceId);
+                        datagramFile = CreateLoan(trace);
                         break;
                     case TraceTypeEnum.借款:
-                        datagramFile = CreateLoan(trace.ReferenceId);
+                        datagramFile = CreateLoan(trace);
                         break;
                     case TraceTypeEnum.还款:
-                        datagramFile = CreateLoan(trace.ReferenceId);
+                        datagramFile = CreateLoan(trace);
                         break;
                     case TraceTypeEnum.终止合同:
-                        datagramFile = CreateLoan(trace.ReferenceId);
+                        datagramFile = CreateLoan(trace);
                         break;
                     case TraceTypeEnum.逾期:
-                        datagramFile = CreateLoan(trace.ReferenceId);
+                        datagramFile = CreateLoan(trace);
                         break;
                     case TraceTypeEnum.合同变更:
-                        datagramFile = CreateLoan(trace.ReferenceId);
+                        datagramFile = CreateLoan(trace);
                         break;
                     case TraceTypeEnum.欠息:
-                        datagramFile = CreateLoan(trace.ReferenceId);
+                        datagramFile = CreateLoan(trace);
                         break;
                     default:
                         throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
@@ -64,54 +72,131 @@
         }
 
         /// <summary>
-        /// 创建报文文件
+        /// 创建机构
         /// </summary>
-        /// <param name="fileType">报文文件种类</param>
+        /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile CreateFile(DatagramFileType fileType)
+        private AbsDatagramFile CreateOrganization(Trace trace)
         {
-            AbsDatagramFile file;
-            var serialNumber = GenerateSerialNumber();
+            var organization = organizationRepository.Get(trace.ReferenceId);
 
-            switch (fileType)
-            {
-                case DatagramFileType.机构基本信息采集报文文件:
-                    file = new OrganizationDatagramFile(serialNumber);
-                    break;
-                case DatagramFileType.信贷业务信息文件:
-                    file = new LoanDatagramFile(serialNumber);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeAppException(nameof(fileType), "无效的报文文件类型。");
-            }
+            var datagramFile = new OrganizationDatagramFile(trace.SerialNumber);
 
-            return file;
+            datagramFile.GetDatagram(DatagramTypeEnum.机构基本信息报文);
+            datagramFile.GetDatagram(DatagramTypeEnum.家族成员信息报文);
+            datagramFile.GetDatagram(DatagramTypeEnum.财务报表信息采集报文);
+            datagramFile.GetDatagram(DatagramTypeEnum.关注信息采集报文);
+
+            return datagramFile;
         }
 
         /// <summary>
-        /// 生成序列号
+        /// 签订合同
         /// </summary>
+        /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private string GenerateSerialNumber()
+        private AbsDatagramFile CreateContract(Trace trace)
         {
-            throw new NotImplementedException();
+            var credit = creditRepository.Get(trace.ReferenceId);
+
+            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+
+            datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
+                .AddRecord(new LoanContractInfoRecord(credit));
+            datagramFile.GetDatagram(DatagramTypeEnum.担保业务信息采集报文);
+
+            return datagramFile;
         }
 
-        private AbsDatagramFile CreateLoan(Guid id)
+        /// <summary>
+        /// 合同关键数据项发生变化
+        /// </summary>
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        private AbsDatagramFile ModifyContract(Trace trace)
         {
-            var loan = loanRepository.Get(id);
+            var credit = creditRepository.Get(trace.ReferenceId);
+
+            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+
+            datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
+                .AddRecord(new LoanContractInfoRecord(credit));
+
+            return datagramFile;
+        }
+
+        /// <summary>
+        /// 合同终止
+        /// </summary>
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        private AbsDatagramFile StopContract(Trace trace)
+        {
+            var credit = creditRepository.Get(trace.ReferenceId);
+
+            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+
+            datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
+                .AddRecord(new LoanContractInfoRecord(credit));
+
+            return datagramFile;
+        }
+
+        /// <summary>
+        /// 放款
+        /// </summary>
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        private AbsDatagramFile CreateLoan(Trace trace)
+        {
+            var loan = loanRepository.Get(trace.ReferenceId);
             var credit = creditRepository.Get(loan.CreditId);
 
-            var loanRecord = new LoanIousInfoRecord(loan, credit);
-            var creditRecord = new LoanContractInfoRecord(credit);
+            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
 
-            var file = CreateFile(DatagramFileType.信贷业务信息文件);
-            var datagram = file.Datagrams.Single(m => m.Type == DatagramTypeEnum.贷款业务信息采集报文);
+            datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
+                .AddRecord(new LoanContractInfoRecord(credit))
+                .AddRecord(new LoanIousInfoRecord(loan, credit));
 
-            datagram.AddRecord(creditRecord);
-            datagram.AddRecord(loanRecord);
+            return datagramFile;
+        }
 
-            return file;
+        /// <summary>
+        /// 还款
+        /// </summary>
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        private AbsDatagramFile CreatePayment(Trace trace)
+        {
+            var payment = paymentRepository.Get(trace.ReferenceId);
+            var loan = loanRepository.Get(payment.LoanId);
+            var credit = creditRepository.Get(loan.CreditId);
+
+            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+
+            datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
+                .AddRecord(new LoanIousInfoRecord(loan, credit))
+                .AddRecord(new LoanRepayInfoRecord(credit, payment));
+
+            return datagramFile;
+        }
+
+        /// <summary>
+        /// 五级分类调整
+        /// </summary>
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        private AbsDatagramFile AdjustLoan(Trace trace)
+        {
+            var loan = loanRepository.Get(trace.ReferenceId);
+            var credit = creditRepository.Get(loan.CreditId);
+
+            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+
+            datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
+                .AddRecord(new LoanIousInfoRecord(loan, credit));
+
+            return datagramFile;
         }
     }
 }

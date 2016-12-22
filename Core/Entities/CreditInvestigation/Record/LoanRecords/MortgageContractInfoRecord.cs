@@ -1,24 +1,25 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
+    using System;
     using System.Collections.Generic;
     using Segment;
     using Segment.CreditMessage;
     using Loan;
 
     /// <summary>
-    /// 质押合同信息记录
+    /// 抵押合同信息记录
     /// </summary>
-    public class PledgeContractInfoRecord : AbsRecord
+    public class MortgageContractInfoRecord : AbsRecord
     {
-        public PledgeContractInfoRecord(CreditContract credit, GuarantyContractMortgage guaranty) : base()
+        public MortgageContractInfoRecord(CreditContract credit, GuarantyContractMortgage guaranty) : base()
         {
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new GuaranteeBaseSegment("质押",credit),
+                new GuaranteeBaseSegment(Type,credit),
 
-                // 自然人质押合同信息段
-                new GuaranteePledgeSegment(guaranty,credit)
+                // 抵押合同信息段
+                new GuaranteeMortgageSegment(guaranty,credit)
             };
         }
 
@@ -28,7 +29,7 @@
         {
             get
             {
-                return RecordTypeEnum.质押合同信息记录;
+                return RecordTypeEnum.抵押合同信息记录;
             }
         }
     }
