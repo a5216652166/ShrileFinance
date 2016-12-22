@@ -9,6 +9,7 @@
     using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Concern;
     using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Organization;
     using ModelConfigurations.CreditInvestigation.Segment.CreditMessage;
+    using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
 
     public class MyContext : IdentityDbContext
     {
@@ -117,6 +118,12 @@
                 .Add(new NaturalMortgageSegmentConfiguration())
                 .Add(new NaturalPledgeSegmentConfiguration())
                 .Add(new RepaymentSegmentConfiguration())
+                .Add(new BaseParagraphConfiguration())
+                .Add(new CashFlowParagraphConfiguration())
+                .Add(new IncomeExpenditureParagraphConfiguration())
+                .Add(new LiabilitiesParagraphConfiguration())
+                .Add(new InstitutionLiabilitiesParagraphConfiguration())
+                .Add(new ProfitsParagraphConfiguration())
                 ;
             base.OnModelCreating(modelBuilder);
         }
