@@ -39,27 +39,27 @@
         /// 操作类型
         /// </summary>
         [Display(Name = "操作类型")]
-        public MessageOperationTypeEnum OperationType { get; set; }
+        public MessageOperationTypeEnum Type { get; set; }
 
-        public string OperationTypeDesc
+        public string TypeDesc
         {
             get
-            { return OperationType.ToString(); }
+            { return Type.ToString(); }
         }
 
         /// <summary>
         /// 报文状态
         /// </summary>
         [Display(Name = "报文状态")]
-        public MessageStatusEmum MessageStatus { get; set; }
+        public MessageStatusEmum Status { get; set; }
 
-        public string MessageStatusDesc
+        public string StatusDesc
         {
             get
-            { return MessageStatus.ToString(); }
+            { return Status.ToString(); }
         }
 
         [Display(Name = "跟踪日期")]
-        public DateTime TrackDate { get; set; }
+        public DateTime TraceDate { get; set; }
     }
 }
