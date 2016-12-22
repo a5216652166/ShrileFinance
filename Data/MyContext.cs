@@ -90,6 +90,9 @@
 
             // CreditInvestigations
             modelBuilder.Configurations
+                .Add(new DatagramFileConfiguration())
+                .Add(new DatagramConfiguration())
+                .Add(new RecordConfiguration())
                 .Add(new TraceConfiguration())
                 .Add(new BigEventSegmentConfiguration())
                 .Add(new ConcernBaseSegmentConfiguration())
