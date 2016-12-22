@@ -18,7 +18,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         /// 信息类别
         /// </summary>
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
-        public string Type
+        public string 信息类别
         {
             get { return "H"; }
         }

@@ -11,7 +11,6 @@ namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Fin
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(m => m.Type).HasMaxLength(1);
             Property(m => m.现金).HasMaxLength(20);
             Property(m => m.银行存款).HasMaxLength(20);
             Property(m => m.应收票据).HasMaxLength(20);

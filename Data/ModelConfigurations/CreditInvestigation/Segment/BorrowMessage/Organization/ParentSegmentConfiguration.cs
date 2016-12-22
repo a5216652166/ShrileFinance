@@ -22,7 +22,7 @@
             Property(m => m.InstitutionCreditCode).HasMaxLength(18);
             Property(m => m.信息更新日期).HasMaxLength(8);
 
-            ToTable("CUST_ParentSegment");
+            ToTable("CIDG_ParentSegment");
         }
     }
 }

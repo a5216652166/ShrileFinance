@@ -18,6 +18,7 @@
                 new FamilySegment()
             };
         }
+
         public FamilyMemberRecord(Stockholder manager, FamilyMember familyMember) : base()
         {
             Segments = new List<AbsSegment>()

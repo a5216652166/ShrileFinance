@@ -21,7 +21,7 @@
             Property(m => m.SharesProportion).HasMaxLength(10);
             Property(m => m.信息更新日期).HasMaxLength(8);
 
-            ToTable("CUST_StockholderSegment");
+            ToTable("CIDG_StockholderSegment");
         }
     }
 }

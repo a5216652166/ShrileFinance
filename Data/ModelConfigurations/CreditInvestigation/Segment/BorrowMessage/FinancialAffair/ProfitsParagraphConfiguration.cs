@@ -11,7 +11,6 @@ namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Fin
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(m => m.Type).HasMaxLength(1);
             Property(m => m.BusinessIncome).HasMaxLength(20);
             Property(m => m.OperatingCost).HasMaxLength(20);
             Property(m => m.SalesTax).HasMaxLength(20);

@@ -1,6 +1,6 @@
 ﻿using Core.Entities.CreditInvestigation.DatagramFile;
 using Core.Entities.Customers.Enterprise;
-using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
@@ -11,12 +11,16 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
     {
         public BaseParagraph() { }
 
-        public BaseParagraph(FinancialAffairs financialAffairs)
+        public BaseParagraph(FinancialAffairs financialAffairs,Customers.Enterprise.Organization organization,string type)
         {
+            报表类型 = type;
+            借款人名称 = organization.Property.InstitutionChName;
+            贷款卡编号 = organization.LoanCardCode;
             报表年份 = financialAffairs.Year.ToString();
             报表类型细分 = financialAffairs.TypeSubdivision.ToString();
             审计事务所名称 = financialAffairs.AuditFirm;
             审计人员名称 = financialAffairs.AuditorName;
+            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
         /// <summary>
@@ -47,7 +51,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true)]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FinancialOrganizationCode; ; }
+            get { return AbsDatagramFile.FinancialOrganizationCode; }
         }
 
         /// <summary>

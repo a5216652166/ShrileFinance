@@ -18,19 +18,21 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph()
-            };
+                new BaseParagraph(financial, organization, item.Type.ToString()),
 
-            // 2007版利润及利润分配表信息记录
-            foreach (var item in organization.FinancialAffairs.Profit)
-            {
-                Segments.Add(new ProfitsParagraph());
-            }
+                // 2007版利润及利润分配表信息记录
+                new ProfitsParagraph(item)
+            };
         }
 
         public ProfitRecord(FinancialAffairs financial, Profit item)
         {
             this.financial = financial;
+            this.item = item;
+        }
+
+        public ProfitRecord(Organization organization, Profit item) : this(organization)
+        {
             this.item = item;
         }
 

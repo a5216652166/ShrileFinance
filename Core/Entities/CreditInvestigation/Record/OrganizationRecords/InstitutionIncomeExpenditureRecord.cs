@@ -18,19 +18,21 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph()
-            };
+                new BaseParagraph(financial, organization, item.Type.ToString()),
 
-            // 事业单位收入支出表段
-            foreach (var item in organization.FinancialAffairs.IncomeExpenditur)
-            {
-                Segments.Add(new IncomeExpenditureParagraph());
-            }
+                // 事业单位收入支出表段
+                new IncomeExpenditureParagraph(item)
+            };
         }
 
         public InstitutionIncomeExpenditureRecord(FinancialAffairs financial, InstitutionIncomeExpenditure item)
         {
             this.financial = financial;
+            this.item = item;
+        }
+
+        public InstitutionIncomeExpenditureRecord(Organization organization, InstitutionIncomeExpenditure item) : this(organization)
+        {
             this.item = item;
         }
 

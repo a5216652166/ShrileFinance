@@ -8,7 +8,7 @@
     /// </summary>
     public class GuaranteePledgeSegment : AbsSegment
     {
-        public GuaranteePledgeSegment(GuarantyContractMortgage mortgage, CreditContract credit)
+        public GuaranteePledgeSegment(GuarantyContractPledge mortgage, CreditContract credit)
         {
             Mapper.Map(mortgage, this);
             质押合同编号 = mortgage.Id.ToString();
