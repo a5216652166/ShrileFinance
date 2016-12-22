@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Text;
     using Segment;
-    using System;
 
     public enum RecordTypeEnum
     {

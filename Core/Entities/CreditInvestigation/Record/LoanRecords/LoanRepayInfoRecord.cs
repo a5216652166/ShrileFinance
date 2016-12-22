@@ -22,6 +22,8 @@
                 // 还款信息段
                 new RepaymentSegment(time,payment)
             };
+
+            ((CreditBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
         }
 
         public override RecordTypeEnum Type

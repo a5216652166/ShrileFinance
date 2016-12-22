@@ -1,14 +1,14 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.CreditMessage
 {
     using AutoMapper;
-    using Core.Entities.Loan;
+    using Loan;
 
     public class RepaymentSegment : AbsSegment
     {
         public RepaymentSegment(int times, PaymentHistory payment)
         {
             Mapper.Map(payment, this);
-            还款次数 = times;
+            还款次数 = times.ToString();
             DatePayment = payment.DatePayment.ToString("yyyyMMdd");
         }
 

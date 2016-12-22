@@ -24,7 +24,7 @@
         担保业务信息采集报文 = 19,
         垫款业务信息采集报文 = 20,
         欠息信息采集报文 = 21,
-        不良信贷资产处置信息采集报文 = 22
+        不良信贷资产处置信息采集报文 = 61
     }
 
     /// <summary>
@@ -129,9 +129,10 @@
                 foreach (var record in records)
                 {
                     record.Packaging(builder);
-                }
 
-                builder.AppendLine();
+                    // 信息记录之间换行。
+                    builder.AppendLine();
+                }
             }
 
             builder.Append(footer);

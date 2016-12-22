@@ -24,11 +24,30 @@
 
         public int GetLength()
         {
-            var metas = ReflectionAndValid();
+            var currentPosition = 0;
+            var currentLength = 0;
+            var properties = GetType().GetProperties();
 
-            var meta = metas.OrderBy(m => m.Position).LastOrDefault();
+            // 遍历类的属性
+            foreach (var property in properties)
+            {
+                // 获取属性上的自定义特性
+                var attrs = property.GetCustomAttributes(false);
 
-            return meta.Position + meta.Length;
+                // 获取属性特性中的自定义的SegmentRuleAttribute
+                var segmentRule = attrs.SingleOrDefault(m => m is SegmentRuleAttribute) as SegmentRuleAttribute;
+
+                if (segmentRule != null && segmentRule.Position > currentPosition)
+                {
+                    // 获取属性特性中的自定义的MetaCodeAttribute
+                    var metaCode = attrs.SingleOrDefault(m => m is MetaCodeAttribute) as MetaCodeAttribute;
+
+                    currentPosition = segmentRule.Position;
+                    currentLength = metaCode.Length;
+                }
+            }
+
+            return currentPosition + currentLength - 1;
         }
 
         /// <summary>
