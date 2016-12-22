@@ -21,7 +21,7 @@
                 new BaseParagraph(financial, organization, item.Type.ToString()),
 
                 // 2007版资产负债表段
-                new LiabilitiesParagraph()
+                new LiabilitiesParagraph(item)
             };
         }
 

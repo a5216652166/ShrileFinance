@@ -21,7 +21,7 @@
                 new BaseParagraph(financial, organization, item.Type.ToString()),
 
                 // 事业单位资产负债表信息记录
-                new InstitutionLiabilitiesParagraph()
+                new InstitutionLiabilitiesParagraph(item)
             };
         }
 

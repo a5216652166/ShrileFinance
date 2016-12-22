@@ -21,7 +21,7 @@
                 new BaseParagraph(financial, organization, item.ToString()),
 
                 // 2007版现金流量表段
-                new CashFlowParagraph()
+                new CashFlowParagraph(item)
             };
         }
 
