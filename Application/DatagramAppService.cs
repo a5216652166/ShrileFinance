@@ -84,11 +84,11 @@
 
             try
             {
+                var trace = traces.First();
                 factory.Generate(traces);
 
                 repository.Commit();
 
-                var trace = traces.First();
                 var file = trace.ToFile();
             }
             catch (Exception ex)
