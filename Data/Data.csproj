@@ -104,7 +104,12 @@
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBaseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\LitigationSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\BaseParagraphConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\CashFlowParagraphConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\IncomeExpenditureParagraphConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\InstitutionLiabilitiesParagraphConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\LiabilitiesParagraphConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\Model2Entity.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\ProfitsParagraphConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\AssociatedEnterpriseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\BaseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Organization\FamilySegmentConfiguration.cs" />

@@ -1,33 +1,33 @@
-ï»¿using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
+using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
-    //public class BaseParagraphConfiguration : EntityTypeConfiguration<BaseParagraph>
-    //{
-    //    public BaseParagraphConfiguration()
-    //    {
-    //        HasKey(m => m.Id);
-    //        Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+    public class BaseParagraphConfiguration : EntityTypeConfiguration<BaseParagraph>
+    {
+        public BaseParagraphConfiguration()
+        {
+            HasKey(m => m.Id);
+            Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-    //        Property(m => m.ä¿¡æ¯è®°å½•é•¿åº¦).HasMaxLength(4);
-    //        Property(m => m.ä¿¡æ¯è®°å½•ç±»åž‹).HasMaxLength(2);
-    //        Property(m => m.ä¿¡æ¯ç±»åˆ«).HasMaxLength(1);
-    //        Property(m => m.é‡‘èžæœºæž„ä»£ç ).HasMaxLength(11);
-    //        Property(m => m.å€Ÿæ¬¾äººåç§°).HasMaxLength(80);
-    //        Property(m => m.è´·æ¬¾å¡ç¼–å·).HasMaxLength(16);
-    //        Property(m => m.æŠ¥è¡¨å¹´ä»½).HasMaxLength(4);
-    //        Property(m => m.æŠ¥è¡¨ç±»åž‹).HasMaxLength(2);
-    //        Property(m => m.æŠ¥è¡¨ç±»åž‹ç»†åˆ†).HasMaxLength(1);
-    //        Property(m => m.å®¡è®¡äº‹åŠ¡æ‰€åç§°).HasMaxLength(80);
-    //        Property(m => m.å®¡è®¡äººå‘˜åç§°).HasMaxLength(30);
-    //        Property(m => m.å®¡è®¡æ—¶é—´).HasMaxLength(8);
-    //        Property(m => m.ä¿¡æ¯è®°å½•æ“ä½œç±»åž‹).HasMaxLength(1);
-    //        Property(m => m.ä¸šåŠ¡å‘ç”Ÿæ—¥æœŸ).HasMaxLength(8);
-    //        Property(m => m.ä¿¡æ¯è®°å½•è·Ÿè¸ªç¼–å·).HasMaxLength(20);
+            Property(m => m.ÐÅÏ¢¼ÇÂ¼³¤¶È).HasMaxLength(4);
+            Property(m => m.ÐÅÏ¢¼ÇÂ¼ÀàÐÍ).HasMaxLength(2);
+            Property(m => m.ÐÅÏ¢Àà±ð).HasMaxLength(1);
+            Property(m => m.½ðÈÚ»ú¹¹´úÂë).HasMaxLength(11);
+            Property(m => m.½è¿îÈËÃû³Æ).HasMaxLength(80);
+            Property(m => m.´û¿î¿¨±àºÅ).HasMaxLength(16);
+            Property(m => m.±¨±íÄê·Ý).HasMaxLength(4);
+            Property(m => m.±¨±íÀàÐÍ).HasMaxLength(2);
+            Property(m => m.±¨±íÀàÐÍÏ¸·Ö).HasMaxLength(1);
+            Property(m => m.Éó¼ÆÊÂÎñËùÃû³Æ).HasMaxLength(80);
+            Property(m => m.Éó¼ÆÈËÔ±Ãû³Æ).HasMaxLength(30);
+            Property(m => m.Éó¼ÆÊ±¼ä).HasMaxLength(8);
+            Property(m => m.ÐÅÏ¢¼ÇÂ¼²Ù×÷ÀàÐÍ).HasMaxLength(1);
+            Property(m => m.ÒµÎñ·¢ÉúÈÕÆÚ).HasMaxLength(8);
+            Property(m => m.ÐÅÏ¢¼ÇÂ¼¸ú×Ù±àºÅ).HasMaxLength(20);
 
-    //        ToTable("CIDG_BaseParagraph");
-    //    }
-    //}
+            ToTable("CIDG_BaseParagraph");
+        }
+    }
 }

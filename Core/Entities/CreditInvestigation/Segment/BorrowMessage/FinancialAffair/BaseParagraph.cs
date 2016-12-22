@@ -1,4 +1,5 @@
 ﻿using Core.Entities.CreditInvestigation.DatagramFile;
+using Core.Entities.Customers.Enterprise;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
@@ -8,17 +9,27 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
     /// </summary>
     public class BaseParagraph : AbsSegment
     {
+        public BaseParagraph() { }
+
+        public BaseParagraph(FinancialAffairs financialAffairs)
+        {
+            报表年份 = financialAffairs.Year.ToString();
+            报表类型细分 = financialAffairs.TypeSubdivision.ToString();
+            审计事务所名称 = financialAffairs.AuditFirm;
+            审计人员名称 = financialAffairs.AuditorName;
+        }
+
         /// <summary>
         /// 信息记录长度
         /// </summary>
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true)]
-        public int 信息记录长度 { get; set; }
+        public string 信息记录长度 { get; set; }
 
         /// <summary>
         /// 信息记录类型
         /// </summary>
         [MetaCode(2, MetaCodeTypeEnum.N), SegmentRule(5, true)]
-        public int 信息记录类型 { get; set; }
+        public string 信息记录类型 { get; set; }
 
         /// <summary>
         /// 信息类别
@@ -55,19 +66,19 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         /// 报表年份(格式:YYYY)
         /// </summary>
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(115, true)]
-        public int 报表年份 { get; set; }
+        public string 报表年份 { get; set; }
 
         /// <summary>
         /// 报表类型
         /// </summary>
         [MetaCode(2, MetaCodeTypeEnum.N), SegmentRule(119, true)]
-        public int 报表类型 { get; set; }
+        public string 报表类型 { get; set; }
 
         /// <summary>
         /// 报表类型细分
         /// </summary>
         [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(121, true)]
-        public int 报表类型细分 { get; set; }
+        public string 报表类型细分 { get; set; }
 
         /// <summary>
         /// 审计事务所名称
@@ -82,19 +93,19 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         /// 审计名称(格式:YYYYMMDD)
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(232, false)]
-        public int 审计时间 { get; set; }
+        public string 审计时间 { get; set; }
 
         /// <summary>
         /// 信息记录操作类型
         /// </summary>
         [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(240, true)]
-        public int 信息记录操作类型 { get; set; }
+        public string 信息记录操作类型 { get; set; }
 
         /// <summary>
         /// 业务发生日期(格式:YYYYMMDD)
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(241, true)]
-        public int 业务发生日期 { get; set; }
+        public string 业务发生日期 { get; set; }
 
         /// <summary>
         /// 信息记录跟踪编号
@@ -102,7 +113,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(249, true)]
         public string 信息记录跟踪编号
         {
-            get { return string.Empty.PadLeft(20,'0'); }
+            get { return string.Empty.PadLeft(20, '0'); }
         }
     }
 }
