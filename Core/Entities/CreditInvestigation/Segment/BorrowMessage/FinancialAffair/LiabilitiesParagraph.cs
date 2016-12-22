@@ -1,14 +1,12 @@
-﻿using Core.Entities.Customers.Enterprise;
-
-namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
+    using Core.Entities.Customers.Enterprise;
+
     /// <summary>
     /// 2007版资产负债表信息记录
     /// </summary>
     public class LiabilitiesParagraph : AbsSegment
     {
-        public LiabilitiesParagraph() { }
-
         public LiabilitiesParagraph(Liabilities liabilities)
         {
             AutoMapper.Mapper.Map(liabilities, this);

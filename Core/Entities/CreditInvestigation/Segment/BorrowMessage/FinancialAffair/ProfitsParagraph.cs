@@ -1,14 +1,12 @@
-﻿using Core.Entities.Customers.Enterprise;
-
-namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
+    using Core.Entities.Customers.Enterprise;
+
     /// <summary>
     /// 2007版利润及利润分配表信息记录
     /// </summary>
     public class ProfitsParagraph : AbsSegment
     {
-        public ProfitsParagraph() { }
-
         public ProfitsParagraph(Profit profit)
         {
             AutoMapper.Mapper.Map(profit, this);

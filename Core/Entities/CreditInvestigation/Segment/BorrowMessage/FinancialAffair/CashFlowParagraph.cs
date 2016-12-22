@@ -1,13 +1,15 @@
-﻿using Core.Entities.Customers.Enterprise;
-
-namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
+    using Core.Entities.Customers.Enterprise;
+
     /// <summary>
     /// 2007版现金流量表信息记录
     /// </summary>
     public class CashFlowParagraph : AbsSegment
     {
-        public CashFlowParagraph() { }
+        public CashFlowParagraph()
+        {
+        }
 
         public CashFlowParagraph(CashFlow cashFlow)
         {
