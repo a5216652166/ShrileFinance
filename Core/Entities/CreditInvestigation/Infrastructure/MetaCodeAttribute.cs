@@ -49,7 +49,15 @@
 
         private bool ValidLength(string value)
         {
-            if (value.Length > Length)
+            var length = 0;
+            var regx = new Regex(@"^[\u4e00-\u9fa5]$");
+
+            foreach (var item in value)
+            {
+                length += regx.IsMatch(item.ToString()) ? 2 : 1;
+            }
+
+            if (length > Length)
             {
                 ErrorMessage = "长度验证未通过";
 

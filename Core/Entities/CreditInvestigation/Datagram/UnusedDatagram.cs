@@ -8,11 +8,13 @@
     /// </summary>
     public class UnusedDatagram : AbsDatagram
     {
+        private readonly DatagramTypeEnum type;
+
         public UnusedDatagram(DatagramTypeEnum type)
         {
-            //Type = type;
+            this.type = type;
         }
 
-        public override DatagramTypeEnum Type { get { return DatagramTypeEnum.不良信贷资产处置信息采集报文; } }
+        public override DatagramTypeEnum Type { get { return type; } }
     }
 }
