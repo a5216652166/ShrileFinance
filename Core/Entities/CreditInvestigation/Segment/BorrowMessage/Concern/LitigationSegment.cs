@@ -12,6 +12,7 @@
         public LitigationSegment(Litigation litigation)
         {
             Mapper.Map(litigation, this);
+            DateTime = litigation.DateTime;
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
