@@ -10,11 +10,11 @@
     {
         public FamilyMemberDatagram() : base()
         {
-            //Records = new List<AbsRecord>()
-            //{
-            //    // 家族成员信息记录
-            //    new FamilyMemberRecord()
-            //};
+            ////Records = new List<AbsRecord>()
+            ////{
+            ////    // 家族成员信息记录
+            ////    new FamilyMemberRecord()
+            ////};
         }
 
         public override DatagramTypeEnum Type

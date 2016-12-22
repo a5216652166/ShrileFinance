@@ -5,8 +5,6 @@
 
     public class MessageTrackViewModel : IEntityViewModel
     {
-        public Guid? Id { get; set; }
-
         public enum MessageOperationTypeEnum : byte
         {
             添加机构 = 0,
@@ -27,6 +25,8 @@
             待反馈 = 3,
             不发送 = 4,
         }
+
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// 名称
