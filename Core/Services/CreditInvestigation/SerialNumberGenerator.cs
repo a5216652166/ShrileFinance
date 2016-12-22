@@ -33,7 +33,7 @@
 
         public int GetNext()
         {
-            return seed++;
+            return ++seed;
         }
 
         private bool IsToday()

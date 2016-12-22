@@ -79,16 +79,15 @@
         public void GenerateTest()
         {
             var lastDate = DateTime.Now.Date;
-            var traces = repository.GetByTraceDate(lastDate).Skip(3).Take(1);
+            var traces = repository.GetByTraceDate(lastDate);
 
             try
             {
-                var trace = traces.First();
                 factory.Generate(traces);
 
                 repository.Commit();
 
-                var file = trace.ToFile();
+                traces.ToList().ForEach(m => m.ToFile());
             }
             catch (Exception ex)
             {
