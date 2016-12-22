@@ -10,6 +10,8 @@
 
     public abstract class AbsSegment : Entity
     {
+        public int Length { get; set; }
+
         public void Packaging(StringBuilder builder)
         {
             var metas = ReflectionAndValid();
@@ -18,12 +20,7 @@
                 .ForEach(m => builder.Append(m.GetValue()));
         }
 
-        public int Length
-        {
-            get { return GetLength(); }
-        }
-
-        protected int GetLength()
+        public int GetLength()
         {
             var metas = ReflectionAndValid();
 

@@ -21,7 +21,7 @@
                 new BaseParagraph(financial, organization, item.Type.ToString()),
 
                 // 事业单位收入支出表段
-                new IncomeExpenditureParagraph(item)
+                new IncomeExpenditureParagraph(item),
             };
         }
 
