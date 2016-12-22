@@ -1,5 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
+    using System;
     using DatagramFile;
     using Record;
 
@@ -10,6 +11,7 @@
             信息记录类型 = type.ToString("D");
             借款人名称 = organization.Property.InstitutionChName;
             贷款卡编码 = organization.LoanCardCode;
+            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true)]
