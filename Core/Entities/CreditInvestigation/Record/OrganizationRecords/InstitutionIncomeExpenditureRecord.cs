@@ -17,8 +17,6 @@
         {
             var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
 
-            baseParagraph.信息记录长度 = GetLength().ToString();
-
             Segments = new List<AbsSegment>()
             {
                 // 基础段
@@ -27,6 +25,9 @@
                 // 事业单位收入支出表段
                 new IncomeExpenditureParagraph(item),
             };
+
+            baseParagraph.信息记录长度 = GetLength().ToString();
+
         }
 
         public InstitutionIncomeExpenditureRecord(FinancialAffairs financial, InstitutionIncomeExpenditure item)

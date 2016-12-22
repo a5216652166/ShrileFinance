@@ -17,8 +17,6 @@
         {
             var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
 
-            baseParagraph.信息记录长度 = GetLength().ToString();
-
             Segments = new List<AbsSegment>()
             {
                 // 基础段
@@ -27,6 +25,8 @@
                 // 2007版利润及利润分配表信息记录
                 new ProfitsParagraph(item)
             };
+
+            baseParagraph.信息记录长度 = GetLength().ToString();
         }
 
         public ProfitRecord(FinancialAffairs financial, Profit item)
