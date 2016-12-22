@@ -24,9 +24,7 @@
         担保业务信息采集报文 = 19,
         垫款业务信息采集报文 = 20,
         欠息信息采集报文 = 21,
-        不良信贷资产处置信息采集报文 = 22,
-
-        未使用信息采集报文 = 99
+        不良信贷资产处置信息采集报文 = 22
     }
 
     /// <summary>
@@ -91,9 +89,14 @@
         }
 
         /// <summary>
+        /// 报文文件标识
+        /// </summary>
+        public Guid DatagramFileId { get; private set; }
+
+        /// <summary>
         /// 信息记录集合
         /// </summary>
-        public abstract ICollection<AbsRecord> Records { get; protected set; }
+        public virtual ICollection<AbsRecord> Records { get; protected set; }
 
         /// <summary>
         /// 添加信息记录

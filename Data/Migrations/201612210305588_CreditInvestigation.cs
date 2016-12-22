@@ -8,6 +8,53 @@ namespace Data.Migrations
         public override void Up()
         {
             CreateTable(
+                "dbo.CIDG_DatagramFile",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                        DateCreated = c.DateTime(nullable: false),
+                        SerialNumber = c.String(nullable: false, maxLength: 4),
+                        Type = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.CIDG_Datagram",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                        DateCreated = c.DateTime(nullable: false),
+                        DatagramFileId = c.Guid(nullable: false),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.CIDG_DatagramFile", t => t.DatagramFileId, cascadeDelete: true)
+                .Index(t => t.DatagramFileId);
+            
+            CreateTable(
+                "dbo.CIDG_Record",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                        DatagramId = c.Guid(nullable: false),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.CIDG_Datagram", t => t.DatagramId, cascadeDelete: true)
+                .Index(t => t.DatagramId);
+            
+            CreateTable(
+                "dbo.AbsSegment",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                        RecordId = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.CIDG_Record", t => t.RecordId, cascadeDelete: true)
+                .Index(t => t.RecordId);
+            
+            CreateTable(
                 "dbo.CIDG_Trace",
                 c => new
                     {
@@ -15,61 +62,14 @@ namespace Data.Migrations
                         TraceDate = c.DateTime(nullable: false),
                         ReferenceId = c.Guid(nullable: false),
                         Type = c.Byte(nullable: false),
-                        Name = c.String(maxLength: 20),
+                        Name = c.String(maxLength: 200),
                         Status = c.Byte(nullable: false),
                         SerialNumber = c.Int(nullable: false),
-                        DatagramFileId = c.Guid(nullable: false),
+                        DatagramFileId = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsDatagramFile", t => t.DatagramFileId)
+                .ForeignKey("dbo.CIDG_DatagramFile", t => t.DatagramFileId)
                 .Index(t => t.DatagramFileId);
-            
-            CreateTable(
-                "dbo.AbsDatagramFile",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        DateCreated = c.DateTime(nullable: false),
-                        SerialNumber = c.String(),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
-                        DebitInterestInfo_Id = c.Guid(),
-                        GuaranteeBusinessInfo_Id = c.Guid(),
-                        LoanBusinessInfo_Id = c.Guid(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsDatagram", t => t.DebitInterestInfo_Id)
-                .ForeignKey("dbo.AbsDatagram", t => t.GuaranteeBusinessInfo_Id)
-                .ForeignKey("dbo.AbsDatagram", t => t.LoanBusinessInfo_Id)
-                .Index(t => t.DebitInterestInfo_Id)
-                .Index(t => t.GuaranteeBusinessInfo_Id)
-                .Index(t => t.LoanBusinessInfo_Id);
-            
-            CreateTable(
-                "dbo.AbsDatagram",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        DateCreated = c.DateTime(nullable: false),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.AbsRecord",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.AbsSegment",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false, identity: true),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.CIDG_BigEventSegment",
@@ -813,7 +813,6 @@ namespace Data.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AbsSegment", t => t.Id)
                 .Index(t => t.Id);
-            
         }
         
         public override void Down()
@@ -850,10 +849,10 @@ namespace Data.Migrations
             DropForeignKey("dbo.CIDG_LitigationSegment", "Id", "dbo.AbsSegment");
             DropForeignKey("dbo.CIDG_ConcernBaseSegment", "Id", "dbo.AbsSegment");
             DropForeignKey("dbo.CIDG_BigEventSegment", "Id", "dbo.AbsSegment");
-            DropForeignKey("dbo.CIDG_Trace", "DatagramFileId", "dbo.AbsDatagramFile");
-            DropForeignKey("dbo.AbsDatagramFile", "LoanBusinessInfo_Id", "dbo.AbsDatagram");
-            DropForeignKey("dbo.AbsDatagramFile", "GuaranteeBusinessInfo_Id", "dbo.AbsDatagram");
-            DropForeignKey("dbo.AbsDatagramFile", "DebitInterestInfo_Id", "dbo.AbsDatagram");
+            DropForeignKey("dbo.CIDG_Trace", "DatagramFileId", "dbo.CIDG_DatagramFile");
+            DropForeignKey("dbo.CIDG_Datagram", "DatagramFileId", "dbo.CIDG_DatagramFile");
+            DropForeignKey("dbo.CIDG_Record", "DatagramId", "dbo.CIDG_Datagram");
+            DropForeignKey("dbo.AbsSegment", "RecordId", "dbo.CIDG_Record");
             DropIndex("dbo.CIDG_ProfitsParagraph", new[] { "Id" });
             DropIndex("dbo.CIDG_InstitutionLiabilitiesParagraph", new[] { "Id" });
             DropIndex("dbo.CIDG_LiabilitiesParagraph", new[] { "Id" });
@@ -886,10 +885,10 @@ namespace Data.Migrations
             DropIndex("dbo.CIDG_LitigationSegment", new[] { "Id" });
             DropIndex("dbo.CIDG_ConcernBaseSegment", new[] { "Id" });
             DropIndex("dbo.CIDG_BigEventSegment", new[] { "Id" });
-            DropIndex("dbo.AbsDatagramFile", new[] { "LoanBusinessInfo_Id" });
-            DropIndex("dbo.AbsDatagramFile", new[] { "GuaranteeBusinessInfo_Id" });
-            DropIndex("dbo.AbsDatagramFile", new[] { "DebitInterestInfo_Id" });
             DropIndex("dbo.CIDG_Trace", new[] { "DatagramFileId" });
+            DropIndex("dbo.AbsSegment", new[] { "RecordId" });
+            DropIndex("dbo.CIDG_Record", new[] { "DatagramId" });
+            DropIndex("dbo.CIDG_Datagram", new[] { "DatagramFileId" });
             DropTable("dbo.CIDG_ProfitsParagraph");
             DropTable("dbo.CIDG_InstitutionLiabilitiesParagraph");
             DropTable("dbo.CIDG_LiabilitiesParagraph");
@@ -922,11 +921,11 @@ namespace Data.Migrations
             DropTable("dbo.CIDG_LitigationSegment");
             DropTable("dbo.CIDG_ConcernBaseSegment");
             DropTable("dbo.CIDG_BigEventSegment");
-            DropTable("dbo.AbsSegment");
-            DropTable("dbo.AbsRecord");
-            DropTable("dbo.AbsDatagram");
-            DropTable("dbo.AbsDatagramFile");
             DropTable("dbo.CIDG_Trace");
+            DropTable("dbo.AbsSegment");
+            DropTable("dbo.CIDG_Record");
+            DropTable("dbo.CIDG_Datagram");
+            DropTable("dbo.CIDG_DatagramFile");
         }
     }
 }

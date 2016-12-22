@@ -3,13 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using CreditInvestigation;
     using Exceptions;
 
     public abstract class AbsSegment : Entity
     {
+        /// <summary>
+        /// 信息记录标识
+        /// </summary>
+        public Guid RecordId { get; private set; }
+
         public void Packaging(StringBuilder builder)
         {
             var metas = ReflectionAndValid();
