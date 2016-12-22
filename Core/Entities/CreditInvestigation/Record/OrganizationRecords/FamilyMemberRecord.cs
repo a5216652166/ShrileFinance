@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
+    using Customers.Enterprise;
     using Segment;
     using Segment.BorrowMessage.Organization;
 
@@ -9,7 +10,15 @@
     /// </summary>
     public class FamilyMemberRecord : AbsRecord
     {
-        public FamilyMemberRecord() : base()
+        public FamilyMemberRecord(Manager manager, FamilyMember familyMember) : base()
+        {
+            Segments = new List<AbsSegment>()
+            {
+                // 基础段
+                new FamilySegment()
+            };
+        }
+        public FamilyMemberRecord(Stockholder manager, FamilyMember familyMember) : base()
         {
             Segments = new List<AbsSegment>()
             {

@@ -1,10 +1,13 @@
 ﻿namespace Core.Services.CreditInvestigation
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Entities.CreditInvestigation;
     using Entities.CreditInvestigation.Datagram;
     using Entities.CreditInvestigation.DatagramFile;
     using Entities.CreditInvestigation.Record.LoanRecords;
+    using Entities.CreditInvestigation.Record.OrganizationRecords;
+    using Entities.Customers.Enterprise;
     using Exceptions;
     using Interfaces.Repositories;
 
@@ -82,10 +85,41 @@
 
             var datagramFile = new OrganizationDatagramFile(trace.SerialNumber);
 
-            datagramFile.GetDatagram(DatagramTypeEnum.机构基本信息报文);
-            datagramFile.GetDatagram(DatagramTypeEnum.家族成员信息报文);
-            datagramFile.GetDatagram(DatagramTypeEnum.财务报表信息采集报文);
-            datagramFile.GetDatagram(DatagramTypeEnum.关注信息采集报文);
+            datagramFile.GetDatagram(DatagramTypeEnum.机构基本信息报文)
+                .AddRecord(new OrganizationBaseRecord(organization));
+
+            var familyDatagram = datagramFile.GetDatagram(DatagramTypeEnum.家族成员信息报文);
+            organization.Managers.ToList().ForEach(m => m.FamilyMembers
+                .ForEach(n => familyDatagram.AddRecord(new FamilyMemberRecord(m, n))));
+            organization.Shareholders.ToList().ForEach(m => m.FamilyMembers
+                .ForEach(n => familyDatagram.AddRecord(new FamilyMemberRecord(m, n))));
+
+            var financialDatagram = datagramFile.GetDatagram(DatagramTypeEnum.财务报表信息采集报文);
+            var financial = organization.FinancialAffairs;
+            foreach (var item in financial.Liabilities)
+            {
+                financialDatagram.AddRecord(new BalanceSheetRecord(financial, item));
+            }
+            foreach (var item in financial.Profit)
+            {
+                financialDatagram.AddRecord(new ProfitRecord(financial, item));
+            }
+            foreach (var item in financial.CashFlow)
+            {
+                financialDatagram.AddRecord(new CashFlowRecord(financial, item));
+            }
+            foreach (var item in financial.InstitutionLiabilities)
+            {
+                financialDatagram.AddRecord(new InstitutionLiabilitiesRecord(financial, item));
+            }
+            foreach (var item in financial.IncomeExpenditur)
+            {
+                financialDatagram.AddRecord(new InstitutionIncomeExpenditureRecord(financial, item));
+            }
+
+            datagramFile.GetDatagram(DatagramTypeEnum.关注信息采集报文)
+                .AddRecord(new BigEventRecord(organization))
+                .AddRecord(new LitigationRecord(organization));
 
             return datagramFile;
         }
