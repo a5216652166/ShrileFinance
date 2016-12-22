@@ -133,6 +133,9 @@
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\NaturalMortgageSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\NaturalPledgeSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\CreditMessage\RepaymentSegmentConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\DatagramConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\DatagramFileConfiguration.cs" />
+    <Compile Include="ModelConfigurations\CreditInvestigation\RecordConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\AssociatedEnterpriseConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\BigEventConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\CashFlowConfiguration.cs" />

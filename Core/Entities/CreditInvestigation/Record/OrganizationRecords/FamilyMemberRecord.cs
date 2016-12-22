@@ -18,6 +18,7 @@
                 new FamilySegment()
             };
         }
+
         public FamilyMemberRecord(Stockholder manager, FamilyMember familyMember) : base()
         {
             Segments = new List<AbsSegment>()
@@ -34,7 +35,5 @@
                 return RecordTypeEnum.家族成员信息记录;
             }
         }
-
-        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }

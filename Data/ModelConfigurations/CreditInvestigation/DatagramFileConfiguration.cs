@@ -1,0 +1,26 @@
+﻿namespace Data.ModelConfigurations.CreditInvestigation
+{
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
+    using Core.Entities.CreditInvestigation.DatagramFile;
+
+    public class DatagramFileConfiguration : EntityTypeConfiguration<AbsDatagramFile>
+    {
+        public DatagramFileConfiguration()
+        {
+            HasKey(m => m.Id);
+            Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            Property(m => m.SerialNumber).IsRequired().HasMaxLength(4);
+            Property(m => m.DateCreated);
+
+            Map<OrganizationDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.机构基本信息采集报文文件));
+            Map<LoanDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.信贷业务信息文件));
+
+            HasMany(m => m.Datagrams).WithRequired()
+                .HasForeignKey(m => m.DatagramFileId).WillCascadeOnDelete();
+
+            ToTable("CIDG_DatagramFile");
+        }
+    }
+}

@@ -1,22 +1,29 @@
-﻿using Core.Entities.CreditInvestigation.DatagramFile;
-using Core.Entities.Customers.Enterprise;
-using System.ComponentModel.DataAnnotations;
-
-namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
+﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
+    using System;
+    using Customers.Enterprise;
+    using DatagramFile;
+
     /// <summary>
     /// 信息记录基础段
     /// </summary>
     public class BaseParagraph : AbsSegment
     {
-        public BaseParagraph() { }
-
-        public BaseParagraph(FinancialAffairs financialAffairs)
+        public BaseParagraph()
         {
+        }
+
+        public BaseParagraph(FinancialAffairs financialAffairs, Customers.Enterprise.Organization organization, string type)
+        {
+            报表类型 = type;
+            借款人名称 = organization.Property.InstitutionChName;
+            贷款卡编号 = organization.LoanCardCode;
             报表年份 = financialAffairs.Year.ToString();
             报表类型细分 = financialAffairs.TypeSubdivision.ToString();
             审计事务所名称 = financialAffairs.AuditFirm;
             审计人员名称 = financialAffairs.AuditorName;
+            信息记录操作类型 = "1";
+            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
         /// <summary>
@@ -47,7 +54,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true)]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FinancialOrganizationCode; ; }
+            get { return AbsDatagramFile.FinancialOrganizationCode; }
         }
 
         /// <summary>
@@ -90,7 +97,7 @@ namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffai
         public string 审计人员名称 { get; set; }
 
         /// <summary>
-        /// 审计名称(格式:YYYYMMDD)
+        /// 审计时间(格式:YYYYMMDD)
         /// </summary>
         [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(232, false)]
         public string 审计时间 { get; set; }

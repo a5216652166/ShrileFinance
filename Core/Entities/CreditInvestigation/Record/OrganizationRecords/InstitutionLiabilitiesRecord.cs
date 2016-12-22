@@ -18,19 +18,21 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph()
-            };
+                new BaseParagraph(financial, organization, item.Type.ToString()),
 
-            // 事业单位资产负债表信息记录
-            foreach (var item in organization.FinancialAffairs.InstitutionLiabilities)
-            {
-                Segments.Add(new InstitutionLiabilitiesParagraph());
-            }
+                // 事业单位资产负债表信息记录
+                new InstitutionLiabilitiesParagraph(item)
+            };
         }
 
         public InstitutionLiabilitiesRecord(FinancialAffairs financial, InstitutionLiabilities item)
         {
             this.financial = financial;
+            this.item = item;
+        }
+
+        public InstitutionLiabilitiesRecord(Organization organization, InstitutionLiabilities item) : this(organization)
+        {
             this.item = item;
         }
 
@@ -41,7 +43,5 @@
                 return RecordTypeEnum.事业单位资产负债表信息记录;
             }
         }
-
-        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }

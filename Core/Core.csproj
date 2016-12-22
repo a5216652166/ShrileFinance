@@ -71,9 +71,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\Repositories\IPaymentHistoryRepository.cs" />
     <Compile Include="Services\CreditInvestigation\DatagramFactoryService.cs" />
-    <Compile Include="Entities\CreditInvestigation\DatagramFile\UnusedDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\UnusedDatagram.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\UnusedRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\BigEventRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\LitigationRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\BalanceSheetRecord.cs" />
@@ -83,7 +81,9 @@
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\ProfitRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\FamilyMemberRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\OrganizationBaseRecord.cs" />
-    <Compile Include="Entities\CreditInvestigation\Segment\AbsSegment.cs" />
+    <Compile Include="Entities\CreditInvestigation\Segment\AbsSegment.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\LoanDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\DatagramFile\OrganizationDatagramFile.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\LoanDatagrams\DebitInterestInfoDatagram.cs" />

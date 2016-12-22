@@ -10,11 +10,9 @@
     {
         public UnusedDatagram(DatagramTypeEnum type)
         {
-            Type = type;
+            //Type = type;
         }
 
-        public override ICollection<AbsRecord> Records { get; protected set; }
-
-        public override DatagramTypeEnum Type { get; }
+        public override DatagramTypeEnum Type { get { return DatagramTypeEnum.不良信贷资产处置信息采集报文; } }
     }
 }

@@ -18,19 +18,21 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new BaseParagraph()
-            };
+                new BaseParagraph(financial, organization, item.Type.ToString()),
 
-            // 2007版现金流量表段
-            foreach (var item in organization.FinancialAffairs.CashFlow)
-            {
-                Segments.Add(new CashFlowParagraph());
-            }
+                // 2007版现金流量表段
+                new CashFlowParagraph(item)
+            };
         }
 
         public CashFlowRecord(FinancialAffairs financial, CashFlow item)
         {
             this.financial = financial;
+            this.item = item;
+        }
+
+        public CashFlowRecord(Organization organization, CashFlow item) : this(organization)
+        {
             this.item = item;
         }
 
@@ -41,7 +43,5 @@
                 return RecordTypeEnum.现金流量表信息记录2007版;
             }
         }
-
-        public override ICollection<AbsSegment> Segments { get; protected set; }
     }
 }

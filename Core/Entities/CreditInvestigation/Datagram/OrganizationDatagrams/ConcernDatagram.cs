@@ -27,7 +27,5 @@
                 return DatagramTypeEnum.关注信息采集报文;
             }
         }
-
-        public override ICollection<AbsRecord> Records { get; protected set; }
     }
 }

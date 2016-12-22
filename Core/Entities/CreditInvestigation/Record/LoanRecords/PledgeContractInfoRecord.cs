@@ -10,7 +10,7 @@
     /// </summary>
     public class PledgeContractInfoRecord : AbsRecord
     {
-        public PledgeContractInfoRecord(CreditContract credit, GuarantyContractMortgage guaranty) : base()
+        public PledgeContractInfoRecord(CreditContract credit, GuarantyContractPledge guaranty) : base()
         {
             Segments = new List<AbsSegment>()
             {
@@ -21,8 +21,6 @@
                 new GuaranteePledgeSegment(guaranty, credit)
             };
         }
-
-        public override ICollection<AbsSegment> Segments { get; protected set; }
 
         public override RecordTypeEnum Type
         {

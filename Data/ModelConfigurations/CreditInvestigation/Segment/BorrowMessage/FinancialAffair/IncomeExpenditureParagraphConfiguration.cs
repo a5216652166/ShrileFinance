@@ -1,9 +1,9 @@
-using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-
 namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
+    using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
+
     public class IncomeExpenditureParagraphConfiguration : EntityTypeConfiguration<IncomeExpenditureParagraph>
     {
         public IncomeExpenditureParagraphConfiguration()
@@ -11,7 +11,6 @@ namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Fin
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(m => m.Type).HasMaxLength(1);
             Property(m => m.财政补助收入).HasMaxLength(20);
             Property(m => m.上级补助收入).HasMaxLength(20);
             Property(m => m.附属单位缴款).HasMaxLength(20);

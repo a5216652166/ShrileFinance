@@ -3,13 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using CreditInvestigation;
     using Exceptions;
 
     public abstract class AbsSegment : Entity
     {
+        /// <summary>
+        /// 信息记录标识
+        /// </summary>
+        public Guid RecordId { get; private set; }
+
         public void Packaging(StringBuilder builder)
         {
             var metas = ReflectionAndValid();
@@ -18,11 +22,18 @@
                 .ForEach(m => builder.Append(m.GetValue()));
         }
 
+        public int Length
+        {
+            get { return GetLength(); }
+        }
+
         protected int GetLength()
         {
-            var properties = GetType().GetProperties();
+            var metas = ReflectionAndValid();
 
-            throw new NotImplementedException();
+            var meta = metas.OrderBy(m => m.Position).LastOrDefault();
+
+            return meta.Position + meta.Length;
         }
 
         /// <summary>
@@ -95,6 +106,11 @@
             public int Position
             {
                 get { return position; }
+            }
+
+            public int Length
+            {
+                get { return length; }
             }
 
             public string GetValue()
