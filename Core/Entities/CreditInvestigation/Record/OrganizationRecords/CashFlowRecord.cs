@@ -10,6 +10,9 @@
     /// </summary>
     public class CashFlowRecord : AbsRecord
     {
+        private FinancialAffairs financial;
+        private CashFlow item;
+
         public CashFlowRecord(Organization organization) : base()
         {
             Segments = new List<AbsSegment>()
@@ -23,6 +26,12 @@
             {
                 Segments.Add(new CashFlowParagraph());
             }
+        }
+
+        public CashFlowRecord(FinancialAffairs financial, CashFlow item)
+        {
+            this.financial = financial;
+            this.item = item;
         }
 
         public override RecordTypeEnum Type
