@@ -195,7 +195,7 @@
             var regResult = false;
 
             // 基础校验（前3位为数字或者大写英文字母、后13位数字）
-            regResult = new Regex(@"^[A - Z0 - 9]{ 3}\d{ 13}$|^\d{ 16}$").IsMatch(valueStr);
+            regResult = new Regex(@"^[A-Z0-9]{3}\d{13}$|^\d{16}$").IsMatch(valueStr);
 
             // 后两位校验 前十四位乘以权重相加后除以97后的余数再加1后得到的数字
             if (regResult)

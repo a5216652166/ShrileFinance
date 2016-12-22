@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Loan;
     using Segment;
     using Segment.CreditMessage;
@@ -23,6 +24,8 @@
                 // 合同金额信息段（币种CNY）
                 new CreditContractAmountSegment(credit)
             };
+
+            ((CreditBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
         }
 
         public override RecordTypeEnum Type

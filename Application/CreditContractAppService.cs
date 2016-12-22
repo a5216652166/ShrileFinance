@@ -393,7 +393,7 @@
             repository.Commit();
 
             // 报文追踪(合同关键数据项金额发生变化)
-            messageAppService.Trace(referenceId: model.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "金额变更");
+            messageAppService.Trace(referenceId: model.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更");
         }
     }
 }

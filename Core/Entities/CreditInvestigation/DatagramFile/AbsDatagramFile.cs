@@ -61,7 +61,7 @@
             builder.Append(1);
             builder.Append(FinancialOrganizationCode);
             builder.Append(DateTime.Now.ToString("yyMMdd"));
-            builder.Append(Type);
+            builder.Append(Type.ToString("D").PadLeft(2, '0'));
             builder.Append(1);
             builder.Append(SerialNumber);
             builder.Append(0);

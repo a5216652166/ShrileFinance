@@ -79,7 +79,7 @@
         public void GenerateTest()
         {
             var lastDate = DateTime.Now.Date;
-            var traces = repository.GetByTraceDate(lastDate).Skip(3).Take(1);
+            var traces = repository.GetByTraceDate(lastDate);
 
             try
             {
@@ -87,8 +87,7 @@
 
                 repository.Commit();
 
-                var trace = traces.First();
-                var file = trace.ToFile();
+                traces.ToList().ForEach(m => m.ToFile());
             }
             catch (Exception ex)
             {
@@ -112,7 +111,7 @@
                 messageTrack = messageTrack.Where(m => m.Name.Contains(search));
             }
 
-            messageTrack = messageTrack.OrderByDescending(m => m.Id);
+            messageTrack = messageTrack.OrderByDescending(m => m.Status == TraceStatusEmum.待发送).ThenByDescending(m => m.TraceDate);
             var pageList = messageTrack.ToPagedList(page, size);
 
             var models = Mapper.Map<IPagedList<TraceViewModel>>(pageList);

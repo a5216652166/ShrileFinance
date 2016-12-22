@@ -104,24 +104,30 @@
         function Save()
         {
             var row = $("#dg").datagrid("getSelected");
-
-            $.ajax({
-                async: false,
-                method: "POST",
-                data: { Id:row.Id, Name:row.Name },
-                url: "../api/Datagram/ModifyName",
-                statusCode: {
-                    200: function (data) {
-                        accept("dg");
-                        $.messager.show({ msg: "修改成功" });
-                    },
-                    400: function (data) {
-                        $.messager.show({ msg: data.responseJSON.Message });
+            
+            if (row == undefined) {
+                $.messager.show({ msg: "请选择需要修改的跟踪记录" });
+            }
+            else
+            {
+                $.ajax({
+                    async: false,
+                    method: "POST",
+                    data: { Id: row.Id, Name: row.Name },
+                    url: "../api/Datagram/ModifyName",
+                    statusCode: {
+                        200: function (data) {
+                            accept("dg");
+                            $.messager.show({ msg: "修改成功" });
+                        },
+                        400: function (data) {
+                            $.messager.show({ msg: data.responseJSON.Message });
+                        }
                     }
-                }
-            });
+                });
 
-            $("#mod").linkbutton("enable");
+                $("#mod").linkbutton("enable");
+            }
         }
 
         // 生成
@@ -148,23 +154,30 @@
         // 下载
         function Download() {
             var row = $("#dg").datagrid("getSelected");
-            debugger
-            $.ajax({
-                async: false,
-                method: "GET",
-                data: { Id: row.Id},
-                url: "../api/Datagram/Download",
-                statusCode: {
-                    200: function (data) {
-                        $.messager.show({ msg: "下载成功" });
-                    },
-                    400: function (data) {
-                        $.messager.show({ msg: data.responseJSON.Message });
-                    }
-                }
-            });
 
-            $("#save").linkbutton("enable");
+            if (row == undefined) {
+                $.messager.show({ msg: "请选择需要下载的跟踪记录" });
+            }
+            else
+            {
+                debugger
+                $.ajax({
+                    async: false,
+                    method: "GET",
+                    data: { Id: row.Id },
+                    url: "../api/Datagram/Download",
+                    statusCode: {
+                        200: function (data) {
+                            $.messager.show({ msg: "下载成功" });
+                        },
+                        400: function (data) {
+                            $.messager.show({ msg: data.responseJSON.Message });
+                        }
+                    }
+                });
+
+                $("#save").linkbutton("enable");
+            }
         }
     </script>
 </head>
@@ -183,11 +196,11 @@
         <thead>
             <tr>
                 <th data-options="field:'Id',hidden:true">Id</th>
-                <th data-options="field:'Name',width:180,align:'center',editor:{type:'validatebox'}">名称</th>
-                <th data-options="field:'TypeDesc',width:120,align:'center'">操作类型</th>
-                <th data-options="field:'StatusDesc',width:120,align:'center'">报文状态</th>
-                <th data-options="field:'TraceDate',width:180,align:'center'">跟踪日期</th>
-                <th data-options="field:'IsEdit',width:120,align:'center',hidden:true">是否可编辑</th>
+                <th data-options="field:'Name',width:450,align:'left',editor:{type:'validatebox'}">名称</th>
+                <th data-options="field:'TypeDesc',width:180,align:'left'">操作类型</th>
+                <th data-options="field:'StatusDesc',width:180,align:'left'">报文状态</th>
+                <th data-options="field:'TraceDate',width:180,align:'left'">跟踪日期</th>
+                <th data-options="field:'IsEdit',width:180,align:'left',hidden:true">是否可编辑</th>
             </tr>
         </thead>
     </table>

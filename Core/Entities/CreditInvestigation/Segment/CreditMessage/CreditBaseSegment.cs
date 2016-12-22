@@ -61,7 +61,7 @@
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(104, true)]
         public string 信息记录跟踪编号
         {
-            get { return string.Empty.PadLeft(20, ' '); }
+            get { return string.Empty.PadLeft(20, '0'); }
         }
     }
 }
