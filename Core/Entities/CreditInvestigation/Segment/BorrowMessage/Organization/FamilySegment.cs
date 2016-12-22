@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization
 {
     using System;
+    using AutoMapper;
 
     public class FamilySegment : AbsSegment
     {

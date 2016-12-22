@@ -20,7 +20,7 @@
             Property(m => m.FinancialContactPhone).HasMaxLength(35);
             Property(m => m.信息更新日期).HasMaxLength(8);
 
-            ToTable("CUST_OrganizationContactSegment");
+            ToTable("CIDG_OrganizationContactSegment");
         }
     }
 }

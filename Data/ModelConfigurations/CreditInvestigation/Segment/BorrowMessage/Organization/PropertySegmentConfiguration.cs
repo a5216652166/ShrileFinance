@@ -28,7 +28,7 @@
             Property(m => m.EconomicType).HasMaxLength(2);
             Property(m => m.信息更新日期).HasMaxLength(8);
 
-            ToTable("CUST_PropertySegment");
+            ToTable("CIDG_PropertySegment");
         }
     }
 }

@@ -21,7 +21,7 @@
             Property(m => m.CertificateCode).HasMaxLength(20);
             Property(m => m.信息更新日期).HasMaxLength(8);
 
-            ToTable("CUST_FamilySegment");
+            ToTable("CIDG_FamilySegment");
         }
     }
 }

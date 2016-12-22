@@ -24,7 +24,7 @@
             Property(m => m.LoanCardCode).HasMaxLength(16);
             Property(m => m.数据提取日期).HasMaxLength(8);
 
-            ToTable("CUST_BaseSegment");
+            ToTable("CIDG_BaseSegment");
         }
     }
 }
