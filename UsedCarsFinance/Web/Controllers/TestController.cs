@@ -22,7 +22,7 @@
         [HttpGet]
         public IHttpActionResult Generate()
         {
-            service.Generate();
+            service.GenerateTest();
 
             return Ok();
         }

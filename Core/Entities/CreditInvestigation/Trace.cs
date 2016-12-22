@@ -40,6 +40,10 @@
             Status = TraceStatusEmum.待生成;
         }
 
+        protected Trace()
+        {
+        }
+
         /// <summary>
         /// 跟踪日期
         /// </summary>
