@@ -80,7 +80,7 @@ namespace Data.Migrations
                         BigEventDescription = c.String(maxLength: 250),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -95,7 +95,7 @@ namespace Data.Migrations
                         业务发生日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -111,7 +111,7 @@ namespace Data.Migrations
                         Reason = c.String(maxLength: 300),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -128,7 +128,7 @@ namespace Data.Migrations
                         信息更新日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -149,7 +149,7 @@ namespace Data.Migrations
                         数据提取日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -167,7 +167,7 @@ namespace Data.Migrations
                         信息更新日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -182,7 +182,7 @@ namespace Data.Migrations
                         信息更新日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -196,7 +196,7 @@ namespace Data.Migrations
                         信息更新日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -209,7 +209,7 @@ namespace Data.Migrations
                         信息更新日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -225,7 +225,7 @@ namespace Data.Migrations
                         信息更新日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -247,7 +247,7 @@ namespace Data.Migrations
                         信息更新日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -265,7 +265,7 @@ namespace Data.Migrations
                         信息更新日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -280,7 +280,7 @@ namespace Data.Migrations
                         业务发生日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -292,7 +292,7 @@ namespace Data.Migrations
                         CreditBalance = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -307,7 +307,7 @@ namespace Data.Migrations
                         HasGuarantee = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -320,7 +320,7 @@ namespace Data.Migrations
                         业务发生日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -332,7 +332,7 @@ namespace Data.Migrations
                         欠息余额改变日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -347,7 +347,7 @@ namespace Data.Migrations
                         业务发生日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -372,7 +372,7 @@ namespace Data.Migrations
                         EffectiveState = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -391,7 +391,7 @@ namespace Data.Migrations
                         EffectiveState = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -408,7 +408,7 @@ namespace Data.Migrations
                         EffectiveState = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -430,7 +430,7 @@ namespace Data.Migrations
                         FiveCategoryAssetsClassification = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -448,7 +448,7 @@ namespace Data.Migrations
                         EffectiveState = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -474,7 +474,7 @@ namespace Data.Migrations
                         EffectiveState = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -494,7 +494,7 @@ namespace Data.Migrations
                         EffectiveState = c.String(maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -509,7 +509,7 @@ namespace Data.Migrations
                         ActualPaymentPrincipal = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -531,7 +531,7 @@ namespace Data.Migrations
                         业务发生日期 = c.String(maxLength: 8),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -604,7 +604,7 @@ namespace Data.Migrations
                         CashEquivalentsNetIncrease = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -652,7 +652,7 @@ namespace Data.Migrations
                         其他结余分配 = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -722,7 +722,7 @@ namespace Data.Migrations
                         TotalLiabilitiesCapital = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -782,7 +782,7 @@ namespace Data.Migrations
                         负债部类总计 = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
             CreateTable(
@@ -811,7 +811,7 @@ namespace Data.Migrations
                         DilutedEarningsShare = c.String(maxLength: 20),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AbsSegment", t => t.Id)
+                .ForeignKey("dbo.AbsSegment", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
         }
         
