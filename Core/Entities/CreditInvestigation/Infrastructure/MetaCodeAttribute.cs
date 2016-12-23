@@ -102,8 +102,12 @@
             }
             else if (Type == MetaCodeTypeEnum.Amount)
             {
-                validTypeR = new Regex(@"^-?\d+\.\d{2}$").IsMatch(value);
+                if (string.Empty.Equals(value))
+                {
+                    return true;
+                }
 
+                validTypeR = new Regex(@"^-?\d+\.\d{2}$").IsMatch(value);
                 ErrorMessage = "金额类型校验未通过！";
             }
 
