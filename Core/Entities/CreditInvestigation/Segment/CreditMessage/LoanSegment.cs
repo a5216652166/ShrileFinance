@@ -15,6 +15,10 @@
             借据编号 = loan.Id.ToString();
         }
 
+        protected LoanSegment() : base()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
@@ -48,13 +52,13 @@
         /// <summary>
         /// 放款日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(105, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(105, true)]
         public string SpecialDate { get; private set; }
 
         /// <summary>
         /// 到期日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(113, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(113, true)]
         public string MatureDate { get; set; }
 
         /// <summary>

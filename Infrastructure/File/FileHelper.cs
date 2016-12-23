@@ -12,7 +12,6 @@ namespace Infrastructure.File
     {
         public static void Create(string filePath,string content)
         {
-            
             if (!System.IO.File.Exists(filePath))
             {
                 FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate);

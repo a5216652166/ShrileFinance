@@ -64,7 +64,8 @@
                 throw new Exception("该报文不存在");
             }
 
-            return Infrastructure.Http.HttpHelper.DownLoad(trace.ToFile());
+            var a = Infrastructure.Http.HttpHelper.DownLoad(trace.ToFile());
+            return a;
         }
 
         /// <summary>
@@ -131,7 +132,7 @@
                 messageTrack = messageTrack.Where(m => m.Name.Contains(search));
             }
 
-            messageTrack = messageTrack.OrderByDescending(m => m.Status == TraceStatusEmum.待发送).ThenByDescending(m => m.TraceDate);
+            messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.TraceDate);
             var pageList = messageTrack.ToPagedList(page, size);
 
             var models = Mapper.Map<IPagedList<TraceViewModel>>(pageList);

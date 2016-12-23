@@ -10,14 +10,14 @@
     /// </summary>
     public class DebitInterestInfoDatagram : AbsDatagram
     {
-        public DebitInterestInfoDatagram() : base()
-        {
-        }
-
         public DebitInterestInfoDatagram(CreditContract credit, PaymentHistory payment) : base()
         {
             // 欠息信息记录
             AddRecord(new DebitInterestInfoRecord(credit, payment));
+        }
+
+        public DebitInterestInfoDatagram() : base()
+        {
         }
 
         public override DatagramTypeEnum Type

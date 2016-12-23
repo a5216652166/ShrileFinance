@@ -19,6 +19,10 @@
             CreditContractCode = creditContract.Id.ToString();
         }
 
+        protected CreditBaseSegment() : base()
+        {
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 
@@ -55,7 +59,7 @@
             get { return "1"; }
         }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(96, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(96, true)]
         public string 业务发生日期 { get; set; }
 
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(104, true)]

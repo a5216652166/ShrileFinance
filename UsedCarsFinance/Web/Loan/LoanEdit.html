@@ -20,7 +20,6 @@
 
         $(function () {
             var query = uc.GetParams();
-
             // 1.加载选项.
             $.when(
                 LoadCreditContractNumber(),
@@ -34,29 +33,30 @@
                 // 3.调整页面
                 Render(query);
             })
-
-            $.extend($.fn.validatebox.defaults.rules, {
-                //重复验证
-                CheckLoanNumber: {
-                    validator: function (value, param) {
-                        var result = false;
-                        $.ajax({
-                            async: false,
-                            data: { loanNumber: value },
-                            type: "GET",
-                            url: "../api/Loan/CheckLoanNumber",
-                            statusCode: {
-                                200: function (data) {
-                                    result = data;
+            if (query.method == "add") {
+                $.extend($.fn.validatebox.defaults.rules, {
+                    //重复验证
+                    CheckLoanNumber: {
+                        validator: function (value, param) {
+                            var result = false;
+                            $.ajax({
+                                async: false,
+                                data: { loanNumber: value },
+                                type: "GET",
+                                url: "../api/Loan/CheckLoanNumber",
+                                statusCode: {
+                                    200: function (data) {
+                                        result = data;
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                        return result;
-                    },
-                    message: '借据编号已使用!'
-                }
-            });
+                            return result;
+                        },
+                        message: '借据编号已使用!'
+                    }
+                });
+            }
         });
 
         function Render(query) {

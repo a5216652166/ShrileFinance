@@ -12,6 +12,10 @@
             SigningDate = guarantyContract.SigningDate == null ? "" : guarantyContract.SigningDate.Value.ToString("yyyyMMdd");
         }
 
+        protected NaturalGuaranteeSegment() : base()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
@@ -57,7 +61,7 @@
         /// <summary>
         /// 合同签订日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(184, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(184, true)]
         public string SigningDate { get; set; }
 
         /// <summary>

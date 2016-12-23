@@ -15,6 +15,10 @@
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
+        protected StockholderSegment() : base()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
         public string 信息类别
         {
@@ -63,7 +67,7 @@
         [MetaCode(10, MetaCodeTypeEnum.AN), SegmentRule(133, false)]
         public string SharesProportion { get; set; }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(143, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(143, true)]
         public string 信息更新日期 { get; set; }
 
         [MetaCode(40, MetaCodeTypeEnum.ANC), SegmentRule(151, false)]

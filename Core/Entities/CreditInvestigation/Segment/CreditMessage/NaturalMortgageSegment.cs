@@ -12,6 +12,10 @@
             SigningDate = mortgage.SigningDate == null ? "" : mortgage.SigningDate.Value.ToString("yyyyMMdd");
         }
 
+        protected NaturalMortgageSegment() : base()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
@@ -63,7 +67,7 @@
         /// <summary>
         /// 评估日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(186, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(186, false)]
         public string AssessmentDate { get; set; }
 
         /// <summary>
@@ -81,7 +85,7 @@
         /// <summary>
         /// 合同签订日期（授信合同中的日期）
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(284, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(284, true)]
         public string SigningDate { get; set; }
 
         /// <summary>
@@ -111,7 +115,7 @@
         /// <summary>
         /// 登记日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(396, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(396, false)]
         public string RegistrateDate { get; set; }
 
         /// <summary>

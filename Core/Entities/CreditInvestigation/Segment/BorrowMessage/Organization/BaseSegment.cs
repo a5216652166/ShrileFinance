@@ -13,6 +13,10 @@
             数据提取日期 = organization.CreatedDate.ToString("yyyyMMdd");
         }
 
+        protected BaseSegment() : base()
+        {
+        }
+
         /// <summary>
         /// 类别
         /// </summary>
@@ -92,7 +96,7 @@
         [MetaCode(16, MetaCodeTypeEnum.AN), SegmentRule(173, false)]
         public string LoanCardCode { get; set; }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(189, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(189, true)]
         public string 数据提取日期 { get; set; }
 
         [MetaCode(40, MetaCodeTypeEnum.ANC), SegmentRule(197, false)]

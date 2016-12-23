@@ -29,6 +29,10 @@
             HasGuarantee = credit.HasGuarantee ? "1" : "2";
         }
 
+        protected CreditContractSegment() : base()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {
@@ -50,13 +54,13 @@
         /// <summary>
         /// 授信合同生效日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(142, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(142, true)]
         public string EffectiveDate { get; set; }
 
         /// <summary>
         /// 授信合同终止日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(150, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(150, true)]
         public string ExpirationDate { get; set; }
 
         [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(158, true)]

@@ -23,6 +23,7 @@
             审计事务所名称 = financialAffairs.AuditFirm;
             审计人员名称 = financialAffairs.AuditorName;
             信息记录操作类型 = "1";
+
             // TODO 财务实体中添加审计时间字段
             审计时间 = DateTime.Now.ToString("yyyyMMdd");
             业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
@@ -101,7 +102,7 @@
         /// <summary>
         /// 审计时间(格式:YYYYMMDD)
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(232, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(232, false)]
         public string 审计时间 { get; set; }
 
         /// <summary>
@@ -113,7 +114,7 @@
         /// <summary>
         /// 业务发生日期(格式:YYYYMMDD)
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(241, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(241, true)]
         public string 业务发生日期 { get; set; }
 
         /// <summary>

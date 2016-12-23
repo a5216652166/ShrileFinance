@@ -41,6 +41,10 @@
             this.item = item;
         }
 
+        protected ProfitRecord() : base()
+        {
+        }
+
         public override RecordTypeEnum Type
         {
             get

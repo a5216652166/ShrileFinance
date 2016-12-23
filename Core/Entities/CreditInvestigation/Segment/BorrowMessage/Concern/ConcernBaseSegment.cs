@@ -14,6 +14,10 @@
             业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
+        protected ConcernBaseSegment() : base()
+        {
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true)]
         public string 信息记录长度 { get; set; }
 
@@ -44,7 +48,7 @@
             get { return "1"; }
         }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(116, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(116, true)]
         public string 业务发生日期 { get; set; }
 
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(124, true)]

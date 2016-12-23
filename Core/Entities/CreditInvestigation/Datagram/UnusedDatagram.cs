@@ -15,9 +15,16 @@
             this.type = type;
         }
 
+        protected UnusedDatagram() : base()
+        {
+        }
+
         public override DatagramTypeEnum Type
         {
-            get { return type; }
+            get
+            {
+                return type;
+            }
         }
     }
 }

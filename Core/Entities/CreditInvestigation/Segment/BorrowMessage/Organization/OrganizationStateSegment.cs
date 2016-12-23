@@ -12,6 +12,10 @@
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
+        protected OrganizationStateSegment() : base()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
         public string 信息类别
         {
@@ -36,7 +40,7 @@
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(4, false)]
         public string InstitutionsState { get; set; }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(5, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(5, false)]
         public string 信息更新日期 { get; set; }
 
         [MetaCode(40, MetaCodeTypeEnum.ANC), SegmentRule(13, true)]
