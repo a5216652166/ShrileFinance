@@ -28,7 +28,7 @@
         /// <summary>
         /// 关系人类型
         /// </summary>
-        [MetaCode(2, MetaCodeTypeEnum.AN), SegmentRule(2, true)]
+        [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(2, true)]
         public string Type { get; set; }
 
         /// <summary>
