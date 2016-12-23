@@ -51,10 +51,10 @@
         /// </summary>
         public DateTime TraceDate { get; private set; }
 
-        ///// <summary>
-        ///// 生成日期
-        ///// </summary>
-        //public DateTime DateCreated { get; private set; }
+        /// <summary>
+        /// 生成日期
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
 
         /// <summary>
         /// 引用ID
