@@ -134,7 +134,7 @@
                 messageTrack = messageTrack.Where(m => m.Name.Contains(search));
             }
 
-            messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.TraceDate);
+            messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.SpecialDate);
             var pageList = messageTrack.ToPagedList(page, size);
 
             var models = Mapper.Map<IPagedList<TraceViewModel>>(pageList);
