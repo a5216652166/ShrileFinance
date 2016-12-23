@@ -18,7 +18,7 @@
             Property(m => m.Status);
             Property(m => m.SerialNumber);
             Property(m => m.DatagramFileId);
-            Property(m => m.DateCreated);
+            Property(m => m.DateCreated).HasColumnType("DATE");
 
             HasOptional(m => m.DatagramFile);
 

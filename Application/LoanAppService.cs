@@ -85,7 +85,7 @@
             repository.Commit();
 
             // 报文追踪（放款）
-            messageAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", dateCreated: loan.SpecialDate);
+            messageAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
         }
 
         /// <summary>
@@ -147,13 +147,13 @@
                     switch (type)
                     {
                         case TraceTypeEnum.还款:
-                            messageAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{payment.Key.ActualPaymentPrincipal}", dateCreated: payment.Key.DatePayment);
+                            messageAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{payment.Key.ActualPaymentPrincipal}", specialDate: payment.Key.DatePayment);
                             break;
                         case TraceTypeEnum.逾期:
-                            messageAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", dateCreated: payment.Key.DatePayment);
+                            messageAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: payment.Key.DatePayment);
                             break;
                         case TraceTypeEnum.欠息:
-                            messageAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", dateCreated: payment.Key.DatePayment);
+                            messageAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: payment.Key.DatePayment);
                             break;
                         default:
                             break;

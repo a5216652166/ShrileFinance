@@ -53,7 +53,7 @@
             repository.Commit();
 
             // 报文追踪(贷款合同信息记录)
-            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订授信合同：{credit.CreditContractCode}", dateCreated: credit.EffectiveDate);
+            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订授信合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate);
 
             //// 报文追踪(担保合同信息记录)
             ////credit.GuarantyContract.ToList().ForEach(m =>
@@ -209,7 +209,7 @@
             repository.Commit();
 
             // 报文追踪(合同关键数据项有效日期发生变化)
-            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"授信合同：{model.CreditContractCode}有效日期变更", dateCreated: model.EffectiveDate);
+            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"授信合同：{model.CreditContractCode}有效日期变更", specialDate: model.EffectiveDate);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@
             repository.Commit();
 
             // 报文追踪
-            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", dateCreated: credit.EffectiveDate);
+            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate);
         }
 
         /// <summary>
@@ -394,7 +394,7 @@
             repository.Commit();
 
             // 报文追踪(合同关键数据项金额发生变化)
-            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更", dateCreated: model.EffectiveDate);
+            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更", specialDate: model.EffectiveDate);
         }
     }
 }

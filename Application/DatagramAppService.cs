@@ -33,21 +33,20 @@
         /// </summary>
         /// <param name="referenceId">引用标识</param>
         /// <param name="traceType">操作类型</param>
-        /// <param name="dateCreated">生成日期</param>
+        /// <param name="specialDate">业务发生日期</param>
         /// <param name="defaultName">默认名称</param>
-        public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime dateCreated, string defaultName = null)
+        public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime specialDate, string defaultName = null)
         {
-            var count = repository.CountByTraceDateAndReference(DateTime.Now.Date, referenceId);
+            var dateCreated = DateTime.Now.Date;
+            var count = repository.CountByDateCreatedAndReference(dateCreated, referenceId);
 
             if (count == 0)
             {
                 // 生成序列号
-                var serialNumberGenerator = SerialNumberGenerator.GetInstance(() => repository.MaxSerialNumberByTraceDate(DateTime.Now.Date));
-                var serialNumber = serialNumberGenerator.GetNext();
+                var serialNumber = repository.MaxSerialNumberByDateCreated(dateCreated) + 1;
+                var trace = new Trace(referenceId, traceType, serialNumber, specialDate, defaultName);
 
-                var messageTrack = new Trace(referenceId, traceType, serialNumber, dateCreated, defaultName);
-
-                repository.Create(messageTrack);
+                repository.Create(trace);
                 repository.Commit();
             }
         }

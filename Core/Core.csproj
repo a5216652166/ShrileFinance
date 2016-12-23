@@ -234,7 +234,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="Services\CreditInvestigation\SerialNumberGenerator.cs" />
     <Compile Include="Services\Loan\LoanService.cs" />
     <Compile Include="Services\Loan\PaymentService.cs" />
   </ItemGroup>

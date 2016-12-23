@@ -12,19 +12,21 @@
         {
         }
 
-        public int CountByTraceDateAndReference(DateTime traceDate, Guid referenceId)
+        public int CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId)
         {
-            return GetAll().Count(m => m.SpecialDate.Date == traceDate && m.ReferenceId == referenceId);
+            return GetAll().Count(m => m.ReferenceId == referenceId && m.SpecialDate ==dateCreated);
         }
 
-        public int MaxSerialNumberByTraceDate(DateTime traceDate)
+        public int MaxSerialNumberByDateCreated(DateTime dateCreated)
         {
-            return GetByTraceDate(traceDate).Max(m => m.SerialNumber);
+            var traces = GetByDateCreated(dateCreated);
+
+            return traces.Any() ? traces.Max(m => m.SerialNumber) : 0;
         }
 
-        public IEnumerable<Trace> GetByTraceDate(DateTime traceDate)
+        public IEnumerable<Trace> GetByDateCreated(DateTime dateCreated)
         {
-            return GetAll(m => m.SpecialDate.Date == traceDate);
+            return GetAll(m => m.SpecialDate ==dateCreated);
         }
 
         public IEnumerable<Trace> GetByIds(IEnumerable<Guid> traceIds)
