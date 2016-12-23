@@ -25,7 +25,7 @@
 
                 // 联络信息段
                 new OrganizationContactSegment(organization.Contact),
-               
+
             };
 
             if (organization.Parent != null)
@@ -51,6 +51,10 @@
             {
                 Segments.Add(new AssociatedEnterpriseSegment(item));
             }
+        }
+
+        protected OrganizationBaseRecord() : base()
+        {
         }
 
         public override RecordTypeEnum Type
