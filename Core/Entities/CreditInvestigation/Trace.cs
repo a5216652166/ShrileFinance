@@ -31,14 +31,14 @@
 
     public class Trace : Entity, IAggregateRoot
     {
-        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, DateTime dateCreated, string name = null)
+        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, DateTime specialDate, string name = null)
         {
             Name = name;
             Type = type;
             ReferenceId = referenceId;
             SerialNumber = serialNumber;
-            DateCreated = dateCreated;
-            TraceDate = DateTime.Now.Date;
+            SpecialDate = specialDate;
+            DateCreated = DateTime.Now;
             Status = TraceStatusEmum.待生成;
         }
 
@@ -47,14 +47,9 @@
         }
 
         /// <summary>
-        /// 跟踪日期
+        /// 业务发生日期
         /// </summary>
-        public DateTime TraceDate { get; private set; }
-
-        /// <summary>
-        /// 生成日期
-        /// </summary>
-        public DateTime DateCreated { get; private set; }
+        public DateTime SpecialDate { get; private set; }
 
         /// <summary>
         /// 引用ID
@@ -85,6 +80,11 @@
         /// 报文文件标识
         /// </summary>
         public Guid? DatagramFileId { get; private set; }
+
+        /// <summary>
+        /// 跟踪日期
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
 
         /// <summary>
         /// 报文文件
