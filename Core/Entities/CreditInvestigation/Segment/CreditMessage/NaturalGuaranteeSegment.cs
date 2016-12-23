@@ -8,6 +8,15 @@
         public NaturalGuaranteeSegment(GuarantyContract guarantyContract)
         {
             Mapper.Map(guarantyContract, this);
+            if (guarantyContract.Guarantor is GuarantorPerson)
+            {
+                var person = guarantyContract.Guarantor as GuarantorPerson;
+                CertificateType = person.CertificateType;
+                CertificateNumber = person.CertificateNumber;
+            }
+            GuaranteeForm = guarantyContract.GuaranteeForm.Value.ToString("D");
+            Name = guarantyContract.Guarantor.Name;
+            EffectiveState = guarantyContract.EffectiveState.Value.ToString("D");
             保证合同编号 = guarantyContract.Id.ToString();
             SigningDate = guarantyContract.SigningDate == null ? "" : guarantyContract.SigningDate.Value.ToString("yyyyMMdd");
         }

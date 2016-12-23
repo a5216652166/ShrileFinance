@@ -13,7 +13,7 @@
         public CreditBaseSegment(RecordTypeEnum type, CreditContract creditContract)
         {
             信息记录类型 = type.ToString("D");
-            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
+            业务发生日期 = creditContract.EffectiveDate.ToString("yyyyMMdd");
 
             LoanCardCode = creditContract.Organization.LoanCardCode;
             CreditContractCode = creditContract.Id.ToString();

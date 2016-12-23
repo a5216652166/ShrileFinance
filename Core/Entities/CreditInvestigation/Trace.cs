@@ -31,7 +31,7 @@
 
     public class Trace : Entity, IAggregateRoot
     {
-        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, string name = null)
+        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, DateTime dateCreated, string name = null)
         {
             Name = name;
             Type = type;

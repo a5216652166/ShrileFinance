@@ -8,15 +8,23 @@
     /// </summary>
     public class GuaranteeMortgageSegment : AbsSegment
     {
-        public GuaranteeMortgageSegment(GuarantyContractMortgage guarantyContractMortgage, CreditContract creditContract)
+        public GuaranteeMortgageSegment(GuarantyContractMortgage mortgage, CreditContract creditContract)
         {
-            Mapper.Map(guarantyContractMortgage, this);
-            抵押合同编号 = guarantyContractMortgage.Id.ToString();
-            Name = guarantyContractMortgage.Guarantor.Name;
+            Mapper.Map(mortgage, this);
+            if (mortgage.Guarantor is GuarantorOrganization)
+            {
+                var org = mortgage.Guarantor as GuarantorOrganization;
+                CreditcardCode = org.CreditcardCode;
+            }
+            EffectiveState = mortgage.EffectiveState.Value.ToString("D");
+            Name = mortgage.Guarantor.Name;
+            抵押合同编号 = mortgage.Id.ToString();
+            Name = mortgage.Guarantor.Name;
+            CollateralType = mortgage.CollateralType.Value.ToString("D");
             CreditcardCode = creditContract.Organization.LoanCardCode;
-            SigningDate = guarantyContractMortgage.SigningDate == null ? "" : guarantyContractMortgage.SigningDate.Value.ToString("yyyyMMdd");
-            AssessmentDate = guarantyContractMortgage.AssessmentDate == null ? "" : guarantyContractMortgage.AssessmentDate.Value.ToString("yyyyMMdd");
-            RegistrateDate = guarantyContractMortgage.RegistrateDate == null ? "" : guarantyContractMortgage.RegistrateDate.Value.ToString("yyyyMMdd");
+            SigningDate = mortgage.SigningDate == null ? "" : mortgage.SigningDate.Value.ToString("yyyyMMdd");
+            AssessmentDate = mortgage.AssessmentDate == null ? "" : mortgage.AssessmentDate.Value.ToString("yyyyMMdd");
+            RegistrateDate = mortgage.RegistrateDate == null ? "" : mortgage.RegistrateDate.Value.ToString("yyyyMMdd");
         }
 
         protected GuaranteeMortgageSegment() : base()
