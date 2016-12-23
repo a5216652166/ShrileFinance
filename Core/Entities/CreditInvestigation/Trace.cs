@@ -99,7 +99,7 @@
         {
             if (Status != TraceStatusEmum.待生成 && Status != TraceStatusEmum.待发送)
             {
-                throw new InvalidOperationAppException("该追踪状态不能生成报文");
+                throw new InvalidOperationAppException("当前状态不可生成报文。");
             }
 
             DatagramFile = datagramFile;
@@ -112,11 +112,6 @@
         /// <returns>文件名、流</returns>
         public KeyValuePair<string, Stream> ToFile()
         {
-            ////if (Status != TraceStatusEmum.待发送)
-            ////{
-            ////    throw new InvalidOperationAppException("下载前必须生成报文。");
-            ////}
-
             // 文件名
             string fileName = $"{DatagramFile.GenerateFilename()}.txt";
 
