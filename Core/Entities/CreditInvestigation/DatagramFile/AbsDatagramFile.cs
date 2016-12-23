@@ -21,12 +21,17 @@
         /// <summary>
         /// 金融机构代码
         /// </summary>
-        public const string FinancialOrganizationCode = "33207991216";
+        public const string FINANCIAL_ORGANIZATION_CODE = "33207991216";
 
         protected AbsDatagramFile(int serialNumber)
         {
             DateCreated = DateTime.Now;
             SerialNumber = serialNumber.ToString("D4");
+        }
+
+        public virtual string FinancialOrganizationCode
+        {
+            get { return FINANCIAL_ORGANIZATION_CODE; }
         }
 
         /// <summary>

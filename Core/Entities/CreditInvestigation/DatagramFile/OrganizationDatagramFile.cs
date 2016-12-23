@@ -27,12 +27,14 @@
             };
         }
 
+        public override string FinancialOrganizationCode
+        {
+            get { return base.FinancialOrganizationCode.PadLeft(20, '0'); }
+        }
+
         public override DatagramFileType Type
         {
-            get
-            {
-                return DatagramFileType.机构基本信息采集报文文件;
-            }
+            get { return DatagramFileType.机构基本信息采集报文文件; }
         }
     }
 }

@@ -67,7 +67,7 @@
         /// </summary>
         public string FinancialOrganizationCode
         {
-            get { return AbsDatagramFile.FinancialOrganizationCode; }
+            get { return AbsDatagramFile.FINANCIAL_ORGANIZATION_CODE; }
         }
 
         /// <summary>
@@ -139,7 +139,7 @@
         /// 生成报文头
         /// </summary>
         /// <returns></returns>
-        private StringBuilder GenerateHeader()
+        protected virtual StringBuilder GenerateHeader()
         {
             var builder = new StringBuilder();
 

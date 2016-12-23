@@ -29,7 +29,7 @@
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true)]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FinancialOrganizationCode; }
+            get { return AbsDatagramFile.FINANCIAL_ORGANIZATION_CODE; }
         }
 
         [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(19, true)]
