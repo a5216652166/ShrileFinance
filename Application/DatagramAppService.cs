@@ -55,19 +55,11 @@
         /// </summary>
         /// <param name="id">报文标识</param>
         /// <returns>报文文件</returns>
-        public System.Net.Http.HttpResponseMessage Download(Guid id)
+        public KeyValuePair<string,System.IO.Stream> Download(Guid id)
         {
             var trace = repository.Get(id);
 
-            if (trace == null)
-            {
-                throw new Exception("该报文不存在");
-            }
-
-            // 生成文件，返回流和文件名
-            var keyValuePir = trace.ToFile();
-
-            return Infrastructure.Http.HttpHelper.DownLoad(stream: keyValuePir.Value, fileName: keyValuePir.Key);
+            return trace.ToFile();
         }
 
         /// <summary>
