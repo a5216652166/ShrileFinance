@@ -51,7 +51,7 @@
             get { return "1"; }
         }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(36, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(36, true)]
         public string 业务发生日期 { get; set; }
 
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(44, true)]

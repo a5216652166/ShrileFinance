@@ -68,7 +68,7 @@
         /// <summary>
         /// 评估日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(183, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(183, false)]
         public string AssessmentDate { get; set; }
 
         /// <summary>
@@ -86,7 +86,7 @@
         /// <summary>
         /// 合同签订日期（授信合同中的日期）
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(281, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(281, true)]
         public string SigningDate { get; set; }
 
         /// <summary>
@@ -116,7 +116,7 @@
         /// <summary>
         /// 登记日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(393, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(393, false)]
         public string RegistrateDate { get; set; }
 
         /// <summary>

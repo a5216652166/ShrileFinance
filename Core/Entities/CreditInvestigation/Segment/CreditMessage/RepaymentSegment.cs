@@ -31,7 +31,7 @@
         /// <summary>
         /// 还款日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(62, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(62, true)]
         public string DatePayment { get; set; }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(70, true, Describe = "标识还款的顺序号，起始次数可以不为1，从小到大顺序排列")]

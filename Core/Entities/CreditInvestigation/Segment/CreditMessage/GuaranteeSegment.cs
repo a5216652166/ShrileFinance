@@ -59,7 +59,7 @@
         /// <summary>
         /// 合同签订日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(181, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(181, true)]
         public string SigningDate { get; set; }
 
         /// <summary>
