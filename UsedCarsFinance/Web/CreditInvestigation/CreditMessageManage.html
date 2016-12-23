@@ -22,6 +22,7 @@
 
         function BeforeLoad(param) {
             param.search = $("#Name").textbox("getValue");
+            param.status = $("#Status").textbox("getValue");
         }
 
         // 键盘enter键
@@ -258,6 +259,15 @@
     <div id="tb">
         <div style="height:30px;width:auto;">
             <input id="Name" name="Name" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入名称'" />
+            <span>报文状态:</span>
+            <select id="Status" class="easyui-combobox" style="width:100px;height:25px; margin-top:3px;">
+                <option value="">全部</option>
+                <option value="0">待生成</option>
+                <option value="1">待发送</option>
+                <option value="2">已发送</option>
+                <option value="3">待反馈</option>
+                <option value="4">待反馈</option>
+            </select>
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
             <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>

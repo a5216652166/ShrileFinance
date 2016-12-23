@@ -140,13 +140,18 @@
         /// <param name="page">页码</param>
         /// <param name="size">每页数量</param>
         /// <returns></returns>
-        public IPagedList<TraceViewModel> GetPageList(string search, int page, int size)
+        public IPagedList<TraceViewModel> GetPageList(string search, int page, int size, TraceStatusEmum? status = null)
         {
             var messageTrack = repository.GetAll();
 
             if (!string.IsNullOrEmpty(search))
             {
                 messageTrack = messageTrack.Where(m => m.Name.Contains(search));
+            }
+
+            if (status != null)
+            {
+                messageTrack = messageTrack.Where(m => m.Status == status.Value);
             }
 
             messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.SpecialDate);

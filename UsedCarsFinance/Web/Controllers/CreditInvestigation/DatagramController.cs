@@ -8,6 +8,7 @@
     using Application;
     using Application.ViewModels;
     using Application.ViewModels.CreditInvesitigation.TraceViewModels;
+    using Core.Entities.CreditInvestigation;
     using global::Infrastructure.Http;
 
     public class DatagramController : ApiController
@@ -20,9 +21,9 @@
         }
 
         [HttpGet]
-        public IHttpActionResult GetPageList(string search, int page, int rows)
+        public IHttpActionResult GetPageList(string search, int page, int rows, TraceStatusEmum? status = null)
         {
-            var list = messageAppService.GetPageList(search, page, rows);
+            var list = messageAppService.GetPageList(search, page, rows, status);
 
             return Ok(new PagedListViewModel<TraceViewModel>(list));
         }
