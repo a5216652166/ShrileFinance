@@ -142,10 +142,6 @@
             {
                 var result = string.Empty;
 
-                var temp = Encoding.UTF8.GetBytes(value);
-
-                value = Encoding.GetEncoding("GB2312").GetString(temp);
-
                 switch (type)
                 {
                     case MetaCodeTypeEnum.N:
@@ -168,17 +164,35 @@
 
             private string PaddingN(string value)
             {
-                return value.PadLeft(length, '0');
+                int gblength = Encoding.GetEncoding("gb2312").GetByteCount(value);
+                int enlength = value.Length;
+
+                value = value.PadLeft(length, '0');
+                value = value.Substring(gblength - enlength, value.Length);
+
+                return value;
             }
 
             private string PaddingString(string value)
             {
-                return value.PadRight(length);
+                int gblength = Encoding.GetEncoding("gb2312").GetByteCount(value);
+                int enlength = value.Length;
+
+                value = value.PadRight(length);
+                value = value.Substring(0, value.Length-(gblength - enlength));
+
+                return value;
             }
 
             private string PaddingDate(string value)
             {
-                return value.PadLeft(length);
+                int gblength = Encoding.GetEncoding("gb2312").GetByteCount(value);
+                int enlength = value.Length;
+
+                value = value.PadLeft(length);
+                value = value.Substring(gblength - enlength, value.Length);
+
+                return value;
             }
         }
     }

@@ -116,7 +116,7 @@
             string fileName = $"{DatagramFile.GenerateFilename()}.txt";
 
             // 流
-            var memoryStream = new MemoryStream(Encoding.GetEncoding("GB2312").GetBytes(DatagramFile.Packaging()));
+            var memoryStream = new MemoryStream(Encoding.GetEncoding("gb2312").GetBytes(DatagramFile.Packaging()));
 
             return new KeyValuePair<string, Stream>(fileName, memoryStream);
         }
