@@ -11,7 +11,6 @@
     /// </summary>
     public class NaturalEnsureContractInfoRecord : AbsRecord
     {
-
         public NaturalEnsureContractInfoRecord(CreditContract credit, GuarantyContract guaranty) : base()
         {
             Segments = new List<AbsSegment>()

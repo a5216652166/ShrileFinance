@@ -32,7 +32,7 @@
             };
         }
 
-        protected LoanDatagramFile():base()
+        protected LoanDatagramFile() : base()
         {
         }
 

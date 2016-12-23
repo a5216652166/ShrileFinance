@@ -9,7 +9,16 @@
     {
         public LiabilitiesParagraph(Liabilities liabilities)
         {
-            AutoMapper.Mapper.Map(liabilities, this);
+            try
+            {
+                AutoMapper.Mapper.Map(liabilities, this);
+
+            }
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
         }
 
         protected LiabilitiesParagraph() : base()
@@ -19,7 +28,7 @@
         /// <summary>
         /// 信息类别
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.Amount), SegmentRule(1, true)]
+        [MetaCode(1, MetaCodeTypeEnum.ANC), SegmentRule(1, true)]
         public string 信息类别
         {
             get { return "G"; }

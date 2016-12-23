@@ -11,7 +11,16 @@
         public GuaranteePledgeSegment(GuarantyContractPledge mortgage, CreditContract credit)
         {
             Mapper.Map(mortgage, this);
+            if (mortgage.Guarantor is GuarantorOrganization)
+            {
+                var org = mortgage.Guarantor as GuarantorOrganization;
+                CreditcardCode = org.CreditcardCode;
+            }
+            Name = mortgage.Guarantor.Name;
             质押合同编号 = mortgage.Id.ToString();
+            PledgeType = mortgage.PledgeType.Value.ToString("D");
+            EffectiveState = mortgage.EffectiveState.Value.ToString("D");
+
             CreditcardCode = credit.Organization.LoanCardCode;
             SigningDate = mortgage.SigningDate == null ? "" : mortgage.SigningDate.Value.ToString("yyyyMMdd");
         }

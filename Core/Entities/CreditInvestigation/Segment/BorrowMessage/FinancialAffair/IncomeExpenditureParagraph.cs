@@ -19,7 +19,7 @@
         /// <summary>
         /// 信息类别
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.Amount), SegmentRule(1, true)]
+        [MetaCode(1, MetaCodeTypeEnum.ANC), SegmentRule(1, true)]
         public string 信息类别
         {
             get { return "K"; }
@@ -137,7 +137,7 @@
         /// 销售税金1
         /// </summary>
         [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(362, false)]
-        public string 销售税金1 { get; set; }
+        public string 销售税金 { get; set; }
 
         /// <summary>
         /// 结转自筹基建
@@ -161,7 +161,7 @@
         /// 销售税金2
         /// </summary>
         [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(442, false)]
-        public string 销售税金2 { get; set; }
+        public string 销售税金1 { get; set; }
 
         /// <summary>
         /// 经营支出小计

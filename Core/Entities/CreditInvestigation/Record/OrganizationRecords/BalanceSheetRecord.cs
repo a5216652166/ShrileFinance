@@ -13,12 +13,13 @@
     {
         public BalanceSheetRecord(Organization organization, Liabilities item)
         {
-            var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString());
+            var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString(),Type);
 
             Segments = new List<AbsSegment>()
             {
                 // 基础段
                 baseParagraph,
+
                 // 2007版资产负债表段
                 new LiabilitiesParagraph(item)
             };

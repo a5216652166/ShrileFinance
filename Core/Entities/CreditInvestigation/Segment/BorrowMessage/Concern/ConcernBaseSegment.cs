@@ -11,7 +11,7 @@
             信息记录类型 = type.ToString("D");
             借款人名称 = organization.Property.InstitutionChName;
             贷款卡编码 = organization.LoanCardCode;
-            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
+            业务发生日期 = organization.CreatedDate.ToString("yyyyMMdd");
         }
 
         protected ConcernBaseSegment() : base()

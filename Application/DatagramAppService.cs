@@ -33,8 +33,9 @@
         /// </summary>
         /// <param name="referenceId">引用标识</param>
         /// <param name="traceType">操作类型</param>
+        /// <param name="dateCreated">生成日期</param>
         /// <param name="defaultName">默认名称</param>
-        public void Trace(Guid referenceId, TraceTypeEnum traceType, string defaultName = null)
+        public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime dateCreated, string defaultName = null)
         {
             var count = repository.CountByTraceDateAndReference(DateTime.Now.Date, referenceId);
 
@@ -44,7 +45,7 @@
                 var serialNumberGenerator = SerialNumberGenerator.GetInstance(() => repository.MaxSerialNumberByTraceDate(DateTime.Now.Date));
                 var serialNumber = serialNumberGenerator.GetNext();
 
-                var messageTrack = new Trace(referenceId, traceType, serialNumber, defaultName);
+                var messageTrack = new Trace(referenceId, traceType, serialNumber, dateCreated, defaultName);
 
                 repository.Create(messageTrack);
                 repository.Commit();
@@ -56,7 +57,7 @@
         /// </summary>
         /// <param name="id">报文标识</param>
         /// <returns>报文文件</returns>
-        public KeyValuePair<string,System.IO.Stream> Download(Guid id)
+        public KeyValuePair<string, Stream> Download(Guid id)
         {
             var trace = repository.Get(id);
 
@@ -67,7 +68,7 @@
         /// 生成指定报文
         /// </summary>
         /// <param name="traceIds">追踪标识集合</param>
-        public void Generate(IEnumerable<Guid> traceIds)
+        public KeyValuePair<string, Stream> Generate(IEnumerable<Guid> traceIds)
         {
             var traces = repository.GetByIds(traceIds);
 
@@ -84,7 +85,10 @@
 
                 // 添加文件
                 trace.AddDatagram(datagramFile);
+
+                return trace.ToFile();
             }
+            throw new NotImplementedException();
         }
 
         public KeyValuePair<string, Stream> GenerateTest(Guid traceId)

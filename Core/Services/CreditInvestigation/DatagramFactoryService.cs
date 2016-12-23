@@ -166,7 +166,7 @@
                     }
                     else
                     {
-                        guarantyDatagram.AddRecord(new EnsureContractInfoRecord(credit, (GuarantyContractMortgage)item));
+                        guarantyDatagram.AddRecord(new EnsureContractInfoRecord(credit, (GuarantyContract)item));
                     }
                 }
                 else if (item.Guarantor is GuarantorPerson)
@@ -181,7 +181,7 @@
                     }
                     else
                     {
-                        guarantyDatagram.AddRecord(new NaturalEnsureContractInfoRecord(credit, (GuarantyContractMortgage)item));
+                        guarantyDatagram.AddRecord(new NaturalEnsureContractInfoRecord(credit, (GuarantyContract)item));
                     }
                 }
             }

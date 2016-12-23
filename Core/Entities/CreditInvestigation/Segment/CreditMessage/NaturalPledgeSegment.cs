@@ -11,6 +11,15 @@
         public NaturalPledgeSegment(GuarantyContractPledge guaranty)
         {
             Mapper.Map(guaranty, this);
+            if (guaranty.Guarantor is GuarantorPerson)
+            {
+                var person = guaranty.Guarantor as GuarantorPerson;
+                CertificateType = person.CertificateType;
+                CertificateNumber = person.CertificateNumber;
+            }
+            Name = guaranty.Guarantor.Name;
+            PledgeType = guaranty.PledgeType.Value.ToString("D");
+            EffectiveState = guaranty.EffectiveState.Value.ToString("D");
             质押合同编号 = guaranty.Id.ToString();
             SigningDate = guaranty.SigningDate == null ? "" : guaranty.SigningDate.Value.ToString("yyyyMMdd");
         }

@@ -61,5 +61,8 @@
 
         [Display(Name = "跟踪日期")]
         public DateTime TraceDate { get; set; }
+
+        [Display(Name = "生成日期")]
+        public DateTime DateCreated { get; set; }
     }
 }

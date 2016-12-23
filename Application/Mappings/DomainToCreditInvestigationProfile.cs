@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern;
+    using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
     using Core.Entities.CreditInvestigation.Segment.BorrowMessage.Organization;
     using Core.Entities.CreditInvestigation.Segment.CreditMessage;
     using Core.Entities.Customers.Enterprise;
@@ -41,6 +42,13 @@
             CreateMap<GuarantyContractMortgage, NaturalMortgageSegment>();
             CreateMap<GuarantorPerson, NaturalPledgeSegment>();
             CreateMap<GuarantyContractPledge, NaturalPledgeSegment>();
+
+            // 财务
+            CreateMap<CashFlow,CashFlowParagraph>();
+            CreateMap<InstitutionIncomeExpenditure, IncomeExpenditureParagraph>();
+            CreateMap<InstitutionLiabilities,InstitutionLiabilitiesParagraph>();
+            CreateMap<Liabilities,LiabilitiesParagraph>();
+            CreateMap<Profit,ProfitsParagraph>();
         }
     }
 }

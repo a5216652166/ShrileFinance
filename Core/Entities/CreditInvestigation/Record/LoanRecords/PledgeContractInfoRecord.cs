@@ -22,7 +22,6 @@
                 new GuaranteePledgeSegment(guaranty, credit)
             };
 
-
             ((GuaranteeBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
         }
 
