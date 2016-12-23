@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Customers.Enterprise;
     using Segment;
     using Segment.BorrowMessage.FinancialAffair;
@@ -26,7 +27,7 @@
                 new CashFlowParagraph(item)
             };
 
-            baseParagraph.信息记录长度 = GetLength().ToString();
+            ((BaseParagraph)Segments.First()).信息记录长度 = GetLength().ToString();
         }
 
         public CashFlowRecord(FinancialAffairs financial, CashFlow item)

@@ -110,7 +110,7 @@
             //    throw new InvalidOperationAppException("下载前必须生成报文。");
             //}
 
-            var filename = $"F:\\Temps\\{DatagramFile.GenerateFilename()}.txt";
+            var filename = $"D:\\temp\\{DatagramFile.GenerateFilename()}.txt";
             var fileInfo = new FileInfo(filename);
 
             if (!fileInfo.Exists)
