@@ -78,7 +78,7 @@
 
         public void GenerateTest()
         {
-            var lastDate = DateTime.Now.Date;
+            var lastDate = DateTime.Now.AddDays(-1).Date;
             var traces = repository.GetByTraceDate(lastDate);
 
             try
