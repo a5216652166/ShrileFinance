@@ -22,10 +22,16 @@
         }
 
         [HttpGet]
-        public IHttpActionResult Generate()
+        public HttpResponseMessage Generate(Guid id)
         {
-            service.GenerateTest();
+            var keyValuePir = service.GenerateTest(id);
 
+            return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
+        }
+
+        [HttpGet]
+        public IHttpActionResult Download()
+        {
             return Ok();
         }
 

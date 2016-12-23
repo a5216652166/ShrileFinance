@@ -107,10 +107,10 @@
         /// <returns>文件名、流</returns>
         public KeyValuePair<string, Stream> ToFile()
         {
-            if (Status != TraceStatusEmum.待发送)
-            {
-                throw new InvalidOperationAppException("下载前必须生成报文。");
-            }
+            //if (Status != TraceStatusEmum.待发送)
+            //{
+            //    throw new InvalidOperationAppException("下载前必须生成报文。");
+            //}
 
             // 文件名
             string fileName = $"{DatagramFile.GenerateFilename()}.txt";
