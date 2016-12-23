@@ -64,8 +64,10 @@
                 throw new Exception("该报文不存在");
             }
 
-            var a = Infrastructure.Http.HttpHelper.DownLoad(trace.ToFile());
-            return a;
+            // 生成文件，返回流和文件名
+            var keyValuePir = trace.ToFile();
+
+            return Infrastructure.Http.HttpHelper.DownLoad(stream: keyValuePir.Value, fileName: keyValuePir.Key);
         }
 
         /// <summary>
