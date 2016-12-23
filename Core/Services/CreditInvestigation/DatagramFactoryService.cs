@@ -125,14 +125,16 @@
             }
 
             var concern = datagramFile.GetDatagram(DatagramTypeEnum.关注信息采集报文);
-            if (organization.BigEvent.Count!=0)
+
+            if (organization.BigEvent.Count != 0)
             {
                 concern.AddRecord(new BigEventRecord(organization));
-            };
+            }
+
             if (organization.Litigation.Count != 0)
             {
                 concern.AddRecord(new LitigationRecord(organization));
-            };
+            }
 
             return datagramFile;
         }

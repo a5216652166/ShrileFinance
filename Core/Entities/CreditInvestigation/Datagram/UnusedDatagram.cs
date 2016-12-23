@@ -15,6 +15,9 @@
             this.type = type;
         }
 
-        public override DatagramTypeEnum Type { get { return type; } }
+        public override DatagramTypeEnum Type
+        {
+            get { return type; }
+        }
     }
 }

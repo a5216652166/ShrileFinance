@@ -81,18 +81,11 @@
             var lastDate = DateTime.Now.Date;
             var traces = repository.GetByTraceDate(lastDate);
 
-            try
-            {
-                factory.Generate(traces);
+            factory.Generate(traces);
 
-                repository.Commit();
+            repository.Commit();
 
-                traces.ToList().ForEach(m => m.ToFile());
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            traces.ToList().ForEach(m => m.ToFile());
         }
 
         /// <summary>
