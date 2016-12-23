@@ -27,6 +27,10 @@
             };
         }
 
+        protected OrganizationDatagramFile()
+        {
+        }
+
         public override DatagramFileType Type
         {
             get

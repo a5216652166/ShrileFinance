@@ -26,6 +26,10 @@
             ((CreditBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
         }
 
+        protected LoanRepayInfoRecord() : base()
+        {
+        }
+
         public override RecordTypeEnum Type
         {
             get

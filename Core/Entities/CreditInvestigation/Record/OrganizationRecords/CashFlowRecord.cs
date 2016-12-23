@@ -41,6 +41,10 @@
             this.item = item;
         }
 
+        protected CashFlowRecord() : base()
+        {
+        }
+
         public override RecordTypeEnum Type
         {
             get

@@ -9,6 +9,10 @@
 
     public abstract class AbsSegment : Entity
     {
+        protected AbsSegment()
+        {
+        }
+
         /// <summary>
         /// 信息记录标识
         /// </summary>

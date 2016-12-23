@@ -14,6 +14,10 @@
             业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
+        protected DebitInterestBaseSegment() : base()
+        {
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 

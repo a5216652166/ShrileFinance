@@ -23,6 +23,10 @@
         /// </summary>
         public const string FinancialOrganizationCode = "33207991216";
 
+        protected AbsDatagramFile()
+        {
+        }
+
         protected AbsDatagramFile(int serialNumber)
         {
             DateCreated = DateTime.Now;

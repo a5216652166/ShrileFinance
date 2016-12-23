@@ -41,6 +41,10 @@
             this.item = item;
         }
 
+        protected InstitutionLiabilitiesRecord() : base()
+        {
+        }
+
         public override RecordTypeEnum Type
         {
             get

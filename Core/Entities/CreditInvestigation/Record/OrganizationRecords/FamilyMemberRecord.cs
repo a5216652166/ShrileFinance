@@ -28,6 +28,10 @@
             };
         }
 
+        protected FamilyMemberRecord() : base()
+        {
+        }
+
         public override RecordTypeEnum Type
         {
             get

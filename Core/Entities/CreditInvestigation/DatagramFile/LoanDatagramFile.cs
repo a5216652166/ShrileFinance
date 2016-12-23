@@ -32,6 +32,10 @@
             };
         }
 
+        protected LoanDatagramFile():base()
+        {
+        }
+
         public override DatagramFileType Type
         {
             get { return DatagramFileType.信贷业务信息文件; }

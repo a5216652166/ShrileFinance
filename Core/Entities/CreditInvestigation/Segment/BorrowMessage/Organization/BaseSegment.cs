@@ -13,6 +13,10 @@
             数据提取日期 = organization.CreatedDate.ToString("yyyyMMdd");
         }
 
+        protected BaseSegment() : base()
+        {
+        }
+
         /// <summary>
         /// 类别
         /// </summary>
