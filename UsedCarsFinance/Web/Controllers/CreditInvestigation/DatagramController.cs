@@ -68,9 +68,9 @@
 
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.NoContent);
+                return Request.CreateErrorResponse(HttpStatusCode.NoContent, ex);
             }
         }
     }
