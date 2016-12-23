@@ -131,10 +131,52 @@
 
         // 生成
         function Generate() {
+            debugger
+
+            // 所有勾选的行
+            var array = $("#dg").datagrid("getChecked");
+
+            // 用于记录已生成的报文追踪
+            var count = 0;
+            for (var i = 0; i < array.length; i++)
+            {
+                if (array[i].StatusDesc == "待发送")
+                {
+                    count++;
+                }
+            }
+
+            if (count > 0) {
+                // 提示框
+                $.messager.confirm("操作提示", "存在" + count + "条待发送报文，是否忽略？", function (data) {
+                    debugger
+                    if (!data) {
+                        // 如果不忽略则只发送待生成的
+                        for (var i = 0; i < array.length; i++) {
+                            debugger
+                            if (array[i].StatusDesc != "待生成") {
+                                array.pop(i);
+                            }
+                        }
+
+                        generate(array);
+                    }
+                    else {
+                        generate(array);
+                    }
+                });
+            }
+            else{
+                generate(array);
+            }
+        }
+
+        function generate(array)
+        {
             $.ajax({
                 async: false,
                 method: "GET",
-                data: {},
+                data: { traceIds:array},
                 url: "../api/Datagram/Generate",
                 statusCode: {
                     200: function (data) {
@@ -198,7 +240,6 @@
 <body>
     <table id="dg" class="easyui-datagrid" data-options="height:630,toolbar:'#tb',rownumbers:true,
         onDblClickCell:onEditor,
-        singleSelect: true,
         pagination: true,
         pageSize: 20,
         pageList: [10,20,30,40,50],
@@ -209,6 +250,7 @@
         ">
         <thead>
             <tr>
+                <th data-options="field:'ck',checkbox:true"></th>
                 <th data-options="field:'Id',hidden:true">Id</th>
                 <th data-options="field:'Name',width:450,align:'left',editor:{type:'validatebox'}">名称</th>
                 <th data-options="field:'TypeDesc',width:180,align:'left'">操作类型</th>
