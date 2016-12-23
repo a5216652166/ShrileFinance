@@ -24,6 +24,7 @@
                 default:
                     break;
             }
+
             EffectiveDate = credit.EffectiveDate.ToString("yyyyMMdd");
             ExpirationDate = credit.ExpirationDate.ToString("yyyyMMdd");
             HasGuarantee = credit.HasGuarantee ? "1" : "2";

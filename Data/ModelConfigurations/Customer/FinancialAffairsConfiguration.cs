@@ -18,7 +18,7 @@
             Property(m => m.AuditorName).IsRequired().HasMaxLength(30);
             Property(m => m.Year).IsRequired();
             Property(m => m.TypeSubdivision).IsRequired();
-
+            Property(m => m.AuditorDate);
             HasMany(m => m.IncomeExpenditur).WithOptional().Map(m => m.MapKey("FinancialAffairsId"));
             HasMany(m => m.InstitutionLiabilities).WithOptional().Map(m => m.MapKey("FinancialAffairsId"));
             HasMany(m => m.Liabilities).WithOptional().Map(m => m.MapKey("FinancialAffairsId"));

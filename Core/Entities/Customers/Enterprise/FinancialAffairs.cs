@@ -1,5 +1,6 @@
 ﻿namespace Core.Entities.Customers.Enterprise
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -27,6 +28,10 @@
         /// </summary>
         public string AuditorName { get; set; }
 
+        /// <summary>
+        /// 审计日期
+        /// </summary>
+        public DateTime AuditorDate { get; set; }
         /// <summary>
         /// 现金流量
         /// </summary>

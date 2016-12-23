@@ -31,13 +31,13 @@
 
     public class Trace : Entity, IAggregateRoot
     {
-        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, string name = null)
+        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, DateTime dateCreated, string name = null)
         {
             Name = name;
             Type = type;
             ReferenceId = referenceId;
             SerialNumber = serialNumber;
-
+            DateCreated = dateCreated;
             TraceDate = DateTime.Now.Date;
             Status = TraceStatusEmum.待生成;
         }
@@ -50,6 +50,11 @@
         /// 跟踪日期
         /// </summary>
         public DateTime TraceDate { get; private set; }
+
+        /// <summary>
+        /// 生成日期
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
 
         /// <summary>
         /// 引用ID
@@ -92,13 +97,13 @@
         /// <param name="datagramFile">报文文件</param>
         public void AddDatagram(AbsDatagramFile datagramFile)
         {
-            //if (Status != TraceStatusEmum.待生成)
-            //{
-            //    throw new InvalidOperationAppException("报文已生成。");
-            //}
+            if (Status != TraceStatusEmum.待生成 && Status != TraceStatusEmum.待发送)
+            {
+                throw new InvalidOperationAppException("该追踪状态不能生成报文");
+            }
 
             DatagramFile = datagramFile;
-            //Status = TraceStatusEmum.待发送;
+            Status = TraceStatusEmum.待发送;
         }
 
         /// <summary>
@@ -107,10 +112,10 @@
         /// <returns>文件名、流</returns>
         public KeyValuePair<string, Stream> ToFile()
         {
-            //if (Status != TraceStatusEmum.待发送)
-            //{
-            //    throw new InvalidOperationAppException("下载前必须生成报文。");
-            //}
+            ////if (Status != TraceStatusEmum.待发送)
+            ////{
+            ////    throw new InvalidOperationAppException("下载前必须生成报文。");
+            ////}
 
             // 文件名
             string fileName = $"{DatagramFile.GenerateFilename()}.txt";

@@ -95,6 +95,10 @@
     <Compile Include="Migrations\201612210305588_CreditInvestigation.Designer.cs">
       <DependentUpon>201612210305588_CreditInvestigation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612230953463_AddfinancialAffilibiteANDTraceDate.cs" />
+    <Compile Include="Migrations\201612230953463_AddfinancialAffilibiteANDTraceDate.Designer.cs">
+      <DependentUpon>201612230953463_AddfinancialAffilibiteANDTraceDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -342,6 +346,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612210305588_CreditInvestigation.resx">
       <DependentUpon>201612210305588_CreditInvestigation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612230953463_AddfinancialAffilibiteANDTraceDate.resx">
+      <DependentUpon>201612230953463_AddfinancialAffilibiteANDTraceDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

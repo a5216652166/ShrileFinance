@@ -1,7 +1,6 @@
 ﻿namespace Web.Controllers.CreditInvestigation
 {
     using System;
-    using System.Collections.Generic;
     using System.Net.Http;
     using System.Web.Http;
     using Application;
@@ -54,5 +53,8 @@
 
             return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
         }
+
+        
     }
 }
+

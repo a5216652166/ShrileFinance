@@ -105,6 +105,10 @@
                 if (e == "Property" && data[e].EconomicSectorsClassification == "null") {
                     data[e].EconomicSectorsClassification = "";
                 }
+
+                if (e == "Property" && data[e].RegisterAdministrativeDivision == "null") {
+                    data[e].RegisterAdministrativeDivision = "";
+                }
             });
 
             $(['Managers', 'Shareholders', 'AssociatedEnterprises']).each(function (i, e) {
@@ -297,6 +301,7 @@
                 // 机构属性 经济行业分类异常处理
                 var data = {};
                 data.EconomicSectorsClassification = "";
+                data.RegisterAdministrativeDivision = "";
                 $("fieldset[name=Property]").form("load",data);
             }
         }
@@ -794,8 +799,15 @@
                                     注册（登记）地行政区划：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="注册（登记）地址所在地行政区划">　</a>
                                 </label>
-                                <!--<input class="easyui-textbox textbox-f" data-options="required:false,validType:['N','length[1,6]']" name="RegisterAdministrativeDivision">-->
-                                <select class="easyui-combobox  combobox-f combo-f textbox-f" name="RegisterAdministrativeDivision" data-options="editable:false,required:false">
+                                <select class="easyui-combotree textbox-f" name="RegisterAdministrativeDivision" data-options="editable:false,required:false,value:'',
+                                    async: false,
+                                    method: 'GET',
+                                    idField: 'id',
+                                    textField: 'text',
+                                    url: '../api/Method/GetAdministration',
+                                    onBeforeSelect:combotreeonBeforeSelect">
+                                </select>
+                                <!--<select class="easyui-combobox  combobox-f combo-f textbox-f" name="RegisterAdministrativeDivision" data-options="editable:false,required:false">
                                     <option value="">　</option>
                                     <option value="110000">北京市</option>
                                     <option value="120000">天津市</option>
@@ -831,7 +843,7 @@
                                     <option value="710000">台湾省</option>
                                     <option value="810000">香港特别行政区</option>
                                     <option value="820000">澳门特别行政区</option>
-                                </select>
+                                </select>-->
                             </div>
                             <div class="col-6">
                                 <label>
