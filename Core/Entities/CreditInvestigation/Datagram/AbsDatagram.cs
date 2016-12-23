@@ -147,7 +147,7 @@
             builder.Append(FormatVersion);
             builder.Append(FinancialOrganizationCode);
             builder.Append(DateCreated.ToString("yyyyMMddHHmmss"));
-            builder.Append(Type.ToString("D").PadLeft(2));
+            builder.Append(Type.ToString("D").PadLeft(2, '0'));
             builder.Append(Reserved.PadLeft(30));
 
             return builder;
