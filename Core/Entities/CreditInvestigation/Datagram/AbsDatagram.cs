@@ -67,7 +67,7 @@
         /// </summary>
         public string FinancialOrganizationCode
         {
-            get { return AbsDatagramFile.FinancialOrganizationCode; }
+            get { return AbsDatagramFile.FINANCIAL_ORGANIZATION_CODE; }
         }
 
         /// <summary>
@@ -139,7 +139,7 @@
         /// 生成报文头
         /// </summary>
         /// <returns></returns>
-        private StringBuilder GenerateHeader()
+        protected virtual StringBuilder GenerateHeader()
         {
             var builder = new StringBuilder();
 
@@ -147,7 +147,7 @@
             builder.Append(FormatVersion);
             builder.Append(FinancialOrganizationCode);
             builder.Append(DateCreated.ToString("yyyyMMddHHmmss"));
-            builder.Append(Type.ToString("D").PadLeft(2));
+            builder.Append(Type.ToString("D").PadLeft(2, '0'));
             builder.Append(Reserved.PadLeft(30));
 
             return builder;

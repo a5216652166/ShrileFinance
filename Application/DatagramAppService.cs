@@ -80,21 +80,23 @@
 
         public void GenerateTest()
         {
-            var lastDate = DateTime.Now.Date;
+            var lastDate = DateTime.Now.Date.AddDays(-1);
             var traces = repository.GetByTraceDate(lastDate);
 
-            try
-            {
-                factory.Generate(traces);
+            factory.Generate(traces);
 
-                repository.Commit();
+            repository.Commit();
 
-                traces.ToList().ForEach(m => m.ToFile());
-            }
-            catch (Exception ex)
+            traces.ToList().ForEach(m =>
             {
-                throw;
-            }
+                try
+                {
+                    m.ToFile();
+                }
+                catch (Core.Exceptions.InvalidOperationAppException)
+                {
+                }
+            });
         }
 
         /// <summary>

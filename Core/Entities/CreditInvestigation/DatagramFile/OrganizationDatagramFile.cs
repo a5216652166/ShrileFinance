@@ -13,14 +13,14 @@
         {
             Datagrams = new List<AbsDatagram>
             {
-                // 财务报表信息报文
-                new FinancialStatementsDatagram(),
+                // 机构基本信息报文
+                new OrganizationBaseDatagram(),
 
                 // 家族成员信息报文
                 new FamilyMemberDatagram(),
 
-                // 机构基本信息报文
-                new OrganizationBaseDatagram(),
+                // 财务报表信息报文
+                new FinancialStatementsDatagram(),
 
                 // 关注信息报文
                 new ConcernDatagram()
@@ -29,6 +29,11 @@
 
         protected OrganizationDatagramFile()
         {
+        }
+
+        public override string FinancialOrganizationCode
+        {
+            get { return base.FinancialOrganizationCode.PadLeft(20, '0'); }
         }
 
         public override DatagramFileType Type
