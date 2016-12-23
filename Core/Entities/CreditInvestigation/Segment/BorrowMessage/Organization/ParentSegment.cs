@@ -52,7 +52,7 @@
         [MetaCode(18, MetaCodeTypeEnum.AN), SegmentRule(114, false)]
         public string InstitutionCreditCode { get; set; }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(132, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(132, true)]
         public string 信息更新日期 { get; set; }
 
         [MetaCode(40, MetaCodeTypeEnum.ANC), SegmentRule(140, true)]

@@ -40,7 +40,7 @@
         [MetaCode(35, MetaCodeTypeEnum.AN), SegmentRule(117, false)]
         public string FinancialContactPhone { get; set; }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(152, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(152, true)]
         public string 信息更新日期 { get; set; }
 
         [MetaCode(40, MetaCodeTypeEnum.ANC), SegmentRule(160, true)]

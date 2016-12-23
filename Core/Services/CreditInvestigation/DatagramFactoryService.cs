@@ -34,45 +34,43 @@
         /// <summary>
         /// 生成报文
         /// </summary>
-        /// <param name="traces">跟踪记录集合</param>
-        public void Generate(IEnumerable<Trace> traces)
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        public AbsDatagramFile Generate(Trace trace)
         {
             AbsDatagramFile datagramFile;
 
-            foreach (var trace in traces)
+            switch (trace.Type)
             {
-                switch (trace.Type)
-                {
-                    case TraceTypeEnum.添加机构:
-                        datagramFile = CreateOrganization(trace);
-                        break;
-                    case TraceTypeEnum.签订授信合同:
-                        datagramFile = CreateContract(trace);
-                        break;
-                    case TraceTypeEnum.借款:
-                        datagramFile = CreateLoan(trace);
-                        break;
-                    case TraceTypeEnum.还款:
-                        datagramFile = CreatePayment(trace);
-                        break;
-                    case TraceTypeEnum.终止合同:
-                        datagramFile = StopContract(trace);
-                        break;
-                    case TraceTypeEnum.逾期:
-                        datagramFile = AdjustLoan(trace);
-                        break;
-                    case TraceTypeEnum.合同变更:
-                        datagramFile = ModifyContract(trace);
-                        break;
-                    case TraceTypeEnum.欠息:
-                        datagramFile = DebitInterest(trace);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
-                }
-
-                trace.AddDatagram(datagramFile);
+                case TraceTypeEnum.添加机构:
+                    datagramFile = CreateOrganization(trace);
+                    break;
+                case TraceTypeEnum.签订授信合同:
+                    datagramFile = CreateContract(trace);
+                    break;
+                case TraceTypeEnum.借款:
+                    datagramFile = CreateLoan(trace);
+                    break;
+                case TraceTypeEnum.还款:
+                    datagramFile = CreatePayment(trace);
+                    break;
+                case TraceTypeEnum.终止合同:
+                    datagramFile = StopContract(trace);
+                    break;
+                case TraceTypeEnum.逾期:
+                    datagramFile = AdjustLoan(trace);
+                    break;
+                case TraceTypeEnum.合同变更:
+                    datagramFile = ModifyContract(trace);
+                    break;
+                case TraceTypeEnum.欠息:
+                    datagramFile = DebitInterest(trace);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
             }
+
+            return datagramFile;
         }
 
         /// <summary>

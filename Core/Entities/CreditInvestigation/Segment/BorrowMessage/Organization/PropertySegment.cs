@@ -9,8 +9,8 @@
         public PropertySegment(OrganizationProperties property)
         {
             Mapper.Map(property, this);
-            SetupDate = property.SetupDate == null ? "" : property.SetupDate.Value.ToString("yyyyMMdd");
-            CertificateDueDate = property.CertificateDueDate == null ? "" : property.CertificateDueDate.Value.ToString("yyyyMMdd");
+            SetupDate = property.SetupDate == null ? string.Empty : property.SetupDate.Value.ToString("yyyyMMdd");
+            CertificateDueDate = property.CertificateDueDate == null ? string.Empty : property.CertificateDueDate.Value.ToString("yyyyMMdd");
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
@@ -57,13 +57,13 @@
         /// <summary>
         /// 成立日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(251, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(251, false)]
         public string SetupDate { get; set; }
 
         /// <summary>
         /// 证书到期日期
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(259, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(259, false)]
         public string CertificateDueDate { get; set; }
 
         /// <summary>
@@ -108,7 +108,7 @@
         [MetaCode(2, MetaCodeTypeEnum.AN), SegmentRule(688, false)]
         public string EconomicType { get; set; }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(690, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(690, false)]
         public string 信息更新日期 { get; set; }
 
         [MetaCode(40, MetaCodeTypeEnum.ANC), SegmentRule(698, true)]
