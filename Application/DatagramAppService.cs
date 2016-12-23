@@ -70,7 +70,7 @@
         /// </summary>
         public void Generate()
         {
-            var lastDate = DateTime.Now.Date.AddDays(-1);
+            var lastDate = DateTime.Now.Date.AddDays(0);
             var traces = repository.GetByTraceDate(lastDate);
 
             factory.Generate(traces);

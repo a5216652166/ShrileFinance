@@ -11,12 +11,9 @@
     /// </summary>
     public class BalanceSheetRecord : AbsRecord
     {
-        private FinancialAffairs financial;
-        private Liabilities item;
-
-        public BalanceSheetRecord(Organization organization) : base()
+        public BalanceSheetRecord(Organization organization, Liabilities item)
         {
-            var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
+            var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString());
 
             Segments = new List<AbsSegment>()
             {
@@ -27,17 +24,6 @@
             };
 
             ((BaseParagraph)Segments.First()).信息记录长度 = GetLength().ToString();
-        }
-
-        public BalanceSheetRecord(FinancialAffairs financial, Liabilities item)
-        {
-            this.financial = financial;
-            this.item = item;
-        }
-
-        public BalanceSheetRecord(Organization organization, Liabilities item) : this(organization)
-        {
-            this.item = item;
         }
 
         protected BalanceSheetRecord() : base()
