@@ -40,7 +40,8 @@
                     using (var entryStream = entry.Open())
                     using (var fileStream = file.Value)
                     {
-                        var buffer = fileStream.GetBuffer();
+                        var buffer = fileStream.ToArray();
+
                         entryStream.Write(buffer, 0, buffer.Length);
                     }
                 }
