@@ -48,6 +48,8 @@
 
         public decimal? 销售税金 { get; set; }
 
+        public decimal? 销售税金1 { get; set; }
+
         public decimal? 结转自筹基建 { get; set; }
 
         public decimal? 事业支出小计 { get; set; }

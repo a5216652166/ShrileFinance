@@ -13,7 +13,7 @@
     {
         public InstitutionLiabilitiesRecord(Organization organization, InstitutionLiabilities item) : base()
         {
-            var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString());
+            var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString(),Type);
 
             Segments = new List<AbsSegment>()
             {

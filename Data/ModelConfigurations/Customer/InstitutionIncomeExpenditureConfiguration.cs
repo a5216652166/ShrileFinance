@@ -49,6 +49,7 @@
             Property(m => m.财政补助收入).HasPrecision(18, 2);
             Property(m => m.转入事业基金).HasPrecision(18, 2);
             Property(m => m.销售税金).HasPrecision(18, 2);
+            Property(m => m.销售税金1).HasPrecision(18, 2);
             Property(m => m.附属单位缴款).HasPrecision(18, 2);
             Property(m => m.预算外资金支出).HasPrecision(18, 2);
             Property(m => m.预算外资金收入).HasPrecision(18, 2);

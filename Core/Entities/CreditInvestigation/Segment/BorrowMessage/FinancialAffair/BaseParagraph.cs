@@ -3,6 +3,7 @@
     using System;
     using Customers.Enterprise;
     using DatagramFile;
+    using Record;
 
     /// <summary>
     /// 信息记录基础段
@@ -13,7 +14,7 @@
         {
         }
 
-        public BaseParagraph(FinancialAffairs financialAffairs, Customers.Enterprise.Organization organization, string type)
+        public BaseParagraph(FinancialAffairs financialAffairs, Customers.Enterprise.Organization organization, string type, RecordTypeEnum recordType)
         {
             报表类型 = type;
             借款人名称 = organization.Property.InstitutionChName;
@@ -22,6 +23,7 @@
             报表类型细分 = financialAffairs.TypeSubdivision.ToString();
             审计事务所名称 = financialAffairs.AuditFirm;
             审计人员名称 = financialAffairs.AuditorName;
+            信息记录类型 = ((int)recordType).ToString();
             信息记录操作类型 = "1";
 
             // TODO 财务实体中添加审计时间字段

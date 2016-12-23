@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201612230953463_AddfinancialAffilibiteANDTraceDate.Designer.cs">
       <DependentUpon>201612230953463_AddfinancialAffilibiteANDTraceDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612231120526_UpdateIncomExpenditureAmount.cs" />
+    <Compile Include="Migrations\201612231120526_UpdateIncomExpenditureAmount.Designer.cs">
+      <DependentUpon>201612231120526_UpdateIncomExpenditureAmount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -349,6 +353,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612230953463_AddfinancialAffilibiteANDTraceDate.resx">
       <DependentUpon>201612230953463_AddfinancialAffilibiteANDTraceDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612231120526_UpdateIncomExpenditureAmount.resx">
+      <DependentUpon>201612231120526_UpdateIncomExpenditureAmount.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

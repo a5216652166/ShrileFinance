@@ -68,7 +68,7 @@
         /// 生成指定报文
         /// </summary>
         /// <param name="traceIds">追踪标识集合</param>
-        public void Generate(IEnumerable<Guid> traceIds)
+        public KeyValuePair<string, Stream> Generate(IEnumerable<Guid> traceIds)
         {
             var traces = repository.GetByIds(traceIds);
 
@@ -85,7 +85,10 @@
 
                 // 添加文件
                 trace.AddDatagram(datagramFile);
+
+                return trace.ToFile();
             }
+            throw new NotImplementedException();
         }
 
         public KeyValuePair<string, Stream> GenerateTest(Guid traceId)
