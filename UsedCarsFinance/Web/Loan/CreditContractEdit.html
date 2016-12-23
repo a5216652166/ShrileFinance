@@ -28,29 +28,30 @@
                 }
                 Init();
             }
-
-            $.extend($.fn.validatebox.defaults.rules, {
-                //重复验证
-                checkCreditContractNumberRepeat: {
-                    validator: function (value, param) {
-                        var result = false;
-                        $.ajax({
-                            async: false,
-                            data: { creditContractNumber: value },
-                            type: "GET",
-                            url: "../api/CreditContract/CheckCreditContractNumber",
-                            statusCode: {
-                                200: function (data) {
-                                    result = data;
+            if (query.method == "add") {
+                $.extend($.fn.validatebox.defaults.rules, {
+                    //重复验证
+                    checkCreditContractNumberRepeat: {
+                        validator: function (value, param) {
+                            var result = false;
+                            $.ajax({
+                                async: false,
+                                data: { creditContractNumber: value },
+                                type: "GET",
+                                url: "../api/CreditContract/CheckCreditContractNumber",
+                                statusCode: {
+                                    200: function (data) {
+                                        result = data;
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                        return result;
-                    },
-                    message: '授信编号已使用!'
-                }
-            });
+                            return result;
+                        },
+                        message: '授信编号已使用!'
+                    }
+                });
+            }
         });
 
         function Init() {
