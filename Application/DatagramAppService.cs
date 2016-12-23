@@ -53,18 +53,19 @@
             }
         }
 
-        public KeyValuePair<string,Stream> DownloadZip(List<Guid> ids)
+        public KeyValuePair<string, MemoryStream> DownloadZip(DownloadViewModel model)
         {
-            var traces = repository.GetAll(m=>ids.Contains(m.Id)).ToList();
+            var traces = repository.GetByIds(model.Ids);
 
             var files = new Dictionary<string, MemoryStream>();
 
-            traces.ForEach(m=> {
-                var file = m.ToFile();
-                files.Add(file.Key,(MemoryStream)file.Value);
-            });
+            foreach (var trace in traces)
+            {
+                var file = trace.ToFile();
+                files.Add(file.Key, (MemoryStream)file.Value);
+            }
 
-            return new KeyValuePair<string, Stream>("报文.zip",FileHelper.Compression(files));
+            return new KeyValuePair<string, MemoryStream>($"企业征信{DateTime.Now.ToString("yyyyMMdd")}.zip", FileHelper.Compression(files));
         }
 
         /// <summary>
@@ -95,7 +96,7 @@
         /// 生成指定报文
         /// </summary>
         /// <param name="traceIds">追踪标识集合</param>
-        public KeyValuePair<string, Stream> Generate(IEnumerable<Guid> traceIds)
+        public void Generate(IEnumerable<Guid> traceIds)
         {
             var traces = repository.GetByIds(traceIds);
 
@@ -112,10 +113,9 @@
 
                 // 添加文件
                 trace.AddDatagram(datagramFile);
-
-                return trace.ToFile();
             }
-            throw new NotImplementedException();
+
+            repository.Commit();
         }
 
         public KeyValuePair<string, Stream> GenerateTest(Guid traceId)
