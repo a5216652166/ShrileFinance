@@ -102,7 +102,7 @@
         /// <summary>
         /// 审计时间(格式:YYYYMMDD)
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(232, false)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(232, false)]
         public string 审计时间 { get; set; }
 
         /// <summary>
@@ -114,7 +114,7 @@
         /// <summary>
         /// 业务发生日期(格式:YYYYMMDD)
         /// </summary>
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(241, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(241, true)]
         public string 业务发生日期 { get; set; }
 
         /// <summary>

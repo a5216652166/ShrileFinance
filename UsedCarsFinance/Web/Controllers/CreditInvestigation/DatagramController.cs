@@ -1,6 +1,7 @@
 ﻿namespace Web.Controllers.CreditInvestigation
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Web.Http;
     using Application;
@@ -38,9 +39,9 @@
         }
 
         [HttpGet]
-        public IHttpActionResult Generate()
+        public IHttpActionResult Generate(IEnumerable<Guid> traceIds)
         {
-            messageAppService.Generate();
+            messageAppService.Generate(traceIds);
 
             return Ok();
         }

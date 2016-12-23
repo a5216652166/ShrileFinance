@@ -28,7 +28,7 @@
         /// <summary>
         /// 关系人类型
         /// </summary>
-        [MetaCode(2, MetaCodeTypeEnum.AN), SegmentRule(2, true)]
+        [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(2, true)]
         public string Type { get; set; }
 
         /// <summary>
@@ -49,7 +49,7 @@
         [MetaCode(20, MetaCodeTypeEnum.ANC), SegmentRule(85, true)]
         public string CertificateCode { get; set; }
 
-        [MetaCode(8, MetaCodeTypeEnum.N), SegmentRule(105, true)]
+        [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(105, true)]
         public string 信息更新日期 { get; set; }
 
         [MetaCode(40, MetaCodeTypeEnum.ANC), SegmentRule(113, false)]

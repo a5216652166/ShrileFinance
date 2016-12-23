@@ -1,6 +1,7 @@
 ﻿namespace Application
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using AutoMapper;
@@ -16,11 +17,13 @@
     public class DatagramAppService
     {
         private readonly ITraceRepostitory repository;
+        private readonly IDatagramFileRepository datagramRepository;
         private readonly DatagramFactoryService factory;
 
-        public DatagramAppService(ITraceRepostitory repository, DatagramFactoryService factory)
+        public DatagramAppService(ITraceRepostitory repository, IDatagramFileRepository datagramRepository, DatagramFactoryService factory)
         {
             this.repository = repository;
+            this.datagramRepository = datagramRepository;
             this.factory = factory;
         }
 
@@ -61,19 +64,34 @@
                 throw new Exception("该报文不存在");
             }
 
-            var a = Infrastructure.Http.HttpHelper.DownLoad(trace.ToFile());
-            return a;
+            // 生成文件，返回流和文件名
+            var keyValuePir = trace.ToFile();
+
+            return Infrastructure.Http.HttpHelper.DownLoad(stream: keyValuePir.Value, fileName: keyValuePir.Key);
         }
 
         /// <summary>
-        /// 生成昨日的报文
+        /// 生成指定报文
         /// </summary>
-        public void Generate()
+        /// <param name="traceIds">追踪标识集合</param>
+        public void Generate(IEnumerable<Guid> traceIds)
         {
-            var lastDate = DateTime.Now.Date.AddDays(0);
-            var traces = repository.GetByTraceDate(lastDate);
+            var traces = repository.GetByIds(traceIds);
 
-            factory.Generate(traces);
+            // 移除已生成的报文
+            foreach (var trace in traces)
+            {
+                if (trace.DatagramFile != null)
+                {
+                    datagramRepository.Remove(trace.DatagramFile);
+                }
+
+                // 生成报文
+                var datagramFile = factory.Generate(trace);
+
+                // 添加文件
+                trace.AddDatagram(datagramFile);
+            }
         }
 
         public void GenerateTest()
@@ -81,7 +99,10 @@
             var lastDate = DateTime.Now.Date.AddDays(-1);
             var traces = repository.GetByTraceDate(lastDate);
 
-            factory.Generate(traces);
+            foreach (var trace in traces)
+            {
+                trace.AddDatagram(factory.Generate(trace));
+            }
 
             repository.Commit();
 
@@ -113,7 +134,7 @@
                 messageTrack = messageTrack.Where(m => m.Name.Contains(search));
             }
 
-            messageTrack = messageTrack.OrderByDescending(m => m.Status == TraceStatusEmum.待发送).ThenByDescending(m => m.TraceDate);
+            messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.TraceDate);
             var pageList = messageTrack.ToPagedList(page, size);
 
             var models = Mapper.Map<IPagedList<TraceViewModel>>(pageList);

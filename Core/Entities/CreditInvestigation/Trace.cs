@@ -1,7 +1,9 @@
 ﻿namespace Core.Entities.CreditInvestigation
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Text;
     using DatagramFile;
     using Exceptions;
     using Interfaces;
@@ -102,28 +104,19 @@
         /// <summary>
         /// 生成文件
         /// </summary>
-        /// <returns></returns>
-        public FileInfo ToFile()
+        /// <returns>文件名、流</returns>
+        public KeyValuePair<string, Stream> ToFile()
         {
             if (Status != TraceStatusEmum.待发送)
             {
                 throw new InvalidOperationAppException("下载前必须生成报文。");
             }
 
-            var filename = $"F:\\Temps\\{DatagramFile.GenerateFilename()}.txt";
-            var fileInfo = new FileInfo(filename);
+            string fileName = $"{DatagramFile.GenerateFilename()}.txt";
 
-            if (!fileInfo.Exists)
-            {
-                var content = DatagramFile.Packaging();
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(DatagramFile.Packaging()));
 
-                using (var stream = fileInfo.CreateText())
-                {
-                    stream.Write(content);
-                }
-            }
-
-            return fileInfo;
+            return new KeyValuePair<string, Stream>(fileName, memoryStream);
         }
     }
 }

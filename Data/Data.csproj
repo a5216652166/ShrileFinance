@@ -289,6 +289,7 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\ContractRepository.cs" />
     <Compile Include="Repositories\CreditContractRespostiory.cs" />
+    <Compile Include="Repositories\DatagramFileRepository.cs" />
     <Compile Include="Repositories\DraftRepository.cs" />
     <Compile Include="Repositories\FlowRepository.cs" />
     <Compile Include="Repositories\FormRepository.cs" />
