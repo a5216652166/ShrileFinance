@@ -9,6 +9,7 @@
     using Core.Entities.CreditInvestigation;
     using Core.Interfaces.Repositories;
     using Core.Services.CreditInvestigation;
+    using Infrastructure.File;
     using ViewModels.CreditInvesitigation.TraceViewModels;
     using X.PagedList;
 
@@ -50,6 +51,20 @@
                 repository.Create(messageTrack);
                 repository.Commit();
             }
+        }
+
+        public KeyValuePair<string,Stream> DownloadZip(List<Guid> ids)
+        {
+            var traces = repository.GetAll(m=>ids.Contains(m.Id)).ToList();
+
+            var files = new Dictionary<string, MemoryStream>();
+
+            traces.ForEach(m=> {
+                var file = m.ToFile();
+                files.Add(file.Key,(MemoryStream)file.Value);
+            });
+
+            return new KeyValuePair<string, Stream>("报文.zip",FileHelper.Compression(files));
         }
 
         /// <summary>
