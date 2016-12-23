@@ -11,7 +11,7 @@
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(m => m.TraceDate);
+            Property(m => m.SpecialDate);
             Property(m => m.ReferenceId);
             Property(m => m.Type);
             Property(m => m.Name).HasMaxLength(200);
@@ -19,6 +19,7 @@
             Property(m => m.SerialNumber);
             Property(m => m.DatagramFileId);
             Property(m => m.DateCreated);
+
             HasOptional(m => m.DatagramFile);
 
             ToTable("CIDG_Trace");

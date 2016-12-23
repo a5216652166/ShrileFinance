@@ -41,11 +41,11 @@
         }
 
         [HttpPost]
-        public IHttpActionResult Generate(GenerateViewModel traceIds)
+        public HttpResponseMessage Generate(GenerateViewModel traceIds)
         {
-            messageAppService.Generate(traceIds.Ids);
+            var keyValuePir = messageAppService.Generate(traceIds.Ids);
 
-            return Ok();
+            return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
         }
 
         [HttpGet]
