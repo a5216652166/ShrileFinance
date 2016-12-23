@@ -105,5 +105,26 @@
 
             return response;
         }
+
+        /// <summary>
+        /// 文件下载
+        /// </summary>
+        /// <param name="stream">流</param>
+        /// <param name="fileName">文件名</param>
+        /// <returns>Http响应</returns>
+        public static HttpResponseMessage DownLoad(HttpContent stream, string fileName)
+        {
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+
+            response.Content = stream;
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = fileName,
+                FileNameStar = fileName
+            };
+
+            return response;
+        }
     }
 }

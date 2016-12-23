@@ -1,11 +1,9 @@
 ﻿namespace Infrastructure.File
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
     using System.IO;
+    using System.IO.Compression;
 
     public class FileHelper
     {
@@ -23,13 +21,29 @@
         }
 
         /// <summary>
-        /// Zip打包
+        /// 压缩打包
         /// </summary>
-        /// <param name="dictionary">字典（文件名、流）</param>
-        /// <returns>打包后的流</returns>
-        public static Stream ZipPackaging(IDictionary<string, Stream> dictionary)
+        /// <param name="files">内存流集合</param>
+        /// <returns>内存流</returns>
+        public static MemoryStream Compression(IDictionary<string, MemoryStream> files)
         {
-            Stream stream = new MemoryStream();
+            var stream = new MemoryStream();
+
+            using (var archive = new ZipArchive(
+                stream, ZipArchiveMode.Create, true, Encoding.GetEncoding("GB2312")))
+            {
+                foreach (var file in files)
+                {
+                    var filename = file.Key;
+                    var buffer = file.Value.GetBuffer();
+                    var entry = archive.CreateEntry(filename, CompressionLevel.Fastest);
+
+                    using (var entryStream = entry.Open())
+                    {
+                        entryStream.Write(buffer, 0, buffer.Length);
+                    }
+                }
+            }
 
             return stream;
         }

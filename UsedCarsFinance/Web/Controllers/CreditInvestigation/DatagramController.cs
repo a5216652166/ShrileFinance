@@ -1,6 +1,8 @@
 ﻿namespace Web.Controllers.CreditInvestigation
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Net.Http;
     using System.Web.Http;
     using Application;
@@ -54,7 +56,15 @@
             return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
         }
 
-        
+        [HttpPost]
+        public HttpResponseMessage DownloadZip(List<Guid> ids)
+        {
+            var keyValuePir = messageAppService.DownloadZip(ids);
+
+            var byteArrayContent = new ByteArrayContent((keyValuePir.Value as MemoryStream).GetBuffer());
+
+            return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: byteArrayContent);
+        }
     }
 }
 
