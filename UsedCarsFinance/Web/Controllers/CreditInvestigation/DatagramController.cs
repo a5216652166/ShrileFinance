@@ -7,6 +7,7 @@
     using Application;
     using Application.ViewModels;
     using Application.ViewModels.CreditInvesitigation.TraceViewModels;
+    using global::Infrastructure.Http;
 
     public class DatagramController : ApiController
     {
@@ -49,7 +50,9 @@
         [HttpGet]
         public HttpResponseMessage Download(Guid id)
         {
-            return messageAppService.Download(id);
+            var keyValuePir = messageAppService.Download(id);
+
+            return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
         }
     }
 }

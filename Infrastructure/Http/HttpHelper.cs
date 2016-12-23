@@ -65,7 +65,7 @@
         public static HttpResponseMessage DownLoad(FileStream fileStream)
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            
+
             try
             {
                 string fileName = fileStream.Name.Substring(fileStream.Name.LastIndexOf("\\"));
@@ -91,24 +91,17 @@
         /// <param name="stream">流</param>
         /// <param name="fileName">文件名</param>
         /// <returns>Http响应</returns>
-        public static HttpResponseMessage DownLoad(Stream stream,string fileName)
+        public static HttpResponseMessage DownLoad(Stream stream, string fileName)
         {
             var response = new HttpResponseMessage(HttpStatusCode.OK);
 
-            try
+            response.Content = new StreamContent(stream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
-                response.Content = new StreamContent(stream);
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
-                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                {
-                    FileName = fileName,
-                    FileNameStar = fileName
-                };
-            }
-            catch
-            {
-                response = new HttpResponseMessage(HttpStatusCode.NoContent);
-            }
+                FileName = fileName,
+                FileNameStar = fileName
+            };
 
             return response;
         }

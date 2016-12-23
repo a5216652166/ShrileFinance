@@ -112,9 +112,11 @@
                 throw new InvalidOperationAppException("下载前必须生成报文。");
             }
 
+            // 文件名
             string fileName = $"{DatagramFile.GenerateFilename()}.txt";
 
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(DatagramFile.Packaging()));
+            // 流
+            var memoryStream = new MemoryStream(Encoding.GetEncoding("GB2312").GetBytes(DatagramFile.Packaging()));
 
             return new KeyValuePair<string, Stream>(fileName, memoryStream);
         }
