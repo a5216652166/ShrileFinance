@@ -105,5 +105,12 @@
 
             return response;
         }
+
+        public static void MultiDownload()
+        {
+            MultipartFormDataContent multipartFormDataContent = new MultipartFormDataContent();
+            //multipartFormDataContent.Add(new HttpContent());
+
+        }
     }
 }

@@ -142,6 +142,10 @@
             {
                 var result = string.Empty;
 
+                var temp = Encoding.UTF8.GetBytes(value);
+
+                value = Encoding.GetEncoding("GB2312").GetString(temp);
+
                 switch (type)
                 {
                     case MetaCodeTypeEnum.N:

@@ -31,7 +31,7 @@
 
     public class Trace : Entity, IAggregateRoot
     {
-        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, string name = null)
+        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, DateTime dateCreated, string name = null)
         {
             Name = name;
             Type = type;
@@ -50,6 +50,11 @@
         /// 跟踪日期
         /// </summary>
         public DateTime TraceDate { get; private set; }
+
+        /// <summary>
+        /// 生成日期
+        /// </summary>
+        public DateTime DateCreated { get; set; }
 
         /// <summary>
         /// 引用ID
@@ -107,10 +112,10 @@
         /// <returns>文件名、流</returns>
         public KeyValuePair<string, Stream> ToFile()
         {
-            //if (Status != TraceStatusEmum.待发送)
-            //{
-            //    throw new InvalidOperationAppException("下载前必须生成报文。");
-            //}
+            ////if (Status != TraceStatusEmum.待发送)
+            ////{
+            ////    throw new InvalidOperationAppException("下载前必须生成报文。");
+            ////}
 
             // 文件名
             string fileName = $"{DatagramFile.GenerateFilename()}.txt";

@@ -19,6 +19,7 @@
             {
                 // 基础段
                 baseParagraph,
+
                 // 2007版资产负债表段
                 new LiabilitiesParagraph(item)
             };

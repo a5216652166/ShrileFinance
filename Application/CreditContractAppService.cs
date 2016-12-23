@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
+    using Core.Entities.CreditInvestigation;
     using Core.Entities.Loan;
     using Core.Exceptions;
     using Core.Interfaces.Repositories;
@@ -52,13 +53,13 @@
             repository.Commit();
 
             // 报文追踪(贷款合同信息记录)
-            messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.签订授信合同, defaultName: "签订授信合同：" + credit.CreditContractCode);
+            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订授信合同：{credit.CreditContractCode}", dateCreated: credit.EffectiveDate);
 
-            // 报文追踪(担保合同信息记录)
-            //credit.GuarantyContract.ToList().ForEach(m =>
-            //{
-            //    messageAppService.Trace(referenceId: m.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.签订授信合同, defaultName: "签订担保合同，担保人：" + m.Guarantor.Name);
-            //});
+            //// 报文追踪(担保合同信息记录)
+            ////credit.GuarantyContract.ToList().ForEach(m =>
+            ////{
+            ////    messageAppService.Trace(referenceId: m.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.签订授信合同, defaultName: "签订担保合同，担保人：" + m.Guarantor.Name);
+            ////});
         }
 
         public void Modify(CreditContractViewModel model)
@@ -99,42 +100,42 @@
 
             repository.Commit();
 
-            //// 追加担保、解除担保
-            //if (creditGuarantyContractCount == 0 && model.GuarantyContract.Count > 0)
-            //{
-            //    // 报文追踪(追加担保)
-            //    model.GuarantyContract.ToList().ForEach(m =>
-            //    {
-            //        messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "追加担保，担保人：" + m.Guarantor.Name);
-            //    });
+            ////// 追加担保、解除担保
+            ////if (creditGuarantyContractCount == 0 && model.GuarantyContract.Count > 0)
+            ////{
+            ////    // 报文追踪(追加担保)
+            ////    model.GuarantyContract.ToList().ForEach(m =>
+            ////    {
+            ////        messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + $"追加担保，担保人：{m.Guarantor.Name}",dateCreated: );
+            ////    });
 
-            //    //// 报文追踪(主业务信息记录)
-            //    ////messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "变更");
-            //}
-            //else if (creditGuarantyContractCount > 0 && model.GuarantyContract.Count == 0)
-            //{
-            //    // 报文追踪(解除担保)
-            //    model.GuarantyContract.ToList().ForEach(m =>
-            //    {
-            //        messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "解除担保，担保人：" + m.Guarantor.Name);
-            //    });
+            ////    //// 报文追踪(主业务信息记录)
+            ////    ////messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "变更");
+            ////}
+            ////else if (creditGuarantyContractCount > 0 && model.GuarantyContract.Count == 0)
+            ////{
+            ////    // 报文追踪(解除担保)
+            ////    model.GuarantyContract.ToList().ForEach(m =>
+            ////    {
+            ////        messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + $"解除担保，担保人：{m.Guarantor.Name}");
+            ////    });
 
-            //    //// 报文追踪(主业务信息记录)
-            //    ////messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "变更");
-            //}
-            //else if (creditGuarantyContractCount > 0 && credit.GuarantyContract.Count == model.GuarantyContract.Count)
-            //{
-            //    mortgages.ToList().ForEach(m =>
-            //    {
-            //        var mortgage = model.GuarantyContract.First(g => (g.Id.Equals(m.Id) && g is GuarantyContractMortgageViewModel));
+            ////    //// 报文追踪(主业务信息记录)
+            ////    ////messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "变更");
+            ////}
+            ////else if (creditGuarantyContractCount > 0 && credit.GuarantyContract.Count == model.GuarantyContract.Count)
+            ////{
+            ////    mortgages.ToList().ForEach(m =>
+            ////    {
+            ////        var mortgage = model.GuarantyContract.First(g => (g.Id.Equals(m.Id) && g is GuarantyContractMortgageViewModel));
 
-            //        if (mortgage != null && (mortgage as GuarantyContractMortgageViewModel).AssessmentValue.Value != (m as GuarantyContractMortgage).AssessmentValue.Value)
-            //        {
-            //            // 担保物价值等发生变化
-            //            messageAppService.Trace(referenceId: mortgage.Id.Value, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "解除担保，担保人：" + m.Guarantor.Name);
-            //        }
-            //    });
-            //}
+            ////        if (mortgage != null && (mortgage as GuarantyContractMortgageViewModel).AssessmentValue.Value != (m as GuarantyContractMortgage).AssessmentValue.Value)
+            ////        {
+            ////            // 担保物价值等发生变化
+            ////            messageAppService.Trace(referenceId: mortgage.Id.Value, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + $"解除担保，担保人：{m.Guarantor.Name}");
+            ////        }
+            ////    });
+            ////}
         }
 
         public CreditContractViewModel Get(Guid id)
@@ -208,7 +209,7 @@
             repository.Commit();
 
             // 报文追踪(合同关键数据项有效日期发生变化)
-            messageAppService.Trace(referenceId: model.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "有效日期变更");
+            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"授信合同：{model.CreditContractCode}有效日期变更", dateCreated: model.EffectiveDate);
         }
 
         /// <summary>
@@ -234,7 +235,7 @@
             repository.Commit();
 
             // 报文追踪
-            messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止");
+            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", dateCreated: credit.EffectiveDate);
         }
 
         /// <summary>
@@ -393,7 +394,7 @@
             repository.Commit();
 
             // 报文追踪(合同关键数据项金额发生变化)
-            messageAppService.Trace(referenceId: model.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更");
+            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更", dateCreated: model.EffectiveDate);
         }
     }
 }

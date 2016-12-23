@@ -25,7 +25,6 @@
 
                 // 联络信息段
                 new OrganizationContactSegment(organization.Contact),
-
             };
 
             if (organization.Parent != null)

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
+    using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Interfaces.Repositories;
     using ViewModels;
@@ -58,7 +59,7 @@
             repository.Commit();
 
             // 报文追踪
-            messageAppService.Trace(referenceId: customer.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName);
+            messageAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, dateCreated: customer.CreatedDate);
         }
 
         public void Modify(OrganizationViewModel model)
