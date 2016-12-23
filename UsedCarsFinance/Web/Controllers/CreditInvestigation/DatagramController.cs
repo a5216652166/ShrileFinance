@@ -1,11 +1,16 @@
 ﻿namespace Web.Controllers.CreditInvestigation
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Web.Http;
     using Application;
     using Application.ViewModels;
     using Application.ViewModels.CreditInvesitigation.TraceViewModels;
+    using Core.Entities.CreditInvestigation;
     using global::Infrastructure.Http;
 
     public class DatagramController : ApiController
@@ -18,9 +23,9 @@
         }
 
         [HttpGet]
-        public IHttpActionResult GetPageList(string search, int page, int rows)
+        public IHttpActionResult GetPageList(string search, int page, int rows, TraceStatusEmum? status = null)
         {
-            var list = messageAppService.GetPageList(search, page, rows);
+            var list = messageAppService.GetPageList(search, page, rows, status);
 
             return Ok(new PagedListViewModel<TraceViewModel>(list));
         }
@@ -39,22 +44,35 @@
         }
 
         [HttpPost]
-        public HttpResponseMessage Generate(GenerateViewModel traceIds)
+        public IHttpActionResult Generate(GenerateViewModel traceIds)
         {
-            var keyValuePir = messageAppService.Generate(traceIds.Ids);
+            messageAppService.Generate(traceIds.Ids);
 
-            return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
+            return Ok();
         }
 
-        [HttpGet]
-        public HttpResponseMessage Download(Guid id)
+        [HttpPost]
+        public HttpResponseMessage Download(DownloadViewModel ids)
         {
-            var keyValuePir = messageAppService.Download(id);
+            try
+            {
+                var file = messageAppService.DownloadZip(ids);
 
-            return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
+                var byteArrayContent = new ByteArrayContent(file.Value.GetBuffer());
+                var response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = byteArrayContent;
+                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = file.Key
+                };
+
+                return response;
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.NoContent);
+            }
         }
-
-        
     }
 }
 

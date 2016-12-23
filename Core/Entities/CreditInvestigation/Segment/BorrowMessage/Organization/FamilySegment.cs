@@ -2,11 +2,25 @@
 {
     using System;
     using AutoMapper;
+    using Customers.Enterprise;
 
     public class FamilySegment : AbsSegment
     {
-        public FamilySegment()
+        public FamilySegment(Manager manager, FamilyMember familyMember)
         {
+            Mapper.Map(familyMember, this);
+            MianName = manager.Name;
+            MainType = manager.CertificateType;
+            MainCode = manager.CertificateCode;
+            信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
+        }
+
+        public FamilySegment(Stockholder manager, FamilyMember familyMember)
+        {
+            Mapper.Map(familyMember, this);
+            MianName = manager.ShareholdersName;
+            MainType = manager.RegistraterType;
+            MainCode = manager.RegistraterCode;
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 

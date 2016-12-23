@@ -59,10 +59,16 @@
             { return Status.ToString(); }
         }
 
+        /// <summary>
+        /// 跟踪日期
+        /// </summary>
         [Display(Name = "跟踪日期")]
-        public DateTime TraceDate { get; set; }
+        public DateTime DateCreated { get; private set; }
 
-        [Display(Name = "生成日期")]
-        public DateTime DateCreated { get; set; }
+        /// <summary>
+        /// 业务发生日期
+        /// </summary>
+        [Display(Name = "业务发生日期")]
+        public DateTime SpecialDate { get; private set; }
     }
 }

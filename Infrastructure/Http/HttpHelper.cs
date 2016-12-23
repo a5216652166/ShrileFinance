@@ -31,56 +31,20 @@
         /// <summary>
         /// 文件下载
         /// </summary>
-        /// <param name="fileInfo">文件</param>
+        /// <param name="stream">流</param>
+        /// <param name="fileName">文件名</param>
         /// <returns>Http响应</returns>
-        public static HttpResponseMessage DownLoad(FileInfo fileInfo)
+        public static HttpResponseMessage DownLoad(Stream stream, string fileName)
         {
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
 
-            try
+            response.Content = new StreamContent(stream);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
-                FileStream fs = fileInfo.OpenRead(); //new FileStream(fileInfo.FullName,FileMode.Open);
-
-                response.Content = new StreamContent(fs);
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
-                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                {
-                    FileName = fileInfo.Name,
-                    FileNameStar = fileInfo.Name
-                };
-            }
-            catch
-            {
-                response = new HttpResponseMessage(HttpStatusCode.NoContent);
-            }
-
-            return response;
-        }
-
-        /// <summary>
-        /// 文件下载
-        /// </summary>
-        /// <param name="fileStream">文件流</param>
-        /// <returns>Http响应</returns>
-        public static HttpResponseMessage DownLoad(FileStream fileStream)
-        {
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-
-            try
-            {
-                string fileName = fileStream.Name.Substring(fileStream.Name.LastIndexOf("\\"));
-                response.Content = new StreamContent(fileStream);
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
-                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                {
-                    FileName = fileName,
-                    FileNameStar = fileName
-                };
-            }
-            catch
-            {
-                response = new HttpResponseMessage(HttpStatusCode.NoContent);
-            }
+                FileName = fileName,
+                FileNameStar = fileName
+            };
 
             return response;
         }
@@ -91,11 +55,32 @@
         /// <param name="stream">流</param>
         /// <param name="fileName">文件名</param>
         /// <returns>Http响应</returns>
-        public static HttpResponseMessage DownLoad(Stream stream, string fileName)
+        public static HttpResponseMessage DownLoad(HttpContent stream, string fileName)
         {
             var response = new HttpResponseMessage(HttpStatusCode.OK);
 
-            response.Content = new StreamContent(stream);
+            response.Content = stream;
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = fileName,
+                FileNameStar = fileName
+            };
+
+            return response;
+        }
+
+        /// <summary>
+        /// 文件下载
+        /// </summary>
+        /// <param name="buffer">流</param>
+        /// <param name="fileName">文件名</param>
+        /// <returns>Http响应</returns>
+        public static HttpResponseMessage DownLoad(byte[] buffer, string fileName)
+        {
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+
+            response.Content = new ByteArrayContent(buffer);
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
