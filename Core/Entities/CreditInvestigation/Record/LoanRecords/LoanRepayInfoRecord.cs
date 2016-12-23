@@ -17,7 +17,7 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new CreditBaseSegment(Type, credit),
+                new CreditBaseSegment(Type, credit, payment.DatePayment),
 
                 // 还款信息段
                 new RepaymentSegment(time, payment)
