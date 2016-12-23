@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.IO;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
@@ -86,28 +87,31 @@
             }
         }
 
-        public void GenerateTest()
+        public KeyValuePair<string, Stream> GenerateTest(Guid traceId)
         {
-            var lastDate = DateTime.Now.Date.AddDays(-1);
-            var traces = repository.GetByTraceDate(lastDate);
+            var traceIds = new List<Guid> {
+                traceId
+            };
+            var traces = repository.GetByIds(traceIds);
 
+            // 移除已生成的报文
             foreach (var trace in traces)
             {
-                trace.AddDatagram(factory.Generate(trace));
+                if (trace.DatagramFile != null)
+                {
+                    datagramRepository.Remove(trace.DatagramFile);
+                }
+
+                // 生成报文
+                var datagramFile = factory.Generate(trace);
+
+                // 添加文件
+                trace.AddDatagram(datagramFile);
+
+                return trace.ToFile();
             }
 
-            repository.Commit();
-
-            traces.ToList().ForEach(m =>
-            {
-                try
-                {
-                    m.ToFile();
-                }
-                catch (Core.Exceptions.InvalidOperationAppException)
-                {
-                }
-            });
+            throw new NotImplementedException();
         }
 
         /// <summary>

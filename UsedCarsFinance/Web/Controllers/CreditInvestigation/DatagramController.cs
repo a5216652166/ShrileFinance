@@ -39,10 +39,10 @@
             return Ok();
         }
 
-        [HttpGet]
-        public IHttpActionResult Generate(IEnumerable<Guid> traceIds)
+        [HttpPost]
+        public IHttpActionResult Generate(GenerateViewModel traceIds)
         {
-            messageAppService.Generate(traceIds);
+            messageAppService.Generate(traceIds.Ids);
 
             return Ok();
         }

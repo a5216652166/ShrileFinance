@@ -11,12 +11,9 @@
     /// </summary>
     public class InstitutionLiabilitiesRecord : AbsRecord
     {
-        private FinancialAffairs financial;
-        private InstitutionLiabilities item;
-
-        public InstitutionLiabilitiesRecord(Organization organization) : base()
+        public InstitutionLiabilitiesRecord(Organization organization, InstitutionLiabilities item) : base()
         {
-            var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
+            var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString());
 
             Segments = new List<AbsSegment>()
             {
@@ -28,17 +25,6 @@
             };
 
             ((BaseParagraph)Segments.First()).信息记录长度 = GetLength().ToString();
-        }
-
-        public InstitutionLiabilitiesRecord(FinancialAffairs financial, InstitutionLiabilities item)
-        {
-            this.financial = financial;
-            this.item = item;
-        }
-
-        public InstitutionLiabilitiesRecord(Organization organization, InstitutionLiabilities item) : this(organization)
-        {
-            this.item = item;
         }
 
         protected InstitutionLiabilitiesRecord() : base()
