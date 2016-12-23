@@ -57,7 +57,7 @@
         }
 
         [HttpPost]
-        public HttpResponseMessage Download(List<Guid> ids)
+        public HttpResponseMessage DownloadZip(List<Guid> ids)
         {
             var keyValuePir = messageAppService.DownloadZip(ids);
 
