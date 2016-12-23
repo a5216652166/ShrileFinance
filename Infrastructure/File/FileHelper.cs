@@ -7,7 +7,7 @@
 
     public class FileHelper
     {
-        public static void Create(string filePath,string content)
+        public static void Create(string filePath, string content)
         {
             if (!File.Exists(filePath))
             {
@@ -35,11 +35,12 @@
                 foreach (var file in files)
                 {
                     var filename = file.Key;
-                    var buffer = file.Value.GetBuffer();
                     var entry = archive.CreateEntry(filename, CompressionLevel.Fastest);
 
                     using (var entryStream = entry.Open())
+                    using (var fileStream = file.Value)
                     {
+                        var buffer = fileStream.GetBuffer();
                         entryStream.Write(buffer, 0, buffer.Length);
                     }
                 }

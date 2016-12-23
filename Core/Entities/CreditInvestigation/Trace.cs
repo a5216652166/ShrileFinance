@@ -120,5 +120,23 @@
 
             return new KeyValuePair<string, Stream>(fileName, memoryStream);
         }
+
+        /// <summary>
+        /// 生成文件
+        /// </summary>
+        /// <returns>文件名、流</returns>
+        public KeyValuePair<string, byte[]> ToBytes()
+        {
+            // 文件名
+            string fileName = $"{DatagramFile.GenerateFilename()}.txt";
+
+            // 流
+            using (var memoryStream = new MemoryStream(Encoding.GetEncoding("GB2312").GetBytes(DatagramFile.Packaging())))
+            {
+                var buffer = memoryStream.GetBuffer();
+
+                return new KeyValuePair<string, byte[]>(fileName, memoryStream.GetBuffer());
+            }
+        }
     }
 }
