@@ -29,11 +29,11 @@ namespace Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Fin
             Property(m => m.事业支出).HasMaxLength(20);
             Property(m => m.财政补助支出).HasMaxLength(20);
             Property(m => m.预算外资金支出).HasMaxLength(20);
-            Property(m => m.销售税金1).HasMaxLength(20);
+            Property(m => m.销售税金).HasMaxLength(20);
             Property(m => m.结转自筹基建).HasMaxLength(20);
             Property(m => m.事业支出小计).HasMaxLength(20);
             Property(m => m.经营支出).HasMaxLength(20);
-            Property(m => m.销售税金2).HasMaxLength(20);
+            Property(m => m.销售税金1).HasMaxLength(20);
             Property(m => m.经营支出小计).HasMaxLength(20);
             Property(m => m.拨出专款).HasMaxLength(20);
             Property(m => m.专款支出).HasMaxLength(20);
