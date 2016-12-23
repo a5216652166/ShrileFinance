@@ -52,6 +52,11 @@
         public DateTime TraceDate { get; private set; }
 
         /// <summary>
+        /// 生成日期
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
+
+        /// <summary>
         /// 引用ID
         /// </summary>
         public Guid ReferenceId { get; private set; }
@@ -107,10 +112,10 @@
         /// <returns>文件名、流</returns>
         public KeyValuePair<string, Stream> ToFile()
         {
-            //if (Status != TraceStatusEmum.待发送)
-            //{
-            //    throw new InvalidOperationAppException("下载前必须生成报文。");
-            //}
+            ////if (Status != TraceStatusEmum.待发送)
+            ////{
+            ////    throw new InvalidOperationAppException("下载前必须生成报文。");
+            ////}
 
             // 文件名
             string fileName = $"{DatagramFile.GenerateFilename()}.txt";
