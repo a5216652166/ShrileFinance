@@ -32,6 +32,10 @@
 
     public abstract class AbsRecord : Entity
     {
+        protected AbsRecord()
+        {
+        }
+
         /// <summary>
         /// 信息记录类型
         /// </summary>
