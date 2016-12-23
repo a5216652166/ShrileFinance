@@ -14,6 +14,10 @@
             业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
+        protected DebitInterestBaseSegment() : base()
+        {
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 
@@ -32,7 +36,7 @@
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true, Describe = "填写数据发生机构的代码，细化到县（区）级机构")]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FinancialOrganizationCode; }
+            get { return AbsDatagramFile.FINANCIAL_ORGANIZATION_CODE; }
         }
 
         /// <summary>

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.IO;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
@@ -53,7 +52,7 @@
         /// </summary>
         /// <param name="id">报文标识</param>
         /// <returns>报文文件</returns>
-        public FileInfo Download(Guid id)
+        public System.Net.Http.HttpResponseMessage Download(Guid id)
         {
             var trace = repository.Get(id);
 
@@ -62,7 +61,8 @@
                 throw new Exception("该报文不存在");
             }
 
-            return trace.ToFile();
+            var a = Infrastructure.Http.HttpHelper.DownLoad(trace.ToFile());
+            return a;
         }
 
         /// <summary>
@@ -78,21 +78,23 @@
 
         public void GenerateTest()
         {
-            var lastDate = DateTime.Now.AddDays(-1).Date;
+            var lastDate = DateTime.Now.Date.AddDays(-1);
             var traces = repository.GetByTraceDate(lastDate);
 
-            try
-            {
-                factory.Generate(traces);
+            factory.Generate(traces);
 
-                repository.Commit();
+            repository.Commit();
 
-                traces.ToList().ForEach(m => m.ToFile());
-            }
-            catch (Exception ex)
+            traces.ToList().ForEach(m =>
             {
-                throw;
-            }
+                try
+                {
+                    m.ToFile();
+                }
+                catch (Core.Exceptions.InvalidOperationAppException)
+                {
+                }
+            });
         }
 
         /// <summary>

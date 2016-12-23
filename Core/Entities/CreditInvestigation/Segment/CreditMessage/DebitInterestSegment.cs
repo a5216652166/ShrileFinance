@@ -13,6 +13,10 @@
             欠息余额改变日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
+        protected DebitInterestSegment() : base()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
         public string 信息类别
         {

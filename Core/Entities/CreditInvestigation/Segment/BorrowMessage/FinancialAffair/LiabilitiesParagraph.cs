@@ -11,7 +11,11 @@
         {
             AutoMapper.Mapper.Map(liabilities, this);
         }
-        
+
+        protected LiabilitiesParagraph() : base()
+        {
+        }
+
         /// <summary>
         /// 信息类别
         /// </summary>

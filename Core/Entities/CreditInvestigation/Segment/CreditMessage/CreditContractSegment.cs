@@ -29,6 +29,10 @@
             HasGuarantee = credit.HasGuarantee ? "1" : "2";
         }
 
+        protected CreditContractSegment() : base()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
         public string 信息类别
         {

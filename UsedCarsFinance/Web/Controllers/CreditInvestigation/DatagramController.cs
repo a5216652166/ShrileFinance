@@ -1,8 +1,7 @@
 ﻿namespace Web.Controllers.CreditInvestigation
 {
-    using System.IO;
+    using System;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Web.Http;
     using Application;
     using Application.ViewModels;
@@ -47,20 +46,9 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage Download(System.Guid id)
+        public HttpResponseMessage Download(Guid id)
         {
-            FileInfo fileInfo = messageAppService.Download(id);
-            FileStream fs = fileInfo.OpenRead();
-
-            var response = Request.CreateResponse();
-            response.Headers.AcceptRanges.Add("bytes");
-            response.Content = new StreamContent(fs);
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-            response.Content.Headers.ContentDisposition.FileName = fileInfo.Name;
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            response.Content.Headers.ContentLength = fs.Length;
-
-            return response;
+            return messageAppService.Download(id);
         }
     }
 }

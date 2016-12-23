@@ -96,7 +96,7 @@
             //}
 
             DatagramFile = datagramFile;
-            Status = TraceStatusEmum.待发送;
+            //Status = TraceStatusEmum.待发送;
         }
 
         /// <summary>
@@ -105,12 +105,12 @@
         /// <returns></returns>
         public FileInfo ToFile()
         {
-            //if (Status == TraceStatusEmum.待生成)
-            //{
-            //    throw new InvalidOperationAppException("下载前必须生成报文。");
-            //}
+            if (Status != TraceStatusEmum.待发送)
+            {
+                throw new InvalidOperationAppException("下载前必须生成报文。");
+            }
 
-            var filename = $"D:\\temp\\{DatagramFile.GenerateFilename()}.txt";
+            var filename = $"F:\\Temps\\{DatagramFile.GenerateFilename()}.txt";
             var fileInfo = new FileInfo(filename);
 
             if (!fileInfo.Exists)

@@ -27,6 +27,10 @@
             ((ConcernBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
         }
 
+        protected BigEventRecord() : base()
+        {
+        }
+
         public override RecordTypeEnum Type
         {
             get

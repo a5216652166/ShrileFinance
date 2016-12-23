@@ -12,6 +12,10 @@
             AutoMapper.Mapper.Map(institutionLiabilities, this);
         }
 
+        protected InstitutionLiabilitiesParagraph() : base()
+        {
+        }
+
         /// <summary>
         /// 信息类别
         /// </summary>

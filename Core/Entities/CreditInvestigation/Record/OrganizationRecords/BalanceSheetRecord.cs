@@ -40,6 +40,10 @@
             this.item = item;
         }
 
+        protected BalanceSheetRecord() : base()
+        {
+        }
+
         public override RecordTypeEnum Type
         {
             get
