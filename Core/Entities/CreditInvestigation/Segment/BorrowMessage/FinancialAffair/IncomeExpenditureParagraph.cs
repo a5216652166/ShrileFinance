@@ -19,7 +19,7 @@
         /// <summary>
         /// 信息类别
         /// </summary>
-        [MetaCode(1, MetaCodeTypeEnum.Amount), SegmentRule(1, true)]
+        [MetaCode(1, MetaCodeTypeEnum.ANC), SegmentRule(1, true)]
         public string 信息类别
         {
             get { return "K"; }
