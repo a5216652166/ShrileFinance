@@ -99,15 +99,13 @@
         }
 
         // 保存修改后的名称
-        function Save()
-        {
+        function Save() {
             var row = $("#dg").datagrid("getSelected");
-            
+
             if (row == undefined) {
                 $.messager.show({ msg: "请选择需要修改的跟踪记录" });
             }
-            else
-            {
+            else {
                 accept("dg");
 
                 $.ajax({
@@ -138,10 +136,8 @@
 
             // 用于记录已生成的报文追踪
             var count = 0;
-            for (var i = 0; i < array.length; i++)
-            {
-                if (array[i].StatusDesc == "待发送")
-                {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i].StatusDesc == "待发送") {
                     count++;
                 }
             }
@@ -166,17 +162,22 @@
                     }
                 });
             }
-            else{
+            else {
                 generate(array);
             }
         }
 
-        function generate(array)
-        {
+        function generate(array) {
+
+            var data = [];
+            $(array).each(function () {
+                data.push(this.Id);
+            });
+
             $.ajax({
                 async: false,
-                method: "GET",
-                data: { traceIds:array},
+                method: "POST",
+                data: { Ids: data },
                 url: "../api/Datagram/Generate",
                 statusCode: {
                     200: function (data) {
@@ -198,8 +199,7 @@
             if (row == undefined) {
                 $.messager.show({ msg: "请选择需要下载的跟踪记录" });
             }
-            else
-            {
+            else {
                 //$.ajax({
                 //    async: false,
                 //    method: "GET",
