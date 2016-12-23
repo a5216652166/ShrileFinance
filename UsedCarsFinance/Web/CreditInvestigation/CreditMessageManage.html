@@ -193,6 +193,7 @@
 
         // 下载
         function Download() {
+            $("#download input").remove();
             var array = $("#dg").datagrid("getChecked");
             if (array == undefined) {
                 $.messager.show({ msg: "请选择需要下载的跟踪记录" });
@@ -273,7 +274,7 @@
     </div>
 
     <div>
-        <form id="download" action="../api/Datagram/Download" method="post">
+        <form id="download" action="../api/Datagram/Download" method="post" style="display:none">
         </form>
     </div>
 </body>
