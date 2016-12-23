@@ -15,7 +15,7 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new FamilySegment()
+                new FamilySegment(manager,familyMember)
             };
         }
 
@@ -24,7 +24,7 @@
             Segments = new List<AbsSegment>()
             {
                 // 基础段
-                new FamilySegment()
+                new FamilySegment(manager,familyMember)
             };
         }
 
