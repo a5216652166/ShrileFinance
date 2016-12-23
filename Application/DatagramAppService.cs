@@ -80,6 +80,18 @@
         }
 
         /// <summary>
+        /// 下载单个报文文件
+        /// </summary>
+        /// <param name="id">报文标识</param>
+        /// <returns>报文文件</returns>
+        public KeyValuePair<string, byte[]> DownloadSingle(Guid id)
+        {
+            var trace = repository.Get(id);
+
+            return trace.ToBytes();
+        }
+
+        /// <summary>
         /// 生成指定报文
         /// </summary>
         /// <param name="traceIds">追踪标识集合</param>
