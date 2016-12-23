@@ -1,9 +1,12 @@
-﻿using System.IO;
-using System.Text;
-using System.Web;
-
-namespace Infrastructure.Http
+﻿namespace Infrastructure.Http
 {
+    using System.IO;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Web;
+
     public class HttpHelper
     {
         public static void DownLoad(string filePath)
@@ -22,6 +25,35 @@ namespace Infrastructure.Http
             fs.Close();
             response.Flush();
             response.End();
+        }
+
+        /// <summary>
+        /// 文件下载
+        /// </summary>
+        /// <param name="fileInfo">文件</param>
+        /// <returns>Http响应</returns>
+        public static HttpResponseMessage DownLoad(FileInfo fileInfo)
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+
+            try
+            {
+                FileStream fs = fileInfo.OpenRead();
+
+                response.Content = new StreamContent(fs);
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = fileInfo.Name,
+                    FileNameStar = fileInfo.Name
+                };
+            }
+            catch
+            {
+                response = new HttpResponseMessage(HttpStatusCode.NoContent);
+            }
+
+            return response;
         }
     }
 }

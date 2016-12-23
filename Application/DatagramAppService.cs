@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data;
-    using System.IO;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
@@ -53,7 +52,7 @@
         /// </summary>
         /// <param name="id">报文标识</param>
         /// <returns>报文文件</returns>
-        public FileInfo Download(Guid id)
+        public System.Net.Http.HttpResponseMessage Download(Guid id)
         {
             var trace = repository.Get(id);
 
@@ -62,7 +61,7 @@
                 throw new Exception("该报文不存在");
             }
 
-            return trace.ToFile();
+            return Infrastructure.Http.HttpHelper.DownLoad(trace.ToFile());
         }
 
         /// <summary>
