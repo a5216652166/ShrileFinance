@@ -37,7 +37,7 @@
             Type = type;
             ReferenceId = referenceId;
             SerialNumber = serialNumber;
-
+            DateCreated = dateCreated;
             TraceDate = DateTime.Now.Date;
             Status = TraceStatusEmum.待生成;
         }

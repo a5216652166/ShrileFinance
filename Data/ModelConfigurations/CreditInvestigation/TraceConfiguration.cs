@@ -18,7 +18,7 @@
             Property(m => m.Status);
             Property(m => m.SerialNumber);
             Property(m => m.DatagramFileId);
-
+            Property(m => m.DateCreated);
             HasOptional(m => m.DatagramFile);
 
             ToTable("CIDG_Trace");
