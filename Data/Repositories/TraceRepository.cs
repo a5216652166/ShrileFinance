@@ -26,5 +26,10 @@
         {
             return GetAll(m => m.TraceDate == traceDate);
         }
+
+        public IEnumerable<Trace> GetByIds(IEnumerable<Guid> traceIds)
+        {
+            return GetAll(m => traceIds.Contains(m.Id));
+        }
     }
 }

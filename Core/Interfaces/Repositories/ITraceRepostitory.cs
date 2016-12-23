@@ -27,5 +27,12 @@
         /// <param name="traceDate">跟踪日期</param>
         /// <returns></returns>
         IEnumerable<Trace> GetByTraceDate(DateTime traceDate);
+
+        /// <summary>
+        /// 获取跟踪集合根据标识集合
+        /// </summary>
+        /// <param name="traceIds">标识集合</param>
+        /// <returns></returns>
+        IEnumerable<Trace> GetByIds(IEnumerable<Guid> traceIds);
     }
 }
