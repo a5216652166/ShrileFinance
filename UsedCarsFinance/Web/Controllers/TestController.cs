@@ -10,6 +10,7 @@
     using System.IO;
     using System.Collections.Generic;
     using global::Infrastructure;
+    using global::Infrastructure.Http;
 
     public class TestController : ApiController
     {
@@ -25,9 +26,7 @@
         {
             var keyValuePir = service.GenerateTest(id);
 
-            throw new NotImplementedException();
-
-            //return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
+            return HttpHelper.DownLoad(fileName: keyValuePir.Key, stream: keyValuePir.Value);
         }
 
         [HttpGet]
