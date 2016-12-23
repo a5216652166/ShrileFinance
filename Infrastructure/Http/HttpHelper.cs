@@ -38,7 +38,9 @@
 
             try
             {
-                FileStream fs = fileInfo.OpenRead();
+                FileStream fs = new FileStream(fileInfo.FullName,FileMode.Open);
+
+                //var fs = (new FileInfo("D:1234.txt")).OpenRead();
 
                 response.Content = new StreamContent(fs);
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
@@ -48,7 +50,7 @@
                     FileNameStar = fileInfo.Name
                 };
             }
-            catch
+            catch(System.Exception ex)
             {
                 response = new HttpResponseMessage(HttpStatusCode.NoContent);
             }

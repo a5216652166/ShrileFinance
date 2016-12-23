@@ -61,8 +61,6 @@
                 throw new Exception("该报文不存在");
             }
 
-            //return Infrastructure.Http.HttpHelper.DownLoad(trace.ToFile());
-
             var a = Infrastructure.Http.HttpHelper.DownLoad(trace.ToFile());
             return a;
         }
