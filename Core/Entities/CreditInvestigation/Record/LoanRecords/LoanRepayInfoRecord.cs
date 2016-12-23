@@ -13,14 +13,14 @@
     {
         public LoanRepayInfoRecord(CreditContract credit, Loan loan, PaymentHistory payment)
         {
-            int time = loan.Payments.ToList().FindIndex(m=>m.Id == payment.Id)+1;
+            int time = loan.Payments.ToList().FindIndex(m => m.Id == payment.Id) + 1;
             Segments = new List<AbsSegment>()
             {
                 // 基础段
                 new CreditBaseSegment(Type, credit),
 
                 // 还款信息段
-                new RepaymentSegment(time,payment)
+                new RepaymentSegment(time, payment)
             };
 
             ((CreditBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();

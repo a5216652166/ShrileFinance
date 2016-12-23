@@ -56,7 +56,7 @@
         /// </summary>
         /// <param name="id">报文标识</param>
         /// <returns>报文文件</returns>
-        public KeyValuePair<string,System.IO.Stream> Download(Guid id)
+        public KeyValuePair<string, Stream> Download(Guid id)
         {
             var trace = repository.Get(id);
 

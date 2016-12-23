@@ -54,11 +54,11 @@
             // 报文追踪(贷款合同信息记录)
             messageAppService.Trace(referenceId: credit.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.签订授信合同, defaultName: "签订授信合同：" + credit.CreditContractCode);
 
-            // 报文追踪(担保合同信息记录)
-            //credit.GuarantyContract.ToList().ForEach(m =>
-            //{
-            //    messageAppService.Trace(referenceId: m.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.签订授信合同, defaultName: "签订担保合同，担保人：" + m.Guarantor.Name);
-            //});
+            //// 报文追踪(担保合同信息记录)
+            ////credit.GuarantyContract.ToList().ForEach(m =>
+            ////{
+            ////    messageAppService.Trace(referenceId: m.Id, traceType: Core.Entities.CreditInvestigation.TraceTypeEnum.签订授信合同, defaultName: "签订担保合同，担保人：" + m.Guarantor.Name);
+            ////});
         }
 
         public void Modify(CreditContractViewModel model)
