@@ -24,6 +24,10 @@
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
+        public FamilySegment()
+        {
+        }
+
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true)]
         public string 信息类别
         {
