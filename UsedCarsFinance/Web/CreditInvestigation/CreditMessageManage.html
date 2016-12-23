@@ -22,6 +22,7 @@
 
         function BeforeLoad(param) {
             param.search = $("#Name").textbox("getValue");
+            param.status = $("#Status").textbox("getValue");
         }
 
         // 键盘enter键
@@ -131,31 +132,35 @@
         function Generate() {
             // 所有勾选的行
             var array = $("#dg").datagrid("getChecked");
-
-            // 用于记录已生成的报文追踪
-            var count = 0;
-            for (var i = 0; i < array.length; i++) {
-                if (array[i].StatusDesc == "待发送") {
-                    count++;
-                }
-            }
-
-            if (count > 0) {
-                // 提示框
-                $.messager.confirm("操作提示", "存在" + count + "条待发送报文，是否忽略？", function (data) {
-                    if (!data) {
-                        // 如果不忽略则只发送待生成的
-                        for (var i = 0; i < array.length; i++) {
-                            if (array[i].StatusDesc != "待生成") {
-                                array.pop(i);
-                            }
-                        }
-                    }
-                    submit(array);
-                });
+            if (array == undefined) {
+                $.messager.show({ msg: "请选择需要生成的跟踪记录" });
             }
             else {
-                submit(array);
+                // 用于记录已生成的报文追踪
+                var count = 0;
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].StatusDesc == "待发送") {
+                        count++;
+                    }
+                }
+
+                if (count > 0) {
+                    // 提示框
+                    $.messager.confirm("操作提示", "存在" + count + "条待发送报文，是否忽略？", function (data) {
+                        if (!data) {
+                            // 如果不忽略则只发送待生成的
+                            for (var i = 0; i < array.length; i++) {
+                                if (array[i].StatusDesc != "待生成") {
+                                    array.pop(i);
+                                }
+                            }
+                        }
+                        submit(array);
+                    });
+                }
+                else {
+                    submit(array);
+                }
             }
         }
 
@@ -188,16 +193,24 @@
 
         // 下载
         function Download() {
-            var row = $("#dg").datagrid("getSelected");
-
-            if (row == undefined) {
+            var array = $("#dg").datagrid("getChecked");
+            if (array == undefined) {
                 $.messager.show({ msg: "请选择需要下载的跟踪记录" });
             }
             else {
+                // 所有勾选的报文跟踪ID
+                var data = [];
+                $(array).each(function () {
+                    data.push(this.Id);
+                    $("<input>", { name: "Ids", value: this.Id }).appendTo("#download");
+                });
+
+                $("#download").submit();
+
                 //$.ajax({
                 //    async: false,
-                //    method: "GET",
-                //    data: { Id: row.Id },
+                //    method: "POST",
+                //    data: { Ids: data },
                 //    url: "../api/Datagram/Download",
                 //    statusCode: {
                 //        200: function (data) {
@@ -208,27 +221,12 @@
                 //        }
                 //    }
                 //});
-                downLoadall(row.Id);
 
                 $("#save").linkbutton("enable");
+                Reload();
             }
         }
 
-        function downLoadall(reportFileID) {
-            var form = $("<form>");   //定义一个form表单
-            form.attr('style', 'display:none');   //在form表单中添加查询参数
-            form.attr('target', '');
-            form.attr('method', 'get');
-            form.attr('action', "../api/Datagram/Download");
-            var input1 = $('<input>');
-            input1.attr('type', 'hidden');
-            input1.attr('name', 'Id');
-            input1.attr('value', reportFileID);
-            $('body').append(form);  //将表单放置在web中
-            form.append(input1);   //将查询参数控件提交到表单上
-            form.submit();
-            Reload();
-        }
     </script>
 </head>
 <body>
@@ -258,11 +256,25 @@
     <div id="tb">
         <div style="height:30px;width:auto;">
             <input id="Name" name="Name" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入名称'" />
+            <span>报文状态:</span>
+            <select id="Status" class="easyui-combobox" style="width:100px;height:25px; margin-top:3px;">
+                <option value="">全部</option>
+                <option value="0">待生成</option>
+                <option value="1">待发送</option>
+                <option value="2">已发送</option>
+                <option value="3">待反馈</option>
+                <option value="4">待反馈</option>
+            </select>
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
             <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>
             <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Download">下载</a>
         </div>
+    </div>
+
+    <div>
+        <form id="download" action="../api/Datagram/Download" method="post">
+        </form>
     </div>
 </body>
 </html>

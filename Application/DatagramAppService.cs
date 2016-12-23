@@ -53,18 +53,19 @@
             }
         }
 
-        public KeyValuePair<string,Stream> DownloadZip(List<Guid> ids)
+        public KeyValuePair<string, MemoryStream> DownloadZip(DownloadViewModel model)
         {
-            var traces = repository.GetAll(m=>ids.Contains(m.Id)).ToList();
+            var traces = repository.GetByIds(model.Ids);
 
             var files = new Dictionary<string, MemoryStream>();
 
-            traces.ForEach(m=> {
-                var file = m.ToFile();
-                files.Add(file.Key,(MemoryStream)file.Value);
-            });
+            foreach (var trace in traces)
+            {
+                var file = trace.ToFile();
+                files.Add(file.Key, (MemoryStream)file.Value);
+            }
 
-            return new KeyValuePair<string, Stream>("报文.zip",FileHelper.Compression(files));
+            return new KeyValuePair<string, MemoryStream>($"企业征信{DateTime.Now.ToString("yyyyMMdd")}.zip", FileHelper.Compression(files));
         }
 
         /// <summary>
@@ -80,10 +81,22 @@
         }
 
         /// <summary>
+        /// 下载单个报文文件
+        /// </summary>
+        /// <param name="id">报文标识</param>
+        /// <returns>报文文件</returns>
+        public KeyValuePair<string, byte[]> DownloadSingle(Guid id)
+        {
+            var trace = repository.Get(id);
+
+            return trace.ToBytes();
+        }
+
+        /// <summary>
         /// 生成指定报文
         /// </summary>
         /// <param name="traceIds">追踪标识集合</param>
-        public KeyValuePair<string, Stream> Generate(IEnumerable<Guid> traceIds)
+        public void Generate(IEnumerable<Guid> traceIds)
         {
             var traces = repository.GetByIds(traceIds);
 
@@ -100,10 +113,9 @@
 
                 // 添加文件
                 trace.AddDatagram(datagramFile);
-
-                return trace.ToFile();
             }
-            throw new NotImplementedException();
+
+            repository.Commit();
         }
 
         public KeyValuePair<string, Stream> GenerateTest(Guid traceId)
@@ -140,13 +152,18 @@
         /// <param name="page">页码</param>
         /// <param name="size">每页数量</param>
         /// <returns></returns>
-        public IPagedList<TraceViewModel> GetPageList(string search, int page, int size)
+        public IPagedList<TraceViewModel> GetPageList(string search, int page, int size, TraceStatusEmum? status = null)
         {
             var messageTrack = repository.GetAll();
 
             if (!string.IsNullOrEmpty(search))
             {
                 messageTrack = messageTrack.Where(m => m.Name.Contains(search));
+            }
+
+            if (status != null)
+            {
+                messageTrack = messageTrack.Where(m => m.Status == status.Value);
             }
 
             messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.SpecialDate);
