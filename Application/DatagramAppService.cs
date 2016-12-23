@@ -96,7 +96,7 @@
 
         public void GenerateTest()
         {
-            var lastDate = DateTime.Now.Date.AddDays(-1);
+            var lastDate = DateTime.Now.Date;
             var traces = repository.GetByTraceDate(lastDate);
 
             foreach (var trace in traces)
@@ -112,7 +112,7 @@
                 {
                     m.ToFile();
                 }
-                catch (Core.Exceptions.InvalidOperationAppException)
+                catch (Exception ex)
                 {
                 }
             });
