@@ -11,12 +11,9 @@
     /// </summary>
     public class InstitutionIncomeExpenditureRecord : AbsRecord
     {
-        private FinancialAffairs financial;
-        private InstitutionIncomeExpenditure item;
-
-        public InstitutionIncomeExpenditureRecord(Organization organization) : base()
+        public InstitutionIncomeExpenditureRecord(Organization organization, InstitutionIncomeExpenditure item) : base()
         {
-            var baseParagraph = new BaseParagraph(financial, organization, item.Type.ToString());
+            var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString());
 
             Segments = new List<AbsSegment>()
             {
@@ -28,17 +25,6 @@
             };
 
             ((BaseParagraph)Segments.First()).信息记录长度 = GetLength().ToString();
-        }
-
-        public InstitutionIncomeExpenditureRecord(FinancialAffairs financial, InstitutionIncomeExpenditure item)
-        {
-            this.financial = financial;
-            this.item = item;
-        }
-
-        public InstitutionIncomeExpenditureRecord(Organization organization, InstitutionIncomeExpenditure item) : this(organization)
-        {
-            this.item = item;
         }
 
         protected InstitutionIncomeExpenditureRecord() : base()

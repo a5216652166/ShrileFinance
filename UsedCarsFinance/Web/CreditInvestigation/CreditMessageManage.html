@@ -176,7 +176,7 @@
             $.ajax({
                 async: false,
                 method: "GET",
-                data: {},
+                data: { traceIds:array},
                 url: "../api/Datagram/Generate",
                 statusCode: {
                     200: function (data) {
