@@ -1,9 +1,9 @@
-﻿using System.IO;
-using System.Text;
-using System.Web;
-
-namespace Infrastructure.Http
+﻿namespace Infrastructure.Http
 {
+    using System.IO;
+    using System.Text;
+    using System.Web;
+
     public class HttpHelper
     {
         public static void DownLoad(string filePath)
@@ -15,6 +15,7 @@ namespace Infrastructure.Http
             HttpResponse response = HttpContext.Current.Response;
 
             response.ContentType = "application/octet-stream";
+
             // 通知浏览器下载文件,而不是打开文件
             response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(filePath, Encoding.UTF8));
             response.BinaryWrite(bytes);
