@@ -26,9 +26,13 @@
                 // 联络信息段
                 new OrganizationContactSegment(organization.Contact),
 
-                // 上级机构（主管单位）段
-                new ParentSegment(organization.Parent),
             };
+
+            if (organization.Parent != null)
+            {
+                // 上级机构（主管单位）段
+                Segments.Add(new ParentSegment(organization.Parent));
+            }
 
             // 高管及主要关系人段
             foreach (var item in organization.Managers)
@@ -47,6 +51,10 @@
             {
                 Segments.Add(new AssociatedEnterpriseSegment(item));
             }
+        }
+
+        protected OrganizationBaseRecord() : base()
+        {
         }
 
         public override RecordTypeEnum Type

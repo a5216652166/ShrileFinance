@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Loan;
     using Segment;
     using Segment.CreditMessage;
@@ -21,6 +22,11 @@
                 // 自然人保证合同信息段
                 new NaturalGuaranteeSegment(guaranty)
             };
+            ((GuaranteeBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
+        }
+
+        protected NaturalEnsureContractInfoRecord() : base()
+        {
         }
 
         public override RecordTypeEnum Type

@@ -19,6 +19,10 @@
             CreditContractCode = creditContract.Id.ToString();
         }
 
+        protected CreditBaseSegment() : base()
+        {
+        }
+
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true, Describe = "本信息记录的长度")]
         public string 信息记录长度 { get; set; }
 
@@ -34,7 +38,7 @@
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true, Describe = "填写数据发生机构的代码")]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FinancialOrganizationCode; }
+            get { return AbsDatagramFile.FINANCIAL_ORGANIZATION_CODE; }
         }
 
         /// <summary>

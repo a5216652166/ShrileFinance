@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Loan;
     using Segment;
     using Segment.CreditMessage;
@@ -20,6 +21,13 @@
                 // 自然人质押合同信息段
                 new GuaranteePledgeSegment(guaranty, credit)
             };
+
+
+            ((GuaranteeBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
+        }
+
+        protected PledgeContractInfoRecord() : base()
+        {
         }
 
         public override RecordTypeEnum Type

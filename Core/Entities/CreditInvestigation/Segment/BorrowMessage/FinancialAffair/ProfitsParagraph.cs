@@ -12,6 +12,10 @@
             AutoMapper.Mapper.Map(profit, this);
         }
 
+        protected ProfitsParagraph() : base()
+        {
+        }
+
         /// <summary>
         /// 信息类别
         /// </summary>

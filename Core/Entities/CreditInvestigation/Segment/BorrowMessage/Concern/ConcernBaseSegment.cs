@@ -1,5 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
+    using System;
     using DatagramFile;
     using Record;
 
@@ -10,6 +11,11 @@
             信息记录类型 = type.ToString("D");
             借款人名称 = organization.Property.InstitutionChName;
             贷款卡编码 = organization.LoanCardCode;
+            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
+        }
+
+        protected ConcernBaseSegment() : base()
+        {
         }
 
         [MetaCode(4, MetaCodeTypeEnum.N), SegmentRule(1, true)]
@@ -27,7 +33,7 @@
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true)]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FinancialOrganizationCode; }
+            get { return AbsDatagramFile.FINANCIAL_ORGANIZATION_CODE; }
         }
 
         [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(19, true)]

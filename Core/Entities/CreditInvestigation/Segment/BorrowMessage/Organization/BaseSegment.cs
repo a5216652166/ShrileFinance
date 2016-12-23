@@ -13,6 +13,10 @@
             数据提取日期 = organization.CreatedDate.ToString("yyyyMMdd");
         }
 
+        protected BaseSegment() : base()
+        {
+        }
+
         /// <summary>
         /// 类别
         /// </summary>
@@ -83,7 +87,7 @@
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(153, false)]
         public string 开户许可证核准号
         {
-            get { return string.Empty.PadLeft(30, ' '); }
+            get { return string.Empty.PadLeft(20, ' '); }
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.OrganizationRecords
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Customers.Enterprise;
     using Segment;
     using Segment.BorrowMessage.FinancialAffair;
@@ -26,7 +27,7 @@
                 new ProfitsParagraph(item)
             };
 
-            baseParagraph.信息记录长度 = GetLength().ToString();
+            ((BaseParagraph)Segments.First()).信息记录长度 = GetLength().ToString();
         }
 
         public ProfitRecord(FinancialAffairs financial, Profit item)
@@ -38,6 +39,10 @@
         public ProfitRecord(Organization organization, Profit item) : this(organization)
         {
             this.item = item;
+        }
+
+        protected ProfitRecord() : base()
+        {
         }
 
         public override RecordTypeEnum Type

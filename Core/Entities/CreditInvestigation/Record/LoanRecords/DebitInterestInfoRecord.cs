@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Loan;
     using Segment;
     using Segment.CreditMessage;
@@ -20,6 +21,11 @@
                 new DebitInterestSegment(payment)
                 ////new DebitInterestSegment((payment.ScheduledPaymentInterest-payment.ActualPaymentPrincipal).ToString())
             };
+            ((DebitInterestBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
+        }
+
+        protected DebitInterestInfoRecord() : base()
+        {
         }
 
         public override RecordTypeEnum Type

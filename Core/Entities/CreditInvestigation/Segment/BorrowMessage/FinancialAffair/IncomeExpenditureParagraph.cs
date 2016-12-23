@@ -12,6 +12,10 @@
             AutoMapper.Mapper.Map(incomeExpenditure, this);
         }
 
+        protected IncomeExpenditureParagraph() : base()
+        {
+        }
+
         /// <summary>
         /// 信息类别
         /// </summary>
