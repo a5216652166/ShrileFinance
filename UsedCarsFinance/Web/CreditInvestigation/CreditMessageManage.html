@@ -21,8 +21,17 @@
         }
 
         function BeforeLoad(param) {
+        debugger
             param.search = $("#Name").textbox("getValue");
             param.status = $("#Status").textbox("getValue");
+
+            if ($("#BeginTime").datebox("isValid")) {
+                param.beginTime = $("#BeginTime").datebox("getValue");
+            }
+
+            if ($("#EndTime").datebox("isValid")) {
+                param.endTime = $("#EndTime").datebox("getValue");
+            }
         }
 
         // 键盘enter键
@@ -254,6 +263,10 @@
                 <option value="1">待发送</option>
                 <option value="2">已发送</option>
             </select>
+            <span>业务发生日期 从:</span>
+            <input id="BeginTime" name="BeginTime" class="easyui-datebox" data-options="width:100,validType:'Date'" style="width:100px;height:25px; margin-top:3px;">
+            <span>至:</span>
+            <input id="EndTime" name="EndTime" class="easyui-datebox" data-options="width:100,validType:'Date'" style="width:100px;height:25px; margin-top:3px;">
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
             <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>

@@ -112,10 +112,13 @@
         /// <param name="search">搜索条件</param>
         /// <param name="page">页码</param>
         /// <param name="size">每页数量</param>
+        /// <param name="status">报文状态</param>
+        /// <param name="beginTime">起始日期</param>
+        /// <param name="endTime">截至日期</param>
         /// <returns></returns>
-        public IPagedList<TraceViewModel> GetPageList(string search, int page, int size, TraceStatusEmum? status = null)
+        public IPagedList<TraceViewModel> GetPageList(string search, int page, int size, TraceStatusEmum? status = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
-            var messageTrack = repository.GetPageList(search, page, size, status);
+            var messageTrack = repository.GetPageList(search, page, size, status, beginTime, endTime);
 
             var pageList = messageTrack.ToPagedList(page, size);
 
