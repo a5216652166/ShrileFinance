@@ -26,7 +26,7 @@
             信息记录类型 = ((int)recordType).ToString();
             信息记录操作类型 = "1";
 
-            审计时间 = financialAffairs.AuditorDate == null ? "" : financialAffairs.AuditorDate.Value.ToString("yyyyMMdd");
+            审计时间 = financialAffairs.AuditorDate == null ? string.Empty : financialAffairs.AuditorDate.Value.ToString("yyyyMMdd");
             业务发生日期 = organization.CreatedDate.ToString("yyyyMMdd");
         }
 
@@ -58,7 +58,7 @@
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true)]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FINANCIAL_ORGANIZATION_CODE; }
+            get { return AbsDatagramFile.FINANCIALORGANIZATIONCODE; }
         }
 
         /// <summary>
