@@ -52,6 +52,11 @@
             }
         }
 
+        /// <summary>
+        /// 下载报文Zip
+        /// </summary>
+        /// <param name="model">报文下载Model</param>
+        /// <returns>报文（名称-内存流）</returns>
         public KeyValuePair<string, MemoryStream> Download(DownloadViewModel model)
         {
             var traces = repository.GetByIds(model.Ids);
@@ -110,19 +115,8 @@
         /// <returns></returns>
         public IPagedList<TraceViewModel> GetPageList(string search, int page, int size, TraceStatusEmum? status = null)
         {
-            var messageTrack = repository.GetAll();
+            var messageTrack = repository.GetPageList(search, page, size, status);
 
-            if (!string.IsNullOrEmpty(search))
-            {
-                messageTrack = messageTrack.Where(m => m.Name.Contains(search));
-            }
-
-            if (status != null)
-            {
-                messageTrack = messageTrack.Where(m => m.Status == status.Value);
-            }
-
-            messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.SpecialDate);
             var pageList = messageTrack.ToPagedList(page, size);
 
             var models = Mapper.Map<IPagedList<TraceViewModel>>(pageList);
