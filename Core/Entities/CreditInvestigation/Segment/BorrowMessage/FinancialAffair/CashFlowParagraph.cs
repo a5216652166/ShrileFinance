@@ -196,181 +196,181 @@
         /// <summary>
         /// 9227支付其他与筹资活动有关的现金
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(582, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(562, false)]
         public string PayOtherFinancingCash { get; set; }
 
         /// <summary>
         /// 9228筹资活动现金流出小计
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(602, true)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(582, true)]
         public string FinancingCashOutflow { get; set; }
 
         /// <summary>
         /// 9229筹集活动产生的现金流量净额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(622, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(602, false)]
         public string FinancingNetCash { get; set; }
 
         /// <summary>
         /// 9230汇率变动对现金及现金等价物的影响
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(642, true)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(622, true)]
         public string ExchangeRateChangeCash { get; set; }
 
         /// <summary>
         /// 9231现金及现金等价物净增加额(五)
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(662, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(642, false)]
         public string CashIncrease5 { get; set; }
 
         /// <summary>
-        /// 9231期初现金及现金等价物余额
+        /// 9232期初现金及现金等价物余额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(682, true)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(662, true)]
         public string BeginCashBalance { get; set; }
 
         /// <summary>
         /// 9233期末现金及现金等价物余额(六)
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(702, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(682, false)]
         public string FinalCashBalance6 { get; set; }
 
         /// <summary>
         /// 9234净利润
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(722, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(702, false)]
         public string NetProfit { get; set; }
 
         /// <summary>
         /// 9235资产减值准备
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(742, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(722, false)]
         public string AssetImpairment { get; set; }
 
         /// <summary>
         /// 9236固定资产折旧、油气资 产折耗、生产性生物资产折旧
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(762, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(742, false)]
         public string AssetsDepreciation { get; set; }
 
         /// <summary>
         /// 9237无形资产摊销
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(782, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(762, false)]
         public string IntangibleAssetsAmortization { get; set; }
 
         /// <summary>
         /// 9238长期待摊费用摊销
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(802, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(782, false)]
         public string LongPrepaidExpenses { get; set; }
 
         /// <summary>
         /// 9238待摊费用减少
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(822, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(802, false)]
         public string PrepaidExpensesLessen { get; set; }
 
         /// <summary>
         /// 9240预提费用增
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(842, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(822, false)]
         public string AccruedExpenses { get; set; }
 
         /// <summary>
         /// 9241处置固定资产无形资产和其他长期资产的损失
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(862, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(842, false)]
         public string Assetloss { get; set; }
 
         /// <summary>
         /// 9242固定资产报废损失
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(882, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(862, false)]
         public string FixedAssetsScrap { get; set; }
 
         /// <summary>
         /// 9243公允价值变动损失
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(902, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(822, false)]
         public string FairChanges { get; set; }
 
         /// <summary>
         /// 9244财务费用
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(922, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(902, false)]
         public string FinancialExpenses { get; set; }
 
         /// <summary>
         /// 9245投资损失
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(942, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(922, false)]
         public string InvestmentLosses { get; set; }
 
         /// <summary>
         /// 9246递延所得税资产减少
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(962, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(942, false)]
         public string DeferredIncomeTaxLessen { get; set; }
 
         /// <summary>
         /// 9247递延所得税资产增加
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(982, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(962, false)]
         public string DeferredIncomeTaAdd { get; set; }
 
         /// <summary>
         /// 9248存货的减少
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1002, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(982, false)]
         public string Inventoryreduction { get; set; }
 
         /// <summary>
         /// 9249经营性应收项目的减少
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1022, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1002, false)]
         public string ReceivableItemLosses { get; set; }
 
         /// <summary>
         /// 9250经营性应付项目的增加
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1042, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1022, false)]
         public string PayablesAdd { get; set; }
 
         /// <summary>
         /// 9251其他1
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1062, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1042, false)]
         public string Other { get; set; }
 
         /// <summary>
         /// 9252经营活动产生的现金流量净额
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1082, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1062, false)]
         public string OperatingCashFlowsNet { get; set; }
 
         /// <summary>
         /// 9253债务转为资本
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1102, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1082, false)]
         public string CapitalDebt { get; set; }
 
         /// <summary>
         /// 9254一年内到期的可转换公司债券
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1122, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1102, false)]
         public string CorporateBondInYear { get; set; }
 
         /// <summary>
         /// 9255融资租入固定资产
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1142, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1122, false)]
         public string FinancingFixedAssets { get; set; }
 
         /// <summary>
         /// 9256其他2
         /// </summary>
-        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(562, false)]
+        [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1142, false)]
         public string PayFinancingCash { get; set; }
 
         /// <summary>

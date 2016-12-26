@@ -237,9 +237,7 @@
     <Compile Include="Services\Loan\LoanService.cs" />
     <Compile Include="Services\Loan\PaymentService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entities\Borrower\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>
