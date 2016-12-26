@@ -104,7 +104,10 @@
                     DatagramFiles.Remove(old);
                 }
 
-                DatagramFiles.Add(file);
+                if (file.Datagrams.Count > 0)
+                {
+                    DatagramFiles.Add(file);
+                }
             }
 
             Status = TraceStatusEmum.待发送;
