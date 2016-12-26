@@ -161,8 +161,7 @@
                                 return e.StatusDesc == "待生成";
                             });
                         }
-                        else {
-                        }
+
                         submit(array);
                     });
                 }
@@ -226,16 +225,17 @@
             }
         }
 
-        //function BindColor(index, row) {
-        //    if (row.StatusDesc == "待发送") {
-        //        return 'background-color:#f0fffa;';
-        //    }
-        //}
+        function BindColor(index, row) {
+            if (row.StatusDesc != "待生成") {
+                return 'background-color:#f0fffa;color:#333';
+            }
+        }
     </script>
 </head>
 <body>
     <table id="dg" class="easyui-datagrid" data-options="height:630,toolbar:'#tb',rownumbers:true,
         onDblClickCell:onEditor,
+        rowStyler:BindColor,
         pagination: true,
         pageSize: 20,
         pageList: [10,20,30,40,50],

@@ -44,11 +44,11 @@
             CreateMap<GuarantyContractPledge, NaturalPledgeSegment>();
 
             // 财务
-            CreateMap<CashFlow,CashFlowParagraph>();
+            CreateMap<CashFlow, CashFlowParagraph>();
             CreateMap<InstitutionIncomeExpenditure, IncomeExpenditureParagraph>();
-            CreateMap<InstitutionLiabilities,InstitutionLiabilitiesParagraph>();
-            CreateMap<Liabilities,LiabilitiesParagraph>();
-            CreateMap<Profit,ProfitsParagraph>();
+            CreateMap<InstitutionLiabilities, InstitutionLiabilitiesParagraph>();
+            CreateMap<Liabilities, LiabilitiesParagraph>();
+            CreateMap<Profit, ProfitsParagraph>();
         }
     }
 }
