@@ -34,5 +34,15 @@
         /// <param name="traceIds">标识集合</param>
         /// <returns></returns>
         IEnumerable<Trace> GetByIds(IEnumerable<Guid> traceIds);
+
+        /// <summary>
+        /// 根据筛选信息获取报文追踪列表
+        /// </summary>
+        /// <param name="search">搜索关键字</param>
+        /// <param name="page"></param>
+        /// <param name="size"></param>
+        /// <param name="status">报文状态</param>
+        /// <returns></returns>
+        IEnumerable<Trace> GetPageList(string search, int page, int size, TraceStatusEmum? status = null);
     }
 }
