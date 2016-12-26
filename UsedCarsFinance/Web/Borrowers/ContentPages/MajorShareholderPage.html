@@ -207,6 +207,10 @@
                 $("fieldset#G input[textboxname=InstitutionCreditCode]").textbox("setValue", "").textbox("readonly", true);
             }
 
+            // 清空 证件类型和号码
+            $("fieldset#G select[textboxname=RegistraterTypeModel]").textbox("setValue", "");
+            $("fieldset#G input[textboxname=RegistraterCode]").textbox("setValue", "");
+
             // setTxt2
             var currentObj = $(this);
             var inputObj = $(this).parent().find("input[name=" + currentObj.attr('comboname') + "]:hidden");
