@@ -23,7 +23,7 @@
             Property(m => m.CertificateType).HasMaxLength(2);
             Property(m => m.CertificateCode).HasMaxLength(20);
 
-            HasMany(m => m.FamilyMembers).WithOptional().Map(m => m.MapKey("StockholderId")).WillCascadeOnDelete();
+            HasMany(m => m.FamilyMembers).WithOptional().Map(m => m.MapKey("StockholderId"));
 
             ToTable("CUST_Stockholder");
         }

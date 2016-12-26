@@ -92,15 +92,21 @@
 
             model.Managers.ToList().ForEach(m =>
             {
-                var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty).FamilyMembers;
-                new UpdateBind().Bind(familyMembersEntity, m.FamilyMembers);
+                var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
+                if (familyMembersEntity != null)
+                {
+                    new UpdateBind().Bind(familyMembersEntity.FamilyMembers, m.FamilyMembers);
+                }
             });
             new UpdateBind().Bind(customer.Shareholders, model.Shareholders);
 
             model.Shareholders.ToList().ForEach(m =>
             {
-                var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty).FamilyMembers;
-                new UpdateBind().Bind(shareholders, m.FamilyMembers);
+                var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
+                if (shareholders != null)
+                {
+                    new UpdateBind().Bind(shareholders.FamilyMembers, m.FamilyMembers);
+                }
             });
 
             new UpdateBind().Bind(customer.AssociatedEnterprises, model.AssociatedEnterprises);

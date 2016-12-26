@@ -15,7 +15,7 @@
             Property(m => m.CertificateType).IsRequired().HasMaxLength(2);
             Property(m => m.CertificateCode).IsRequired().HasMaxLength(20);
 
-            HasMany(m => m.FamilyMembers).WithOptional().Map(m => m.MapKey("ManagerId")).WillCascadeOnDelete();
+            HasMany(m => m.FamilyMembers).WithOptional().Map(m => m.MapKey("ManagerId"));
 
             ToTable("CUST_Manager");
         }
