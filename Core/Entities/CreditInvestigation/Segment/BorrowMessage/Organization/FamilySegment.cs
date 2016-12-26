@@ -24,7 +24,7 @@
             信息更新日期 = DateTime.Now.ToString("yyyyMMdd");
         }
 
-        public FamilySegment()
+        protected FamilySegment()
         {
         }
 

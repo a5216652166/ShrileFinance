@@ -40,6 +40,8 @@
                     using (var entryStream = entry.Open())
                     using (var fileStream = file.Value)
                     {
+                        // 异常: 无法访问内存区
+                        // var buffer = fileStream.GetBuffer();
                         var buffer = fileStream.ToArray();
 
                         entryStream.Write(buffer, 0, buffer.Length);
