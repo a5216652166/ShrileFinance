@@ -9,16 +9,7 @@
     {
         public LiabilitiesParagraph(Liabilities liabilities)
         {
-            try
-            {
-                AutoMapper.Mapper.Map(liabilities, this);
-
-            }
-            catch (System.Exception ex)
-            {
-
-                throw;
-            }
+            AutoMapper.Mapper.Map(liabilities, this);
         }
 
         protected LiabilitiesParagraph() : base()

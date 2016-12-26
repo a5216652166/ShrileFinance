@@ -184,7 +184,8 @@
                 int enlength = value.Length;
 
                 value = value.PadRight(length);
-                value = value.Substring(0, value.Length-(gblength - enlength));
+
+                value = value.Substring(0, value.Length - (gblength - enlength));
 
                 return value;
             }
