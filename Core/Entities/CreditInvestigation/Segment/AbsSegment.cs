@@ -14,6 +14,11 @@
         }
 
         /// <summary>
+        /// 信息类别（段标）
+        /// </summary>
+        public abstract char Type { get; }
+
+        /// <summary>
         /// 信息记录标识
         /// </summary>
         public Guid RecordId { get; private set; }

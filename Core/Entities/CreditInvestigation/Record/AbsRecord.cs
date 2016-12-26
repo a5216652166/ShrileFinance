@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using Segment;
 
@@ -54,7 +55,8 @@
 
         public void Packaging(StringBuilder builder)
         {
-            foreach (var segment in Segments)
+            var segments = Segments.OrderBy(m => m.Type);
+            foreach (var segment in segments)
             {
                 segment.Packaging(builder);
             }

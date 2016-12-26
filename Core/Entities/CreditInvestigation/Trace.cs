@@ -88,21 +88,24 @@
         /// <summary>
         /// 添加报文文件
         /// </summary>
-        /// <param name="datagramFile">报文文件</param>
-        public void AddDatagram(AbsDatagramFile datagramFile)
+        /// <param name="files">报文文件</param>
+        public void AddDatagram(IEnumerable<AbsDatagramFile> files)
         {
             if (Status != TraceStatusEmum.待生成 && Status != TraceStatusEmum.待发送)
             {
                 throw new InvalidOperationAppException("当前状态不可生成报文。");
             }
 
-            var old = DatagramFiles.FirstOrDefault(m => m.Type == datagramFile.Type);
-            if (old != null)
+            foreach (var file in files)
             {
-                DatagramFiles.Remove(old);
-            }
+                var old = DatagramFiles.FirstOrDefault(m => m.Type == file.Type);
+                if (old != null)
+                {
+                    DatagramFiles.Remove(old);
+                }
 
-            DatagramFiles.Add(datagramFile);
+                DatagramFiles.Add(file);
+            }
 
             Status = TraceStatusEmum.待发送;
         }

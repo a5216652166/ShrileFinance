@@ -7,7 +7,6 @@
     using Entities.CreditInvestigation.DatagramFile;
     using Entities.CreditInvestigation.Record.LoanRecords;
     using Entities.CreditInvestigation.Record.OrganizationRecords;
-    using Entities.Customers.Enterprise;
     using Entities.Loan;
     using Exceptions;
     using Interfaces.Repositories;
@@ -36,41 +35,51 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        public AbsDatagramFile Generate(Trace trace)
+        public IEnumerable<AbsDatagramFile> Generate(Trace trace)
         {
-            AbsDatagramFile datagramFile;
+            var datagramFiles = new List<AbsDatagramFile>();
 
             switch (trace.Type)
             {
                 case TraceTypeEnum.添加机构:
-                    datagramFile = CreateOrganization(trace);
+                    datagramFiles.Add(
+                        CreateOrganization(trace));
+                    datagramFiles.Add(
+                        CreateBorrower(trace));
                     break;
                 case TraceTypeEnum.签订授信合同:
-                    datagramFile = CreateContract(trace);
+                    datagramFiles.Add(
+                         CreateContract(trace));
                     break;
                 case TraceTypeEnum.借款:
-                    datagramFile = CreateLoan(trace);
+                    datagramFiles.Add(
+                        CreateLoan(trace));
                     break;
                 case TraceTypeEnum.还款:
-                    datagramFile = CreatePayment(trace);
+                    datagramFiles.Add(
+                        CreatePayment(trace));
                     break;
                 case TraceTypeEnum.终止合同:
-                    datagramFile = StopContract(trace);
+                    datagramFiles.Add(
+                        StopContract(trace));
                     break;
                 case TraceTypeEnum.逾期:
-                    datagramFile = AdjustLoan(trace);
+                    datagramFiles.Add(
+                        AdjustLoan(trace));
                     break;
                 case TraceTypeEnum.合同变更:
-                    datagramFile = ModifyContract(trace);
+                    datagramFiles.Add(
+                        ModifyContract(trace));
                     break;
                 case TraceTypeEnum.欠息:
-                    datagramFile = DebitInterest(trace);
+                    datagramFiles.Add(
+                        DebitInterest(trace));
                     break;
                 default:
                     throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
             }
 
-            return datagramFile;
+            return datagramFiles;
         }
 
         /// <summary>
@@ -92,6 +101,20 @@
                 .ForEach(n => familyDatagram.AddRecord(new FamilyMemberRecord(m, n))));
             organization.Shareholders.ToList().ForEach(m => m.FamilyMembers
                 .ForEach(n => familyDatagram.AddRecord(new FamilyMemberRecord(m, n))));
+
+            return datagramFile;
+        }
+
+        /// <summary>
+        /// 创建借款人
+        /// </summary>
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        private AbsDatagramFile CreateBorrower(Trace trace)
+        {
+            var organization = organizationRepository.Get(trace.ReferenceId);
+
+            var datagramFile = new BorrowerDatagramFile(trace.SerialNumber);
 
             var financialDatagram = datagramFile.GetDatagram(DatagramTypeEnum.财务报表信息采集报文);
             if (organization.FinancialAffairs != null)
