@@ -115,6 +115,10 @@
     <Compile Include="Migrations\201612260307319_SplitDatagramFile.Designer.cs">
       <DependentUpon>201612260307319_SplitDatagramFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612260719025_UpdateAuditorDateIsNull.cs" />
+    <Compile Include="Migrations\201612260719025_UpdateAuditorDateIsNull.Designer.cs">
+      <DependentUpon>201612260719025_UpdateAuditorDateIsNull.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -377,6 +381,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612260307319_SplitDatagramFile.resx">
       <DependentUpon>201612260307319_SplitDatagramFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612260719025_UpdateAuditorDateIsNull.resx">
+      <DependentUpon>201612260719025_UpdateAuditorDateIsNull.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

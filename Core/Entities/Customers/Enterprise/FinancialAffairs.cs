@@ -31,7 +31,7 @@
         /// <summary>
         /// 审计日期
         /// </summary>
-        public DateTime AuditorDate { get; set; }
+        public DateTime? AuditorDate { get; set; }
         /// <summary>
         /// 现金流量
         /// </summary>

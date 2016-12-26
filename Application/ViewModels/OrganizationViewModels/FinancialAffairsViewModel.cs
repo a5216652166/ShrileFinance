@@ -1,5 +1,6 @@
 ﻿namespace Application.ViewModels.OrganizationViewModels
 {
+    using System;
     using System.Collections.Generic;
     using Core.Entities.Customers.Enterprise;
 
@@ -36,6 +37,11 @@
         /// 审计人员名称
         /// </summary>
         public string AuditorName { get; set; }
+
+        /// <summary>
+        /// 审计日期
+        /// </summary>
+        public DateTime? AuditorDate { get; set; }
 
         /// <summary>
         /// 现金流量
