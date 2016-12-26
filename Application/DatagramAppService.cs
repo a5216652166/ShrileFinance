@@ -83,6 +83,32 @@
             return compression;
         }
 
+        public KeyValuePair<string, byte[]> Downloads(DownloadViewModel model)
+        {
+            var traces = repository.GetByIds(model.Ids);
+
+            var files = new Dictionary<string, byte[]>();
+
+            foreach (var trace in traces)
+            {
+                foreach (var datagramFile in trace.DatagramFiles)
+                {
+                    var filename = datagramFile.GenerateFilename();
+                    var buffer = datagramFile.GetBuffer();
+
+                    files.Add(filename, buffer);
+                }
+            }
+
+            // 压缩打包
+            var compressionBytes = FileHelper.ZipArchiveCompression(files);
+            var compression = new KeyValuePair<string, byte[]>(
+                $"企业征信{DateTime.Now.ToString("yyyyMMdd")}.zip",
+                compressionBytes);
+            
+            return compression;
+        }
+
         /// <summary>
         /// 生成指定报文
         /// </summary>

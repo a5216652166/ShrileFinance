@@ -1,5 +1,6 @@
 ﻿namespace Infrastructure.Http
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
@@ -31,19 +32,18 @@
         /// <summary>
         /// 文件下载
         /// </summary>
-        /// <param name="stream">流</param>
-        /// <param name="fileName">文件名</param>
-        /// <returns>Http响应</returns>
-        public static HttpResponseMessage DownLoad(Stream stream, string fileName)
+        /// <param name="file">文件信息</param>
+        /// <returns>http响应</returns>
+        public static HttpResponseMessage Download(KeyValuePair<string, MemoryStream> file)
         {
+            var byteArrayContent = new ByteArrayContent(file.Value.GetBuffer());
+
             var response = new HttpResponseMessage(HttpStatusCode.OK);
 
-            response.Content = new StreamContent(stream);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            response.Content = byteArrayContent;
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
-                FileName = fileName,
-                FileNameStar = fileName
+                FileName = file.Key
             };
 
             return response;
@@ -52,40 +52,18 @@
         /// <summary>
         /// 文件下载
         /// </summary>
-        /// <param name="stream">流</param>
-        /// <param name="fileName">文件名</param>
-        /// <returns>Http响应</returns>
-        public static HttpResponseMessage DownLoad(HttpContent stream, string fileName)
+        /// <param name="file">文件信息</param>
+        /// <returns>http响应</returns>
+        public static HttpResponseMessage Download(KeyValuePair<string, byte[]> file)
         {
+            var byteArrayContent = new ByteArrayContent(file.Value);
+
             var response = new HttpResponseMessage(HttpStatusCode.OK);
 
-            response.Content = stream;
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+            response.Content = byteArrayContent;
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
-                FileName = fileName,
-                FileNameStar = fileName
-            };
-
-            return response;
-        }
-
-        /// <summary>
-        /// 文件下载
-        /// </summary>
-        /// <param name="buffer">流</param>
-        /// <param name="fileName">文件名</param>
-        /// <returns>Http响应</returns>
-        public static HttpResponseMessage DownLoad(byte[] buffer, string fileName)
-        {
-            var response = new HttpResponseMessage(HttpStatusCode.OK);
-
-            response.Content = new ByteArrayContent(buffer);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = fileName,
-                FileNameStar = fileName
+                FileName = file.Key
             };
 
             return response;

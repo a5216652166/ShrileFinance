@@ -47,5 +47,38 @@
 
             return stream;
         }
+
+        /// <summary>
+        /// 压缩打包
+        /// </summary>
+        /// <param name="files">文件信息</param>
+        /// <returns>压缩包</returns>
+        public static byte[] ZipArchiveCompression(IDictionary<string, byte[]> files)
+        {
+            var stream = new MemoryStream();
+
+            using (var archive = new ZipArchive(
+                stream, ZipArchiveMode.Create, true, Encoding.GetEncoding("GB2312")))
+            {
+                foreach (var file in files)
+                {
+                    var filename = file.Key;
+                    var buffer = file.Value;
+                    var entry = archive.CreateEntry(filename, CompressionLevel.Fastest);
+
+                    using (var entryStream = entry.Open())
+                    {
+                        entryStream.Write(buffer, 0, buffer.Length);
+                    }
+                }
+            }
+
+            byte[] stramBytes = stream.ToArray();
+
+            // 释放流
+            stream.Dispose();
+
+            return stramBytes;
+        }
     }
 }
