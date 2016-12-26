@@ -23,9 +23,9 @@
         }
 
         [HttpGet]
-        public IHttpActionResult GetPageList(string search, int page, int rows, TraceStatusEmum? status = null)
+        public IHttpActionResult GetPageList(string search, int page, int rows, TraceStatusEmum? status = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
-            var list = messageAppService.GetPageList(search, page, rows, status);
+            var list = messageAppService.GetPageList(search, page, rows, status, beginTime, endTime);
 
             return Ok(new PagedListViewModel<TraceViewModel>(list));
         }

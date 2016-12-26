@@ -39,10 +39,12 @@
         /// 根据筛选信息获取报文追踪列表
         /// </summary>
         /// <param name="search">搜索关键字</param>
-        /// <param name="page"></param>
-        /// <param name="size"></param>
+        /// <param name="page">页码</param>
+        /// <param name="size">每页数量</param>
         /// <param name="status">报文状态</param>
+        /// <param name="beginTime">起始时间</param>
+        /// <param name="endTime">截至日期</param>
         /// <returns></returns>
-        IEnumerable<Trace> GetPageList(string search, int page, int size, TraceStatusEmum? status = null);
+        IEnumerable<Trace> GetPageList(string search, int page, int size, TraceStatusEmum? status = null, DateTime? beginTime = null, DateTime? endTime = null);
     }
 }
