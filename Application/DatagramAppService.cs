@@ -52,43 +52,30 @@
             }
         }
 
-        public KeyValuePair<string, MemoryStream> DownloadZip(DownloadViewModel model)
+        public KeyValuePair<string, MemoryStream> Download(DownloadViewModel model)
         {
             var traces = repository.GetByIds(model.Ids);
 
-            var files = new Dictionary<string, MemoryStream>();
+            var files = new Dictionary<string, byte[]>();
 
             foreach (var trace in traces)
             {
-                var file = trace.ToFile();
-                files.Add(file.Key, (MemoryStream)file.Value);
+                foreach (var datagramFile in trace.DatagramFiles)
+                {
+                    var filename = datagramFile.GenerateFilename();
+                    var buffer = datagramFile.GetBuffer();
+
+                    files.Add(filename, buffer);
+                }
             }
 
-            return new KeyValuePair<string, MemoryStream>($"企业征信{DateTime.Now.ToString("yyyyMMdd")}.zip", FileHelper.Compression(files));
-        }
+            // 压缩打包
+            var compressionStream = FileHelper.Compression(files);
+            var compression = new KeyValuePair<string, MemoryStream>(
+                $"企业征信{DateTime.Now.ToString("yyyyMMdd")}.zip",
+                compressionStream);
 
-        /// <summary>
-        /// 下载单个报文文件
-        /// </summary>
-        /// <param name="id">报文标识</param>
-        /// <returns>报文文件</returns>
-        public KeyValuePair<string, Stream> Download(Guid id)
-        {
-            var trace = repository.Get(id);
-
-            return trace.ToFile();
-        }
-
-        /// <summary>
-        /// 下载单个报文文件
-        /// </summary>
-        /// <param name="id">报文标识</param>
-        /// <returns>报文文件</returns>
-        public KeyValuePair<string, byte[]> DownloadSingle(Guid id)
-        {
-            var trace = repository.Get(id);
-
-            return trace.ToBytes();
+            return compression;
         }
 
         /// <summary>
@@ -102,10 +89,7 @@
             // 移除已生成的报文
             foreach (var trace in traces)
             {
-                if (trace.DatagramFile != null)
-                {
-                    datagramRepository.Remove(trace.DatagramFile);
-                }
+                trace.DatagramFiles.Clear();
 
                 // 生成报文
                 var datagramFile = factory.Generate(trace);

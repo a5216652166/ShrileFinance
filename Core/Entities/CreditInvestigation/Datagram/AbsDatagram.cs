@@ -57,9 +57,9 @@
         /// <summary>
         /// 报文格式版本号
         /// </summary>
-        public string FormatVersion
+        public virtual string FormatVersion
         {
-            get { return "2.2"; }
+            get { return "2.1"; }
         }
 
         /// <summary>

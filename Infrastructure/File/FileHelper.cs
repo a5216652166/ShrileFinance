@@ -1,9 +1,9 @@
 ﻿namespace Infrastructure.File
 {
     using System.Collections.Generic;
-    using System.Text;
     using System.IO;
     using System.IO.Compression;
+    using System.Text;
 
     public class FileHelper
     {
@@ -25,7 +25,7 @@
         /// </summary>
         /// <param name="files">内存流集合</param>
         /// <returns>内存流</returns>
-        public static MemoryStream Compression(IDictionary<string, MemoryStream> files)
+        public static MemoryStream Compression(IDictionary<string, byte[]> files)
         {
             var stream = new MemoryStream();
 
@@ -35,15 +35,11 @@
                 foreach (var file in files)
                 {
                     var filename = file.Key;
+                    var buffer = file.Value;
                     var entry = archive.CreateEntry(filename, CompressionLevel.Fastest);
 
                     using (var entryStream = entry.Open())
-                    using (var fileStream = file.Value)
                     {
-                        // 异常: 无法访问内存区
-                        // var buffer = fileStream.GetBuffer();
-                        var buffer = fileStream.ToArray();
-
                         entryStream.Write(buffer, 0, buffer.Length);
                     }
                 }

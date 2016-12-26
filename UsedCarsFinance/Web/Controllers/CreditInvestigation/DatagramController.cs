@@ -56,7 +56,7 @@
         {
             try
             {
-                var file = messageAppService.DownloadZip(ids);
+                var file = messageAppService.Download(ids);
 
                 var byteArrayContent = new ByteArrayContent(file.Value.GetBuffer());
                 var response = Request.CreateResponse(HttpStatusCode.OK);

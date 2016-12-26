@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
     <Compile Include="Interfaces\Repositories\IDatagramFileRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPaymentHistoryRepository.cs" />
     <Compile Include="Services\CreditInvestigation\DatagramFactoryService.cs" />

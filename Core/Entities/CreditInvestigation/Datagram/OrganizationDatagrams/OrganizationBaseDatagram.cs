@@ -11,6 +11,11 @@
         {
         }
 
+        public override string FormatVersion
+        {
+            get { return "2.2"; }
+        }
+
         public override DatagramTypeEnum Type
         {
             get { return DatagramTypeEnum.机构基本信息报文; }

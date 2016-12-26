@@ -111,6 +111,10 @@
     <Compile Include="Migrations\201612231500085_UnusedDatagram.Designer.cs">
       <DependentUpon>201612231500085_UnusedDatagram.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612260307319_SplitDatagramFile.cs" />
+    <Compile Include="Migrations\201612260307319_SplitDatagramFile.Designer.cs">
+      <DependentUpon>201612260307319_SplitDatagramFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -370,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612231500085_UnusedDatagram.resx">
       <DependentUpon>201612231500085_UnusedDatagram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612260307319_SplitDatagramFile.resx">
+      <DependentUpon>201612260307319_SplitDatagramFile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

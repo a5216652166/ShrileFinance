@@ -15,6 +15,7 @@
             Property(m => m.DateCreated);
 
             Map<OrganizationDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.机构基本信息采集报文文件));
+            Map<BorrowerDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.借款人基本信息文件));
             Map<LoanDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.信贷业务信息文件));
 
             HasMany(m => m.Datagrams).WithRequired()

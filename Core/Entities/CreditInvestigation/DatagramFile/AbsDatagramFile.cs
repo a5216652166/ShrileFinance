@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using Datagram;
@@ -9,8 +10,9 @@
 
     public enum DatagramFileType
     {
-        机构基本信息采集报文文件 = 51,
-        信贷业务信息文件 = 12
+        借款人基本信息文件 = 11,
+        信贷业务信息文件 = 12,
+        机构基本信息采集报文文件 = 51
     }
 
     /// <summary>
@@ -33,6 +35,9 @@
             SerialNumber = serialNumber.ToString("D4");
         }
 
+        /// <summary>
+        /// 金融机构代码
+        /// </summary>
         public virtual string FinancialOrganizationCode
         {
             get { return FINANCIAL_ORGANIZATION_CODE; }
@@ -76,7 +81,18 @@
             builder.Append(0);
             builder.Append(0);
 
-            return builder.ToString();
+            return $"{builder.ToString()}.txt";
+        }
+
+        /// <summary>
+        /// 序列化
+        /// </summary>
+        /// <returns></returns>
+        public byte[] GetBuffer()
+        {
+            var content = Packaging();
+
+            return Encoding.GetEncoding("GB2312").GetBytes(content);
         }
 
         public AbsDatagram GetDatagram(DatagramTypeEnum type)
@@ -88,7 +104,7 @@
         /// 封装
         /// </summary>
         /// <returns></returns>
-        public string Packaging()
+        private string Packaging()
         {
             var builder = new StringBuilder();
 

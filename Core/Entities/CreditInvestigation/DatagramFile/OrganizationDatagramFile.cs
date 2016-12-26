@@ -17,13 +17,7 @@
                 new OrganizationBaseDatagram(),
 
                 // 家族成员信息报文
-                new FamilyMemberDatagram(),
-
-                // 财务报表信息报文
-                new FinancialStatementsDatagram(),
-
-                // 关注信息报文
-                new ConcernDatagram()
+                new FamilyMemberDatagram()
             };
         }
 

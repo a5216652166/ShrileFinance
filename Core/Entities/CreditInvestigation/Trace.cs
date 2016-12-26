@@ -2,8 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
+    using System.Linq;
     using DatagramFile;
     using Exceptions;
     using Interfaces;
@@ -77,11 +76,6 @@
         public int SerialNumber { get; set; }
 
         /// <summary>
-        /// 报文文件标识
-        /// </summary>
-        public Guid? DatagramFileId { get; private set; }
-
-        /// <summary>
         /// 跟踪日期
         /// </summary>
         public DateTime DateCreated { get; private set; }
@@ -89,7 +83,7 @@
         /// <summary>
         /// 报文文件
         /// </summary>
-        public virtual AbsDatagramFile DatagramFile { get; private set; }
+        public virtual ICollection<AbsDatagramFile> DatagramFiles { get; private set; }
 
         /// <summary>
         /// 添加报文文件
@@ -102,41 +96,15 @@
                 throw new InvalidOperationAppException("当前状态不可生成报文。");
             }
 
-            DatagramFile = datagramFile;
-            Status = TraceStatusEmum.待发送;
-        }
-
-        /// <summary>
-        /// 生成文件
-        /// </summary>
-        /// <returns>文件名、流</returns>
-        public KeyValuePair<string, Stream> ToFile()
-        {
-            // 文件名
-            string fileName = $"{DatagramFile.GenerateFilename()}.txt";
-
-            // 流
-            var memoryStream = new MemoryStream(Encoding.GetEncoding("gb2312").GetBytes(DatagramFile.Packaging()));
-
-            return new KeyValuePair<string, Stream>(fileName, memoryStream);
-        }
-
-        /// <summary>
-        /// 生成文件
-        /// </summary>
-        /// <returns>文件名、流</returns>
-        public KeyValuePair<string, byte[]> ToBytes()
-        {
-            // 文件名
-            string fileName = $"{DatagramFile.GenerateFilename()}.txt";
-
-            // 流
-            using (var memoryStream = new MemoryStream(Encoding.GetEncoding("GB2312").GetBytes(DatagramFile.Packaging())))
+            var old = DatagramFiles.FirstOrDefault(m => m.Type == datagramFile.Type);
+            if (old != null)
             {
-                var buffer = memoryStream.GetBuffer();
-
-                return new KeyValuePair<string, byte[]>(fileName, memoryStream.GetBuffer());
+                DatagramFiles.Remove(old);
             }
+
+            DatagramFiles.Add(datagramFile);
+
+            Status = TraceStatusEmum.待发送;
         }
     }
 }

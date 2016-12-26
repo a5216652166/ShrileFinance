@@ -17,10 +17,9 @@
             Property(m => m.Name).HasMaxLength(200);
             Property(m => m.Status);
             Property(m => m.SerialNumber);
-            Property(m => m.DatagramFileId);
             Property(m => m.DateCreated).HasColumnType("DATE");
 
-            HasOptional(m => m.DatagramFile);
+            HasMany(m => m.DatagramFiles).WithOptional().WillCascadeOnDelete();
 
             ToTable("CIDG_Trace");
         }
