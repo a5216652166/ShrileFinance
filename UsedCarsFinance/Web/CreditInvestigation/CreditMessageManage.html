@@ -146,14 +146,14 @@
 
                 if (count > 0) {
                     // 提示框
-                    $.messager.confirm("操作提示", "存在" + count + "条待发送报文，是否忽略？", function (data) {
-                        if (!data) {
-                            // 如果不忽略则只发送待生成的
-                            for (var i = 0; i < array.length; i++) {
-                                if (array[i].StatusDesc != "待生成") {
-                                    array.pop(i);
-                                }
-                            }
+                    $.messager.confirm("操作提示", "存在" + count + "条已生成报文，是否重新生成？", function (data) {
+                        if (data) {
+                        }
+                        else {
+                            // 筛选状态为待生成的报文
+                            array = $.grep(array, function (e, i) {
+                                return e.StatusDesc == "待生成";
+                            });
                         }
                         submit(array);
                     });
@@ -166,29 +166,34 @@
 
         // 提交需要生成报文的追踪ID
         function submit(array) {
-            // 所有勾选的报文跟踪ID
-            var data = [];
-            $(array).each(function () {
-                data.push(this.Id);
-            });
+            if (array == undefined || array.length == 0) {
+                $.messager.show({ msg: "请勾选待生成报文" });
+            }
+            else {
+                // 所有勾选的报文跟踪ID
+                var data = [];
+                $(array).each(function () {
+                    data.push(this.Id);
+                });
 
-            $.ajax({
-                async: false,
-                method: "POST",
-                data: { Ids: data },
-                url: "../api/Datagram/Generate",
-                statusCode: {
-                    200: function (data) {
-                        $.messager.show({ msg: "生成成功" });
-                    },
-                    400: function (data) {
-                        $.messager.show({ msg: data.responseJSON.Message });
+                $.ajax({
+                    async: false,
+                    method: "POST",
+                    data: { Ids: data },
+                    url: "../api/Datagram/Generate",
+                    statusCode: {
+                        200: function (data) {
+                            $.messager.show({ msg: "生成成功" });
+                        },
+                        400: function (data) {
+                            $.messager.show({ msg: data.responseJSON.Message });
+                        }
                     }
-                }
-            });
+                });
 
-            $("#add").linkbutton("enable");
-            Reload();
+                $("#add").linkbutton("enable");
+                Reload();
+            }
         }
 
         // 下载
@@ -207,21 +212,6 @@
                 });
 
                 $("#download").submit();
-
-                //$.ajax({
-                //    async: false,
-                //    method: "POST",
-                //    data: { Ids: data },
-                //    url: "../api/Datagram/Download",
-                //    statusCode: {
-                //        200: function (data) {
-                //            $.messager.show({ msg: "下载成功" });
-                //        },
-                //        400: function (data) {
-                //            $.messager.show({ msg: data.responseJSON.Message });
-                //        }
-                //    }
-                //});
 
                 $("#save").linkbutton("enable");
                 Reload();
