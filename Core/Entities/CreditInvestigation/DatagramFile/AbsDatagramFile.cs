@@ -92,7 +92,7 @@
         {
             var builder = new StringBuilder();
 
-            foreach (var datagram in Datagrams)
+            foreach (var datagram in Datagrams.OrderBy(m => m.Type))
             {
                 // 封装报文
                 datagram.Packaging(builder);

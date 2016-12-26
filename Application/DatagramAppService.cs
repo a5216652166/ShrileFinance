@@ -117,33 +117,6 @@
             repository.Commit();
         }
 
-        public KeyValuePair<string, Stream> GenerateTest(Guid traceId)
-        {
-            var traceIds = new List<Guid> {
-                traceId
-            };
-            var traces = repository.GetByIds(traceIds);
-
-            // 移除已生成的报文
-            foreach (var trace in traces)
-            {
-                if (trace.DatagramFile != null)
-                {
-                    datagramRepository.Remove(trace.DatagramFile);
-                }
-
-                // 生成报文
-                var datagramFile = factory.Generate(trace);
-
-                // 添加文件
-                trace.AddDatagram(datagramFile);
-
-                return trace.ToFile();
-            }
-
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// 获取报文跟踪列表
         /// </summary>
