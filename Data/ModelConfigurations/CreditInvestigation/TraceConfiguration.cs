@@ -19,7 +19,8 @@
             Property(m => m.SerialNumber);
             Property(m => m.DateCreated).HasColumnType("DATE");
 
-            HasMany(m => m.DatagramFiles).WithOptional().WillCascadeOnDelete();
+            HasMany(m => m.DatagramFiles).WithOptional()
+                .Map(m => m.MapKey("TraceId")).WillCascadeOnDelete();
 
             ToTable("CIDG_Trace");
         }

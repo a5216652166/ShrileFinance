@@ -91,33 +91,9 @@
     <Compile Include="Migrations\201612050735464_OrgainzationModel.Designer.cs">
       <DependentUpon>201612050735464_OrgainzationModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612210305588_CreditInvestigation.cs" />
-    <Compile Include="Migrations\201612210305588_CreditInvestigation.Designer.cs">
-      <DependentUpon>201612210305588_CreditInvestigation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612230953463_AddfinancialAffilibiteANDTraceDate.cs" />
-    <Compile Include="Migrations\201612230953463_AddfinancialAffilibiteANDTraceDate.Designer.cs">
-      <DependentUpon>201612230953463_AddfinancialAffilibiteANDTraceDate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612231120526_UpdateIncomExpenditureAmount.cs" />
-    <Compile Include="Migrations\201612231120526_UpdateIncomExpenditureAmount.Designer.cs">
-      <DependentUpon>201612231120526_UpdateIncomExpenditureAmount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612231208123_TraceDateCreate.cs" />
-    <Compile Include="Migrations\201612231208123_TraceDateCreate.Designer.cs">
-      <DependentUpon>201612231208123_TraceDateCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612231500085_UnusedDatagram.cs" />
-    <Compile Include="Migrations\201612231500085_UnusedDatagram.Designer.cs">
-      <DependentUpon>201612231500085_UnusedDatagram.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612260307319_SplitDatagramFile.cs" />
-    <Compile Include="Migrations\201612260307319_SplitDatagramFile.Designer.cs">
-      <DependentUpon>201612260307319_SplitDatagramFile.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612260719025_UpdateAuditorDateIsNull.cs" />
-    <Compile Include="Migrations\201612260719025_UpdateAuditorDateIsNull.Designer.cs">
-      <DependentUpon>201612260719025_UpdateAuditorDateIsNull.cs</DependentUpon>
+    <Compile Include="Migrations\201612260749445_CreditInvestigationModel.cs" />
+    <Compile Include="Migrations\201612260749445_CreditInvestigationModel.Designer.cs">
+      <DependentUpon>201612260749445_CreditInvestigationModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -364,26 +340,8 @@
     <EmbeddedResource Include="Migrations\201612050735464_OrgainzationModel.resx">
       <DependentUpon>201612050735464_OrgainzationModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612210305588_CreditInvestigation.resx">
-      <DependentUpon>201612210305588_CreditInvestigation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612230953463_AddfinancialAffilibiteANDTraceDate.resx">
-      <DependentUpon>201612230953463_AddfinancialAffilibiteANDTraceDate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612231120526_UpdateIncomExpenditureAmount.resx">
-      <DependentUpon>201612231120526_UpdateIncomExpenditureAmount.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612231208123_TraceDateCreate.resx">
-      <DependentUpon>201612231208123_TraceDateCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612231500085_UnusedDatagram.resx">
-      <DependentUpon>201612231500085_UnusedDatagram.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612260307319_SplitDatagramFile.resx">
-      <DependentUpon>201612260307319_SplitDatagramFile.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612260719025_UpdateAuditorDateIsNull.resx">
-      <DependentUpon>201612260719025_UpdateAuditorDateIsNull.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612260749445_CreditInvestigationModel.resx">
+      <DependentUpon>201612260749445_CreditInvestigationModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
