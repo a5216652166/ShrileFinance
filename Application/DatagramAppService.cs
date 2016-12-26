@@ -134,19 +134,8 @@
         /// <returns></returns>
         public IPagedList<TraceViewModel> GetPageList(string search, int page, int size, TraceStatusEmum? status = null)
         {
-            var messageTrack = repository.GetAll();
+            var messageTrack = repository.GetPageList(search, page, size, status);
 
-            if (!string.IsNullOrEmpty(search))
-            {
-                messageTrack = messageTrack.Where(m => m.Name.Contains(search));
-            }
-
-            if (status != null)
-            {
-                messageTrack = messageTrack.Where(m => m.Status == status.Value);
-            }
-
-            messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.SpecialDate);
             var pageList = messageTrack.ToPagedList(page, size);
 
             var models = Mapper.Map<IPagedList<TraceViewModel>>(pageList);

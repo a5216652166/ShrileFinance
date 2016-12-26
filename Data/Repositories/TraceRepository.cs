@@ -33,5 +33,24 @@
         {
             return GetAll(m => traceIds.Contains(m.Id));
         }
+
+        public IEnumerable<Trace> GetPageList(string search, int page, int size, TraceStatusEmum? status = null)
+        {
+            var messageTrack = GetAll();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                messageTrack = messageTrack.Where(m => m.Name.Contains(search));
+            }
+
+            if (status != null)
+            {
+                messageTrack = messageTrack.Where(m => m.Status == status.Value);
+            }
+
+            messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.SpecialDate);
+
+            return messageTrack;
+        }
     }
 }
