@@ -187,6 +187,17 @@
             $(this).parents('fieldset').find('div[id*=CardType]').hide();
             $(this).parents('fieldset').find('div[id=CardType'+value+']').show();
 
+            // 股东类型为"2-机构"时，无家族成员信息
+            var fimaly = $(this).parents('fieldset').find('input#FamilyFiedSetShow');
+            if (value == 2) {
+                if (fimaly[0].checked == true) {
+                    fimaly.click();
+                }
+                fimaly.parents("div.row").hide();
+            }
+            else {
+                fimaly.parents("div.row").show();
+            }
 
             // setTxt2
             var currentObj = $(this);

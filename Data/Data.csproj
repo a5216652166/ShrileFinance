@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201612231208123_TraceDateCreate.Designer.cs">
       <DependentUpon>201612231208123_TraceDateCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612231500085_UnusedDatagram.cs" />
+    <Compile Include="Migrations\201612231500085_UnusedDatagram.Designer.cs">
+      <DependentUpon>201612231500085_UnusedDatagram.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -363,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612231208123_TraceDateCreate.resx">
       <DependentUpon>201612231208123_TraceDateCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612231500085_UnusedDatagram.resx">
+      <DependentUpon>201612231500085_UnusedDatagram.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
