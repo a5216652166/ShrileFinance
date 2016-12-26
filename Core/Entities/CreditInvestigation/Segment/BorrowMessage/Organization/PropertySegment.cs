@@ -51,7 +51,7 @@
         /// <summary>
         /// 注册（登记）地行政区划
         /// </summary>
-        [MetaCode(6, MetaCodeTypeEnum.N), SegmentRule(245, false)]
+        [MetaCode(6, MetaCodeTypeEnum.ANC), SegmentRule(245, false)]
         public string RegisterAdministrativeDivision { get; set; }
 
         /// <summary>
@@ -75,7 +75,9 @@
         [MetaCode(3, MetaCodeTypeEnum.AN), SegmentRule(667, false)]
         public string 注册资本币种
         {
-            get { return "CNY"; }
+            get {
+                if (!string.IsNullOrEmpty(this.RegisterCapital)) return "CNY"; else return null;
+              }
         }
 
         /// <summary>
