@@ -52,6 +52,11 @@
             }
         }
 
+        /// <summary>
+        /// 下载报文Zip
+        /// </summary>
+        /// <param name="model">报文下载Model</param>
+        /// <returns>报文（名称-内存流）</returns>
         public KeyValuePair<string, MemoryStream> DownloadZip(DownloadViewModel model)
         {
             var traces = repository.GetByIds(model.Ids);
@@ -65,30 +70,6 @@
             }
 
             return new KeyValuePair<string, MemoryStream>($"企业征信{DateTime.Now.ToString("yyyyMMdd")}.zip", FileHelper.Compression(files));
-        }
-
-        /// <summary>
-        /// 下载单个报文文件
-        /// </summary>
-        /// <param name="id">报文标识</param>
-        /// <returns>报文文件</returns>
-        public KeyValuePair<string, Stream> Download(Guid id)
-        {
-            var trace = repository.Get(id);
-
-            return trace.ToFile();
-        }
-
-        /// <summary>
-        /// 下载单个报文文件
-        /// </summary>
-        /// <param name="id">报文标识</param>
-        /// <returns>报文文件</returns>
-        public KeyValuePair<string, byte[]> DownloadSingle(Guid id)
-        {
-            var trace = repository.Get(id);
-
-            return trace.ToBytes();
         }
 
         /// <summary>
