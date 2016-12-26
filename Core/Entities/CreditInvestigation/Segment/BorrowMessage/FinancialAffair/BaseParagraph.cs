@@ -26,8 +26,7 @@
             信息记录类型 = ((int)recordType).ToString();
             信息记录操作类型 = "1";
 
-            // TODO 财务实体中添加审计时间字段
-            审计时间 = DateTime.Now.ToString("yyyyMMdd");
+            审计时间 = financialAffairs.AuditorDate == null ? "" : financialAffairs.AuditorDate.Value.ToString("yyyyMMdd");
             业务发生日期 = organization.CreatedDate.ToString("yyyyMMdd");
         }
 

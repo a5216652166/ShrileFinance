@@ -14,13 +14,14 @@
                 CertificateType = person.CertificateType;
                 CertificateNumber = person.CertificateNumber;
             }
+
             EffectiveState = mortgage.EffectiveState.Value.ToString("D");
             Name = mortgage.Guarantor.Name;
             抵押合同编号 = mortgage.Id.ToString();
             CollateralType = mortgage.CollateralType.Value.ToString("D");
-            RegistrateDate = mortgage.RegistrateDate == null ? "" : mortgage.RegistrateDate.Value.ToString("yyyyMMdd");
-            AssessmentDate = mortgage.AssessmentDate == null ? "": mortgage.AssessmentDate.Value.ToString("yyyyMMdd");
-            SigningDate = mortgage.SigningDate == null ? "" : mortgage.SigningDate.Value.ToString("yyyyMMdd");
+            RegistrateDate = mortgage.RegistrateDate == null ? string.Empty : mortgage.RegistrateDate.Value.ToString("yyyyMMdd");
+            AssessmentDate = mortgage.AssessmentDate == null ? string.Empty : mortgage.AssessmentDate.Value.ToString("yyyyMMdd");
+            SigningDate = mortgage.SigningDate == null ? string.Empty : mortgage.SigningDate.Value.ToString("yyyyMMdd");
         }
 
         protected NaturalMortgageSegment() : base()

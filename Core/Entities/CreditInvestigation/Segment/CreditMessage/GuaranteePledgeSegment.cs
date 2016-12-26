@@ -16,13 +16,14 @@
                 var org = mortgage.Guarantor as GuarantorOrganization;
                 CreditcardCode = org.CreditcardCode;
             }
+
             Name = mortgage.Guarantor.Name;
             质押合同编号 = mortgage.Id.ToString();
             PledgeType = mortgage.PledgeType.Value.ToString("D");
             EffectiveState = mortgage.EffectiveState.Value.ToString("D");
 
             CreditcardCode = credit.Organization.LoanCardCode;
-            SigningDate = mortgage.SigningDate == null ? "" : mortgage.SigningDate.Value.ToString("yyyyMMdd");
+            SigningDate = mortgage.SigningDate == null ? string.Empty : mortgage.SigningDate.Value.ToString("yyyyMMdd");
         }
 
         protected GuaranteePledgeSegment() : base()

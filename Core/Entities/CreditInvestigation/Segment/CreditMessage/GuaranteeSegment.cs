@@ -16,12 +16,13 @@
                 var org = guaranty.Guarantor as GuarantorOrganization;
                 CreditcardCode = org.CreditcardCode;
             }
+
             GuaranteeForm = guaranty.GuaranteeForm.Value.ToString("D");
             Name = guaranty.Guarantor.Name;
             EffectiveState = guaranty.EffectiveState.Value.ToString("D");
             保证合同编号 = guaranty.Id.ToString();
             CreditcardCode = credit.Organization.LoanCardCode;
-            SigningDate = guaranty.SigningDate == null ? "" : guaranty.SigningDate.Value.ToString("yyyyMMdd");
+            SigningDate = guaranty.SigningDate == null ? string.Empty : guaranty.SigningDate.Value.ToString("yyyyMMdd");
         }
 
         protected GuaranteeSegment() : base()
