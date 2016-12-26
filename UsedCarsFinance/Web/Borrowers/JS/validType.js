@@ -130,6 +130,38 @@
         },
         message: '贷款卡编码错误'
     },
+    LoanCardCode: {
+        validator: function (value) {
+            if (value.length > 16) {
+                return true;
+            }
+            var regResult = false;
+
+            // 基础校验（前3位为数字或者大写英文字母、后13位数字）
+            regResult = /^[A-Z0-9]{3}\d{13}$|^\d{16}$/.test(value);
+
+            // 后两位校验 前十四位乘以权重相加后除以97后的余数再加1后得到的数字
+            if (regResult) {
+                // 权重
+                var array = new Array(1, 3, 5, 7, 11, 2, 13, 1, 1, 17, 19, 97, 23, 29);
+
+                // 后两位校验
+                var lastValue = 0;
+                $(array).each(function (index, itemValue) {
+                    // 十六进制转十进制后再进行计算
+                    lastValue += itemValue * parseInt(value[index], 16);
+                });
+
+                lastValue = 1 + lastValue % 97;
+
+                lastValue = lastValue > 10 ? lastValue : '0' + lastValue;
+                regResult = lastValue == value.substr(14, 2);
+            }
+
+            return regResult;
+        },
+        message: '中征码错误'
+    },
     OrganizateCode: {// 组织机构代码 value:被校验值，param:是否考虑10个'#'的特殊情况
         validator: function (value, param) {
             if (value.length > 10) {

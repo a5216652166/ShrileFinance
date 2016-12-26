@@ -23,7 +23,7 @@
         /// <summary>
         /// 金融机构代码
         /// </summary>
-        public const string FINANCIAL_ORGANIZATION_CODE = "33207991216";
+        public const string FINANCIALORGANIZATIONCODE = "33207991216";
 
         protected AbsDatagramFile()
         {
@@ -40,7 +40,7 @@
         /// </summary>
         public virtual string FinancialOrganizationCode
         {
-            get { return FINANCIAL_ORGANIZATION_CODE; }
+            get { return FINANCIALORGANIZATIONCODE; }
         }
 
         /// <summary>
