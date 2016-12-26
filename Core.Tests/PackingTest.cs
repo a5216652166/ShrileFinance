@@ -1,12 +1,12 @@
 ﻿namespace Core.Tests
 {
     using System;
+    using System.IO;
     using System.Text;
     using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.IO;
     using Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
-
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    
     /// <summary>
     /// PackingTest 的摘要说明
     /// </summary>
@@ -51,7 +51,7 @@
             Type objType = typeof(ProfitsParagraph);
             string filePath = string.Format($"E:\\Configuration\\{0}Configuration.cs", objType.Name);
 
-            //Model2Entity.ConvertEntity<ProfitsParagraph>(builder);
+            Model2Entity.ConvertEntity<ProfitsParagraph>(builder);
 
             FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate);
             byte[] data = Encoding.Default.GetBytes(builder.ToString());

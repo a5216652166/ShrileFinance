@@ -59,7 +59,8 @@
                 var file = messageAppService.Download(ids);
 
                 var byteArrayContent = new ByteArrayContent(file.Value.GetBuffer());
-                var response = Request.CreateResponse(HttpStatusCode.OK);
+                //var response = Request.CreateResponse(HttpStatusCode.OK);
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
                 response.Content = byteArrayContent;
                 response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
                 {

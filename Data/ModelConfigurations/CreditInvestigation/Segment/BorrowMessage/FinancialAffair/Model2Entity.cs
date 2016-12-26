@@ -8,7 +8,7 @@
 
     public class Model2Entity
     {
-        public static void ConvertEntity<T>(StringBuilder builder) where T : class, new()
+        public static void ConvertEntity<T>(StringBuilder builder) where T : class
         {
             Type objType = typeof(T);
 
