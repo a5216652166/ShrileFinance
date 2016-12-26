@@ -55,7 +55,7 @@
 
         public void Packaging(StringBuilder builder)
         {
-            var segments = Segments.OrderBy(m => m.Type);
+            var segments = Segments.OrderBy(m => m.SegmentType);
             foreach (var segment in segments)
             {
                 segment.Packaging(builder);

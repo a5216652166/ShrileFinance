@@ -16,7 +16,7 @@
         /// <summary>
         /// 信息类别（段标）
         /// </summary>
-        public abstract char Type { get; }
+        public abstract char SegmentType { get; }
 
         /// <summary>
         /// 信息记录标识
