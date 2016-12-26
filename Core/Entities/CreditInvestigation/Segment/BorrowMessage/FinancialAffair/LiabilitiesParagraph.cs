@@ -29,9 +29,9 @@
         /// 信息类别
         /// </summary>
         [MetaCode(1, MetaCodeTypeEnum.ANC), SegmentRule(1, true)]
-        public string 信息类别
+        public override char SegmentType
         {
-            get { return "G"; }
+            get { return 'G'; }
         }
 
         /// <summary>

@@ -28,9 +28,9 @@
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(7, true, Describe = "本信息记录的类别")]
-        public string 信息类别
+        public override char SegmentType
         {
-            get { return "B"; }
+            get { return 'B'; }
         }
 
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true, Describe = "填写数据发生机构的代码，细化到县（区）级机构")]

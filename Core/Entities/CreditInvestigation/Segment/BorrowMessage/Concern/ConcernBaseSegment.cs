@@ -25,9 +25,9 @@
         public string 信息记录类型 { get; set; }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(7, true)]
-        public string 信息类别
+        public override char SegmentType
         {
-            get { return "B"; }
+            get { return 'B'; }
         }
 
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true)]

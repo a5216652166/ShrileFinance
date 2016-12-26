@@ -20,9 +20,9 @@
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
-        public string 信息类别
+        public override char SegmentType
         {
-            get { return "D"; }
+            get { return 'D'; }
         }
 
         [Display(Name = "被起诉流水号"), MetaCode(60, MetaCodeTypeEnum.ANC), SegmentRule(2, true, Describe = "报报送机构用于标识一起诉讼的唯一编号")]

@@ -47,10 +47,10 @@
         /// 信息类别
         /// </summary>
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(7, true)]
-        public string 信息类别
+        public override char SegmentType
         {
             // 填B表示基础段
-            get { return "B"; }
+            get { return 'B'; }
         }
 
         /// <summary>
