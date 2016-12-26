@@ -5,7 +5,6 @@
     <title>征信报文管理</title>
     <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
     <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
-    <link href="../Content/form-bootstrap.css" rel="stylesheet" />
     <script src="../Scripts/jquery/jquery.js"></script>
     <script src="../Scripts/easyui/jquery.easyui.js"></script>
     <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
@@ -21,7 +20,6 @@
         }
 
         function BeforeLoad(param) {
-        debugger
             param.search = $("#Name").textbox("getValue");
             param.status = $("#Status").textbox("getValue");
 
@@ -176,7 +174,7 @@
         // 提交需要生成报文的追踪ID
         function submit(array) {
             if (array == undefined || array.length == 0) {
-                $.messager.show({ msg: "请勾选待生成报文" });
+                $.messager.show({ msg: "请勾选需要生成的报文" });
             }
             else {
                 // 所有勾选的报文跟踪ID
@@ -209,7 +207,7 @@
         function Download() {
             $("#download input").remove();
             var array = $("#dg").datagrid("getChecked");
-            if (array == undefined) {
+            if (array == undefined || array.length == 0) {
                 $.messager.show({ msg: "请选择需要下载的跟踪记录" });
             }
             else {
@@ -254,29 +252,31 @@
         </thead>
     </table>
     <div id="tb">
-        <div style="height:30px;width:auto;">
-            <input id="Name" name="Name" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入名称'" />
-            <span>报文状态:</span>
-            <select id="Status" class="easyui-combobox" style="width:100px;height:25px; margin-top:3px;">
+        <div>
+            <input id="Name" name="Name" class="easyui-textbox" data-options="prompt:'请输入名称'" />
+            <label for="Status">报文状态:</label>
+            <select id="Status" class="easyui-combobox" data-options="width:120,editable:false">
                 <option value="">全部</option>
                 <option value="0">待生成</option>
                 <option value="1">待发送</option>
                 <option value="2">已发送</option>
             </select>
-            <span>业务发生日期 从:</span>
-            <input id="BeginTime" name="BeginTime" class="easyui-datebox" data-options="width:100,validType:'Date'" style="width:100px;height:25px; margin-top:3px;">
-            <span>至:</span>
-            <input id="EndTime" name="EndTime" class="easyui-datebox" data-options="width:100,validType:'Date'" style="width:100px;height:25px; margin-top:3px;">
-            <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
-            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
-            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>
-            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-add',plain:true,onClick:Download">下载</a>
+            <label for="BeginTime">业务发生日期 从:</label>
+            <input id="BeginTime" name="BeginTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
+            <label for="EndTime">至:</label>
+            <input id="EndTime" name="EndTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
+            <a id="search" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',onClick:Reload,plain:true">搜索</a>
+            <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:uc.grid.Reset,iconCls:'icon-reload',plain:true">重置</a>
+        </div>
+        <div>
+            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
+            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>
+            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Download">下载</a>
         </div>
     </div>
 
-    <div>
-        <form id="download" action="../api/Datagram/Download" method="post" style="display:none">
-        </form>
+    <div >
+        <form id="download" action="../api/Datagram/Download" method="post" style="display:none"></form>
     </div>
 </body>
 </html>
