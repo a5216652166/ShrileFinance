@@ -67,7 +67,7 @@
         /// </summary>
         public string FinancialOrganizationCode
         {
-            get { return AbsDatagramFile.FINANCIAL_ORGANIZATION_CODE; }
+            get { return AbsDatagramFile.FINANCIALORGANIZATIONCODE; }
         }
 
         /// <summary>

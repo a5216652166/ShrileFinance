@@ -35,8 +35,7 @@
             CreateMap<PropertiesViewModel, OrganizationProperties>();
             CreateMap<StateViewModel, OrganizationState>();
             CreateMap<ManagerViewModel, Manager>()
-                .ForMember(d => d.FamilyMembers, opt => opt.Ignore())
-                ;
+                .ForMember(d => d.FamilyMembers, opt => opt.Ignore());
             CreateMap<BaseViewModel, Organization>();
             CreateMap<FinancialAffairsViewModel, FinancialAffairs>()
                 .ForMember(d => d.Liabilities, opt => opt.Ignore())
@@ -45,8 +44,7 @@
                 .ForMember(d => d.InstitutionLiabilities, opt => opt.Ignore())
                 .ForMember(d => d.Profit, opt => opt.Ignore());
             CreateMap<StockholderViewModel, Stockholder>()
-                .ForMember(d => d.FamilyMembers, opt => opt.Ignore())
-               ;
+                .ForMember(d => d.FamilyMembers, opt => opt.Ignore());
             CreateMap<OrganizationViewModel, Organization>()
                 .ForMember(d => d.BigEvent, opt => opt.Ignore())
                 .ForMember(d => d.Litigation, opt => opt.Ignore())

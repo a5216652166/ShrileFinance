@@ -187,17 +187,29 @@
             $(this).parents('fieldset').find('div[id*=CardType]').hide();
             $(this).parents('fieldset').find('div[id=CardType'+value+']').show();
 
-            // 股东类型为"2-机构"时，无家族成员信息
+            // 股东类型为"2-机构"时，无家族成员信息，反之，无组织机构代码和机构信用代码
             var fimaly = $(this).parents('fieldset').find('input#FamilyFiedSetShow');
             if (value == 2) {
                 if (fimaly[0].checked == true) {
                     fimaly.click();
                 }
                 fimaly.parents("div.row").hide();
+
+                // 启用 组织机构代码和机构信用代码
+                $("fieldset#G input[textboxname=OrganizateCode]").textbox("readonly", false);
+                $("fieldset#G input[textboxname=InstitutionCreditCode]").textbox("readonly", false);
             }
             else {
                 fimaly.parents("div.row").show();
+
+                // 组织机构代码和机构信用代码 只读
+                $("fieldset#G input[textboxname=OrganizateCode]").textbox("setValue", "").textbox("readonly", true);
+                $("fieldset#G input[textboxname=InstitutionCreditCode]").textbox("setValue", "").textbox("readonly", true);
             }
+
+            // 清空 证件类型和号码
+            $("fieldset#G select[textboxname=RegistraterTypeModel]").textbox("setValue", "");
+            $("fieldset#G input[textboxname=RegistraterCode]").textbox("setValue", "");
 
             // setTxt2
             var currentObj = $(this);
@@ -351,7 +363,7 @@
                         <label>
                             组织机构代码：<a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('../img/InfoImg.png') no-repeat scroll 0 0" title="质检部门颁发给机构股东的组织机构代码">　</a>
                         </label>
-                        <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[10,10]','OrganizateCode[true]']" name="OrganizateCode">
+                        <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[0,10]','OrganizateCode[true]']" name="OrganizateCode">
                     </div>
                     <div class="col-6">
                         <label>

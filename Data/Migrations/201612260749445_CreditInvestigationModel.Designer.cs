@@ -7,13 +7,13 @@ namespace Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class SplitDatagramFile : IMigrationMetadata
+    public sealed partial class CreditInvestigationModel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SplitDatagramFile));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreditInvestigationModel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201612260307319_SplitDatagramFile"; }
+            get { return "201612260749445_CreditInvestigationModel"; }
         }
         
         string IMigrationMetadata.Source

@@ -3,7 +3,7 @@ namespace Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class CreditInvestigation : DbMigration
+    public partial class CreditInvestigationModel : DbMigration
     {
         public override void Up()
         {
@@ -14,9 +14,12 @@ namespace Data.Migrations
                         Id = c.Guid(nullable: false, identity: true),
                         DateCreated = c.DateTime(nullable: false),
                         SerialNumber = c.String(nullable: false, maxLength: 4),
+                        TraceId = c.Guid(),
                         Type = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.CIDG_Trace", t => t.TraceId, cascadeDelete: true)
+                .Index(t => t.TraceId);
             
             CreateTable(
                 "dbo.CIDG_Datagram",
@@ -25,6 +28,7 @@ namespace Data.Migrations
                         Id = c.Guid(nullable: false, identity: true),
                         DateCreated = c.DateTime(nullable: false),
                         DatagramFileId = c.Guid(nullable: false),
+                        UnusedType = c.Int(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
@@ -59,17 +63,15 @@ namespace Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false, identity: true),
-                        TraceDate = c.DateTime(nullable: false),
+                        SpecialDate = c.DateTime(nullable: false),
                         ReferenceId = c.Guid(nullable: false),
                         Type = c.Byte(nullable: false),
                         Name = c.String(maxLength: 200),
                         Status = c.Byte(nullable: false),
                         SerialNumber = c.Int(nullable: false),
-                        DatagramFileId = c.Guid(),
+                        DateCreated = c.DateTime(nullable: false, storeType: "date"),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.CIDG_DatagramFile", t => t.DatagramFileId)
-                .Index(t => t.DatagramFileId);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.CIDG_BigEventSegment",
@@ -567,7 +569,6 @@ namespace Data.Migrations
                         FinancingCashInflow = c.String(maxLength: 20),
                         DebtRedemption = c.String(maxLength: 20),
                         PayCashForDividend = c.String(maxLength: 20),
-                        PayFinancingCash = c.String(maxLength: 20),
                         PayOtherFinancingCash = c.String(maxLength: 20),
                         FinancingCashOutflow = c.String(maxLength: 20),
                         FinancingNetCash = c.String(maxLength: 20),
@@ -597,6 +598,7 @@ namespace Data.Migrations
                         CapitalDebt = c.String(maxLength: 20),
                         CorporateBondInYear = c.String(maxLength: 20),
                         FinancingFixedAssets = c.String(maxLength: 20),
+                        PayFinancingCash = c.String(maxLength: 20),
                         EndingBalance = c.String(maxLength: 20),
                         BeginBalance = c.String(maxLength: 20),
                         CashEquivalentsEndingBalance = c.String(maxLength: 20),
@@ -630,11 +632,11 @@ namespace Data.Migrations
                         事业支出 = c.String(maxLength: 20),
                         财政补助支出 = c.String(maxLength: 20),
                         预算外资金支出 = c.String(maxLength: 20),
-                        销售税金1 = c.String(maxLength: 20),
+                        销售税金 = c.String(maxLength: 20),
                         结转自筹基建 = c.String(maxLength: 20),
                         事业支出小计 = c.String(maxLength: 20),
                         经营支出 = c.String(maxLength: 20),
-                        销售税金2 = c.String(maxLength: 20),
+                        销售税金1 = c.String(maxLength: 20),
                         经营支出小计 = c.String(maxLength: 20),
                         拨出专款 = c.String(maxLength: 20),
                         专款支出 = c.String(maxLength: 20),
@@ -849,7 +851,7 @@ namespace Data.Migrations
             DropForeignKey("dbo.CIDG_LitigationSegment", "Id", "dbo.AbsSegment");
             DropForeignKey("dbo.CIDG_ConcernBaseSegment", "Id", "dbo.AbsSegment");
             DropForeignKey("dbo.CIDG_BigEventSegment", "Id", "dbo.AbsSegment");
-            DropForeignKey("dbo.CIDG_Trace", "DatagramFileId", "dbo.CIDG_DatagramFile");
+            DropForeignKey("dbo.CIDG_DatagramFile", "TraceId", "dbo.CIDG_Trace");
             DropForeignKey("dbo.CIDG_Datagram", "DatagramFileId", "dbo.CIDG_DatagramFile");
             DropForeignKey("dbo.CIDG_Record", "DatagramId", "dbo.CIDG_Datagram");
             DropForeignKey("dbo.AbsSegment", "RecordId", "dbo.CIDG_Record");
@@ -885,10 +887,10 @@ namespace Data.Migrations
             DropIndex("dbo.CIDG_LitigationSegment", new[] { "Id" });
             DropIndex("dbo.CIDG_ConcernBaseSegment", new[] { "Id" });
             DropIndex("dbo.CIDG_BigEventSegment", new[] { "Id" });
-            DropIndex("dbo.CIDG_Trace", new[] { "DatagramFileId" });
             DropIndex("dbo.AbsSegment", new[] { "RecordId" });
             DropIndex("dbo.CIDG_Record", new[] { "DatagramId" });
             DropIndex("dbo.CIDG_Datagram", new[] { "DatagramFileId" });
+            DropIndex("dbo.CIDG_DatagramFile", new[] { "TraceId" });
             DropTable("dbo.CIDG_ProfitsParagraph");
             DropTable("dbo.CIDG_InstitutionLiabilitiesParagraph");
             DropTable("dbo.CIDG_LiabilitiesParagraph");
