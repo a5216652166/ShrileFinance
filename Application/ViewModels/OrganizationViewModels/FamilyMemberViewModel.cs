@@ -7,7 +7,7 @@
     /// 基础段（家族）
     /// </summary>
     [FBasePeriod_FOR(ErrorMessage = "家族成员证件号码和证件类型成对出现")]
-    public class FamilyMemberViewModel
+    public class FamilyMemberViewModel : IEntityViewModel
     {
         public Guid? Id { get; set; }
 

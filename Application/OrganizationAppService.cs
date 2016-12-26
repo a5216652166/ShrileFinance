@@ -81,7 +81,28 @@
             new UpdateBind().Bind(customer.BigEvent, model.BigEvent);
             new UpdateBind().Bind(customer.Litigation, model.Litigation);
             new UpdateBind().Bind(customer.Managers, model.Managers);
+
+            //model.Managers.ToList().ForEach(m=> {
+            //    // 获取家族成员的id集合
+            //    var ids = (from t in m.FamilyMembers select t.Id.Value).ToList();
+
+            //    // 移除多余项
+            //    customer.Managers.ToList().Find(c => c.Id == m.Id).FamilyMembers.ToList().RemoveAll(f=>!ids.Contains(f.Id));
+            //});
+
+            model.Managers.ToList().ForEach(m =>
+            {
+                var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty).FamilyMembers;
+                new UpdateBind().Bind(familyMembersEntity, m.FamilyMembers);
+            });
             new UpdateBind().Bind(customer.Shareholders, model.Shareholders);
+
+            model.Shareholders.ToList().ForEach(m =>
+            {
+                var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty).FamilyMembers;
+                new UpdateBind().Bind(shareholders, m.FamilyMembers);
+            });
+
             new UpdateBind().Bind(customer.AssociatedEnterprises, model.AssociatedEnterprises);
 
             repository.Modify(customer);
