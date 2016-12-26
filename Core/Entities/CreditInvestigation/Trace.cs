@@ -104,7 +104,7 @@
                     DatagramFiles.Remove(old);
                 }
 
-                if (file.Datagrams.Count > 0)
+                if (file.Datagrams.Sum(m => m.Records.Count) > 0)
                 {
                     DatagramFiles.Add(file);
                 }
