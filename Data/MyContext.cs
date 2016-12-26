@@ -4,12 +4,12 @@
     using System.Data.Entity.ModelConfiguration.Conventions;
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
-    using ModelConfigurations.Loan;
     using ModelConfigurations.CreditInvestigation;
     using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Concern;
+    using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
     using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Organization;
     using ModelConfigurations.CreditInvestigation.Segment.CreditMessage;
-    using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
+    using ModelConfigurations.Loan;
 
     public class MyContext : IdentityDbContext
     {
@@ -126,8 +126,8 @@
                 .Add(new IncomeExpenditureParagraphConfiguration())
                 .Add(new LiabilitiesParagraphConfiguration())
                 .Add(new InstitutionLiabilitiesParagraphConfiguration())
-                .Add(new ProfitsParagraphConfiguration())
-                ;
+                .Add(new ProfitsParagraphConfiguration());
+
             base.OnModelCreating(modelBuilder);
         }
     }

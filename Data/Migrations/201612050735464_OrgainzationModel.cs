@@ -81,6 +81,7 @@ namespace Data.Migrations
                         TypeSubdivision = c.Int(nullable: false),
                         AuditFirm = c.String(nullable: false, maxLength: 80),
                         AuditorName = c.String(nullable: false, maxLength: 30),
+                        AuditorDate = c.DateTime(),
                         OrganizationId = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -187,6 +188,7 @@ namespace Data.Migrations
                         财政补助支出 = c.Decimal(precision: 18, scale: 2),
                         预算外资金支出 = c.Decimal(precision: 18, scale: 2),
                         销售税金 = c.Decimal(precision: 18, scale: 2),
+                        销售税金1 = c.Decimal(precision: 18, scale: 2),
                         结转自筹基建 = c.Decimal(precision: 18, scale: 2),
                         事业支出小计 = c.Decimal(precision: 18, scale: 2),
                         经营支出 = c.Decimal(precision: 18, scale: 2),
