@@ -338,7 +338,7 @@
         public string PayablesAdd { get; set; }
 
         /// <summary>
-        /// 9251其他1
+        /// 9251其他金额1
         /// </summary>
         [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1042, false)]
         public string Other { get; set; }
@@ -368,7 +368,7 @@
         public string FinancingFixedAssets { get; set; }
 
         /// <summary>
-        /// 9256其他2
+        /// 9256其他金额2
         /// </summary>
         [MetaCode(20, MetaCodeTypeEnum.Amount), SegmentRule(1142, false)]
         public string PayFinancingCash { get; set; }

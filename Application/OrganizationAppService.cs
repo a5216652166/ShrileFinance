@@ -56,6 +56,7 @@
             }
 
             repository.Create(customer);
+
             repository.Commit();
 
             // 报文追踪
