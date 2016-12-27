@@ -83,7 +83,6 @@
                 tip.text('组织机构代码错误');
             }
         }
-
         // 组织机构代码校验方法
         function checkJGfn(value, bool) {
             var regResult = false;
@@ -184,6 +183,42 @@
 
             return false;
         }
+
+        // 机构信用代码校验
+        function CheckInCredit() {
+            // 机构信用代码值
+            var value = $('input[name=InCredit]').val();
+
+            // 提示
+            var tip = $('span[name=InCredit]');
+
+            // 清空提示
+            tip.text('').css('color', 'red');
+
+            if (CheckInCreditfn(value, true)) {
+                tip.text('机构信用代码正确').css('color', 'blue');
+            }
+            else {
+                tip.text('机构信用代码错误');
+            }
+        }
+        // 机构信用代码校验方法
+        function CheckInCreditfn(value, bool) {
+            // 不得使用大写英文字母“I”、“O”、“Z”、“S”和“V”
+            if (/[(I)|(O)|(Z)|(S)|(V)]/.test(value))
+            {
+                return false;
+            }
+
+            var regx = /^[0-9A-Z][0-9]{5}[0-9A-Z]{9}[0-9A-Z]/;
+
+            if (!regx.test(value.toString()))
+            {
+                return false;
+            }
+
+            return true;
+        }
     </script>
 </head>
 <body style="margin-left:100px;margin-top:50px;">
@@ -204,11 +239,10 @@
     <br>
     <span name="IDCard" style="color:red;"></span>
 
-
     <br><br><br>
-    <input type="text" name="IDCard" maxlength="18" onkeydown="if (event.keyCode == 13) CheckIDCard();" />
-    <input type="button" value="校验AN型" onclick="CheckIDCard()">
+    <input type="text" name="InCredit" maxlength="18" onkeydown="if (event.keyCode == 13) CheckIDCard();" />
+    <input type="button" value="校验机构信用代码" onclick="CheckInCredit()">
     <br>
-    <span name="IDCard" style="color:red;"></span>
+    <span name="InCredit" style="color:red;"></span>
 </body>
 </html>
