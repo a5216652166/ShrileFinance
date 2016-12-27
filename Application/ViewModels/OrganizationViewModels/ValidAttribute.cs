@@ -273,33 +273,15 @@
 
             if (valueStr.Length != 15)
             {
-                ErrorMessage = "国税/地税长度错误！";
-
                 return false;
             }
 
             if (!valueStr.Substring(6).IsOrganizationCode())
             {
-                ErrorMessage = "国税/地税组织机构代码校验未通过！";
-
                 return false;
             }
-            else
-            {
-                var dt = OrganizationRepository.AdministrativeDivision();
 
-                foreach (var item in dt.Rows)
-                {
-                    if ((item as DataRow)["Code"].ToString().Equals(valueStr.Substring(0, 5)))
-                    {
-                        return true;
-                    }
-                }
-
-                ErrorMessage = "国税/地税行政区划校验未通过！";
-
-                return false;
-            }
+            return true;
         }
     }
     #endregion

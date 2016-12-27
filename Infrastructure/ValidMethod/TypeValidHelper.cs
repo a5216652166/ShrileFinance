@@ -79,7 +79,10 @@
             // 校验码 C9=11-MOD(∑Ci(i=1→8)×Wi,11)
             if (regResult)
             {
-                value = value.Remove(value.IndexOf('-'), 1);
+                if (value.IndexOf('-') != -1)
+                {
+                    value = value.Remove(value.IndexOf('-'), 1);
+                }
 
                 var w = new int[] { 3, 7, 9, 10, 5, 8, 4, 2 };
 
