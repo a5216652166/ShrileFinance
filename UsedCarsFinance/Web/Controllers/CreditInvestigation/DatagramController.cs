@@ -54,10 +54,10 @@
         [HttpPost]
         public HttpResponseMessage Download(DownloadViewModel ids)
         {
+            var file = messageAppService.Download(ids);
+
             try
             {
-                var file = messageAppService.Downloads(ids);
-
                 return HttpHelper.Download(file);
             }
             catch (Exception ex)
