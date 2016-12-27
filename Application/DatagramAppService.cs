@@ -115,21 +115,30 @@
         /// <param name="traceIds">追踪标识集合</param>
         public void Generate(IEnumerable<Guid> traceIds)
         {
-            var traces = repository.GetByIds(traceIds);
-
-            // 移除已生成的报文
-            foreach (var trace in traces)
+            try
             {
-                trace.DatagramFiles.Clear();
+                var traces = repository.GetByIds(traceIds);
 
-                // 生成报文
-                var datagramFile = factory.Generate(trace);
+                // 移除已生成的报文
+                foreach (var trace in traces)
+                {
+                    trace.DatagramFiles.Clear();
 
-                // 添加文件
-                trace.AddDatagram(datagramFile);
+                    // 生成报文
+                    var datagramFile = factory.Generate(trace);
+
+                    // 添加文件
+                    trace.AddDatagram(datagramFile);
+                }
+
+                repository.Commit();
             }
+            catch (Exception ex)
+            {
 
-            repository.Commit();
+                throw;
+            }
+          
         }
 
         /// <summary>

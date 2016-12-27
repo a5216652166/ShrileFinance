@@ -1,5 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Segment.BorrowMessage.Concern
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using AutoMapper;
     using Customers.Enterprise;
@@ -12,7 +13,7 @@
         public LitigationSegment(Litigation litigation)
         {
             Mapper.Map(litigation, this);
-            DateTime = litigation.DateTime;
+            DateTime = Convert.ToDateTime(litigation.DateTime).ToString("yyyyMMdd");
         }
 
         protected LitigationSegment() : base()
