@@ -34,7 +34,6 @@
             customer.AssociatedEnterprises = Mapper.Map<ICollection<AssociatedEnterprise>>(model.AssociatedEnterprises);
             customer.BigEvent = Mapper.Map<ICollection<BigEvent>>(model.BigEvent);
             customer.Litigation = Mapper.Map<ICollection<Litigation>>(model.Litigation);
-
             customer.Managers = Mapper.Map<ICollection<Manager>>(model.Managers);
             customer.Shareholders = Mapper.Map<ICollection<Stockholder>>(model.Shareholders);
 
@@ -43,7 +42,6 @@
                 customer.FinancialAffairs = new FinancialAffairs()
                 {
                     Id = Guid.Empty,
-                    AuditorDate = model.FinancialAffairs.AuditorDate,
                     Year = model.FinancialAffairs.Year,
                     TypeSubdivision = model.FinancialAffairs.TypeSubdivision,
                     AuditFirm = model.FinancialAffairs.AuditFirm,
@@ -58,6 +56,7 @@
             }
 
             repository.Create(customer);
+
             repository.Commit();
 
             // 报文追踪
@@ -83,6 +82,14 @@
             new UpdateBind().Bind(customer.BigEvent, model.BigEvent);
             new UpdateBind().Bind(customer.Litigation, model.Litigation);
             new UpdateBind().Bind(customer.Managers, model.Managers);
+
+            //model.Managers.ToList().ForEach(m=> {
+            //    // 获取家族成员的id集合
+            //    var ids = (from t in m.FamilyMembers select t.Id.Value).ToList();
+
+            //    // 移除多余项
+            //    customer.Managers.ToList().Find(c => c.Id == m.Id).FamilyMembers.ToList().RemoveAll(f=>!ids.Contains(f.Id));
+            //});
 
             model.Managers.ToList().ForEach(m =>
             {
