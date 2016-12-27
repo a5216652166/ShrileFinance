@@ -14,7 +14,7 @@
 
         public int CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId)
         {
-            return GetAll().Count(m => m.ReferenceId == referenceId && m.SpecialDate == dateCreated);
+            return GetAll().Count(m => m.ReferenceId == referenceId && m.DateCreated == dateCreated);
         }
 
         public int MaxSerialNumberByDateCreated(DateTime dateCreated)
@@ -26,7 +26,7 @@
 
         public IEnumerable<Trace> GetByDateCreated(DateTime dateCreated)
         {
-            return GetAll(m => m.SpecialDate == dateCreated);
+            return GetAll(m => m.DateCreated == dateCreated);
         }
 
         public IEnumerable<Trace> GetByIds(IEnumerable<Guid> traceIds)
