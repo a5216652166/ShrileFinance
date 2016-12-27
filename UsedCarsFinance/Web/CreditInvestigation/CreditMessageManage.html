@@ -207,21 +207,36 @@
         function Download() {
             $("#download input").remove();
             var array = $("#dg").datagrid("getChecked");
+        debugger
             if (array == undefined || array.length == 0) {
                 $.messager.show({ msg: "请选择需要下载的跟踪记录" });
             }
             else {
-                // 所有勾选的报文跟踪ID
                 var data = [];
-                $(array).each(function () {
-                    data.push(this.Id);
-                    $("<input>", { name: "Ids", value: this.Id }).appendTo("#download");
+                var isGenerated = true;
+
+                // 判断是否存在未生成报文
+                array.forEach(function (e) {
+                    if (e.StatusDesc == "待生成") {
+                        isGenerated = false;
+                    }
                 });
 
-                $("#download").submit();
+                if (isGenerated == false) {
+                    $.messager.show({ msg: "存在未生成报文的跟踪记录，请重新选择后下载" });
+                }
+                else {
+                    // 所有勾选的报文跟踪ID
+                    $(array).each(function () {
+                        data.push(this.Id);
+                        $("<input>", { name: "Ids", value: this.Id }).appendTo("#download");
+                    });
 
-                $("#save").linkbutton("enable");
-                Reload();
+                    $("#download").submit();
+
+                    $("#save").linkbutton("enable");
+                    Reload();
+                }
             }
         }
 
