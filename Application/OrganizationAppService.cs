@@ -35,27 +35,8 @@
             customer.BigEvent = Mapper.Map<ICollection<BigEvent>>(model.BigEvent);
             customer.Litigation = Mapper.Map<ICollection<Litigation>>(model.Litigation);
 
-
-            new UpdateBind().Bind(customer.Managers, model.Managers);
-
-            model.Managers.ToList().ForEach(m =>
-            {
-                var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
-                if (familyMembersEntity != null)
-                {
-                    new UpdateBind().Bind(familyMembersEntity.FamilyMembers, m.FamilyMembers);
-                }
-            });
-            new UpdateBind().Bind(customer.Shareholders, model.Shareholders);
-
-            model.Shareholders.ToList().ForEach(m =>
-            {
-                var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
-                if (shareholders != null)
-                {
-                    new UpdateBind().Bind(shareholders.FamilyMembers, m.FamilyMembers);
-                }
-            });
+            customer.Managers = Mapper.Map<ICollection<Manager>>(model.Managers);
+            customer.Shareholders = Mapper.Map<ICollection<Stockholder>>(model.Shareholders);
 
             if (model.FinancialAffairs != null)
             {
