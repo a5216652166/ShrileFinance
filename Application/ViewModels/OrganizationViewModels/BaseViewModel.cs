@@ -57,13 +57,13 @@
         /// <summary>
         /// 纳税人识别号（国税）
         /// </summary>
-        [Display(Name = "纳税人识别号（国税）"), StringLength(20), ANC(ErrorMessage = "纳税人识别号（国税） 类型错误")]
+        [Display(Name = "纳税人识别号（国税）"), StringLength(20), TaxpayerIdentify, ANC(ErrorMessage = "纳税人识别号（国税） 类型错误")]
         public string TaxpayerIdentifyIrsNumber { get; set; }
 
         /// <summary>
         /// 纳税人识别号（地税）
         /// </summary>
-        [Display(Name = "纳税人识别号（地税）"), StringLength(20), ANC(ErrorMessage = "纳税人识别号（地税） 类型错误")]
+        [Display(Name = "纳税人识别号（地税）"), StringLength(20), TaxpayerIdentify, ANC(ErrorMessage = "纳税人识别号（地税） 类型错误")]
         public string TaxpayerIdentifyLandNumber { get; set; }
 
         /// <summary>

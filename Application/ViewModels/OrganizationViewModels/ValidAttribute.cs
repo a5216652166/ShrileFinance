@@ -4,8 +4,10 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Text.RegularExpressions;
+    using Infrastructure.ValidMethod;
+    using Data.Repositories;
+    using System.Data;
     #endregion
 
     #region 属性级别验证
@@ -254,6 +256,50 @@
             b &= Convert.ToDecimal(valueStr) >= 0;
 
             return b;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+    public class TaxpayerIdentifyAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            if (value == null)
+            {
+                return true;
+            }
+
+            var valueStr = value.ToString();
+
+            if (valueStr.Length != 15)
+            {
+                ErrorMessage = "国税/地税长度错误！";
+
+                return false;
+            }
+
+            if (!valueStr.Substring(6).IsOrganizationCode())
+            {
+                ErrorMessage = "国税/地税组织机构代码校验未通过！";
+
+                return false;
+            }
+            else
+            {
+                var dt = OrganizationRepository.AdministrativeDivision();
+
+                foreach (var item in dt.Rows)
+                {
+                    if ((item as DataRow)["Code"].ToString().Equals(valueStr.Substring(0, 5)))
+                    {
+                        return true;
+                    }
+                }
+
+                ErrorMessage = "国税/地税行政区划校验未通过！";
+
+                return false;
+            }
         }
     }
     #endregion
