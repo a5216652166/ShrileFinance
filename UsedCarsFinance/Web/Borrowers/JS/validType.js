@@ -300,4 +300,48 @@
         },
         message: '机构信用代码错误！'
     },
+    TaxpayerIdentify: {
+        validator: function (value) {
+            if (value.toString().length != 15) {
+                return true;
+            }
+            // 校验前6位
+            if (!/^[0-9]+$/.test(value.substr(0, 6)))
+            {
+                return false;
+            }
+
+            // 校验后9位
+            var temp = value.substr(6);
+            
+            // 基础校验（前8位为数字或者大写英文字母、后1位为校验码）
+            var regResult = /^[A-Z0-9]{8}[A-Z0-9]$/.test(temp);
+
+            // 校验码 C9=11-MOD(∑Ci(i=1→8)×Wi,11)
+            if (regResult) {
+                var W = new Array(3, 7, 9, 10, 5, 8, 4, 2);
+
+                var C9 = 0;
+                $(W).each(function (index, itemValue) {
+                    C9 += parseInt(temp[index], 36) * W[index];
+                });
+                C9 = 11 - C9 % 11;
+
+                // 校验  当C9的值为10时，校验码应用大写的拉丁字母X表示；当C9的值为11时校验码用0表示。
+                if (C9 == 10) {
+                    regResult = temp[8] == 'X';
+                }
+                else if (C9 == 11) {
+                    regResult = temp[8] == 0;
+                }
+                else {
+                    // 三十六进制转十进制后进行校验
+                    regResult = parseInt(temp[8], 36) == C9;
+                }
+            }
+
+            return regResult;
+        },
+        message: '纳税人识别号错误！'
+    }
 });

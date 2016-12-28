@@ -63,6 +63,12 @@
 
             //加载 高级主管、重要股东、主要关联企业
             $(["Managers", "Shareholders", "AssociatedEnterprises"]).each(function (index, item) {
+                if (item == 'Managers') {
+                    for (var k in data.Managers) {
+                        data.Managers[k].Type = StringToArray(data.Managers[k].Type);
+                    }
+                }
+                
                 FieldsetLoadDateFactory(item, "table", data[item]);
             });
 
@@ -111,13 +117,19 @@
                 }
 
                 if (e == "Property" && data[e].RegisterAdministrativeDivision == "null") {
-                    debugger
                     data[e].RegisterAdministrativeDivision = "";
                 }
             });
 
             $(['Managers', 'Shareholders', 'AssociatedEnterprises']).each(function (i, e) {
                 data[e] = FieldsetSerializeFactory(e, 'table');
+
+                if (e == 'Managers') {
+                    for (var k in data.Managers)
+                    {
+                        data.Managers[k].Type = ArrayToString(data.Managers[k].Type);
+                    }
+                }
             });
 
             if ($("div#showSecton").find("input[id=TF_I]")[0].checked == true) {
@@ -639,6 +651,24 @@
 
             return data;
         }
+
+        // 数组转字符串
+        function ArrayToString(array)
+        {
+            if (array == null)
+            {
+                return '';
+            }
+            return array.join(',');
+        }
+
+        // 字符串转数组
+        function StringToArray(str) {
+            if (str == null) {
+                return [];
+            }
+            return str.split(',');
+        }
     </script>
 </head>
 <body>
@@ -665,9 +695,9 @@
                             <div class="col-6">
                                 <label>
                                     管理行代码：
-                                    <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="对于信贷户，填写管护行，即客户经理所属分支行。填写规则：“企业征信系统为其编制的11位金融机构代码+空格”">　</a>
+                                    <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="对于信贷户，填写管护行，即客户经理所属分支行。填写规则：“企业征信系统为其编制的11位金融机构代码”">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:true,validType:['AN','length[1,20]']" name="ManagementerCode">
+                                <input class="easyui-textbox textbox-f" data-options="required:true,validType:['AN','length[11,11]']" name="ManagementerCode">
                             </div>
                             <div class="col-6">
                                 <label>
@@ -728,14 +758,14 @@
                                     纳税人识别号（国税）：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构在国税部门的缴税统一标识">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,20]']" name="TaxpayerIdentifyIrsNumber">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[15,15]','TaxpayerIdentify']" name="TaxpayerIdentifyIrsNumber">
                             </div>
                             <div class="col-6">
                                 <label>
                                     纳税人识别号（地税）：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构在国税部门的缴税统一标识">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,20]']" name="TaxpayerIdentifyLandNumber">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[15,15]','TaxpayerIdentify']" name="TaxpayerIdentifyLandNumber">
                             </div>
                             <div class="col-6">
                                 <label>
