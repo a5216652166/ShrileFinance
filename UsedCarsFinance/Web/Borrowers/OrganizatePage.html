@@ -13,7 +13,7 @@
     <script src="JS/BorrowerMethod.js"></script>
     <script src="JS/validType.js"></script>
     <script src="../Scripts/usedcars.js"></script>
-
+    <script src="../Scripts/draft.js"></script>
     <style type="text/css">
         div.easyui-accordion div.panel div.accordion-header {
             margin: 0 0;
@@ -30,8 +30,12 @@
     </style>
 
     <script type="text/javascript">
+        var draft = new Draft(BuidDate, LoadDate);
+
         $(function () {
             Init();
+            // 开启草稿保存
+            draft.AutoSave(3 * 60 * 1000);
         });
 
         // 加载数据
@@ -294,10 +298,9 @@
             var query = {};
 
             query.Method = GetQueryString("method");
-
+            draft.Load();
             if (query.Method != "add") {
                 query.Id = GetQueryString("Id");
-
                 // 加载数据
                 LoadDate(LoadDateForId(query.Id));
 
@@ -318,7 +321,6 @@
                 // 机构属性 经济行业分类异常处理
                 var data = {};
                 data.EconomicSectorsClassification = "";
-                debugger
                 data.RegisterAdministrativeDivision = "";
                 $("fieldset[name=Property]").form("load",data);
             }
@@ -393,6 +395,7 @@
                         200: function (data) {
                             OrganizateCancel();
                             $.messager.show({ msg: "提交成功！" });
+                            draft.Clear();
                         },
                         500: function (data) {
                             $.messager.alert('错误', data.responseJSON.ExceptionMessage);
@@ -1991,6 +1994,7 @@
         </div>
 
         <div id="btn">
+            <a id="saveTempData" class="easyui-linkbutton" data-options="iconCls: 'icon-edit',onClick: draft.Save" style="margin:0 auto">保存草稿</a>
             <a id="submit" class="easyui-linkbutton" data-options="iconCls: 'icon-edit'" style="margin:0 auto" onclick="OrganizateSubmit()">提交</a>
             <a id="cancel" class="easyui-linkbutton" data-options="iconCls: 'icon-redo'" style="margin:0 auto" onclick="OrganizateCancel()">取消</a>
             <input type="reset" hidden />
