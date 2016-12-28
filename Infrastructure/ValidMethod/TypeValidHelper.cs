@@ -13,7 +13,7 @@
         /// </summary>
         /// <param name="value">值</param>
         /// <returns>是/否</returns>
-        public static bool IsN(this string value)
+        public static bool IsN(string value)
         {
             value = value ?? string.Empty;
 
@@ -35,7 +35,7 @@
         /// </summary>
         /// <param name="value">值</param>
         /// <returns>是/否</returns>
-        public static bool IsAN(this string value)
+        public static bool IsAN(string value)
         {
             value = value ?? string.Empty;
 
@@ -57,7 +57,7 @@
         /// </summary>
         /// <param name="value">值</param>
         /// <returns>是/否</returns>
-        public static bool IsANC(this string value)
+        public static bool IsANC(string value)
         {
             return true;
         }
@@ -67,7 +67,7 @@
         /// </summary>
         /// <param name="value">值</param>
         /// <returns>是/否</returns>
-        public static bool IsOrganizationCode(this string value)
+        public static bool IsOrganizationCode(string value)
         {
             value = value ?? string.Empty;
 
@@ -118,7 +118,7 @@
         /// </summary>
         /// <param name="value">值</param>
         /// <returns>是/否</returns>
-        public static bool IsCreditCardCode(this string value)
+        public static bool IsCreditCardCode(string value)
         {
             value = value ?? string.Empty;
 
@@ -150,11 +150,42 @@
         }
 
         /// <summary>
+        /// 金额（最多两位小数）
+        /// </summary>
+        /// <param name="value">值</param>
+        /// <returns>是/否</returns>
+        public static bool IsMoney(string value)
+        {
+            var valueStr = value == null ? "0" : value.ToString();
+
+            var regResult = false;
+
+            if (valueStr.IndexOf('-') != -1)
+            {
+                valueStr = valueStr.Remove(0, 1);
+            }
+
+            if (new Regex(@"^-?\d+\.\d{1}$").IsMatch(valueStr) || new Regex(@"^-?\d+\.\d{2}$").IsMatch(valueStr) || new Regex(@"^\d+$").IsMatch(valueStr))
+            {
+                if (valueStr.Length > 2 && new Regex(@"^[0][0-9]*$").IsMatch(valueStr.Substring(0, 2)))
+                {
+                    regResult = false;
+                }
+                else
+                {
+                    regResult = true;
+                }
+            }
+
+            return regResult;
+        }
+
+        /// <summary>
         /// 36进制转十进制
         /// </summary>
         /// <param name="value">值</param>
         /// <returns>是/否</returns>
-        private static int Mary36ToMary10(this char value)
+        private static int Mary36ToMary10(char value)
         {
             int num = 0;
             if (value >= 'A' && value <= 'Z')

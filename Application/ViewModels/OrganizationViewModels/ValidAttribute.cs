@@ -20,16 +20,12 @@
     {
         public override bool IsValid(object value)
         {
-            var temp = value == null ? string.Empty.ToCharArray() : value.ToString().ToCharArray();
-            for (int i = 0; i < temp.Length; i++)
+            if (value == null)
             {
-                if (temp[i] < 0X30 || temp[i] > 0X39)
-                {
-                    return false;
-                }
+                return true;
             }
 
-            return true;
+            return TypeValidHelper.IsN(value.ToString());
         }
     }
 
@@ -42,16 +38,12 @@
     {
         public override bool IsValid(object value)
         {
-            var temp = value == null ? string.Empty.ToCharArray() : value.ToString().ToCharArray();
-            for (int i = 0; i < temp.Length; i++)
+            if (value == null)
             {
-                if (temp[i] < 0X20 || temp[i] > 0X7E)
-                {
-                    return false;
-                }
+                return true;
             }
 
-            return true;
+            return TypeValidHelper.IsAN(value.ToString());
         }
     }
 
@@ -64,7 +56,12 @@
     {
         public override bool IsValid(object value)
         {
-            return true;
+            if (value == null)
+            {
+                return true;
+            }
+
+            return TypeValidHelper.IsANC(value.ToString());
         }
     }
 
@@ -78,26 +75,7 @@
         {
             var valueStr = value == null ? "0" : value.ToString();
 
-            var regResult = false;
-
-            if (valueStr.IndexOf('-') != -1)
-            {
-                valueStr = valueStr.Remove(0, 1);
-            }
-
-            if (new Regex(@"^-?\d+\.\d{1}$").IsMatch(valueStr) || new Regex(@"^-?\d+\.\d{2}$").IsMatch(valueStr) || new Regex(@"^\d+$").IsMatch(valueStr))
-            {
-                if (valueStr.Length > 2 && new Regex(@"^[0][0-9]*$").IsMatch(valueStr.Substring(0, 2)))
-                {
-                    regResult = false;
-                }
-                else
-                {
-                    regResult = true;
-                }
-            }
-
-            return regResult;
+            return TypeValidHelper.IsMoney(valueStr);
         }
     }
 
@@ -110,56 +88,12 @@
     {
         public override bool IsValid(object value)
         {
-            var valueStr = value == null ? string.Empty : value.ToString();
-
-            // 10个'#'通过校验
-            if (new Regex(@"^[#]{10}").IsMatch(valueStr))
+            if (value == null)
             {
                 return true;
             }
 
-            var regResult = true;
-
-            if (!string.IsNullOrEmpty(valueStr))
-            {
-                // 基础校验（前8位为数字或者大写英文字母、后1位为校验码）
-                regResult = new Regex(@"^[A-Z0-9]{8}-[A-Z0-9]$").IsMatch(valueStr);
-
-                // 校验码 C9=11-MOD(∑Ci(i=1→8)×Wi,11)
-                if (regResult)
-                {
-                    valueStr = valueStr.Remove(valueStr.IndexOf('-'), 1);
-
-                    var w = new int[] { 3, 7, 9, 10, 5, 8, 4, 2 };
-
-                    var c9 = 0;
-                    for (var index = 0; index < w.Length; index++)
-                    {
-                        ////c9 += int.Parse(valueStr[index].ToString()) * w[index];
-                        c9 += Trans_36bTo10(valueStr[index]) * w[index];
-                    }
-
-                    c9 = 11 - (c9 % 11);
-
-                    // 校验  当C9的值为10时，校验码应用大写的拉丁字母X表示；当C9的值为11时校验码用0表示。
-                    if (c9 == 10)
-                    {
-                        regResult = valueStr[8] == 'X';
-                    }
-                    else if (c9 == 11)
-                    {
-                        regResult = valueStr[8] == '0';
-                    }
-                    else
-                    {
-                        // 三十六进制转十进制后进行校验
-                        ////regResult = Convert.ToInt32(valueStr[8].ToString(), 16) == c9;
-                        regResult = Trans_36bTo10(valueStr[8]) == c9;
-                    }
-                }
-            }
-
-            return regResult;
+            return TypeValidHelper.IsOrganizationCode(value.ToString());
         }
 
         // 36进制转十进制
@@ -192,35 +126,12 @@
     {
         public override bool IsValid(object value)
         {
-            var valueStr = value == null ? string.Empty : value.ToString();
-
-            var regResult = false;
-
-            // 基础校验（前3位为数字或者大写英文字母、后13位数字）
-            regResult = new Regex(@"^[A-Z0-9]{3}\d{13}$|^\d{16}$").IsMatch(valueStr);
-
-            // 后两位校验 前十四位乘以权重相加后除以97后的余数再加1后得到的数字
-            if (regResult)
+            if (value == null)
             {
-                // 权重
-                var w = new int[] { 1, 3, 5, 7, 11, 2, 13, 1, 1, 17, 19, 97, 23, 29 };
-
-                // 后两位校验
-                var lastValue = 0;
-                for (var index = 0; index < w.Length; index++)
-                {
-                    // 十六进制转十进制后再进行计算
-                    lastValue += w[index] * Convert.ToInt32(valueStr[index].ToString(), 16);
-                }
-
-                lastValue = 1 + (lastValue % 97);
-
-                var lastValueStr = lastValue > 10 ? lastValue.ToString() : "0" + lastValue;
-
-                regResult = lastValueStr.Equals(valueStr.Substring(14, 2));
+                return true;
             }
 
-            return regResult;
+            return TypeValidHelper.IsCreditCardCode(value.ToString());
         }
     }
 
@@ -264,24 +175,12 @@
     {
         public override bool IsValid(object value)
         {
-            if (value == null)
+            if (value == null && value.ToString().Length!=15)
             {
                 return true;
             }
 
-            var valueStr = value.ToString();
-
-            if (valueStr.Length != 15)
-            {
-                return false;
-            }
-
-            if (!valueStr.Substring(6).IsOrganizationCode())
-            {
-                return false;
-            }
-
-            return true;
+            return TypeValidHelper.IsOrganizationCode(value.ToString().Substring(6));
         }
     }
     #endregion
@@ -1117,42 +1016,6 @@
             }
 
             var iie = value as InstitutionIncomeExpenditureViewModel;
-
-            ////iie.收入总计 = iie.收入总计 ?? decimal.Parse("0.00");
-            ////iie.支出总计 = iie.支出总计 ?? decimal.Parse("0.00");
-            ////iie.事业结余 = iie.事业结余 ?? decimal.Parse("0.00");
-            ////iie.经营结余 = iie.经营结余 ?? decimal.Parse("0.00");
-            ////iie.事业收入小计 = iie.事业收入小计 ?? decimal.Parse("0.00");
-            ////iie.经营收入小计 = iie.经营收入小计 ?? decimal.Parse("0.00");
-            ////iie.拨入专款小计 = iie.拨入专款小计 ?? decimal.Parse("0.00");
-            ////iie.事业支出小计 = iie.事业支出小计 ?? decimal.Parse("0.00");
-            ////iie.经营支出小计 = iie.经营支出小计 ?? decimal.Parse("0.00");
-            ////iie.专款小计 = iie.专款小计 ?? decimal.Parse("0.00");
-
-            ////if (iie.收入总计 != iie.事业收入小计 + iie.经营收入小计 + iie.拨入专款小计)
-            ////{
-            ////    ErrorMessage = "事业单位收入支出：收入总计=事业收入小计+经营收入小计+拨入专款小计,正确值应为：" + (iie.事业收入小计 + iie.经营收入小计 + iie.拨入专款小计);
-
-            ////    return false;
-            ////}
-            ////else if (iie.支出总计 != iie.事业支出小计 + iie.经营支出小计 + iie.专款小计)
-            ////{
-            ////    ErrorMessage = "事业单位收入支出：支出总计=事业支出小计+经营支出小计+专款小计,正确值应为：" + (iie.事业支出小计 + iie.经营支出小计 + iie.专款小计);
-
-            ////    return false;
-            ////}
-            ////else if (iie.事业结余 != iie.专款小计 - iie.事业支出小计)
-            ////{
-            ////    ErrorMessage = "事业单位收入支出：事业结余=专款小计-事业支出小计,正确值应为：" + (iie.专款小计 - iie.事业支出小计);
-
-            ////    return false;
-            ////}
-            ////else if (iie.经营结余 != iie.经营收入小计 - iie.经营支出小计)
-            ////{
-            ////    ErrorMessage = "事业单位收入支出：经营结余=经营收入小计-经营支出小计,正确值应为：" + (iie.经营收入小计 - iie.经营支出小计);
-
-            ////    return false;
-            ////}
 
             var data = value as InstitutionIncomeExpenditureViewModel;
 
