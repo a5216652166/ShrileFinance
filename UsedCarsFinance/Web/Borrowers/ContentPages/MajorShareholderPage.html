@@ -83,11 +83,20 @@
 
             $('fieldset[id=G]').form('load', row);
             
-            // 股东类型为“1-自然人”时，无组织机构代码与机构信用代码
+            // 股东类型为“1-自然人”时，无组织机构代码与机构信用代码，为“2-机构”时，无家族信息
             if (row.ShareholdersType == 1)
             {
                 $("fieldset#G input[textboxname=OrganizateCode]").textbox("setValue", "").textbox("readonly", true);
                 $("fieldset#G input[textboxname=InstitutionCreditCode]").textbox("setValue", "").textbox("readonly", true);
+            }
+            else (row.ShareholdersType == 2)
+            {
+                if ($("fieldset#G input#FamilyFiedSetShow")[0].checked)
+                {
+                    $("fieldset#G input#FamilyFiedSetShow").click();
+                }
+
+                $("fieldset#G input#FamilyFiedSetShow").parent().parent().hide();
             }
         }
 
