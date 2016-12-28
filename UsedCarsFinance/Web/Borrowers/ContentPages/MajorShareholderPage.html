@@ -49,6 +49,9 @@
 
                     // 禁用保存按钮
                     $("#save").linkbutton("disable");
+
+                    // 禁用家庭信息 +/-
+                    $("section#I div[name=tools]>a").hide();
                 }
             }
         }
@@ -79,6 +82,13 @@
             row.RegistraterTypeModel = row.RegistraterType;
 
             $('fieldset[id=G]').form('load', row);
+
+            // 股东类型click
+            var tempValue = $("section#G select[comboname=ShareholdersType]").combobox("getValue");
+            if (tempValue != null && tempValue.toString().length > 0)
+            {
+                $("section#G select[comboname=ShareholdersType]").combobox("unselect", tempValue).combobox("select", tempValue);
+            }
         }
 
         // 提交按钮
@@ -394,9 +404,9 @@
         <section id="I" min="0" max="n" name="FamliySection" style="display:none">
             <h2>家族成员信息</h2>
             <div style="background-color:#afe3fa;height:30px ;width:95%">
-                <div float="right" style="width:100%">
+                <div float="right" style="width:100%" name="tools">
                     <a style="margin-top: 2px; margin-right: 10px; float: right; font-size: 24px; text-decoration: none" id="Iadd" onclick="AddFamilyFiledset(this)" href="javascript:void(0)">+</a>
-                    <a style=" margin-right: 20px; float: right; font-size: 24px; text-decoration: none" id="Iminus" onclick="Minus(this)" href="javascript:void(0)" hidden="hidden">-</a>
+                    <a style="margin-right: 20px; float: right; font-size: 24px; text-decoration: none" id="Iminus" onclick="Minus(this)" href="javascript:void(0)" hidden="hidden">-</a>
                 </div>
             </div>
 

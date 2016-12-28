@@ -12,6 +12,7 @@
     using Application.ViewModels.CreditInvesitigation.TraceViewModels;
     using Core.Entities.CreditInvestigation;
     using global::Infrastructure.Http;
+    using global::Infrastructure.ValidMethod;
 
     public class DatagramController : ApiController
     {
@@ -64,6 +65,14 @@
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NoContent, ex);
             }
+        }
+
+        public IHttpActionResult Test()
+        {
+            var luln = "33207991216";
+            luln.LulnMethod();
+
+            return Ok();
         }
     }
 }
