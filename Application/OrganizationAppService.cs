@@ -96,6 +96,7 @@
                 var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
                 if (familyMembersEntity != null)
                 {
+                    familyMembersEntity.FamilyMembers.Clear();
                     new UpdateBind().Bind(familyMembersEntity.FamilyMembers, m.FamilyMembers);
                 }
             });
@@ -106,6 +107,7 @@
                 var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
                 if (shareholders != null)
                 {
+                    shareholders.FamilyMembers.Clear();
                     new UpdateBind().Bind(shareholders.FamilyMembers, m.FamilyMembers);
                 }
             });
