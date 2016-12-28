@@ -89,7 +89,7 @@
                 $("fieldset#G input[textboxname=OrganizateCode]").textbox("setValue", "").textbox("readonly", true);
                 $("fieldset#G input[textboxname=InstitutionCreditCode]").textbox("setValue", "").textbox("readonly", true);
             }
-            else (row.ShareholdersType == 2)
+            else if(row.ShareholdersType == 2)
             {
                 if ($("fieldset#G input#FamilyFiedSetShow")[0].checked)
                 {
