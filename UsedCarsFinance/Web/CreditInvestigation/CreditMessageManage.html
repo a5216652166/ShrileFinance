@@ -245,6 +245,12 @@
                 return 'background-color:#f0fffa;color:#333';
             }
         }
+        //function SearchYesterday() {
+        //    var rows = $("#dg").datagrid("getRows");
+        //    for (var i = 0; i < rows.length; i++) {
+        //        if(rows[i]["DateCreated"]==)
+        //    }
+        //}
     </script>
 </head>
 <body>
@@ -276,20 +282,21 @@
         <div>
             <input id="Name" name="Name" class="easyui-textbox" data-options="prompt:'请输入名称'" />
             <label for="Status">报文状态:</label>
+            <label for="BeginTime">业务发生日期 从:</label>
+            <input id="BeginTime" name="BeginTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
+            <label for="EndTime">至:</label>
+            <input id="EndTime" name="EndTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
             <select id="Status" class="easyui-combobox" data-options="width:120,editable:false">
                 <option value="">全部</option>
                 <option value="0">待生成</option>
                 <option value="1">待发送</option>
                 <option value="2">已发送</option>
             </select>
-            <label for="BeginTime">业务发生日期 从:</label>
-            <input id="BeginTime" name="BeginTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
-            <label for="EndTime">至:</label>
-            <input id="EndTime" name="EndTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',onClick:Reload,plain:true">搜索</a>
             <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:uc.grid.Reset,iconCls:'icon-reload',plain:true">重置</a>
         </div>
         <div>
+            <!--<a id="searchYesterday" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',plain:true,onClick:SearchYesterday">选择昨日报文</a>-->
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
             <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>
             <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Download">下载</a>
