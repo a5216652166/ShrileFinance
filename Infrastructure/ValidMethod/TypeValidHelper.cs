@@ -101,7 +101,7 @@
                 }
                 else if (c9 == 11)
                 {
-                    regResult = value[8] == 0;
+                    regResult = value[8] == '0';
                 }
                 else
                 {
