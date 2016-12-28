@@ -141,6 +141,13 @@
             });
 
             $("input[name=" + currentObj.attr('comboname') + '_Txt' + "]:hidden").val(tempArray.join("、"));
+
+            //ChangeCertificateType("CertificateType", "CertificateCode");
+
+            var value = $(this).parents("fieldset").find("select[textboxname=CertificateType]").combobox("getValue");
+            var certificateNumber = $(this).parents("fieldset").find("input[textboxname=CertificateCode]");
+            debugger
+            ChangeCertificateType(value, certificateNumber);
         }
 
         // 是否填写 复选框onClick事件
@@ -202,6 +209,25 @@
 
             return familyArray;
         }
+        function ChooseFamilyType(data) {
+            var value = $(this).parents("fieldset").find("select[textboxname=CertificateType]").combobox("getValue");
+            var certificateNumber = $(this).parents("fieldset").find("input[textboxname=CertificateCode]");
+            ChangeCertificateType(value, certificateNumber);
+        }
+
+        // 选择身份证类型
+        function ChangeCertificateType(value, certificateNumber) {
+            //var value = $("select[textboxname='" + type + "']").combobox("getValue");
+            //var certificateNumber = $("input[textboxname='" + number + "']");
+            if ($.inArray(value, ["0", "7"]) != -1) {
+                // 身份证、临时身份证
+                certificateNumber.textbox({ validType: ['IdCard'] });
+            }
+            else {
+                certificateNumber.textbox({ validType: ['length[0,18]', 'AN'] });
+            }
+        }
+
     </script>
 </head>
 <body>
@@ -317,7 +343,7 @@
                         <label>
                             家族成员证件类型：<a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('../img/InfoImg.png') no-repeat scroll 0 0" title="">　</a>
                         </label>
-                        <select class="easyui-combobox  combobox-f combo-f textbox-f" data-options="value:'',editable:false,required:true" name="CertificateType">
+                        <select class="easyui-combobox  combobox-f combo-f textbox-f" data-options="value:'',editable:false,required:true,onSelect:ChooseFamilyType" name="CertificateType">
                             <option value="0">身份证</option>
                             <option value="1">户口簿</option>
                             <option value="2">护照</option>
