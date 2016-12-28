@@ -14,8 +14,8 @@
             Property(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(m => m.AuditFirm).IsRequired().HasMaxLength(80);
-            Property(m => m.AuditorName).IsRequired().HasMaxLength(30);
+            Property(m => m.AuditFirm).HasMaxLength(80);
+            Property(m => m.AuditorName).HasMaxLength(30);
             Property(m => m.Year).IsRequired();
             Property(m => m.TypeSubdivision).IsRequired();
             Property(m => m.AuditorDate);

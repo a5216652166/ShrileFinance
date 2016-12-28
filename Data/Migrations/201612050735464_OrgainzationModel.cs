@@ -79,8 +79,8 @@ namespace Data.Migrations
                         Id = c.Guid(nullable: false, identity: true),
                         Year = c.Int(nullable: false),
                         TypeSubdivision = c.Int(nullable: false),
-                        AuditFirm = c.String(nullable: false, maxLength: 80),
-                        AuditorName = c.String(nullable: false, maxLength: 30),
+                        AuditFirm = c.String(maxLength: 80),
+                        AuditorName = c.String(maxLength: 30),
                         AuditorDate = c.DateTime(),
                         OrganizationId = c.Guid(),
                     })
