@@ -31,7 +31,6 @@
         /// 名称
         /// </summary>
         [Display(Name = "名称")]
-        [StringLength(20)]
         public string Name { get; set; }
 
         /// <summary>
