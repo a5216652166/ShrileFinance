@@ -2,9 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.IO;
-    using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
     using Core.Interfaces.Repositories;
@@ -57,33 +54,7 @@
         /// </summary>
         /// <param name="model">报文下载Model</param>
         /// <returns>报文（名称-内存流）</returns>
-        public KeyValuePair<string, MemoryStream> Download(DownloadViewModel model)
-        {
-            var traces = repository.GetByIds(model.Ids);
-
-            var files = new Dictionary<string, byte[]>();
-
-            foreach (var trace in traces)
-            {
-                foreach (var datagramFile in trace.DatagramFiles)
-                {
-                    var filename = datagramFile.GenerateFilename();
-                    var buffer = datagramFile.GetBuffer();
-
-                    files.Add(filename, buffer);
-                }
-            }
-
-            // 压缩打包
-            var compressionStream = FileHelper.Compression(files);
-            var compression = new KeyValuePair<string, MemoryStream>(
-                $"企业征信{DateTime.Now.ToString("yyyyMMdd")}.zip",
-                compressionStream);
-
-            return compression;
-        }
-
-        public KeyValuePair<string, byte[]> Downloads(DownloadViewModel model)
+        public KeyValuePair<string, byte[]> Download(DownloadViewModel model)
         {
             var traces = repository.GetByIds(model.Ids);
 
@@ -115,21 +86,30 @@
         /// <param name="traceIds">追踪标识集合</param>
         public void Generate(IEnumerable<Guid> traceIds)
         {
-            var traces = repository.GetByIds(traceIds);
-
-            // 移除已生成的报文
-            foreach (var trace in traces)
+            try
             {
-                trace.DatagramFiles.Clear();
+                var traces = repository.GetByIds(traceIds);
 
-                // 生成报文
-                var datagramFile = factory.Generate(trace);
+                // 移除已生成的报文
+                foreach (var trace in traces)
+                {
+                    trace.DatagramFiles.Clear();
 
-                // 添加文件
-                trace.AddDatagram(datagramFile);
+                    // 生成报文
+                    var datagramFile = factory.Generate(trace);
+
+                    // 添加文件
+                    trace.AddDatagram(datagramFile);
+                }
+
+                repository.Commit();
             }
+            catch (Exception ex)
+            {
 
-            repository.Commit();
+                throw;
+            }
+          
         }
 
         /// <summary>

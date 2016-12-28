@@ -4,8 +4,10 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Text.RegularExpressions;
+    using Infrastructure.ValidMethod;
+    using Data.Repositories;
+    using System.Data;
     #endregion
 
     #region 属性级别验证
@@ -254,6 +256,32 @@
             b &= Convert.ToDecimal(valueStr) >= 0;
 
             return b;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+    public class TaxpayerIdentifyAttribute : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            if (value == null)
+            {
+                return true;
+            }
+
+            var valueStr = value.ToString();
+
+            if (valueStr.Length != 15)
+            {
+                return false;
+            }
+
+            if (!valueStr.Substring(6).IsOrganizationCode())
+            {
+                return false;
+            }
+
+            return true;
         }
     }
     #endregion

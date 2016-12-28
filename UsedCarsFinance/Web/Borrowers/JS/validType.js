@@ -277,5 +277,27 @@
             return false;
         },
         message: '请输入整数、一位小数或两位小数！'
-    }
+    },
+    InCredit: {
+        validator: function (value) {
+            if (value.toString().length != 18)
+            {
+                return true;
+            }
+
+            // 不得使用大写英文字母“I”、“O”、“Z”、“S”和“V”
+            if (/[(I)|(O)|(Z)|(S)|(V)]/.test(value)) {
+                return false;
+            }
+
+            var regx = /^[0-9A-Z][0-9]{5}[0-9A-Z]{9}[0-9A-Z]/;
+
+            if (!regx.test(value.toString())) {
+                return false;
+            }
+
+            return true;
+        },
+        message: '机构信用代码错误！'
+    },
 });

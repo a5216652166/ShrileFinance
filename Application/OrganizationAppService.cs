@@ -45,6 +45,7 @@
                     Year = model.FinancialAffairs.Year,
                     TypeSubdivision = model.FinancialAffairs.TypeSubdivision,
                     AuditFirm = model.FinancialAffairs.AuditFirm,
+                    AuditorDate = model.FinancialAffairs.AuditorDate,
                     AuditorName = model.FinancialAffairs.AuditorName
                 };
 
@@ -83,19 +84,12 @@
             new UpdateBind().Bind(customer.Litigation, model.Litigation);
             new UpdateBind().Bind(customer.Managers, model.Managers);
 
-            //model.Managers.ToList().ForEach(m=> {
-            //    // 获取家族成员的id集合
-            //    var ids = (from t in m.FamilyMembers select t.Id.Value).ToList();
-
-            //    // 移除多余项
-            //    customer.Managers.ToList().Find(c => c.Id == m.Id).FamilyMembers.ToList().RemoveAll(f=>!ids.Contains(f.Id));
-            //});
-
             model.Managers.ToList().ForEach(m =>
             {
                 var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
                 if (familyMembersEntity != null)
                 {
+                    familyMembersEntity.FamilyMembers.Clear();
                     new UpdateBind().Bind(familyMembersEntity.FamilyMembers, m.FamilyMembers);
                 }
             });
@@ -106,6 +100,7 @@
                 var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
                 if (shareholders != null)
                 {
+                    shareholders.FamilyMembers.Clear();
                     new UpdateBind().Bind(shareholders.FamilyMembers, m.FamilyMembers);
                 }
             });

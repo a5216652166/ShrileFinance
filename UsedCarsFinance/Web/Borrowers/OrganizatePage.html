@@ -682,7 +682,7 @@
                                     机构信用代码：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="征信中心赋予该客户的18位机构信用代码">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[1,18]']" name="InstitutionCreditCode">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[18,18]','InCredit']" name="InstitutionCreditCode">
                             </div>
                             <div class="col-6">
                                 <label>
@@ -737,14 +737,6 @@
                                 </label>
                                 <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,20]']" name="TaxpayerIdentifyLandNumber">
                             </div>
-                            <div class="col-6">
-                                <label>
-                                    开户许可证核准号：
-                                    <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构开立基本户时人民银行颁发的14位开户许可证核准号">　</a>
-                                </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,20]']" name="NewaccountlicenseNumber">
-                            </div>
-
                         </div>
 
                         <div class="row" style="display:block" id="showSecton">

@@ -130,8 +130,8 @@
             }
 
             if (query.status == "0") {
-                // 禁用table
-                $("div#GuarantorContract_tb").remove();
+                // 禁用table 除“查看”外的按钮
+                $("div#GuarantorContract_tb a[id!=GuarantorContract_view]").remove();
             }
         }
 

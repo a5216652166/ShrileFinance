@@ -1,5 +1,7 @@
 ﻿namespace Data.Repositories
 {
+    using System.Data;
+    using System.Data.SqlClient;
     using Core.Entities.Customers.Enterprise;
     using Core.Interfaces.Repositories;
 
