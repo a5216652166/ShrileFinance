@@ -215,11 +215,24 @@ namespace BLL.BankCredit
         /// <param name="metaCode">数据元id</param>
         /// <param name="parentCode">父元素编号</param>
         /// <returns></returns>
-        public List<ComboInfo> ChangeType(string metaCode,string parentCode)
+        public List<ComboInfo> ChangeType(string metaCode, string parentCode)
         {
             return new DAL.BankCredit.DictionaryCodeMapper().GetChangeType(metaCode, parentCode);
         }
-        
+
+        public string GetParrent(string code)
+        {
+            string dtfirst = string.Empty;//省
+            string dtsecond = string.Empty;//市
+            string dtthird = string.Empty;//县（区）
+            // 获取区名称
+            dtthird = methodMapper.GetValue(code);
+            // 获取市名称
+            dtsecond = methodMapper.GetValue(code.Substring(0, 4) + "00");
+            dtfirst = methodMapper.GetValue(code.Substring(0, 2) + "0000");
+
+            return dtfirst + " " + dtsecond + " " + dtthird;
+        }
         /// <summary>
         /// 获取行政区划省级
         /// </summary>

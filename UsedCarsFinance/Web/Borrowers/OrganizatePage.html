@@ -101,8 +101,12 @@
                 // 加载大事件
                 FieldsetLoadDateFactory("BigEvent", "table", data.BigEvent);
             }
+            
         }
 
+        function OnLoadSuccess() {
+            ChooseRegisterAdministrativeDivision($("#RegisterAdministrativeDivision").combobox("getValue"));
+        }
         // 数据构建
         function BuidDate() {
             var data = new Object();
@@ -560,7 +564,6 @@
                     $("fieldset[name=" + name + "]").find("[id=" + name + "_dg" + "]").datagrid('loadData', data);
                 }
             }
-
             return data;
         }
 
@@ -664,6 +667,30 @@
             }
 
             return str.split(',');
+        }
+        function ChooseRegisterAdministrativeDivision(record) {
+            if (record != "null" && record != "") {
+                $.ajax({
+                    async: false,
+                    method: "GET",
+                    data: { code: record },
+                    url: "../api/Method/GetParrent",
+                    statusCode: {
+                        200: function (data) {
+                            $("#RegisterAdministrativeDivision").combobox("setText", data);
+                        }
+                    }
+                }) ;
+            }
+           
+            //if (record.children == null) {
+            //    var secondParent = $($(record.target.parentElement.parentElement).prev()).children("span:last").html();
+            //    var firstParent = $($(record.target.parentElement.parentElement.parentElement.parentElement).prev()).children("span:last").html();
+            //    var text = firstParent + " " + secondParent + " " + record.text
+            //}
+            //else {
+            //    return false;
+            //}
         }
     </script>
 </head>
@@ -823,13 +850,16 @@
                                     注册（登记）地行政区划：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="注册（登记）地址所在地行政区划">　</a>
                                 </label>
-                                <select class="easyui-combotree textbox-f" name="RegisterAdministrativeDivision" data-options="editable:false,required:false,value:'',
+                                <select class="easyui-combotree textbox-f" name="RegisterAdministrativeDivision" id="RegisterAdministrativeDivision" data-options="editable:false,required:false,value:'',
                                     async: false,
                                     method: 'GET',
                                     idField: 'id',
                                     textField: 'text',
                                     url: '../api/Method/GetAdministration',
-                                    onBeforeSelect:combotreeonBeforeSelect">
+                                    onBeforeSelect:combotreeonBeforeSelect,
+                                    onLoadSuccess:OnLoadSuccess,
+                                    onChange:ChooseRegisterAdministrativeDivision,
+                                       ">
                                 </select>
                             </div>
                             <div class="col-6">
@@ -858,7 +888,7 @@
                                     经营（业务）范围：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构登记注册证书或签发的批文上的经营范围、职责、宗旨和业务范围等">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,400]']" name="BusinessScope">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,400]'],multiline:true,height:60" name="BusinessScope">
                             </div>
                         </div>
 
@@ -1045,7 +1075,7 @@
                                 <label>
                                     办公（生产、经营）地址：<a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构的办公地址或生产、经营地址，包括所属行政区划名称，乡（镇）、村、街名称和门牌号，如以上三类地址都有，请填写常用的通讯地址">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,80]']" name="OfficeAddress">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,80]'],multiline:true,height:60" name="OfficeAddress">
                             </div>
                         </div>
 

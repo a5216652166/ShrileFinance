@@ -27,6 +27,22 @@ namespace DAL.BankCredit
            return DHelper.ExecuteDataTable(comm);
        }
 
+        public string GetValue(string code)
+        {
+            string name = string.Empty;
+            SqlCommand comm = DHelper.GetSqlCommand(@"
+                SELECT ProvincesOrCity FROM BANK_Administration WHERE Code =@code
+            ");
+
+            DHelper.AddInParameter(comm, "@code", SqlDbType.NVarChar, code);
+            DataTable dt = DHelper.ExecuteDataTable(comm);
+            if (dt.Rows.Count > 0)
+            {
+                name = dt.Rows[0]["ProvincesOrCity"].ToString();
+            }
+            return name;
+        }
+
        /// <summary>
        /// 获取行政区划第二级
        /// </summary>
