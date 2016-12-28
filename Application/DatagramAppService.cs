@@ -104,12 +104,10 @@
 
                 repository.Commit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
                 throw;
             }
-          
         }
 
         /// <summary>
