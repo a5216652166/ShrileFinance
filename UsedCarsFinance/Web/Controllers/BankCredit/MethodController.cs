@@ -45,6 +45,15 @@ namespace Web.Controllers.BankCredit
         }
 
         /// <summary>
+        /// 获取行政区划父级
+        /// </summary>
+        /// <returns></returns>
+        public string GetParrent(string code)
+        {
+            return _method.GetParrent(code);
+        }
+
+        /// <summary>
         /// 根据数据段规则ID查询字典下拉框
         /// </summary>
         /// yand    16.07.07
