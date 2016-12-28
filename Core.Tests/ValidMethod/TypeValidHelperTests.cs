@@ -10,7 +10,7 @@ namespace Infrastructure.ValidMethod.Tests
         {
             var organizationCode = "76521929-0";
 
-            var result = organizationCode.IsOrganizationCode();
+            var result = TypeValidHelper.IsOrganizationCode(organizationCode);
 
             Assert.IsTrue(result);
         }

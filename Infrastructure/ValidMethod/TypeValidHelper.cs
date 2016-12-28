@@ -89,7 +89,7 @@
                 var c9 = 0;
                 for (var index = 0; index < w.Length; index++)
                 {
-                    c9 += value[index].Mary36ToMary10() * w[index];
+                    c9 += Mary36ToMary10(value[index]) * w[index];
                 }
 
                 c9 = 11 - (c9 % 11);
@@ -106,7 +106,7 @@
                 else
                 {
                     // 三十六进制转十进制后进行校验
-                    regResult = value[8].Mary36ToMary10() == c9;
+                    regResult = Mary36ToMary10(value[8]) == c9;
                 }
             }
 
