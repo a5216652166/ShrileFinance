@@ -175,7 +175,7 @@
     {
         public override bool IsValid(object value)
         {
-            if (value == null && value.ToString().Length!=15)
+            if (value == null || value.ToString().Length!=15)
             {
                 return true;
             }
