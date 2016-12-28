@@ -67,12 +67,6 @@
 
             //加载 高级主管、重要股东、主要关联企业
             $(["Managers", "Shareholders", "AssociatedEnterprises"]).each(function (index, item) {
-                if (item == 'Managers') {
-                    for (var k in data.Managers) {
-                        data.Managers[k].Type = StringToArray(data.Managers[k].Type);
-                    }
-                }
-                
                 FieldsetLoadDateFactory(item, "table", data[item]);
             });
 
@@ -127,13 +121,6 @@
 
             $(['Managers', 'Shareholders', 'AssociatedEnterprises']).each(function (i, e) {
                 data[e] = FieldsetSerializeFactory(e, 'table');
-
-                if (e == 'Managers') {
-                    for (var k in data.Managers)
-                    {
-                        data.Managers[k].Type = ArrayToString(data.Managers[k].Type);
-                    }
-                }
             });
 
             if ($("div#showSecton").find("input[id=TF_I]")[0].checked == true) {
@@ -656,13 +643,18 @@
         }
 
         // 数组转字符串
-        function ArrayToString(array)
+        function ArrayToString(arr)
         {
-            if (array == null)
+            if (arr == null)
             {
                 return '';
             }
-            return array.join(',');
+
+            if (Object.prototype.toString.call(arr) === '[object Array]') {
+                return arr.join(',');
+            }
+
+            return arr;
         }
 
         // 字符串转数组
@@ -670,6 +662,7 @@
             if (str == null) {
                 return [];
             }
+
             return str.split(',');
         }
     </script>
