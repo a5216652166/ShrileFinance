@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>征信报文管理</title>
+    <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+    <script src="../Scripts/jquery/jquery.js"></script>
+    <script src="../Scripts/easyui/jquery.easyui.js"></script>
+    <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="../Scripts/usedcars.js"></script>
+    <meta charset="utf-8" />
+    <script>
+        var editIndex = undefined;
+
+        uc.grid = new UCGrid("#dg");
+
+        function BeforeLoad(param) {
+            param.search = $("#Name").textbox("getValue");
+            param.status = $("#Status").textbox("getValue");
+
+            if ($("#BeginTime").datebox("isValid")) {
+                param.beginTime = $("#BeginTime").datebox("getValue");
+            }
+
+            if ($("#EndTime").datebox("isValid")) {
+                param.endTime = $("#EndTime").datebox("getValue");
+            }
+        }
+
+        function BindColor(index, row) {
+            if (row.StatusDesc != "待生成") {
+                return 'background-color:#f0fffa;color:#333';
+            }
+        }
+
+        // 键盘enter键
+        document.onkeydown = function (event) {
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 13) { // enter 键
+                // 只是在datagrid中回车时候回去datagrid的ID
+                var id = $(e.target).parents(".panel.datagrid").find(".easyui-datagrid").attr("id")
+                // 防止在其他文本框按enter建时候报错
+                if (id != undefined) {
+                    accept(id);
+                }
+                // 按回车保存修改结果
+                Save();
+            }
+        };
+
+        $.extend($.fn.datagrid.methods, {
+            getEditingRowIndexs: function (jq) {
+                var id = $(jq).attr("id");
+                var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
+                var indexs = [];
+                rows.each(function (i, rows) {
+                    accept(id)
+                });
+            }
+        });
+
+        // 双击编辑行
+        function onEditor(index, field, value) {
+            $('#dg').datagrid('getEditingRowIndexs');
+            if (editIndex != index) {
+                var row = $('#' + this.id).datagrid("getChecked");
+                //不可编辑状态
+                if (row["IsEdit"] == false) {
+                    $('#' + this.id).datagrid('selectRow', editIndex);
+                }
+                else {
+                    if (endEditing(this.id)) {
+                        $('#' + this.id).datagrid('selectRow', index)
+                                .datagrid('beginEdit', index);
+                        var ed = $('#' + this.id).datagrid('getEditor', { index: index, field: field });
+                        if (ed != null) {
+                            $(ed.target).focus();
+                            editIndex = index;
+                        }
+                    } else {
+                        $('#' + this.id).datagrid('selectRow', editIndex);
+                    }
+                }
+            }
+        }
+
+        // 结束编辑状态
+        function endEditing(id) {
+            if (editIndex == undefined) { return true }
+
+            if ($('#' + id).datagrid('validateRow', editIndex)) {
+                var ed = $('#' + id).datagrid('getEditors', editIndex);
+                var name = $(ed[0].target).val();
+                $('#' + id).datagrid('getRows')[editIndex]['Name'] = name;
+                $('#' + id).datagrid('endEdit', editIndex);
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // 结束编辑状态后保存数据在datagrid
+        function accept(id) {
+            if (endEditing(id)) {
+                $('#' + id).datagrid('acceptChanges');
+            }
+        }
+
+        // 保存修改后的名称
+        function Save() {
+            var row = $("#dg").datagrid("getSelected");
+
+            if (row == undefined) {
+                $.messager.show({ msg: "请选择需要修改的跟踪记录" });
+            }
+            else {
+                accept("dg");
+
+                $.ajax({
+                    async: false,
+                    method: "POST",
+                    data: { Id: row.Id, Name: row.Name },
+                    url: "../api/Datagram/ModifyName",
+                    statusCode: {
+                        200: function (data) {
+                            $.messager.show({ msg: "修改成功" });
+                        },
+                        400: function (data) {
+                            $.messager.show({ msg: data.responseJSON.Message });
+                        }
+                    }
+                });
+
+                $("#mod").linkbutton("enable");
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        // 选择昨日和漏发报文
+        function changeYesterday() {
+            $($("table#dg").datagrid("getRows")).each(function (i, e) {
+                var date = new Date();
+                date.setDate(date.getDate() - 1);
+
+                // 昨日报文
+                var yesterday = date.toLocaleDateString().replace('/', '-').replace('/', '-');
+
+                if (e.DateCreated.substr(0, 10) == yesterday) {
+                    $("table#dg").datagrid('checkRow',i);
+                }
+
+                // 昨日之前漏发送报文
+                var dd = new Date();
+                var today = dd.toLocaleDateString().replace('/', '-').replace('/', '-');
+                if ($.inArray(e.DateCreated.substr(0, 10), [yesterday, today]) == -1) {
+                    if ($.inArray(e.StatusDesc, ["待生成", "待发送"]) != -1) {
+                        $("table#dg").datagrid('checkRow', i);
+                    }
+                }
+            });
+        }
+
+        // 下载
+        function Download() {
+            $("#download input").remove();
+            var rows = $("table#dg").datagrid("getChecked");
+
+            if (rows == undefined || rows.length == 0) {
+                $.messager.show({ msg: "请选择需要下载的跟踪记录" });
+            }
+            else {
+                // 所有勾选的报文跟踪ID
+                $(rows).each(function (i, e) {
+                    $("<input>", { name: "Ids", value: e.Id }).appendTo("#downloadForm");
+                });
+
+                $("#downloadForm").submit();
+
+                PageReload();
+            }
+        }
+
+        // 重生成
+        function Rebuid() {
+            var Ids = [];
+            $($("table#dg").datagrid("getSelected")).each(function (i, e) {
+                Ids.push(e.Id);
+            });
+
+            if (Ids.length == 0)
+            {
+                $.messager.show({ msg: "请选择需要生成的跟踪记录" });
+                return false;
+            }
+
+            $.ajax({
+                async: false,
+                method: "POST",
+                data: { Ids: Ids },
+                url: "../api/Datagram/Rebuid",
+                statusCode: {
+                    200: function (data) {
+                        $.messager.show({ msg: "生成成功" });
+                    },
+                    400: function (data) {
+                        $.messager.show({ msg: data.responseJSON.Message });
+                    }
+                }
+            });
+
+            PageReload();
+        }
+
+        function PageReload()
+        {
+            $("input[textboxname=Name]").textbox("setValue", "");
+            $("input[textboxname=BeginTime]").datebox("setValue", "");
+            $("input[textboxname=EndTime]").datebox("setValue", "");
+            $("select[textboxname=Status]").combobox("select", "");
+
+            $("a.easyui-linkbutton").linkbutton("disable");
+            $("a.easyui-linkbutton").linkbutton("enable");
+            $("table#dg").datagrid('reload');
+        }
+
+        function Search() {
+            uc.grid.Reload();
+        }
+    </script>
+</head>
+<body>
+    <table id="dg" class="easyui-datagrid" data-options="height:630,toolbar:'#tb',rownumbers:true,
+        onDblClickCell:onEditor,
+        rowStyler:BindColor,
+        pagination: true,
+        pageSize: 20,
+        pageList: [10,20,30,40,50],
+        method: 'GET',
+        url: '../api/Datagram/GetPageList',
+        loadMsg: '正在加载，请稍候...',
+        onBeforeLoad: BeforeLoad
+        ">
+        <thead>
+            <tr>
+                <th data-options="field:'ck',checkbox:true"></th>
+                <th data-options="field:'Id',hidden:true">Id</th>
+                <th data-options="field:'Name',width:450,align:'left',editor:{type:'validatebox'}">名称</th>
+                <th data-options="field:'TypeDesc',width:180,align:'left'">操作类型</th>
+                <th data-options="field:'StatusDesc',width:180,align:'left'">报文状态</th>
+                <th data-options="field:'DateCreated',width:180,align:'left'">跟踪日期</th>
+                <th data-options="field:'SpecialDate',width:180,align:'left'">业务发生日期</th>
+                <th data-options="field:'IsEdit',width:180,align:'left',hidden:true">是否可编辑</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb">
+        <div>
+            <label for="Name">名称:</label>
+            <input id="Name" name="Name" class="easyui-textbox" data-options="prompt:'请输入名称'" />
+            &nbsp;&nbsp;
+            <label for="BeginTime">业务发生日期 从:</label>
+            <input id="BeginTime" name="BeginTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
+            <label for="EndTime">至:</label>
+            <input id="EndTime" name="EndTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
+            &nbsp;&nbsp;
+            <label for="Status">类型:</label>
+            <select id="Status" name="Status" class="easyui-combobox" data-options="width:120,editable:false">
+                <option value="">全部</option>
+                <option value="0">待生成</option>
+                <option value="1">待发送</option>
+                <option value="2">已发送</option>
+            </select>
+            &nbsp;&nbsp;
+            <a id="search" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',onClick:Search,plain:true">搜索</a>
+            <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:PageReload,iconCls:'icon-reload',plain:true">重置</a>
+        </div>
+        
+        <div>
+            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
+            <a id="changeYesterday" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:changeYesterday">选择昨日</a>
+            <a id="downloadFile" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Download">下载</a>
+            <a id="Rebuid" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Rebuid">重生成</a>
+        </div>
+    </div>
+
+    <div>
+        <form id="downloadForm" action="../api/Datagram/Download" method="post" style="display:none"></form>
+    </div>
+</body>
+</html>

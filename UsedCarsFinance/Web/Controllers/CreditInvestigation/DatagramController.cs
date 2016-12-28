@@ -53,6 +53,14 @@
         }
 
         [HttpPost]
+        public IHttpActionResult Rebuid(GenerateViewModel traceIds)
+        {
+            messageAppService.Rebuid(traceIds.Ids);
+
+            return Ok();
+        }
+
+        [HttpPost]
         public HttpResponseMessage Download(DownloadViewModel ids)
         {
             var file = messageAppService.Download(ids);
