@@ -10,7 +10,6 @@
 
         [Required]
         [Display(Name = "名称")]
-        [StringLength(20)]
         public string Name { get; set; }
     }
 }
