@@ -181,6 +181,32 @@
         }
 
         /// <summary>
+        /// 金融机构代码（n位，n>1）
+        /// </summary>
+        /// <param name="value">值</param>
+        /// <returns>是/否</returns>
+        public static bool IsFinanceInstituteCode(string value)
+        {
+            if (value == null || value.Length <= 1 || new Regex(@"[A-Za-z0-9]{" + value.Length + "}$").IsMatch(value) == false)
+            {
+                return false;
+            }
+
+            // value经算法计算后得到的值
+            var validValue = 10;
+
+            // 计算validValue
+            for (int i = 0; i < value.Length - 1; i++)
+            {
+                var temp = (Convert.ToInt32(value[i].ToString()) + validValue) % 10;
+
+                validValue = temp == 0 ? 9 : (temp * 2) % 11;
+            }
+
+            return (11 - validValue) % 11 == Convert.ToInt32(value[value.Length - 1].ToString());
+        }
+
+        /// <summary>
         /// 36进制转十进制
         /// </summary>
         /// <param name="value">值</param>

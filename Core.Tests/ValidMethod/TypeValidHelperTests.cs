@@ -1,5 +1,4 @@
-﻿using Infrastructure.ValidMethod;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Infrastructure.ValidMethod.Tests
 {
@@ -19,11 +18,21 @@ namespace Infrastructure.ValidMethod.Tests
         [TestMethod()]
         public void LulnMethodTest()
         {
-            var luln = "33207991216";
+            var luln = "7992739871";
 
             var result = luln.LulnMethod();
 
             Assert.IsTrue(result.Key);
+        }
+
+        [TestMethod()]
+        public void IsFinanceInstituteCodeTest()
+        {
+            var value = "33207991216";
+
+            var result = TypeValidHelper.IsFinanceInstituteCode(value);
+
+            Assert.IsTrue(result);
         }
     }
 }
