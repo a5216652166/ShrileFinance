@@ -5,7 +5,7 @@
     /// <summary>
     /// 事业单位资产负债表信息记录
     /// </summary>
-    public class InstitutionLiabilitiesParagraph : AbsSegment
+    public class InstitutionLiabilitiesParagraph : Segment
     {
         public InstitutionLiabilitiesParagraph(InstitutionLiabilities institutionLiabilities)
         {

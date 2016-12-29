@@ -217,11 +217,11 @@
         /// </summary>
         /// <param name="limit">贷款金额</param>
         /// <returns></returns>
-        public bool CanApplyLoan(decimal limit)
-        {
-            CreditContract credit = new CreditContract();
-            return credit.CanApplyLoan(limit);
-        }
+        ////public bool CanApplyLoan(decimal limit)
+        ////{
+        ////    CreditContract credit = new CreditContract();
+        ////    return credit.CanApplyLoan(limit);
+        ////}
 
         /// <summary>
         /// 终止授信合同

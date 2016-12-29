@@ -5,7 +5,7 @@
     /// <summary>
     /// 欠息数据段
     /// </summary>
-    public class DebitInterestSegment : AbsSegment
+    public class DebitInterestSegment : Segment
     {
         public DebitInterestSegment(Loan.PaymentHistory payment) : base()
         {

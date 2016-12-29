@@ -35,9 +35,9 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        public IEnumerable<AbsDatagramFile> Generate(Trace trace)
+        public IEnumerable<DatagramFile> Generate(Trace trace)
         {
-            var datagramFiles = new List<AbsDatagramFile>();
+            var datagramFiles = new List<DatagramFile>();
 
             switch (trace.Type)
             {
@@ -87,7 +87,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile CreateOrganization(Trace trace)
+        private DatagramFile CreateOrganization(Trace trace)
         {
             var organization = organizationRepository.Get(trace.ReferenceId);
 
@@ -110,7 +110,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile CreateBorrower(Trace trace)
+        private DatagramFile CreateBorrower(Trace trace)
         {
             var organization = organizationRepository.Get(trace.ReferenceId);
 
@@ -165,7 +165,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile CreateContract(Trace trace)
+        private DatagramFile CreateContract(Trace trace)
         {
             var credit = creditRepository.Get(trace.ReferenceId);
 
@@ -217,7 +217,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile ModifyContract(Trace trace)
+        private DatagramFile ModifyContract(Trace trace)
         {
             var credit = creditRepository.Get(trace.ReferenceId);
 
@@ -234,7 +234,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile StopContract(Trace trace)
+        private DatagramFile StopContract(Trace trace)
         {
             var credit = creditRepository.Get(trace.ReferenceId);
 
@@ -251,7 +251,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile CreateLoan(Trace trace)
+        private DatagramFile CreateLoan(Trace trace)
         {
             var loan = loanRepository.Get(trace.ReferenceId);
             var credit = creditRepository.Get(loan.CreditId);
@@ -270,7 +270,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile CreatePayment(Trace trace)
+        private DatagramFile CreatePayment(Trace trace)
         {
             var payment = paymentRepository.Get(trace.ReferenceId);
             var loan = loanRepository.Get(payment.LoanId);
@@ -290,7 +290,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile AdjustLoan(Trace trace)
+        private DatagramFile AdjustLoan(Trace trace)
         {
             var loan = loanRepository.Get(trace.ReferenceId);
             var credit = creditRepository.Get(loan.CreditId);
@@ -308,7 +308,7 @@
         /// </summary>
         /// <param name="trace">跟踪记录</param>
         /// <returns></returns>
-        private AbsDatagramFile DebitInterest(Trace trace)
+        private DatagramFile DebitInterest(Trace trace)
         {
             var payment = paymentRepository.Get(trace.ReferenceId);
             var loan = loanRepository.Get(payment.LoanId);

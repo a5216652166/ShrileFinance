@@ -6,7 +6,7 @@
     /// <summary>
     /// 贷款业务信息采集报文
     /// </summary>
-    public class LoanBusinessInfoDatagram : AbsDatagram
+    public class LoanBusinessInfoDatagram : Datagram
     {
         public LoanBusinessInfoDatagram() : base()
         {

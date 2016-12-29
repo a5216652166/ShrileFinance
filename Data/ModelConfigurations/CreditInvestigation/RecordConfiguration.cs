@@ -4,7 +4,7 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.CreditInvestigation.Record;
 
-    public class RecordConfiguration : EntityTypeConfiguration<AbsRecord>
+    public class RecordConfiguration : EntityTypeConfiguration<Record>
     {
         public RecordConfiguration()
         {

@@ -9,11 +9,11 @@
     /// <summary>
     /// 贷款业务合同信息记录
     /// </summary>
-    public class LoanContractInfoRecord : AbsRecord
+    public class LoanContractInfoRecord : Record
     {
         public LoanContractInfoRecord(CreditContract credit)
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new CreditBaseSegment(Type, credit, credit.EffectiveDate),

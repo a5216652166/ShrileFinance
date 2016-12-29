@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using DatagramFile;
     using Exceptions;
     using Interfaces;
 
@@ -83,13 +82,13 @@
         /// <summary>
         /// 报文文件
         /// </summary>
-        public virtual ICollection<AbsDatagramFile> DatagramFiles { get; private set; }
+        public virtual ICollection<DatagramFile.DatagramFile> DatagramFiles { get; private set; }
 
         /// <summary>
         /// 添加报文文件
         /// </summary>
         /// <param name="files">报文文件</param>
-        public void AddDatagram(IEnumerable<AbsDatagramFile> files)
+        public void AddDatagram(IEnumerable<DatagramFile.DatagramFile> files)
         {
             if (Status != TraceStatusEmum.待生成 && Status != TraceStatusEmum.待发送)
             {

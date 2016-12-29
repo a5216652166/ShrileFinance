@@ -148,14 +148,15 @@
         /// 可否申请贷款
         /// </summary>
         /// <param name="limit">金额</param>
+        /// <param name="loanDate">放款发生日期</param>
         /// <returns></returns>
-        public bool CanApplyLoan(decimal limit)
+        public bool CanApplyLoan(decimal limit, DateTime loanDate)
         {
             var result = true;
 
             result &= CanCredit(limit);
-            result &= IsEffectiveDate();
-            result &= IsEffective();
+            result &= IsEffectiveDate(loanDate);
+            result &= IsEffective(loanDate);
             return result;
         }
 
@@ -194,13 +195,14 @@
         /// <summary>
         /// 合同是否在有效期内
         /// </summary>
+        /// <param name="loanDate">放款发生日期</param>
         /// <returns></returns>
-        private bool IsEffectiveDate()
+        private bool IsEffectiveDate(DateTime loanDate)
         {
             var today = DateTime.Now.Date;
 
-            return (EffectiveDate <= today)
-                && (today <= ExpirationDate);
+            return (EffectiveDate <= loanDate)
+                && (loanDate <= ExpirationDate);
         }
 
         /// <summary>
@@ -222,13 +224,14 @@
         /// <summary>
         /// 授信协议是否有效
         /// </summary>
+        /// <param name="loanDate">放款发生日期</param>
         /// <returns></returns>
-        private bool IsEffective()
+        private bool IsEffective(DateTime loanDate)
         {
             var result = true;
 
             // 不在有效期内并且状态为失效
-            if (IsEffectiveDate() == false && IsEffectiveContract() == false)
+            if (IsEffectiveDate(loanDate) == false && IsEffectiveContract() == false)
             {
                 result = false;
             }

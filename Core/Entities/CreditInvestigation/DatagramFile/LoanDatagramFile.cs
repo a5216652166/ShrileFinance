@@ -7,11 +7,11 @@
     /// <summary>
     /// 信贷业务信息文件
     /// </summary>
-    public class LoanDatagramFile : AbsDatagramFile
+    public class LoanDatagramFile : DatagramFile
     {
         public LoanDatagramFile(int serialNumber) : base(serialNumber)
         {
-            Datagrams = new List<AbsDatagram>
+            Datagrams = new List<Datagram>
             {
                 // 贷款业务信息采集报文
                 new LoanBusinessInfoDatagram(),

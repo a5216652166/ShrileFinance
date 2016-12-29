@@ -4,7 +4,7 @@
     using AutoMapper;
     using Customers.Enterprise;
 
-    public class FamilySegment : AbsSegment
+    public class FamilySegment : Segment
     {
         public FamilySegment(Manager manager, FamilyMember familyMember)
         {

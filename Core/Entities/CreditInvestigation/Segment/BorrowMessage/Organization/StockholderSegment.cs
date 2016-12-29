@@ -7,7 +7,7 @@
     /// <summary>
     /// 重要股东
     /// </summary>
-    public class StockholderSegment : AbsSegment
+    public class StockholderSegment : Segment
     {
         public StockholderSegment(Stockholder stockholder)
         {

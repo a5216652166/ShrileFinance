@@ -9,12 +9,12 @@
     /// <summary>
     /// 贷款业务还款信息记录
     /// </summary>
-    public class LoanRepayInfoRecord : AbsRecord
+    public class LoanRepayInfoRecord : Record
     {
         public LoanRepayInfoRecord(CreditContract credit, Loan loan, PaymentHistory payment)
         {
             int time = loan.Payments.ToList().FindIndex(m => m.Id == payment.Id) + 1;
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new CreditBaseSegment(Type, credit, payment.DatePayment),

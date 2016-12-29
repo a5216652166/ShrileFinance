@@ -3,7 +3,7 @@
     /// <summary>
     /// 未使用信息采集报文
     /// </summary>
-    public class UnusedDatagram : AbsDatagram
+    public class UnusedDatagram : Datagram
     {
         public UnusedDatagram(DatagramTypeEnum type)
         {

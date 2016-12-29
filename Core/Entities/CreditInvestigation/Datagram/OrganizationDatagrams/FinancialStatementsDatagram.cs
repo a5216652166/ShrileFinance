@@ -6,7 +6,7 @@
     /// <summary>
     /// 财务报表信息报文
     /// </summary>
-    public class FinancialStatementsDatagram : AbsDatagram
+    public class FinancialStatementsDatagram : Datagram
     {
         public FinancialStatementsDatagram() : base()
         {

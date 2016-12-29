@@ -7,9 +7,9 @@
     using CreditInvestigation;
     using Exceptions;
 
-    public abstract class AbsSegment : Entity
+    public abstract class Segment : Entity
     {
-        protected AbsSegment()
+        protected Segment()
         {
         }
 

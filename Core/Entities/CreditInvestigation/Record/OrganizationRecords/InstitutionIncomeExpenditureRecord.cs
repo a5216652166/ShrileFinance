@@ -9,13 +9,13 @@
     /// <summary>
     /// 事业单位收入支出表信息记录
     /// </summary>
-    public class InstitutionIncomeExpenditureRecord : AbsRecord
+    public class InstitutionIncomeExpenditureRecord : Record
     {
         public InstitutionIncomeExpenditureRecord(Organization organization, InstitutionIncomeExpenditure item) : base()
         {
             var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString(), Type);
 
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                baseParagraph,

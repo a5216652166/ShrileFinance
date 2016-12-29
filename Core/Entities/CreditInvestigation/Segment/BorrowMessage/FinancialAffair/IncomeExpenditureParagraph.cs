@@ -5,7 +5,7 @@
     /// <summary>
     /// 事业单位收入支出表信息记录
     /// </summary>
-    public class IncomeExpenditureParagraph : AbsSegment
+    public class IncomeExpenditureParagraph : Segment
     {
         public IncomeExpenditureParagraph(InstitutionIncomeExpenditure incomeExpenditure)
         {

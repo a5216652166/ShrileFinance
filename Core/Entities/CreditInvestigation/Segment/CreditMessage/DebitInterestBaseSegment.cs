@@ -6,7 +6,7 @@
     /// <summary>
     /// 欠息基础段
     /// </summary>
-    public class DebitInterestBaseSegment : AbsSegment
+    public class DebitInterestBaseSegment : Segment
     {
         public DebitInterestBaseSegment(string loanCardCode)
         {
@@ -36,7 +36,7 @@
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true, Describe = "填写数据发生机构的代码，细化到县（区）级机构")]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FINANCIALORGANIZATIONCODE; }
+            get { return DatagramFile.FINANCIALORGANIZATIONCODE; }
         }
 
         /// <summary>

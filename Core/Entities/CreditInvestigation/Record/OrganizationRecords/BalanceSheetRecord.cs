@@ -9,13 +9,13 @@
     /// <summary>
     /// 2007版资产负债表信息记录
     /// </summary>
-    public class BalanceSheetRecord : AbsRecord
+    public class BalanceSheetRecord : Record
     {
         public BalanceSheetRecord(Organization organization, Liabilities item)
         {
             var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString(), Type);
 
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 baseParagraph,

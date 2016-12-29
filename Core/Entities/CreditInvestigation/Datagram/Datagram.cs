@@ -30,11 +30,11 @@
     /// <summary>
     /// 报文抽象类
     /// </summary>
-    public abstract class AbsDatagram : Entity
+    public abstract class Datagram : Entity
     {
-        protected AbsDatagram()
+        protected Datagram()
         {
-            Records = new HashSet<AbsRecord>();
+            Records = new HashSet<Record>();
             DateCreated = DateTime.Now;
         }
 
@@ -67,7 +67,7 @@
         /// </summary>
         public string FinancialOrganizationCode
         {
-            get { return AbsDatagramFile.FINANCIALORGANIZATIONCODE; }
+            get { return DatagramFile.FINANCIALORGANIZATIONCODE; }
         }
 
         /// <summary>
@@ -96,14 +96,14 @@
         /// <summary>
         /// 信息记录集合
         /// </summary>
-        public virtual ICollection<AbsRecord> Records { get; protected set; }
+        public virtual ICollection<Record> Records { get; protected set; }
 
         /// <summary>
         /// 添加信息记录
         /// </summary>
         /// <param name="record">信息记录</param>
         /// <returns>流式 API</returns>
-        public virtual AbsDatagram AddRecord(AbsRecord record)
+        public virtual Datagram AddRecord(Record record)
         {
             Records.Add(record);
 

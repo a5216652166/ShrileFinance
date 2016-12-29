@@ -4,7 +4,7 @@
     using AutoMapper;
     using Loan;
 
-    public class CreditContractSegment : AbsSegment
+    public class CreditContractSegment : Segment
     {
         public CreditContractSegment(CreditContract credit)
         {

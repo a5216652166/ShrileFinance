@@ -9,13 +9,13 @@
     /// <summary>
     /// 2007版现金流量表信息记录
     /// </summary>
-    public class CashFlowRecord : AbsRecord
+    public class CashFlowRecord : Record
     {
         public CashFlowRecord(Organization organization, CashFlow item) : base()
         {
             var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString(), Type);
 
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 baseParagraph,

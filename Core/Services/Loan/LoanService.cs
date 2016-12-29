@@ -16,7 +16,7 @@
         /// <param name="credit">授信合同</param>
         public void Loan(Loan loan, CreditContract credit)
         {
-            if (!credit.CanApplyLoan(loan.Principle))
+            if (!credit.CanApplyLoan(loan.Principle, loan.SpecialDate))
             {
                 throw new InvalidOperationAppException("申请贷款失败, 请确认授信合同是否有效或授信余额是否充足.");
             }

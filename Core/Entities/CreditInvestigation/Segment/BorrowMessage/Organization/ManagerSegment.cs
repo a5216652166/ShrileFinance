@@ -7,7 +7,7 @@
     /// <summary>
     /// 高管
     /// </summary>
-    public class ManagerSegment : AbsSegment
+    public class ManagerSegment : Segment
     {
         public ManagerSegment(Manager manager)
         {
