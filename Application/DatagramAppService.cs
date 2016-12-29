@@ -76,7 +76,7 @@
             var compression = new KeyValuePair<string, byte[]>(
                 $"企业征信{DateTime.Now.ToString("yyyyMMdd")}.zip",
                 compressionBytes);
-            
+
             return compression;
         }
 
@@ -86,30 +86,21 @@
         /// <param name="traceIds">追踪标识集合</param>
         public void Generate(IEnumerable<Guid> traceIds)
         {
-            try
+            var traces = repository.GetByIds(traceIds);
+
+            // 移除已生成的报文
+            foreach (var trace in traces)
             {
-                var traces = repository.GetByIds(traceIds);
+                trace.DatagramFiles.Clear();
 
-                // 移除已生成的报文
-                foreach (var trace in traces)
-                {
-                    trace.DatagramFiles.Clear();
+                // 生成报文
+                var datagramFile = factory.Generate(trace);
 
-                    // 生成报文
-                    var datagramFile = factory.Generate(trace);
-
-                    // 添加文件
-                    trace.AddDatagram(datagramFile);
-                }
-
-                repository.Commit();
+                // 添加文件
+                trace.AddDatagram(datagramFile);
             }
-            catch (Exception ex)
-            {
 
-                throw;
-            }
-          
+            repository.Commit();
         }
 
         /// <summary>
