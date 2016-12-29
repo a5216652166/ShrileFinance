@@ -1,18 +1,14 @@
 ﻿namespace Web.Controllers.CreditInvestigation
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Web.Http;
     using Application;
     using Application.ViewModels;
     using Application.ViewModels.CreditInvesitigation.TraceViewModels;
     using Core.Entities.CreditInvestigation;
     using global::Infrastructure.Http;
-    using global::Infrastructure.ValidMethod;
 
     public class DatagramController : ApiController
     {
@@ -73,14 +69,6 @@
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NoContent, ex);
             }
-        }
-
-        public IHttpActionResult Test()
-        {
-            var luln = "33207991216";
-            luln.LulnMethod();
-
-            return Ok();
         }
     }
 }
