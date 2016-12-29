@@ -66,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="ValidMethod\AlgorithmHelperTests.cs" />
     <Compile Include="ValidMethod\TypeValidHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
