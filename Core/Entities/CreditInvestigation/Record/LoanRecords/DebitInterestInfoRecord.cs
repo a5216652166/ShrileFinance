@@ -9,11 +9,11 @@
     /// <summary>
     /// 欠息信息记录
     /// </summary>
-    public class DebitInterestInfoRecord : AbsRecord
+    public class DebitInterestInfoRecord : Record
     {
         public DebitInterestInfoRecord(CreditContract credit, PaymentHistory payment) : base()
         {
-            Segments = new List<AbsSegment>() {
+            Segments = new List<Segment>() {
                 // 基础段
                 new DebitInterestBaseSegment(credit.Organization.LoanCardCode),
 

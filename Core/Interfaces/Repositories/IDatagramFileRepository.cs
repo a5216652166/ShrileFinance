@@ -2,7 +2,7 @@
 {
     using Entities.CreditInvestigation.DatagramFile;
 
-    public interface IDatagramFileRepository : IRepository<AbsDatagramFile>
+    public interface IDatagramFileRepository : IRepository<DatagramFile>
     {
     }
 }

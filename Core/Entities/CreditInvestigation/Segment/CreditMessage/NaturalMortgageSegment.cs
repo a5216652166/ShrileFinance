@@ -3,7 +3,7 @@
     using AutoMapper;
     using Core.Entities.Loan;
 
-    public class NaturalMortgageSegment : AbsSegment
+    public class NaturalMortgageSegment : Segment
     {
         public NaturalMortgageSegment(GuarantyContractMortgage mortgage)
         {

@@ -32,9 +32,9 @@
         自然人质押合同信息记录 = 34,
     }
 
-    public abstract class AbsRecord : Entity
+    public abstract class Record : Entity
     {
-        protected AbsRecord()
+        protected Record()
         {
         }
 
@@ -51,7 +51,7 @@
         /// <summary>
         /// 段集合
         /// </summary>
-        public virtual ICollection<AbsSegment> Segments { get; protected set; }
+        public virtual ICollection<Segment> Segments { get; protected set; }
 
         public void Packaging(StringBuilder builder)
         {
@@ -68,29 +68,24 @@
         /// <returns></returns>
         protected int GetLength()
         {
-            int length = 0;
-
             // 新建一个字典存放反射过的类的长度
-            Dictionary<string, int> dict = new Dictionary<string, int>();
+            var dict = new Dictionary<string, int>();
+            var sumLength = 0;
 
             foreach (var segment in Segments)
             {
-                var className = segment.GetType().Name;
+                var segmentName = segment.GetType().Name;
 
                 // 如果不存在指定的键
-                if (!dict.ContainsKey(className))
+                if (!dict.ContainsKey(segmentName))
                 {
-                    var len = segment.GetLength();
-                    dict.Add(className, len);
-                    length += len;
+                    dict.Add(segmentName, segment.GetLength());
                 }
-                else
-                {
-                    length += Convert.ToInt32(dict[className]);
-                }
+
+                sumLength += dict[segmentName];
             }
 
-            return length;
+            return sumLength;
         }
     }
 }

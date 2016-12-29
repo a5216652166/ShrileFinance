@@ -3,7 +3,7 @@
     using AutoMapper;
     using Core.Entities.Loan;
 
-    public class NaturalGuaranteeSegment : AbsSegment
+    public class NaturalGuaranteeSegment : Segment
     {
         public NaturalGuaranteeSegment(GuarantyContract guarantyContract)
         {

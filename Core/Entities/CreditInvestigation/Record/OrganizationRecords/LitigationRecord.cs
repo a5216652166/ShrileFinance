@@ -9,11 +9,11 @@
     /// <summary>
     /// 诉讼信息记录
     /// </summary>
-    public class LitigationRecord : AbsRecord
+    public class LitigationRecord : Record
     {
         public LitigationRecord(Organization organization) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new ConcernBaseSegment(Type, organization)

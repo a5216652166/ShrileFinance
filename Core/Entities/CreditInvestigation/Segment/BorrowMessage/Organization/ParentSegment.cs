@@ -4,7 +4,7 @@
     using AutoMapper;
     using Customers.Enterprise;
 
-    public class ParentSegment : AbsSegment
+    public class ParentSegment : Segment
     {
         public ParentSegment(OrganizationParent parent)
         {

@@ -4,7 +4,7 @@
     using AutoMapper;
     using Customers.Enterprise;
 
-    public class AssociatedEnterpriseSegment : AbsSegment
+    public class AssociatedEnterpriseSegment : Segment
     {
         public AssociatedEnterpriseSegment(AssociatedEnterprise associatedEnterprise)
         {

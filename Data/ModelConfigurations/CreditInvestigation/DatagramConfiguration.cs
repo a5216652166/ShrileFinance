@@ -4,7 +4,7 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.CreditInvestigation.Datagram;
 
-    public class DatagramConfiguration : EntityTypeConfiguration<AbsDatagram>
+    public class DatagramConfiguration : EntityTypeConfiguration<Datagram>
     {
         public DatagramConfiguration()
         {

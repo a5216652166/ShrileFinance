@@ -9,11 +9,11 @@
     /// <summary>
     /// 抵押合同信息记录
     /// </summary>
-    public class MortgageContractInfoRecord : AbsRecord
+    public class MortgageContractInfoRecord : Record
     {
         public MortgageContractInfoRecord(CreditContract credit, GuarantyContractMortgage guaranty) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new GuaranteeBaseSegment(Type, credit),

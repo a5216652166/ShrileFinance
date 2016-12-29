@@ -4,7 +4,7 @@
     using DatagramFile;
     using Record;
 
-    public class ConcernBaseSegment : AbsSegment
+    public class ConcernBaseSegment : Segment
     {
         public ConcernBaseSegment(RecordTypeEnum type, Core.Entities.Customers.Enterprise.Organization organization)
         {
@@ -33,7 +33,7 @@
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true)]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FINANCIALORGANIZATIONCODE; }
+            get { return DatagramFile.FINANCIALORGANIZATIONCODE; }
         }
 
         [MetaCode(80, MetaCodeTypeEnum.ANC), SegmentRule(19, true)]

@@ -5,7 +5,7 @@
     /// <summary>
     /// 2007版利润及利润分配表信息记录
     /// </summary>
-    public class ProfitsParagraph : AbsSegment
+    public class ProfitsParagraph : Segment
     {
         public ProfitsParagraph(Profit profit)
         {

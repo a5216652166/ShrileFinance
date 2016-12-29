@@ -4,7 +4,7 @@
     using AutoMapper;
     using Customers.Enterprise;
 
-    public class PropertySegment : AbsSegment
+    public class PropertySegment : Segment
     {
         public PropertySegment(OrganizationProperties property)
         {

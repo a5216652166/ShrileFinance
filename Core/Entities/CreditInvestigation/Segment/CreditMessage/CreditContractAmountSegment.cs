@@ -2,7 +2,7 @@
 {
     using Core.Entities.Loan;
 
-    public class CreditContractAmountSegment : AbsSegment
+    public class CreditContractAmountSegment : Segment
     {
         public CreditContractAmountSegment(CreditContract credit)
         {

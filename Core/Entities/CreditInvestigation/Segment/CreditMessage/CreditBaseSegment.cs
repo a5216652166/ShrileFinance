@@ -8,7 +8,7 @@
     /// <summary>
     /// 信贷业务基础段
     /// </summary>
-    public class CreditBaseSegment : AbsSegment
+    public class CreditBaseSegment : Segment
     {
         public CreditBaseSegment(RecordTypeEnum type, CreditContract creditContract, DateTime specialDate)
         {
@@ -38,7 +38,7 @@
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true, Describe = "填写数据发生机构的代码")]
         public string 金融机构代码
         {
-            get { return AbsDatagramFile.FINANCIALORGANIZATIONCODE; }
+            get { return DatagramFile.FINANCIALORGANIZATIONCODE; }
         }
 
         /// <summary>

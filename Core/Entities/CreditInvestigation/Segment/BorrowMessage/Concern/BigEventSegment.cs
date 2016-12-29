@@ -7,7 +7,7 @@
     /// <summary>
     /// 大事件
     /// </summary>
-    public class BigEventSegment : AbsSegment
+    public class BigEventSegment : Segment
     {
         public BigEventSegment(BigEvent bigEvent)
         {

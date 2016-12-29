@@ -4,7 +4,7 @@
     using AutoMapper;
     using Customers.Enterprise;
 
-    public class OrganizationStateSegment : AbsSegment
+    public class OrganizationStateSegment : Segment
     {
         public OrganizationStateSegment(OrganizationState state)
         {
