@@ -343,5 +343,22 @@
             return regResult;
         },
         message: '纳税人识别号错误！'
+    },
+    ManagementerCode: {
+        validator: function (value) {
+            if (value == null || value.toString().length <= 1 || !/[A-Za-z0-9]+$/.test(value)) {
+                return false;
+            }
+
+            var validValue = 10;
+            for (var i = 0; i < value.toString().length - 1; i++) {
+                var temp = (parseInt(value[i]) + validValue) % 10;
+
+                validValue = temp == 0 ? 9 : (temp * 2) % 11;
+            }
+
+            return (11 - validValue) % 11 == parseInt(value[value.toString().length - 1]);
+        },
+        message: '管理行代码错误！'
     }
 });
