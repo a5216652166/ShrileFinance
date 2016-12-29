@@ -66,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="ValidMethod\TypeValidHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
@@ -75,6 +76,10 @@
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{2253be75-d4a9-4865-ac93-dba1fd9db777}</Project>
       <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{6DEE6AC9-2F19-4E2E-98CB-9638E0CCB78A}</Project>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

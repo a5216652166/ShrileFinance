@@ -75,9 +75,17 @@
         [MetaCode(3, MetaCodeTypeEnum.AN), SegmentRule(667, false)]
         public string 注册资本币种
         {
-            get {
-                if (!string.IsNullOrEmpty(this.RegisterCapital)) return "CNY"; else return null;
-              }
+            get
+            {
+                if (!string.IsNullOrEmpty(this.RegisterCapital))
+                {
+                    return "CNY";
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         /// <summary>

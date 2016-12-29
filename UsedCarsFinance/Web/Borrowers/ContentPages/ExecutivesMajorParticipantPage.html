@@ -47,6 +47,9 @@
 
                     // 禁用保存按钮
                     $("#save").linkbutton("disable");
+
+                    // 禁用家庭信息 +/-
+                    $("section#I div[name=tools]>a").hide();
                 }
             }
         }
@@ -138,6 +141,11 @@
             });
 
             $("input[name=" + currentObj.attr('comboname') + '_Txt' + "]:hidden").val(tempArray.join("、"));
+
+            var value = $(this).parents("fieldset").find("select[textboxname=CertificateType]").combobox("getValue");
+            var certificateNumber = $(this).parents("fieldset").find("input[textboxname=CertificateCode]");
+            
+            ChangeCertificateType(value, certificateNumber);
         }
 
         // 是否填写 复选框onClick事件
@@ -199,6 +207,25 @@
 
             return familyArray;
         }
+        function ChooseFamilyType(data) {
+            var value = $(this).parents("fieldset").find("select[textboxname=CertificateType]").combobox("getValue");
+            var certificateNumber = $(this).parents("fieldset").find("input[textboxname=CertificateCode]");
+            ChangeCertificateType(value, certificateNumber);
+        }
+
+        // 选择身份证类型
+        function ChangeCertificateType(value, certificateNumber) {
+            //var value = $("select[textboxname='" + type + "']").combobox("getValue");
+            //var certificateNumber = $("input[textboxname='" + number + "']");
+            if ($.inArray(value, ["0", "7"]) != -1) {
+                // 身份证、临时身份证
+                certificateNumber.textbox({ validType: ['IdCard'] });
+            }
+            else {
+                certificateNumber.textbox({ validType: ['length[0,18]', 'AN'] });
+            }
+        }
+
     </script>
 </head>
 <body>
@@ -217,7 +244,7 @@
                         <label>
                             关系人类型：<a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('../img/InfoImg.png') no-repeat scroll 0 0" title="同一人兼任或具有上述多重关系的，分别填报">　</a>
                         </label>
-                        <select class="easyui-combobox  combobox-f combo-f textbox-f" data-options="value:'',editable:false,required:true,multiple:true,onSelect:setTxt" name="Type">
+                        <select class="easyui-combobox  combobox-f combo-f textbox-f" data-options="value:'',editable:false,required:true,multiple:false,onSelect:setTxt" name="Type">
                             <option value="0">实际控制人</option>
                             <option value="1">董事长</option>
                             <option value="2">总经理/主要负责人</option>
@@ -226,32 +253,6 @@
                             <option value="5">法定代表人</option>
                         </select>
                         <input type="hidden" name="Type_Txt" value="实际控制人" />
-                        <!--<input class="easyui-combobox  combobox-f combo-f textbox-f" checkbox="true" name="ParticipantType" data-options="editable:false,required:true,multiple:true,
-                                    valueField: 'label',
-                                    textField: 'value',
-                                    checkbox:true,
-                                    data: [{
-                                        label: 'java',
-                                    value: 'Java'
-                                    },{
-                                    label: 'perl',
-                                    value: 'Perl'
-                                    },{
-                                    label: 'ruby',
-                                    value: 'Ruby'
-                                    }],
-                                    format : function(row){
-                                        var opts = $(this).combobox('options');
-                                        return  '<input type='checkbox' class='combobox-checkbox'>' + row[opts.textField];
-                                    }
-                            " />
-                                        <script>
-                            function Formattr(row) {
-                                var opts = $(this).combobox("options");
-                                return "<input type='checkbox' class='combobox-checkbox'>" + row[opts.textField];
-                            }
-                        </script>
-                                -->
                     </div>
                     <div class="col-6">
                         <label>
@@ -304,9 +305,9 @@
         <section id="I" min="0" max="n" name="FamliySection" style="display:none">
             <h2>家族成员信息</h2>
             <div style="background-color:#afe3fa;height:30px ;width:95%">
-                <div float="right" style="width:100%">
+                <div float="right" style="width:100%" name="tools">
                     <a style="margin-top: 2px; margin-right: 10px; float: right; font-size: 24px; text-decoration: none" id="Iadd" onclick="AddFamilyFiledset(this)" href="javascript:void(0)">+</a>
-                    <a style=" margin-right: 20px; float: right; font-size: 24px; text-decoration: none" id="Iminus" onclick="Minus(this)" href="javascript:void(0)" hidden="hidden">-</a>
+                    <a style="margin-right: 20px; float: right; font-size: 24px; text-decoration: none" id="Iminus" onclick="Minus(this)" href="javascript:void(0)" hidden="hidden">-</a>
                 </div>
             </div>
 
@@ -340,7 +341,7 @@
                         <label>
                             家族成员证件类型：<a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('../img/InfoImg.png') no-repeat scroll 0 0" title="">　</a>
                         </label>
-                        <select class="easyui-combobox  combobox-f combo-f textbox-f" data-options="value:'',editable:false,required:true" name="CertificateType">
+                        <select class="easyui-combobox  combobox-f combo-f textbox-f" data-options="value:'',editable:false,required:true,onSelect:ChooseFamilyType" name="CertificateType">
                             <option value="0">身份证</option>
                             <option value="1">户口簿</option>
                             <option value="2">护照</option>

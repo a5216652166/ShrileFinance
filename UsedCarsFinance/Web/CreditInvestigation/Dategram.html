@@ -15,10 +15,6 @@
 
         uc.grid = new UCGrid("#dg");
 
-        function Reload() {
-            uc.grid.Reload();
-        }
-
         function BeforeLoad(param) {
             param.search = $("#Name").textbox("getValue");
             param.status = $("#Status").textbox("getValue");
@@ -29,6 +25,12 @@
 
             if ($("#EndTime").datebox("isValid")) {
                 param.endTime = $("#EndTime").datebox("getValue");
+            }
+        }
+
+        function BindColor(index, row) {
+            if (row.StatusDesc != "待生成") {
+                return 'background-color:#f0fffa;color:#333';
             }
         }
 
@@ -134,123 +136,99 @@
                 $("#mod").linkbutton("enable");
             }
         }
+    </script>
 
-        // 生成
-        function Generate() {
-            // 所有勾选的行
-            var array = $("#dg").datagrid("getChecked");
-            if (array == undefined) {
-                $.messager.show({ msg: "请选择需要生成的跟踪记录" });
-            }
-            else {
-                // 用于记录已生成的报文追踪
-                var count = 0;
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i].StatusDesc == "待发送") {
-                        count++;
+    <script type="text/javascript">
+        // 选择昨日和漏发报文
+        function changeYesterday() {
+            $($("table#dg").datagrid("getRows")).each(function (i, e) {
+                var date = new Date();
+                date.setDate(date.getDate() - 1);
+
+                // 昨日报文
+                var yesterday = date.toLocaleDateString().replace('/', '-').replace('/', '-');
+
+                if (e.DateCreated.substr(0, 10) == yesterday) {
+                    $("table#dg").datagrid('checkRow',i);
+                }
+
+                // 昨日之前漏发送报文
+                var dd = new Date();
+                var today = dd.toLocaleDateString().replace('/', '-').replace('/', '-');
+                if ($.inArray(e.DateCreated.substr(0, 10), [yesterday, today]) == -1) {
+                    if ($.inArray(e.StatusDesc, ["待生成", "待发送"]) != -1) {
+                        $("table#dg").datagrid('checkRow', i);
                     }
                 }
-
-                if (count > 0) {
-                    $.messager.defaults = { ok: "是", cancel: "否" };
-                    // 提示框
-                    $.messager.confirm("操作提示", "存在" + count + "条已生成报文，是否忽略？", function (data) {
-                        if (data) {
-                            // 筛选状态为待生成的报文
-                            array = $.grep(array, function (e, i) {
-                                return e.StatusDesc == "待生成";
-                            });
-                        }
-
-                        submit(array);
-                    });
-                }
-                else {
-                    submit(array);
-                }
-            }
-        }
-
-        // 提交需要生成报文的追踪ID
-        function submit(array) {
-            if (array == undefined || array.length == 0) {
-                $.messager.show({ msg: "请勾选需要生成的报文" });
-            }
-            else {
-                // 所有勾选的报文跟踪ID
-                var data = [];
-                $(array).each(function () {
-                    data.push(this.Id);
-                });
-
-                $.ajax({
-                    async: false,
-                    method: "POST",
-                    data: { Ids: data },
-                    url: "../api/Datagram/Generate",
-                    statusCode: {
-                        200: function (data) {
-                            $.messager.show({ msg: "生成成功" });
-                        },
-                        400: function (data) {
-                            $.messager.show({ msg: data.responseJSON.Message });
-                        }
-                    }
-                });
-
-                $("#add").linkbutton("enable");
-                Reload();
-            }
+            });
         }
 
         // 下载
         function Download() {
             $("#download input").remove();
-            var array = $("#dg").datagrid("getChecked");
+            var rows = $("table#dg").datagrid("getChecked");
 
-            if (array == undefined || array.length == 0) {
+            if (rows == undefined || rows.length == 0) {
                 $.messager.show({ msg: "请选择需要下载的跟踪记录" });
             }
             else {
-                var data = [];
-                var isGenerated = true;
-
-                // 判断是否存在未生成报文
-                array.forEach(function (e) {
-                    if (e.StatusDesc == "待生成") {
-                        isGenerated = false;
-                    }
+                // 所有勾选的报文跟踪ID
+                $(rows).each(function (i, e) {
+                    $("<input>", { name: "Ids", value: e.Id }).appendTo("#downloadForm");
                 });
 
-                if (isGenerated == false) {
-                    $.messager.show({ msg: "存在未生成报文的跟踪记录，请重新选择后下载" });
-                }
-                else {
-                    // 所有勾选的报文跟踪ID
-                    $(array).each(function () {
-                        data.push(this.Id);
-                        $("<input>", { name: "Ids", value: this.Id }).appendTo("#download");
-                    });
+                $("#downloadForm").submit();
 
-                    $("#download").submit();
-
-                    $("#save").linkbutton("enable");
-                    Reload();
-                }
+                PageReload();
             }
         }
 
-        function BindColor(index, row) {
-            if (row.StatusDesc != "待生成") {
-                return 'background-color:#f0fffa;color:#333';
+        // 重生成
+        function Rebuid() {
+            var Ids = [];
+            $($("table#dg").datagrid("getSelected")).each(function (i, e) {
+                Ids.push(e.Id);
+            });
+
+            if (Ids.length == 0)
+            {
+                $.messager.show({ msg: "请选择需要生成的跟踪记录" });
+                return false;
             }
+
+            $.ajax({
+                async: false,
+                method: "POST",
+                data: { Ids: Ids },
+                url: "../api/Datagram/Rebuid",
+                statusCode: {
+                    200: function (data) {
+                        $.messager.show({ msg: "生成成功" });
+                    },
+                    400: function (data) {
+                        $.messager.show({ msg: data.responseJSON.Message });
+                    }
+                }
+            });
+
+            PageReload();
         }
-        //function SearchYesterday() {
-        //    var rows = $("#dg").datagrid("getRows");
-        //    for (var i = 0; i < rows.length; i++) {
-        //        if(rows[i]["DateCreated"]==)
-        //    }
-        //}
+
+        function PageReload()
+        {
+            $("input[textboxname=Name]").textbox("setValue", "");
+            $("input[textboxname=BeginTime]").datebox("setValue", "");
+            $("input[textboxname=EndTime]").datebox("setValue", "");
+            $("select[textboxname=Status]").combobox("select", "");
+
+            $("a.easyui-linkbutton").linkbutton("disable");
+            $("a.easyui-linkbutton").linkbutton("enable");
+            $("table#dg").datagrid('reload');
+        }
+
+        function Search() {
+            uc.grid.Reload();
+        }
     </script>
 </head>
 <body>
@@ -280,31 +258,36 @@
     </table>
     <div id="tb">
         <div>
+            <label for="Name">名称:</label>
             <input id="Name" name="Name" class="easyui-textbox" data-options="prompt:'请输入名称'" />
-            <label for="Status">报文状态:</label>
+            &nbsp;&nbsp;
             <label for="BeginTime">业务发生日期 从:</label>
             <input id="BeginTime" name="BeginTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
             <label for="EndTime">至:</label>
             <input id="EndTime" name="EndTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
-            <select id="Status" class="easyui-combobox" data-options="width:120,editable:false">
+            &nbsp;&nbsp;
+            <label for="Status">类型:</label>
+            <select id="Status" name="Status" class="easyui-combobox" data-options="width:120,editable:false">
                 <option value="">全部</option>
                 <option value="0">待生成</option>
                 <option value="1">待发送</option>
                 <option value="2">已发送</option>
             </select>
-            <a id="search" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',onClick:Reload,plain:true">搜索</a>
-            <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:uc.grid.Reset,iconCls:'icon-reload',plain:true">重置</a>
+            &nbsp;&nbsp;
+            <a id="search" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',onClick:Search,plain:true">搜索</a>
+            <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:PageReload,iconCls:'icon-reload',plain:true">重置</a>
         </div>
+        
         <div>
-            <!--<a id="searchYesterday" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',plain:true,onClick:SearchYesterday">选择昨日报文</a>-->
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',plain:true,onClick:Save">保存</a>
-            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Generate">生成</a>
-            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Download">下载</a>
+            <a id="changeYesterday" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:changeYesterday">选择昨日</a>
+            <a id="downloadFile" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Download">下载</a>
+            <a id="Rebuid" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Rebuid">重生成</a>
         </div>
     </div>
 
-    <div >
-        <form id="download" action="../api/Datagram/Download" method="post" style="display:none"></form>
+    <div>
+        <form id="downloadForm" action="../api/Datagram/Download" method="post" style="display:none"></form>
     </div>
 </body>
 </html>

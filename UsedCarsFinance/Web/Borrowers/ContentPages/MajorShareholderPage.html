@@ -49,6 +49,9 @@
 
                     // 禁用保存按钮
                     $("#save").linkbutton("disable");
+
+                    // 禁用家庭信息 +/-
+                    $("section#I div[name=tools]>a").hide();
                 }
             }
         }
@@ -79,6 +82,22 @@
             row.RegistraterTypeModel = row.RegistraterType;
 
             $('fieldset[id=G]').form('load', row);
+            
+            // 股东类型为“1-自然人”时，无组织机构代码与机构信用代码，为“2-机构”时，无家族信息
+            if (row.ShareholdersType == 1)
+            {
+                $("fieldset#G input[textboxname=OrganizateCode]").textbox("setValue", "").textbox("readonly", true);
+                $("fieldset#G input[textboxname=InstitutionCreditCode]").textbox("setValue", "").textbox("readonly", true);
+            }
+            else if(row.ShareholdersType == 2)
+            {
+                if ($("fieldset#G input#FamilyFiedSetShow")[0].checked)
+                {
+                    $("fieldset#G input#FamilyFiedSetShow").click();
+                }
+
+                $("fieldset#G input#FamilyFiedSetShow").parent().parent().hide();
+            }
         }
 
         // 提交按钮
@@ -179,8 +198,30 @@
 
             $("input[name=" + currentObj.attr('comboname').replace("Model", "") + "]:hidden").val(valueArray.join("、"));
             $("input[name=" + currentObj.attr('comboname').replace("Model", "") + '_Txt' + "]:hidden").val(textArray.join("、"));
+
+            var value = $(this).parents("fieldset").find("select[textboxname=RegistraterTypeModel]").combobox("getValue");
+            var certificateNumber = $(this).parents("fieldset").find("input[textboxname=RegistraterCode]");
+            ChangeCertificateType(value, certificateNumber)
         }
 
+        function ChooseFamilyType(data) {
+            var value = $(this).parents("fieldset").find("select[textboxname=CertificateType]").combobox("getValue");
+            var certificateNumber = $(this).parents("fieldset").find("input[textboxname=CertificateCode]");
+            ChangeCertificateType(value, certificateNumber);
+        }
+
+        // 选择身份证类型
+        function ChangeCertificateType(value, certificateNumber) {
+            //var value = $("select[textboxname='" + type + "']").combobox("getValue");
+            //var certificateNumber = $("input[textboxname='" + number + "']");
+            if ($.inArray(value, ["0", "7"]) != -1) {
+                // 身份证、临时身份证
+                certificateNumber.textbox({ validType: ['IdCard'] });
+            }
+            else {
+                certificateNumber.textbox({ validType: ['length[0,18]', 'AN'] });
+            }
+        }
         // 股东类型 切换
         function ChangeType() {
             var value = $(this).parents('fieldset').find("input[name=ShareholdersType]").val();
@@ -369,7 +410,7 @@
                         <label>
                             机构信用代码：<a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('../img/InfoImg.png') no-repeat scroll 0 0" title="征信中心赋予机构股东的18位机构信用代码">　</a>
                         </label>
-                        <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[10,18]']" name="InstitutionCreditCode">
+                        <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[18,18]','InCredit']" name="InstitutionCreditCode">
                     </div>
                 </div>
 
@@ -394,9 +435,9 @@
         <section id="I" min="0" max="n" name="FamliySection" style="display:none">
             <h2>家族成员信息</h2>
             <div style="background-color:#afe3fa;height:30px ;width:95%">
-                <div float="right" style="width:100%">
+                <div float="right" style="width:100%" name="tools">
                     <a style="margin-top: 2px; margin-right: 10px; float: right; font-size: 24px; text-decoration: none" id="Iadd" onclick="AddFamilyFiledset(this)" href="javascript:void(0)">+</a>
-                    <a style=" margin-right: 20px; float: right; font-size: 24px; text-decoration: none" id="Iminus" onclick="Minus(this)" href="javascript:void(0)" hidden="hidden">-</a>
+                    <a style="margin-right: 20px; float: right; font-size: 24px; text-decoration: none" id="Iminus" onclick="Minus(this)" href="javascript:void(0)" hidden="hidden">-</a>
                 </div>
             </div>
 
@@ -431,7 +472,7 @@
                         <label>
                             家族成员证件类型：<a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('../img/InfoImg.png') no-repeat scroll 0 0" title="">　</a>
                         </label>
-                        <select class="easyui-combobox  combobox-f combo-f textbox-f" data-options="editable:false,required:true" name="CertificateType">
+                        <select class="easyui-combobox  combobox-f combo-f textbox-f" data-options="editable:false,required:true,onSelect:ChooseFamilyType" name="CertificateType">
                             <option value=""></option>
                             <option value="0">身份证</option>
                             <option value="1">户口簿</option>

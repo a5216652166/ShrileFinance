@@ -13,7 +13,7 @@
     <script src="JS/BorrowerMethod.js"></script>
     <script src="JS/validType.js"></script>
     <script src="../Scripts/usedcars.js"></script>
-
+    <script src="../Scripts/draft.js"></script>
     <style type="text/css">
         div.easyui-accordion div.panel div.accordion-header {
             margin: 0 0;
@@ -30,8 +30,12 @@
     </style>
 
     <script type="text/javascript">
+        var draft = new Draft(BuidDate, LoadDate);
+
         $(function () {
             Init();
+            // 开启草稿保存
+            draft.AutoSave(3 * 60 * 1000);
         });
 
         // 加载数据
@@ -97,8 +101,12 @@
                 // 加载大事件
                 FieldsetLoadDateFactory("BigEvent", "table", data.BigEvent);
             }
+
         }
 
+        function OnLoadSuccess() {
+            ChooseRegisterAdministrativeDivision($("#RegisterAdministrativeDivision").combobox("getValue"));
+        }
         // 数据构建
         function BuidDate() {
             var data = new Object();
@@ -111,7 +119,6 @@
                 }
 
                 if (e == "Property" && data[e].RegisterAdministrativeDivision == "null") {
-                    debugger
                     data[e].RegisterAdministrativeDivision = "";
                 }
             });
@@ -282,10 +289,9 @@
             var query = {};
 
             query.Method = GetQueryString("method");
-
+            draft.Load();
             if (query.Method != "add") {
                 query.Id = GetQueryString("Id");
-
                 // 加载数据
                 LoadDate(LoadDateForId(query.Id));
 
@@ -306,9 +312,8 @@
                 // 机构属性 经济行业分类异常处理
                 var data = {};
                 data.EconomicSectorsClassification = "";
-                debugger
                 data.RegisterAdministrativeDivision = "";
-                $("fieldset[name=Property]").form("load",data);
+                $("fieldset[name=Property]").form("load", data);
             }
         }
 
@@ -353,7 +358,7 @@
 
             // 构建数据
             var data = BuidDate();
-            
+
             // 验证数据
             if (!ValidDate(data)) {
                 $("#submit").linkbutton("enable");
@@ -381,6 +386,7 @@
                         200: function (data) {
                             OrganizateCancel();
                             $.messager.show({ msg: "提交成功！" });
+                            draft.Clear();
                         },
                         500: function (data) {
                             $.messager.alert('错误', data.responseJSON.ExceptionMessage);
@@ -558,7 +564,6 @@
                     $("fieldset[name=" + name + "]").find("[id=" + name + "_dg" + "]").datagrid('loadData', data);
                 }
             }
-
             return data;
         }
 
@@ -605,13 +610,9 @@
                 var RegistraterTypeArray = ["0-身份证", "1-户口簿", "2-护照", "3-军官证", "4-士兵证", "5-港澳居民来往内地通行证", "6-台湾同胞来往内地通行证", "7-临时身份证", "8-外国人居留证", "9-警官证", "A-香港身份证", "B-澳门身份证", "C-台湾身份证", "X-其他证件",
                     "01-工商注册号", "02-机关和事业单位登记号", "03-社会团体登记号", "04-民办非企业单位登记号", "05-基金会登记号", "06-宗教活动场所登记号", "07-统一社会信用代码", "08-商事与非商事登记证号", "99-其他"];
                 $(RegistraterTypeArray).each(function (index, item) {
-                    if (item.substr(0, 2) == data.RegistraterType) {
+                    if (item.substr(0, item.indexOf('-')) == data.RegistraterType) {
                         // 添加text
-                        data.RegistraterType_Txt = item.substr(3);
-                    }
-                    else if (item.substr(0, 1) == data.RegistraterType) {
-                        // 添加text
-                        data.RegistraterType_Txt = item.substr(2);
+                        data.RegistraterType_Txt = item.substr(item.indexOf('-') + 1);
                     }
                 });
             }
@@ -639,6 +640,52 @@
 
             return data;
         }
+
+        // 数组转字符串
+        function ArrayToString(arr) {
+            if (arr == null) {
+                return '';
+            }
+
+            if (Object.prototype.toString.call(arr) === '[object Array]') {
+                return arr.join(',');
+            }
+
+            return arr;
+        }
+
+        // 字符串转数组
+        function StringToArray(str) {
+            if (str == null) {
+                return [];
+            }
+
+            return str.split(',');
+        }
+        function ChooseRegisterAdministrativeDivision(record) {
+            if (record != "null" && record != "") {
+                $.ajax({
+                    async: false,
+                    method: "GET",
+                    data: { code: record },
+                    url: "../api/Method/GetParrent",
+                    statusCode: {
+                        200: function (data) {
+                            $("#RegisterAdministrativeDivision").combobox("setText", data);
+                        }
+                    }
+                });
+            }
+
+            //if (record.children == null) {
+            //    var secondParent = $($(record.target.parentElement.parentElement).prev()).children("span:last").html();
+            //    var firstParent = $($(record.target.parentElement.parentElement.parentElement.parentElement).prev()).children("span:last").html();
+            //    var text = firstParent + " " + secondParent + " " + record.text
+            //}
+            //else {
+            //    return false;
+            //}
+        }
     </script>
 </head>
 <body>
@@ -665,9 +712,9 @@
                             <div class="col-6">
                                 <label>
                                     管理行代码：
-                                    <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="对于信贷户，填写管护行，即客户经理所属分支行。填写规则：“企业征信系统为其编制的11位金融机构代码+空格”">　</a>
+                                    <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="对于信贷户，填写管护行，即客户经理所属分支行。填写规则：“企业征信系统为其编制的11位金融机构代码”">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:true,validType:['AN','length[1,20]']" name="ManagementerCode">
+                                <input class="easyui-textbox textbox-f" data-options="required:true,validType:['AN','length[11,11]']" name="ManagementerCode">
                             </div>
                             <div class="col-6">
                                 <label>
@@ -728,14 +775,14 @@
                                     纳税人识别号（国税）：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构在国税部门的缴税统一标识">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,20]']" name="TaxpayerIdentifyIrsNumber">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[15,15]','TaxpayerIdentify']" name="TaxpayerIdentifyIrsNumber">
                             </div>
                             <div class="col-6">
                                 <label>
                                     纳税人识别号（地税）：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构在国税部门的缴税统一标识">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,20]']" name="TaxpayerIdentifyLandNumber">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['AN','length[15,15]','TaxpayerIdentify']" name="TaxpayerIdentifyLandNumber">
                             </div>
                         </div>
 
@@ -797,14 +844,16 @@
                                     注册（登记）地行政区划：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="注册（登记）地址所在地行政区划">　</a>
                                 </label>
-                                <select class="easyui-combotree textbox-f" name="RegisterAdministrativeDivision" data-options="editable:false,required:false,value:'',
+                                <select class="easyui-combotree textbox-f" name="RegisterAdministrativeDivision" id="RegisterAdministrativeDivision" data-options="editable:false,required:false,value:'',
                                     async: false,
                                     method: 'GET',
                                     idField: 'id',
                                     textField: 'text',
                                     url: '../api/Method/GetAdministration',
-                                    onBeforeSelect:combotreeonBeforeSelect">
-                                </select>
+                                    onBeforeSelect:combotreeonBeforeSelect,
+                                    onLoadSuccess:OnLoadSuccess,
+                                    onChange:ChooseRegisterAdministrativeDivision,
+                                       "></select>
                             </div>
                             <div class="col-6">
                                 <label>
@@ -832,7 +881,7 @@
                                     经营（业务）范围：
                                     <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构登记注册证书或签发的批文上的经营范围、职责、宗旨和业务范围等">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,400]']" name="BusinessScope">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,400]'],multiline:true,height:60" name="BusinessScope">
                             </div>
                         </div>
 
@@ -1019,7 +1068,7 @@
                                 <label>
                                     办公（生产、经营）地址：<a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('img/InfoImg.png') no-repeat scroll 0 0" title="机构的办公地址或生产、经营地址，包括所属行政区划名称，乡（镇）、村、街名称和门牌号，如以上三类地址都有，请填写常用的通讯地址">　</a>
                                 </label>
-                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,80]']" name="OfficeAddress">
+                                <input class="easyui-textbox textbox-f" data-options="required:false,validType:['ANC','length[1,80]'],multiline:true,height:60" name="OfficeAddress">
                             </div>
                         </div>
 
@@ -1961,6 +2010,7 @@
         </div>
 
         <div id="btn">
+            <a id="saveTempData" class="easyui-linkbutton" data-options="iconCls: 'icon-edit',onClick: draft.Save" style="margin:0 auto">保存草稿</a>
             <a id="submit" class="easyui-linkbutton" data-options="iconCls: 'icon-edit'" style="margin:0 auto" onclick="OrganizateSubmit()">提交</a>
             <a id="cancel" class="easyui-linkbutton" data-options="iconCls: 'icon-redo'" style="margin:0 auto" onclick="OrganizateCancel()">取消</a>
             <input type="reset" hidden />

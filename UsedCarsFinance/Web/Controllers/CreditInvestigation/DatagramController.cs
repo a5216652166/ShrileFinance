@@ -12,6 +12,7 @@
     using Application.ViewModels.CreditInvesitigation.TraceViewModels;
     using Core.Entities.CreditInvestigation;
     using global::Infrastructure.Http;
+    using global::Infrastructure.ValidMethod;
 
     public class DatagramController : ApiController
     {
@@ -52,6 +53,14 @@
         }
 
         [HttpPost]
+        public IHttpActionResult Rebuid(GenerateViewModel traceIds)
+        {
+            messageAppService.Rebuid(traceIds.Ids);
+
+            return Ok();
+        }
+
+        [HttpPost]
         public HttpResponseMessage Download(DownloadViewModel ids)
         {
             var file = messageAppService.Download(ids);
@@ -64,6 +73,14 @@
             {
                 return Request.CreateErrorResponse(HttpStatusCode.NoContent, ex);
             }
+        }
+
+        public IHttpActionResult Test()
+        {
+            var luln = "33207991216";
+            luln.LulnMethod();
+
+            return Ok();
         }
     }
 }

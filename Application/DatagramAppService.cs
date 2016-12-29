@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
     using Core.Interfaces.Repositories;
@@ -62,6 +63,13 @@
 
             foreach (var trace in traces)
             {
+                if (trace.DatagramFiles.Count == 0)
+                {
+                    trace.AddDatagram(factory.Generate(trace));
+
+                    repository.Modify(trace);
+                }
+
                 foreach (var datagramFile in trace.DatagramFiles)
                 {
                     var filename = datagramFile.GenerateFilename();
@@ -70,6 +78,8 @@
                     files.Add(filename, buffer);
                 }
             }
+
+            repository.Commit();
 
             // 压缩打包
             var compressionBytes = FileHelper.ZipArchiveCompression(files);
@@ -99,6 +109,24 @@
                 // 添加文件
                 trace.AddDatagram(datagramFile);
             }
+
+            repository.Commit();
+        }
+
+        /// <summary>
+        /// 重生成指定报文
+        /// </summary>
+        /// <param name="traceIds">追踪标识集合</param>
+        public void Rebuid(IEnumerable<Guid> traceIds)
+        {
+            repository.GetByIds(traceIds).ToList().ForEach(trace =>
+            {
+                // 清空报文文件
+                trace.DatagramFiles.Clear();
+
+                // 添加报文
+                trace.AddDatagram(factory.Generate(trace));
+            });
 
             repository.Commit();
         }

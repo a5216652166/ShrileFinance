@@ -15,7 +15,7 @@
         public void CanApplyLoan()
         {
             var creditContract = new CreditContract(DateTime.MinValue, DateTime.MaxValue, 10000, CreditContractStatusEnum.失效);
-            var result = creditContract.CanApplyLoan(100000);
+            var result = creditContract.CanApplyLoan(100000,DateTime.Now);
             Assert.IsTrue(result);
         }
 
