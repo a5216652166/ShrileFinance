@@ -101,7 +101,7 @@
                 // 加载大事件
                 FieldsetLoadDateFactory("BigEvent", "table", data.BigEvent);
             }
-            
+
         }
 
         function OnLoadSuccess() {
@@ -313,7 +313,7 @@
                 var data = {};
                 data.EconomicSectorsClassification = "";
                 data.RegisterAdministrativeDivision = "";
-                $("fieldset[name=Property]").form("load",data);
+                $("fieldset[name=Property]").form("load", data);
             }
         }
 
@@ -358,7 +358,7 @@
 
             // 构建数据
             var data = BuidDate();
-            
+
             // 验证数据
             if (!ValidDate(data)) {
                 $("#submit").linkbutton("enable");
@@ -610,13 +610,9 @@
                 var RegistraterTypeArray = ["0-身份证", "1-户口簿", "2-护照", "3-军官证", "4-士兵证", "5-港澳居民来往内地通行证", "6-台湾同胞来往内地通行证", "7-临时身份证", "8-外国人居留证", "9-警官证", "A-香港身份证", "B-澳门身份证", "C-台湾身份证", "X-其他证件",
                     "01-工商注册号", "02-机关和事业单位登记号", "03-社会团体登记号", "04-民办非企业单位登记号", "05-基金会登记号", "06-宗教活动场所登记号", "07-统一社会信用代码", "08-商事与非商事登记证号", "99-其他"];
                 $(RegistraterTypeArray).each(function (index, item) {
-                    if (item.substr(0, 2) == data.RegistraterType) {
+                    if (item.substr(0, item.indexOf('-')) == data.RegistraterType) {
                         // 添加text
-                        data.RegistraterType_Txt = item.substr(3);
-                    }
-                    else if (item.substr(0, 1) == data.RegistraterType) {
-                        // 添加text
-                        data.RegistraterType_Txt = item.substr(2);
+                        data.RegistraterType_Txt = item.substr(item.indexOf('-') + 1);
                     }
                 });
             }
@@ -646,10 +642,8 @@
         }
 
         // 数组转字符串
-        function ArrayToString(arr)
-        {
-            if (arr == null)
-            {
+        function ArrayToString(arr) {
+            if (arr == null) {
                 return '';
             }
 
@@ -680,9 +674,9 @@
                             $("#RegisterAdministrativeDivision").combobox("setText", data);
                         }
                     }
-                }) ;
+                });
             }
-           
+
             //if (record.children == null) {
             //    var secondParent = $($(record.target.parentElement.parentElement).prev()).children("span:last").html();
             //    var firstParent = $($(record.target.parentElement.parentElement.parentElement.parentElement).prev()).children("span:last").html();
@@ -859,8 +853,7 @@
                                     onBeforeSelect:combotreeonBeforeSelect,
                                     onLoadSuccess:OnLoadSuccess,
                                     onChange:ChooseRegisterAdministrativeDivision,
-                                       ">
-                                </select>
+                                       "></select>
                             </div>
                             <div class="col-6">
                                 <label>

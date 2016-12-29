@@ -142,11 +142,9 @@
 
             $("input[name=" + currentObj.attr('comboname') + '_Txt' + "]:hidden").val(tempArray.join("、"));
 
-            //ChangeCertificateType("CertificateType", "CertificateCode");
-
             var value = $(this).parents("fieldset").find("select[textboxname=CertificateType]").combobox("getValue");
             var certificateNumber = $(this).parents("fieldset").find("input[textboxname=CertificateCode]");
-            debugger
+            
             ChangeCertificateType(value, certificateNumber);
         }
 
