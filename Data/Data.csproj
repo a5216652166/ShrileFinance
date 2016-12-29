@@ -95,6 +95,10 @@
     <Compile Include="Migrations\201612260749445_CreditInvestigationModel.Designer.cs">
       <DependentUpon>201612260749445_CreditInvestigationModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612290804505_NewSegmentName.cs" />
+    <Compile Include="Migrations\201612290804505_NewSegmentName.Designer.cs">
+      <DependentUpon>201612290804505_NewSegmentName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -342,6 +346,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612260749445_CreditInvestigationModel.resx">
       <DependentUpon>201612260749445_CreditInvestigationModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612290804505_NewSegmentName.resx">
+      <DependentUpon>201612290804505_NewSegmentName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

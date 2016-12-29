@@ -500,7 +500,7 @@
                     var row = $("#payment_dg").datagrid("getSelected");
                     var index = $("#payment_dg").datagrid("getRowIndex", row);
 
-                    if (index) {
+                    if (index >= 0) {
                         onEdit(index);
                     }
                 }
