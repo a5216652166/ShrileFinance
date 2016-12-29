@@ -8,7 +8,7 @@
     /// <summary>
     /// 欠息信息采集报文
     /// </summary>
-    public class DebitInterestInfoDatagram : AbsDatagram
+    public class DebitInterestInfoDatagram : Datagram
     {
         public DebitInterestInfoDatagram(CreditContract credit, PaymentHistory payment) : base()
         {

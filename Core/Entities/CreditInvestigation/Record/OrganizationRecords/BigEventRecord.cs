@@ -9,11 +9,11 @@
     /// <summary>
     /// 大事信息记录
     /// </summary>
-    public class BigEventRecord : AbsRecord
+    public class BigEventRecord : Record
     {
         public BigEventRecord(Organization organization) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new ConcernBaseSegment(Type, organization)

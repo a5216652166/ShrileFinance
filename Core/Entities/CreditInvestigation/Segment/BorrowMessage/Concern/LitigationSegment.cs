@@ -8,7 +8,7 @@
     /// <summary>
     /// 诉讼事件
     /// </summary>
-    public class LitigationSegment : AbsSegment
+    public class LitigationSegment : Segment
     {
         public LitigationSegment(Litigation litigation)
         {

@@ -7,7 +7,7 @@
     /// <summary>
     /// 担保业务信息采集报文
     /// </summary>
-    public class GuaranteeBusinessInfoDatagram : AbsDatagram
+    public class GuaranteeBusinessInfoDatagram : Datagram
     {
         public GuaranteeBusinessInfoDatagram() : base()
         {

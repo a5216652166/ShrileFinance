@@ -15,32 +15,37 @@
         /// </summary>
         /// <param name="value">值</param>
         /// <returns>是/否、正确值</returns>
-        public static KeyValuePair<bool, char> LulnMethod(this string value)
+        public static KeyValuePair<bool, int> LulnMethod(this string value)
         {
             value = value ?? string.Empty;
 
             if (value.Length > 0 && new Regex(@"^[0-9]+$").IsMatch(value))
             {
                 var sum = 0;
+                var temp=0;
 
                 var valueReverse = value.Reverse().ToArray();
 
                 for (int i = 1; i < valueReverse.Length; i++)
                 {
-                    if (i % 2 == 0)
+                    if (i % 2 == 1)
                     {
-                        sum += 2 * Convert.ToInt32(valueReverse[i]);
+                        temp = 2 * Convert.ToInt32(valueReverse[i].ToString());
+
+                        temp = temp > 9 ? temp - 9 : temp;
                     }
                     else
                     {
-                        sum += Convert.ToInt32(valueReverse[i]);
+                        temp = Convert.ToInt32(valueReverse[i].ToString());
                     }
+
+                    sum += temp;
                 }
 
-                return new KeyValuePair<bool, char>((sum * 9) % 10 == Convert.ToInt32(valueReverse[0]), Convert.ToChar((sum * 9) % 10));
+                return new KeyValuePair<bool, int>((sum * 9) % 10 == Convert.ToInt32(valueReverse[0].ToString()), (sum * 9) % 10);
             }
 
-            return new KeyValuePair<bool, char>(false, 'e');
+            return new KeyValuePair<bool, int>(false, -1);
         }
     }
 }

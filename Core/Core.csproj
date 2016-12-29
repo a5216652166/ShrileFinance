@@ -83,7 +83,7 @@
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\ProfitRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\FamilyMemberRecord.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\OrganizationBaseRecord.cs" />
-    <Compile Include="Entities\CreditInvestigation\Segment\AbsSegment.cs">
+    <Compile Include="Entities\CreditInvestigation\Segment\Segment.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\LoanDatagramFile.cs" />
@@ -111,12 +111,12 @@
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\InstitutionLiabilitiesParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\LiabilitiesParagraph.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\BorrowMessage\FinancialAffair\ProfitsParagraph.cs" />
-    <Compile Include="Entities\CreditInvestigation\DatagramFile\AbsDatagramFile.cs" />
-    <Compile Include="Entities\CreditInvestigation\Datagram\AbsDatagram.cs" />
+    <Compile Include="Entities\CreditInvestigation\DatagramFile\DatagramFile.cs" />
+    <Compile Include="Entities\CreditInvestigation\Datagram\Datagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Infrastructure\MetaCodeAttribute.cs" />
     <Compile Include="Entities\CreditInvestigation\Infrastructure\MetaCodeTypeEnum.cs" />
     <Compile Include="Entities\CreditInvestigation\Infrastructure\SegmentRuleAttribute.cs" />
-    <Compile Include="Entities\CreditInvestigation\Record\AbsRecord.cs" />
+    <Compile Include="Entities\CreditInvestigation\Record\Record.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\DebitInterestSegment.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\DebitInterestBaseSegment.cs" />
     <Compile Include="Entities\CreditInvestigation\Segment\CreditMessage\GuaranteeSegment.cs" />

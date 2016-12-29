@@ -6,7 +6,7 @@
     /// <summary>
     /// 自然人质押
     /// </summary>
-    public class NaturalPledgeSegment : AbsSegment
+    public class NaturalPledgeSegment : Segment
     {
         public NaturalPledgeSegment(GuarantyContractPledge guaranty)
         {

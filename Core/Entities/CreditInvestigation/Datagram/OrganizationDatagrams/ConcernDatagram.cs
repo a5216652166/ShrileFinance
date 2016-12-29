@@ -6,7 +6,7 @@
     /// <summary>
     /// 关注信息报文
     /// </summary>
-    public class ConcernDatagram : AbsDatagram
+    public class ConcernDatagram : Datagram
     {
         public ConcernDatagram() : base()
         {

@@ -9,13 +9,13 @@
     /// <summary>
     /// 2007版利润及利润分配表信息记录
     /// </summary>
-    public class ProfitRecord : AbsRecord
+    public class ProfitRecord : Record
     {
         public ProfitRecord(Organization organization, Profit item) : base()
         {
             var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString(), Type);
 
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 baseParagraph,

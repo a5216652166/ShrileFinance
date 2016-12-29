@@ -3,7 +3,7 @@
     using AutoMapper;
     using Loan;
 
-    public class LoanSegment : AbsSegment
+    public class LoanSegment : Segment
     {
         public LoanSegment(Loan loan)
         {

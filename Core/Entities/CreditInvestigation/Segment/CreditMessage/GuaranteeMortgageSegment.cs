@@ -6,7 +6,7 @@
     /// <summary>
     /// 抵押
     /// </summary>
-    public class GuaranteeMortgageSegment : AbsSegment
+    public class GuaranteeMortgageSegment : Segment
     {
         public GuaranteeMortgageSegment(GuarantyContractMortgage mortgage, CreditContract creditContract)
         {

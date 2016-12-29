@@ -8,11 +8,11 @@
     /// <summary>
     /// 家族成员信息记录
     /// </summary>
-    public class FamilyMemberRecord : AbsRecord
+    public class FamilyMemberRecord : Record
     {
         public FamilyMemberRecord(Manager manager, FamilyMember familyMember) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new FamilySegment(manager, familyMember)
@@ -21,7 +21,7 @@
 
         public FamilyMemberRecord(Stockholder manager, FamilyMember familyMember) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new FamilySegment(manager, familyMember)

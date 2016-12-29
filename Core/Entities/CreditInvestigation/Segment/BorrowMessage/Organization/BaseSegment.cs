@@ -5,7 +5,7 @@
     using AutoMapper;
     using Customers.Enterprise;
 
-    public class BaseSegment : AbsSegment
+    public class BaseSegment : Segment
     {
         public BaseSegment(Organization organization)
         {

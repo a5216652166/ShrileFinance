@@ -5,7 +5,7 @@
     /// <summary>
     /// 机构基本信息报文
     /// </summary>
-    public class OrganizationBaseDatagram : AbsDatagram
+    public class OrganizationBaseDatagram : Datagram
     {
         public OrganizationBaseDatagram() : base()
         {

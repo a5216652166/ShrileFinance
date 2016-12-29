@@ -5,7 +5,7 @@
     /// <summary>
     /// 2007版资产负债表信息记录
     /// </summary>
-    public class LiabilitiesParagraph : AbsSegment
+    public class LiabilitiesParagraph : Segment
     {
         public LiabilitiesParagraph(Liabilities liabilities)
         {

@@ -9,11 +9,11 @@
     /// <summary>
     /// 保证合同信息记录
     /// </summary>
-    public class EnsureContractInfoRecord : AbsRecord
+    public class EnsureContractInfoRecord : Record
     {
         public EnsureContractInfoRecord(CreditContract credit, GuarantyContract guaranty) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new GuaranteeBaseSegment(Type, credit),

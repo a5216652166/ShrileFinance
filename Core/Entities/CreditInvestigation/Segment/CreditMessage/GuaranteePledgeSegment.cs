@@ -6,7 +6,7 @@
     /// <summary>
     /// 质押
     /// </summary>
-    public class GuaranteePledgeSegment : AbsSegment
+    public class GuaranteePledgeSegment : Segment
     {
         public GuaranteePledgeSegment(GuarantyContractPledge mortgage, CreditContract credit)
         {

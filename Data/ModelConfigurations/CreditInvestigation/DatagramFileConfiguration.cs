@@ -4,7 +4,7 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.CreditInvestigation.DatagramFile;
 
-    public class DatagramFileConfiguration : EntityTypeConfiguration<AbsDatagramFile>
+    public class DatagramFileConfiguration : EntityTypeConfiguration<DatagramFile>
     {
         public DatagramFileConfiguration()
         {

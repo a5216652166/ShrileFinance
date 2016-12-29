@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Text;
     using Datagram;
@@ -18,18 +17,18 @@
     /// <summary>
     /// 报文文件抽象类
     /// </summary>
-    public abstract class AbsDatagramFile : Entity, IAggregateRoot
+    public abstract class DatagramFile : Entity, IAggregateRoot
     {
         /// <summary>
         /// 金融机构代码
         /// </summary>
         public const string FINANCIALORGANIZATIONCODE = "33207991216";
 
-        protected AbsDatagramFile()
+        protected DatagramFile()
         {
         }
 
-        protected AbsDatagramFile(int serialNumber)
+        protected DatagramFile(int serialNumber)
         {
             DateCreated = DateTime.Now;
             SerialNumber = serialNumber.ToString("D4");
@@ -44,11 +43,6 @@
         }
 
         /// <summary>
-        /// 数据生成日期
-        /// </summary>
-        public DateTime DateCreated { get; private set; }
-
-        /// <summary>
         /// 报文文件种类
         /// </summary>
         public abstract DatagramFileType Type { get; }
@@ -59,9 +53,14 @@
         public string SerialNumber { get; private set; }
 
         /// <summary>
+        /// 报文生成日期
+        /// </summary>
+        public DateTime DateCreated { get; private set; }
+
+        /// <summary>
         /// 报文集合
         /// </summary>
-        public virtual ICollection<AbsDatagram> Datagrams { get; protected set; }
+        public virtual ICollection<Datagram> Datagrams { get; protected set; }
 
         /// <summary>
         /// 生成文件名
@@ -74,6 +73,8 @@
             builder.Append(1);
             builder.Append(1);
             builder.Append(FinancialOrganizationCode);
+
+            // TODO: 使用业务发生日期
             builder.Append(DateTime.Now.ToString("yyMMdd"));
             builder.Append(Type.ToString("D").PadLeft(2, '0'));
             builder.Append(1);
@@ -95,7 +96,7 @@
             return Encoding.GetEncoding("GB2312").GetBytes(content);
         }
 
-        public AbsDatagram GetDatagram(DatagramTypeEnum type)
+        public Datagram GetDatagram(DatagramTypeEnum type)
         {
             return Datagrams.Single(m => m.Type == type);
         }

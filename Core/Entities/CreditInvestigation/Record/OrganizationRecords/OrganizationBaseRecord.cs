@@ -8,11 +8,11 @@
     /// <summary>
     /// 机构基本信息记录
     /// </summary>
-    public class OrganizationBaseRecord : AbsRecord
+    public class OrganizationBaseRecord : Record
     {
         public OrganizationBaseRecord(Organization organization) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new BaseSegment(organization),

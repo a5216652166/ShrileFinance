@@ -9,11 +9,11 @@
     /// <summary>
     /// 自然人保证合同信息记录
     /// </summary>
-    public class NaturalEnsureContractInfoRecord : AbsRecord
+    public class NaturalEnsureContractInfoRecord : Record
     {
         public NaturalEnsureContractInfoRecord(CreditContract credit, GuarantyContract guaranty) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new GuaranteeBaseSegment(Type, credit),

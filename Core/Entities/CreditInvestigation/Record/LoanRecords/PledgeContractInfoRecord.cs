@@ -9,11 +9,11 @@
     /// <summary>
     /// 质押合同信息记录
     /// </summary>
-    public class PledgeContractInfoRecord : AbsRecord
+    public class PledgeContractInfoRecord : Record
     {
         public PledgeContractInfoRecord(CreditContract credit, GuarantyContractPledge guaranty) : base()
         {
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                 new GuaranteeBaseSegment(Type, credit),

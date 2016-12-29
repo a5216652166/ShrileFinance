@@ -5,7 +5,7 @@
     /// <summary>
     /// 2007版现金流量表信息记录
     /// </summary>
-    public class CashFlowParagraph : AbsSegment
+    public class CashFlowParagraph : Segment
     {
         public CashFlowParagraph()
         {

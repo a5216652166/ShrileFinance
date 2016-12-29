@@ -9,13 +9,13 @@
     /// <summary>
     /// 事业单位资产负债表信息记录
     /// </summary>
-    public class InstitutionLiabilitiesRecord : AbsRecord
+    public class InstitutionLiabilitiesRecord : Record
     {
         public InstitutionLiabilitiesRecord(Organization organization, InstitutionLiabilities item) : base()
         {
             var baseParagraph = new BaseParagraph(organization.FinancialAffairs, organization, item.Type.ToString(), Type);
 
-            Segments = new List<AbsSegment>()
+            Segments = new List<Segment>()
             {
                 // 基础段
                baseParagraph,

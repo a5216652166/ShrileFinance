@@ -6,7 +6,7 @@
     /// <summary>
     /// 担保
     /// </summary>
-    public class GuaranteeSegment : AbsSegment
+    public class GuaranteeSegment : Segment
     {
         public GuaranteeSegment(CreditContract credit, GuarantyContract guaranty)
         {
