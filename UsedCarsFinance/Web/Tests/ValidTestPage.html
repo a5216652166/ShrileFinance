@@ -221,32 +221,47 @@
         }
 
         function getGYanzheng(x) {
-            var NUM = x.length + 2;
-            var a = new Array(NUM);
-            var p = new Array(NUM);
-            var temp;
-            for (var i = 0; i < x.length; i++) {
+            var validValue = 10
+            for (var i = 0; i < x.length-1; i++) {
                 if (isNaN(x.charAt(i))) {
                     return false;
                 }
-                else {
-                    a[i + 1] = parseInt(x.charAt(i));
+                else{
+                    var temp = (parseInt(x.charAt(i)) + validValue) % 10;
+                    validValue = temp == 0 ? 9 : (temp * 2) % 11;
                 }
             }
+            return (11 - validValue) % 11 == parseInt(x.charAt(x.length - 1))
 
-            p[1] = 10;
 
-            for (var i = 2; i < NUM; i++) {
-                temp = (p[i - 1] + a[i - 1]) % 10;
-                if (temp == 0) {
-                    p[i] = (10 * 2) % 11;
-                }
-                else {
-                    p[i] = temp * 2 % 11;
-                }
-            }
 
-            return (11 - p[NUM - 1]) % 10;
+
+            //var NUM = x.length + 2;
+            //var a = new Array();
+            //var p = new Array();
+            //var temp;
+            //for (var i = 0; i < x.length-1; i++) {
+            //    if (isNaN(x.charAt(i))) {
+            //        return false;
+            //    }
+            //    else {
+            //        a[i + 1] = parseInt(x.charAt(i));
+            //    }
+            //}
+
+            //p[1] = 10;
+
+            //for (var i = 2; i < NUM; i++) {
+            //    temp = (p[i - 1] + a[i - 1]) % 10;
+            //    if (temp == 0) {
+            //        p[i] = (10 * 2) % 11;
+            //    }
+            //    else {
+            //        p[i] = temp * 2 % 11;
+            //    }
+            //}
+
+            //return (11 - p[NUM - 1]) % 10;
         }
     </script>
 </head>
@@ -271,6 +286,12 @@
     <br><br><br>
     <input type="text" name="InCredit" maxlength="18" onkeydown="if (event.keyCode == 13) CheckIDCard();" />
     <input type="button" value="校验机构信用代码" onclick="CheckInCredit()">
+    <br>
+    <span name="InCredit" style="color:red;"></span>
+
+    <br><br><br>
+    <input type="text" name="InCredit" maxlength="18" onkeydown="if (event.keyCode == 13) getGYanzheng();" />
+    <input type="button" value="校验机构信用代码" onclick="getGYanzheng()">
     <br>
     <span name="InCredit" style="color:red;"></span>
 </body>
