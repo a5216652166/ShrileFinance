@@ -207,6 +207,53 @@
         }
 
         /// <summary>
+        /// 身份证号码（15位、18位）
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsIdCard(string value)
+        {
+            // 15位身份证校验
+            var regx15bit = new Regex(@"^[1 - 9][0 - 9]{ 5}[0-9]{2}(0[1-9]|1[0-2])((0[1-9])|((1|2)[0-9])|3[0-1])[0-9]{3}$");
+
+            if (regx15bit.IsMatch(value))
+            {
+                return true;
+            }
+
+            // 基础校验（前17位为数字,后1位为校验码）
+            var regx18bit = new Regex(@"^[1-9][0-9]{5}[1-9][0-9]{3}(0[1-9]|1[0-2])((0[1-9])|((1|2)[0-9])|3[0-1])[0-9]{3}[0-9X]$");
+
+            if (!regx18bit.IsMatch(value))
+            {
+                return false;
+            }
+
+            // 校验码 C18=MOD(∑Ci(i=1→17)×Wi,11)%11
+            var w = new int[] { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+
+            var c18 = 0;
+
+            for (int i = 0; i < w.Length; i++)
+            {
+                c18 += Convert.ToInt32(value[i].ToString()) * w[i];
+            }
+
+            c18 = (12 - c18 % 11) % 11;
+
+            // 校验  当C18的值为10时，校验码应用大写的拉丁字母X表示
+            if (c18 == 10)
+            {
+                return value[17].ToString().Equals("X");
+            }
+            else
+            {
+                return Convert.ToInt32(value[17].ToString()) == c18;
+            }
+
+        }
+
+        /// <summary>
         /// 36进制转十进制
         /// </summary>
         /// <param name="value">值</param>
