@@ -85,6 +85,10 @@
             // 抵押合同集合
             var mortgages = credit.GuarantyContract.Where(m => (m is GuarantyContractMortgage));
 
+            // 防止授信开始日期和结束日期呗修改
+            model.ExpirationDate = credit.ExpirationDate;
+            model.EffectiveDate = credit.EffectiveDate;
+
             Mapper.Map(model, credit);
 
             if (model.GuarantyContract == null || model.GuarantyContract.Count == 0)
