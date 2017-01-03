@@ -24,7 +24,7 @@
             get { return context; }
         }
 
-        protected DbSet<TEntity> Entities
+        private DbSet<TEntity> Entities
         {
             get { return context.Set<TEntity>(); }
         }
