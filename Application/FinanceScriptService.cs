@@ -4,14 +4,22 @@
     using Core.Entities.Flow;
     using Newtonsoft.Json.Linq;
     using ViewModels.FinanceViewModels;
+    using ViewModels.Loan.CreditViewModel;
+    using ViewModels.OrganizationViewModels;
 
     public class FinanceScriptAppService
     {
         private readonly FinanceAppService financeAppService;
+        private readonly LoanAppService loanAppService;
+        private readonly OrganizationAppService organizationAppService;
+        private readonly CreditContractAppService creditContractAppService;
 
-        public FinanceScriptAppService(FinanceAppService financeAppService)
+        public FinanceScriptAppService(FinanceAppService financeAppService,OrganizationAppService organizationAppService,LoanAppService loanAppService,CreditContractAppService creditContractAppService)
         {
             this.financeAppService = financeAppService;
+            this.organizationAppService = organizationAppService;
+            this.loanAppService = loanAppService;
+            this.creditContractAppService = creditContractAppService;
         }
 
         public Instance Instance { get; set; }
@@ -113,6 +121,36 @@
         {
             // 修改信审审核人
             financeAppService.SetApprover(Instance.RootKey.Value);
+        }
+
+        /// <summary>
+        /// 添加机构
+        /// </summary>
+        public void Organization()
+        {
+            var org = GetData<OrganizationViewModel>("5EDC5FCF-18A4-E611-80C5-507B9DE4A488");
+
+            organizationAppService.Create(org);
+        }
+
+        /// <summary>
+        /// 授信合同
+        /// </summary>
+        public void CreditContract()
+        {
+            var creditContract = GetData<CreditContractViewModel>("5FDC5FCF-18A4-E611-80C5-507B9DE4A488");
+
+            creditContractAppService.Create(creditContract);
+        }
+
+        /// <summary>
+        /// 借据
+        /// </summary>
+        public void Loan()
+        {
+            var loan = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("60DC5FCF-18A4-E611-80C5-507B9DE4A488");
+
+            loanAppService.ApplyLoan(loan);
         }
 
         private T GetData<T>(string formId) where T : class, new()

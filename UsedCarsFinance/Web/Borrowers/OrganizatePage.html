@@ -1546,22 +1546,23 @@
                     <fieldset id="J2" name="Liabilities">
                         <!--资产负债-->
                         <table id="Liabilities_dg" class="easyui-datagrid" style="width:890px;" data-options="toolbar: '#Liabilities_tb',
-                   rownumbers:true,
-                   singleSelect:true,
-                   onSelect:LiabilitiesSelect,
-                   title:'资产负债'
-                   ">
+                           rownumbers:true,
+                           fitColumns:true,
+                           singleSelect:true,
+                           onSelect:LiabilitiesSelect,
+                           title:'资产负债'
+                        ">
                             <thead>
                                 <tr>
                                     <th data-options="field:'Id',hidden:true">Id</th>
-                                    <th data-options="field:'TotalCurrentAssets',width:140,align:'center'">流动资产合计</th>
-                                    <th data-options="field:'TotalNonCurrentAssets',width:140,align:'center'">非流动资产合计</th>
-                                    <th data-options="field:'TotalAssets',width:140,align:'center'">资产总计</th>
-                                    <th data-options="field:'TotalCurrentLiabilities',width:140,align:'center'">流动负债合计</th>
-                                    <th data-options="field:'TotalNonNurrentLiabilities',width:140,align:'center'">非流动负债合计</th>
-                                    <th data-options="field:'TotalLiabilities',width:140,align:'center'">负债合计</th>
-                                    <th data-options="field:'TotalOwnersEquity',width:140,align:'center'">所有者权益合计</th>
-                                    <th data-options="field:'TotalLiabilitiesCapital',width:145,align:'center'">负债和所有者权益合计</th>
+                                    <th data-options="field:'TotalCurrentAssets',align:'center'">流动资产合计</th>
+                                    <th data-options="field:'TotalNonCurrentAssets',align:'center'">非流动资产合计</th>
+                                    <th data-options="field:'TotalAssets',align:'center'">资产总计</th>
+                                    <th data-options="field:'TotalCurrentLiabilities',align:'center'">流动负债合计</th>
+                                    <th data-options="field:'TotalNonNurrentLiabilities',align:'center'">非流动负债合计</th>
+                                    <th data-options="field:'TotalLiabilities',align:'center'">负债合计</th>
+                                    <th data-options="field:'TotalOwnersEquity',align:'center'">所有者权益合计</th>
+                                    <th data-options="field:'TotalLiabilitiesCapital',align:'center'">负债和所有者权益合计</th>
                                 </tr>
                             </thead>
                         </table>
