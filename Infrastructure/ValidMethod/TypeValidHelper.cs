@@ -165,7 +165,7 @@
                 valueStr = valueStr.Remove(0, 1);
             }
 
-            if (new Regex(@"^-?\d+\.\d{1}$").IsMatch(valueStr) || new Regex(@"^-?\d+\.\d{2}$").IsMatch(valueStr) || new Regex(@"^\d+$").IsMatch(valueStr))
+            if (new Regex(@"^-?\d+\.\d{1}$").IsMatch(valueStr) || new Regex(@"^-?\d+\.\d{2}$").IsMatch(valueStr) || new Regex(@"^-?\d+$").IsMatch(valueStr))
             {
                 if (valueStr.Length > 2 && new Regex(@"^[0][0-9]*$").IsMatch(valueStr.Substring(0, 2)))
                 {
