@@ -9,6 +9,7 @@
     using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
     using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Organization;
     using ModelConfigurations.CreditInvestigation.Segment.CreditMessage;
+    using ModelConfigurations.IO;
     using ModelConfigurations.Loan;
 
     public class MyContext : IdentityDbContext
@@ -127,6 +128,10 @@
                 .Add(new LiabilitiesParagraphConfiguration())
                 .Add(new InstitutionLiabilitiesParagraphConfiguration())
                 .Add(new ProfitsParagraphConfiguration());
+
+            // IO
+            modelBuilder.Configurations
+                .Add(new FileSystemConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
