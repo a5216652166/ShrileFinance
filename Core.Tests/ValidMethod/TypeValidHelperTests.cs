@@ -1,7 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Infrastructure.ValidMethod.Tests
+﻿namespace Infrastructure.ValidMethod.Tests
 {
+    using ValidMethod;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass()]
     public class TypeValidHelperTests
     {
@@ -16,21 +17,41 @@ namespace Infrastructure.ValidMethod.Tests
         }
 
         [TestMethod()]
-        public void LulnMethodTest()
-        {
-            var luln = "7992739871";
-
-            var result = luln.LulnMethod();
-
-            Assert.IsTrue(result.Key);
-        }
-
-        [TestMethod()]
         public void IsFinanceInstituteCodeTest()
         {
             var value = "33207991216";
 
             var result = TypeValidHelper.IsFinanceInstituteCode(value);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod()]
+        public void IsCreditCardCodeTest()
+        {
+            var value = "3405010000049227";
+
+            var result = TypeValidHelper.IsCreditCardCode(value);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod()]
+        public void IsMoneyTest()
+        {
+            var value = "12.1";
+
+            var result = TypeValidHelper.IsMoney(value);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod()]
+        public void IsIdCardTest()
+        {
+            var value = "45112319710825646X";
+
+            var result = TypeValidHelper.IsIdCard(value);
 
             Assert.IsTrue(result);
         }

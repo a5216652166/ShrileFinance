@@ -21,8 +21,9 @@
 
         function CreditEdit() {
             var url = "Loan/CreditContractEdit.html";
+            var method = $(this).attr("id");
             if (this.id == "creditadd") {
-                url = url
+                url = url + "?method=" + method
             }
             else if (this.id == "creditmod" || this.id == "creditview") {
                 var row = $("#dg").datagrid("getSelected");
@@ -32,10 +33,10 @@
                 }
                 else {
                     if (this.id == "creditmod") {
-                        url = url + "?id=" + row.Id + "&status=1";
+                        url = url + "?id=" + row.Id + "&status=1" + "&method=" + method;
                     }
                     else {
-                        url = url + "?id=" + row.Id + "&status=0";
+                        url = url + "?id=" + row.Id + "&status=0" + "&method=" + method;
                     }
 
                 }

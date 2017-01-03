@@ -95,6 +95,14 @@
     <Compile Include="Migrations\201612260749445_CreditInvestigationModel.Designer.cs">
       <DependentUpon>201612260749445_CreditInvestigationModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612290804505_NewSegmentName.cs" />
+    <Compile Include="Migrations\201612290804505_NewSegmentName.Designer.cs">
+      <DependentUpon>201612290804505_NewSegmentName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612300822058_IO_FileSystem.cs" />
+    <Compile Include="Migrations\201612300822058_IO_FileSystem.Designer.cs">
+      <DependentUpon>201612300822058_IO_FileSystem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -151,6 +159,7 @@
     <Compile Include="ModelConfigurations\FormConfiguration.cs" />
     <Compile Include="ModelConfigurations\FormNodeConfiguration.cs" />
     <Compile Include="ModelConfigurations\FormRoleConfiguration.cs" />
+    <Compile Include="ModelConfigurations\IO\FileSystemConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantorConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantyContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantyOrganizationConfiguration.cs" />
@@ -291,6 +300,7 @@
     <Compile Include="Repositories\CreditContractRespostiory.cs" />
     <Compile Include="Repositories\DatagramFileRepository.cs" />
     <Compile Include="Repositories\DraftRepository.cs" />
+    <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\FlowRepository.cs" />
     <Compile Include="Repositories\FormRepository.cs" />
     <Compile Include="Repositories\InstanceRepository.cs" />
@@ -342,6 +352,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612260749445_CreditInvestigationModel.resx">
       <DependentUpon>201612260749445_CreditInvestigationModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612290804505_NewSegmentName.resx">
+      <DependentUpon>201612290804505_NewSegmentName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612300822058_IO_FileSystem.resx">
+      <DependentUpon>201612300822058_IO_FileSystem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
