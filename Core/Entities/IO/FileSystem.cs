@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Web;
     using Interfaces;
 
     /// <summary>
@@ -9,6 +10,7 @@
     /// </summary>
     public class FileSystem : Entity, IAggregateRoot
     {
+        private const string VirtualPath = @"~\Files\";
         public FileSystem()
         {
             if (!string.IsNullOrEmpty(Path) && File.Exists(Path))
@@ -24,15 +26,23 @@
             }
         }
 
-        public FileSystem(string name, string extension, Stream stream = null, bool isTemp = false)
+        public FileSystem(string oldName, string extension, Stream stream = null, bool isTemp = false)
         {
-            OldName = name;
+            OldName = oldName;
             Extension = extension;
 
             if (stream != null)
             {
-                Stream = new MemoryStream();
-                stream.CopyTo(Stream);
+                if (stream is MemoryStream)
+                {
+                    Stream = stream as MemoryStream;
+                }
+                else
+                {
+                    Stream = Stream ?? new MemoryStream();
+
+                    stream.CopyTo(Stream);
+                }
             }
 
             IsTemp = isTemp;
@@ -73,34 +83,25 @@
         /// </summary>
         public void Save()
         {
-            // 清除临时文件
-            if (IsTemp && File.Exists(Path))
-            {
-                File.Delete(Path);
-
-                return;
-            }
-
             if (Stream == null)
             {
                 throw new IOException("流为null");
             }
 
+            Name = GenerateName();
+
             // 文件所属文件夹
-            var dirPath = DateTime.Now.ToString("yyyyMM");
+            var direct = IsTemp ? VirtualPath + @"Temps" : VirtualPath + DateTime.Now.ToString("yyyyMM");
+            Path = direct + @"\" + Name + Extension;
 
-            Directory.CreateDirectory(dirPath);
+            Directory.CreateDirectory(HttpContext.Current.Server.MapPath(direct));
 
-            // 设置文件路径
-            Path = dirPath + GenerateName() + Extension;
+            var fs = File.Create(HttpContext.Current.Server.MapPath(Path));
 
-            var fileInfo = new FileInfo(dirPath);
-            var fileSream = fileInfo.OpenWrite();
-
-            Stream.CopyTo(fileSream);
-
-            fileSream.Flush();
-            fileSream.Dispose();
+            var buffer = Stream.ToArray();
+            fs.Write(buffer, 0, buffer.Length);
+            fs.Flush();
+            fs.Dispose();
         }
 
         /// <summary>

@@ -14,11 +14,13 @@
 
     public class TestController : ApiController
     {
-        private readonly DatagramAppService service;
+        private readonly DatagramAppService datagramAppService;
+        private readonly FileSystemAppService fileSystemAppService;
 
-        public TestController(DatagramAppService service)
+        public TestController(DatagramAppService datagramAppService, FileSystemAppService fileSystemAppService)
         {
-            this.service = service;
+            this.datagramAppService = datagramAppService;
+            this.fileSystemAppService = fileSystemAppService;
         }
 
         [HttpGet]
@@ -46,6 +48,18 @@
             };
 
             return ResponseMessage(response);
+        }
+
+        [HttpGet]
+        public IHttpActionResult FileSysTest()
+        {
+            var file = new FileInfo(@"F:/aaa.txt");
+
+            var fileSys = fileSystemAppService.CreatFile(file);
+
+            var files = fileSystemAppService.GetAll();
+
+            return Ok();
         }
     }
 }

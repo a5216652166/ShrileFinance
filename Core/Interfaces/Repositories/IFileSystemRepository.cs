@@ -5,7 +5,7 @@
     using System.Linq;
     using Entities.IO;
 
-    public interface IFileEncapsulationRepository : IRepository<FileSystem>
+    public interface IFileSystemRepository : IRepository<FileSystem>
     {
         IQueryable<FileSystem> GetByIds(ICollection<Guid> ids);
     }
