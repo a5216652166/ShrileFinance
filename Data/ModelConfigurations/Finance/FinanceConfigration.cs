@@ -29,6 +29,8 @@
             Property(m => m.ApprovalRatio);
             Property(m => m.Payment);
             Property(m => m.RepayRentDate);
+            //Property(m => m.Hidden);
+            Ignore(m => m.Hidden);
 
             // 信审报告
             HasOptional(m => m.CreditExamine).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
@@ -49,7 +51,7 @@
             HasOptional(m => m.FinanceExtension).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
 
             ////合作商
-           ////HasOptional(m => m.CreateOf).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
+            ////HasOptional(m => m.CreateOf).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
 
             ////用户
             ////HasOptional(m => m.CreateBy).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
