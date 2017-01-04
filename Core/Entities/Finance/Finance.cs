@@ -2,13 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using Interfaces;
     using Partner;
     using Produce;
 
     public class Finance : Entity, IAggregateRoot, IProcessable
     {
+        private bool hidden = true;
+
         public Finance()
         {
             DateEffective = DateTime.Now;
@@ -35,8 +36,18 @@
             一次性付息 = 3
         }
 
-        [DefaultValue(true)]
-        public bool Hidden { get; set; }
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
+        }
 
         /// <summary>
         /// 产品ID

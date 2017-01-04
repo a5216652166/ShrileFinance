@@ -1,7 +1,6 @@
 ﻿namespace Core.Entities.Loan
 {
     using System;
-    using System.ComponentModel;
     using Exceptions;
     using Interfaces;
 
@@ -10,6 +9,8 @@
     /// </summary>
     public class PaymentHistory : Entity, IAggregateRoot, IProcessable
     {
+        private bool hidden = true;
+
         public PaymentHistory(
             decimal scheduledPaymentPrincipal,
             decimal scheduledPaymentInterest,
@@ -37,8 +38,18 @@
         {
         }
 
-        [DefaultValue(true)]
-        public bool Hidden { get; set; }
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
+        }
 
         /// <summary>
         /// 借据标识

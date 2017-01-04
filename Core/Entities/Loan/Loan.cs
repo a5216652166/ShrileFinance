@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using Exceptions;
     using Interfaces;
@@ -48,6 +47,8 @@
     /// </summary>
     public class Loan : Entity, IAggregateRoot, IProcessable
     {
+        private bool hidden = true;
+
         public Loan(decimal principle, DateTime specialDate, DateTime matureDate, string contractNumber)
             : this()
         {
@@ -78,8 +79,18 @@
             Payments = new HashSet<PaymentHistory>();
         }
 
-        [DefaultValue(true)]
-        public bool Hidden { get; set; }
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
+        }
 
         /// <summary>
         /// 授信合同标识

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using Customers.Enterprise;
     using Exceptions;
@@ -17,6 +16,8 @@
 
     public class CreditContract : Entity, IAggregateRoot, IProcessable
     {
+        private bool hidden = true;
+
         public CreditContract()
         {
             GuarantyContract = new HashSet<GuarantyContract>();
@@ -43,8 +44,18 @@
             EffectiveStatus = status;
         }
 
-        [DefaultValue(true)]
-        public bool Hidden { get; set; }
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
+        }
 
         public Guid OrganizationId { get; set; }
 
