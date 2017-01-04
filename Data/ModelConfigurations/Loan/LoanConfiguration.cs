@@ -24,8 +24,7 @@
             Property(m => m.LoanNature).HasMaxLength(1);
             Property(m => m.LoansTo).HasMaxLength(5);
             Property(m => m.LoanTypes).HasMaxLength(2);
-            //Property(m => m.Hidden).IsRequired();
-            Ignore(m => m.Hidden);
+            Property(m => m.Hidden).IsRequired();
 
             HasMany(m => m.Payments).WithRequired()
                 .HasForeignKey(m => m.LoanId);

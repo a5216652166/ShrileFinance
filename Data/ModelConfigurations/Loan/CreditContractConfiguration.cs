@@ -16,8 +16,7 @@
             Property(m => m.ExpirationDate);
             Property(m => m.CreditLimit);
             Property(m => m.EffectiveStatus);
-            //Property(m => m.Hidden).IsRequired();
-            Ignore(m => m.Hidden);
+            Property(m => m.Hidden).IsRequired();
 
             HasMany(m => m.GuarantyContract).WithOptional()
                 .Map(m => m.MapKey("CreditId")).WillCascadeOnDelete();

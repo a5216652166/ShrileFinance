@@ -103,6 +103,10 @@
     <Compile Include="Migrations\201612300822058_IO_FileSystem.Designer.cs">
       <DependentUpon>201612300822058_IO_FileSystem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701040932038_Processable.cs" />
+    <Compile Include="Migrations\201701040932038_Processable.Designer.cs">
+      <DependentUpon>201701040932038_Processable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -358,6 +362,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612300822058_IO_FileSystem.resx">
       <DependentUpon>201612300822058_IO_FileSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701040932038_Processable.resx">
+      <DependentUpon>201701040932038_Processable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
