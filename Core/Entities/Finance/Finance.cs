@@ -6,7 +6,7 @@
     using Partner;
     using Produce;
 
-    public class Finance : Entity, IAggregateRoot
+    public class Finance : Entity, IAggregateRoot,IProcessable
     {
         public Finance()
         {
@@ -33,6 +33,8 @@
             /// </summary>
             一次性付息 = 3
         }
+
+        public bool Hidden { get; set; }
 
         /// <summary>
         /// 产品ID
