@@ -2,10 +2,11 @@
 {
     using System.Linq;
     using Core.Entities.Loan;
+    using Core.Interfaces;
     using Core.Interfaces.Repositories;
     using X.PagedList;
 
-    public class LoanRepository : BaseRepository<Loan>, ILoanRepository
+    public class LoanRepository : BaseRepository<Loan>, ILoanRepository,IProcessable
     {
         public LoanRepository(MyContext context) : base(context)
         {
@@ -33,5 +34,7 @@
             // 分页
             return loans.ToPagedList(page, size);
         }
+
+        public virtual bool Hidden { get; set; }
     }
 }
