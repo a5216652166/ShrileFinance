@@ -2,8 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using Interfaces;
 
-    public class Organization : Customer, IEnterprise
+    public class Organization : Customer, IEnterprise,IProcessable
     {
         public Organization()
         {
@@ -13,6 +14,8 @@
 
             CreatedDate = DateTime.Now;
         }
+
+        public bool Hidden { get; set; }
 
         /// <summary>
         /// 客户号

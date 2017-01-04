@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Core.Interfaces;
+    using Interfaces;
     using Customers.Enterprise;
     using Exceptions;
 
@@ -14,7 +14,7 @@
         未结清 = 2
     }
 
-    public class CreditContract : Entity, IAggregateRoot
+    public class CreditContract : Entity, IAggregateRoot,IProcessable
     {
         public CreditContract()
         {
@@ -41,6 +41,8 @@
             CreditLimit = creditLimit;
             EffectiveStatus = status;
         }
+
+        public bool Hidden { get; set; }
 
         public Guid OrganizationId { get; set; }
 

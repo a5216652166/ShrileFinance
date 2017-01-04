@@ -7,7 +7,7 @@
     /// <summary>
     /// 还款记录
     /// </summary>
-    public class PaymentHistory : Entity, IAggregateRoot
+    public class PaymentHistory : Entity, IAggregateRoot,IProcessable
     {
         public PaymentHistory(
             decimal scheduledPaymentPrincipal,
@@ -35,6 +35,8 @@
         protected PaymentHistory()
         {
         }
+
+        public bool Hidden { get; set; }
 
         /// <summary>
         /// 借据标识

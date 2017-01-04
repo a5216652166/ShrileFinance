@@ -5,12 +5,10 @@
     using Core.Interfaces;
     using Core.Interfaces.Repositories;
 
-    public class OrganizationRepository : BaseRepository<Organization>, IOrganizationRepository,IProcessable
+    public class OrganizationRepository : BaseRepository<Organization>, IOrganizationRepository
     {
         public OrganizationRepository(MyContext context) : base(context)
         {
         }
-
-        public virtual bool Hidden { get; set; }
     }
 }
