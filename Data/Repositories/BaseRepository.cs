@@ -31,17 +31,17 @@
 
         public virtual TEntity Get(Guid key)
         {
-            return Entities.Find(key);
+            return GetAll().Single(m => m.Id == key);
         }
 
         public virtual IQueryable<TEntity> GetAll()
         {
-            return Entities;
+            return Filter(Entities);
         }
-
+       
         public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
-            return Entities.Where(predicate);
+            return GetAll().Where(predicate);
         }
 
         public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize)
@@ -69,6 +69,25 @@
         public virtual int Commit()
         {
             return Context.SaveChanges();
+        }
+
+        private IQueryable<TEntity> Filter(DbSet<TEntity> entities)
+        {
+            var entitieList = entities.ToListAsync().Result;
+
+            // 如果实现了 IProcessable 接口，且 Hidden 属性值为 true，则过滤该条数据
+            foreach (var item in entitieList)
+            {
+                if (item is IProcessable)
+                {
+                    if ((item as IProcessable).Hidden)
+                    {
+                        entities.Remove(item);
+                    }
+                }
+            }
+
+            return entities;
         }
     }
 }
