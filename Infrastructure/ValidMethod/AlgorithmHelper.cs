@@ -22,7 +22,7 @@
             if (value.Length > 0 && new Regex(@"^[0-9]+$").IsMatch(value))
             {
                 var sum = 0;
-                var temp=0;
+                var temp = 0;
 
                 var valueReverse = value.Reverse().ToArray();
 

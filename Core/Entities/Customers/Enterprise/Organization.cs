@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using Interfaces;
 
-    public class Organization : Customer, IEnterprise,IProcessable
+    public class Organization : Customer, IEnterprise, IProcessable
     {
         public Organization()
         {

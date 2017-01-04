@@ -45,7 +45,7 @@
     /// <summary>
     /// 借据
     /// </summary>
-    public class Loan : Entity, IAggregateRoot,IProcessable
+    public class Loan : Entity, IAggregateRoot, IProcessable
     {
         public Loan(decimal principle, DateTime specialDate, DateTime matureDate, string contractNumber)
             : this()

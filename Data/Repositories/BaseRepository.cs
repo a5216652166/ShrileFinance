@@ -39,7 +39,7 @@
         {
             return Filter(Entities);
         }
-       
+
         public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
             return GetAll().Where(predicate);

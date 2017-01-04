@@ -209,8 +209,8 @@
         /// <summary>
         /// 身份证号码（15位、18位）
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">值</param>
+        /// <returns>是/否</returns>
         public static bool IsIdCard(string value)
         {
             // 15位身份证校验
@@ -239,7 +239,7 @@
                 c18 += Convert.ToInt32(value[i].ToString()) * w[i];
             }
 
-            c18 = (12 - c18 % 11) % 11;
+            c18 = (12 - (c18 % 11)) % 11;
 
             // 校验  当C18的值为10时，校验码应用大写的拉丁字母X表示
             if (c18 == 10)
@@ -250,7 +250,6 @@
             {
                 return Convert.ToInt32(value[17].ToString()) == c18;
             }
-
         }
 
         /// <summary>

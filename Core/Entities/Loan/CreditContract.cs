@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Interfaces;
     using Customers.Enterprise;
     using Exceptions;
+    using Interfaces;
 
     public enum CreditContractStatusEnum : byte
     {
@@ -14,7 +14,7 @@
         未结清 = 2
     }
 
-    public class CreditContract : Entity, IAggregateRoot,IProcessable
+    public class CreditContract : Entity, IAggregateRoot, IProcessable
     {
         public CreditContract()
         {

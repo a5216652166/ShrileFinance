@@ -6,7 +6,7 @@
     using Partner;
     using Produce;
 
-    public class Finance : Entity, IAggregateRoot,IProcessable
+    public class Finance : Entity, IAggregateRoot, IProcessable
     {
         public Finance()
         {
@@ -125,7 +125,7 @@
         /// 首次租金支付日期
         /// </summary>
         public DateTime? RepayRentDate { get; set; }
-        
+
         /// <summary>
         /// 合作商
         /// </summary>

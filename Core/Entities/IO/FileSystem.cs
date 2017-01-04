@@ -11,6 +11,7 @@
     public class FileSystem : Entity, IAggregateRoot
     {
         private const string VirtualPath = @"~\Files\";
+
         public FileSystem()
         {
             if (!string.IsNullOrEmpty(Path) && File.Exists(Path))
