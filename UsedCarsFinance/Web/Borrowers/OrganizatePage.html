@@ -30,7 +30,7 @@
     </style>
 
     <script type="text/javascript">
-        var draft = new Draft(BuidDate, LoadDate);
+        var draft = new Draft(BuildData, LoadData);
 
         $(function () {
             Init();
@@ -39,7 +39,7 @@
         });
 
         // 加载数据
-        function LoadDate(data) {
+        function LoadData(data) {
             if (!data || data == null) {
                 return null;
             }
@@ -108,7 +108,7 @@
             ChooseRegisterAdministrativeDivision($("#RegisterAdministrativeDivision").combobox("getValue"));
         }
         // 数据构建
-        function BuidDate() {
+        function BuildData() {
             var data = new Object();
 
             $(['Base', 'Property', 'State', 'Contact']).each(function (i, e) {
@@ -293,7 +293,7 @@
             if (query.Method != "add") {
                 query.Id = GetQueryString("Id");
                 // 加载数据
-                LoadDate(LoadDateForId(query.Id));
+                LoadData(LoadDateForId(query.Id));
 
                 if (query.Method == "view") {
                     // 禁用fieldset
@@ -357,7 +357,7 @@
             }
 
             // 构建数据
-            var data = BuidDate();
+            var data = BuildData();
 
             // 验证数据
             if (!ValidDate(data)) {
@@ -412,12 +412,16 @@
             self.parent.uc.CloseWindow();
         }
 
+        function ValidData() {
+            var data = BuildData();
+            return ValidDate(data);
+        }
+
         // 数据校验
         function ValidDate(data) {
             if (data == null) {
                 return false;
             }
-
             // 组织机构代码和登记注册号码不能同时为空
             if (data.Base.OrganizateCode.toString().length == 0 && data.Base.RegistraterCode.toString().length == 0) {
                 ShowError("基础信息 组织机构代码和登记注册号码不能同时为空");
@@ -514,7 +518,6 @@
                     return false;
                 }
             }
-
             return true;
         }
 
@@ -640,6 +643,8 @@
 
             return data;
         }
+
+
 
         // 数组转字符串
         function ArrayToString(arr) {
@@ -2011,7 +2016,7 @@
             </div>-->
         </div>
 
-        <div id="btn">
+        <div id="btn" style="display:none">
             <a id="saveTempData" class="easyui-linkbutton" data-options="iconCls: 'icon-edit',onClick: draft.Save" style="margin:0 auto">保存草稿</a>
             <a id="submit" class="easyui-linkbutton" data-options="iconCls: 'icon-edit'" style="margin:0 auto" onclick="OrganizateSubmit()">提交</a>
             <a id="cancel" class="easyui-linkbutton" data-options="iconCls: 'icon-redo'" style="margin:0 auto" onclick="OrganizateCancel()">取消</a>

@@ -49,12 +49,12 @@
         /// 添加待发起流程
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
-        public IHttpActionResult StartProcess()
+        [HttpGet]
+        public IHttpActionResult StartProcess(Guid flowId)
         {
             var finacneFlow = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}");
 
-            var instanceId = service.StartNew(finacneFlow);
+            var instanceId = service.StartNew(flowId);
 
             return Ok(instanceId);
         }

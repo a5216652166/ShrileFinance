@@ -80,7 +80,6 @@
         function UploadSuccessInstance(file, data, response) {
             data = JSON.parse(data);
             //var s = LoadAllImages();
-            //debugger
             var files = GetFiles(data.referenceId);
 
             if (files == null || files.length == 0) {

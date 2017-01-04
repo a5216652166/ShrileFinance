@@ -128,9 +128,14 @@
         /// </summary>
         public void Organization()
         {
-            var org = GetData<OrganizationViewModel>("5EDC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var org = GetData<OrganizationViewModel>("5FDC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             organizationAppService.Create(org);
+
+            // 设置流程实例关联的业务标识
+            Instance.RootKey = org.Base.Id;
+
+            Instance.Title = $"{org.Property.InstitutionChName}";
         }
 
         /// <summary>
@@ -138,7 +143,7 @@
         /// </summary>
         public void CreditContract()
         {
-            var creditContract = GetData<CreditContractViewModel>("5FDC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var creditContract = GetData<CreditContractViewModel>("60DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             creditContractAppService.Create(creditContract);
         }
@@ -148,7 +153,7 @@
         /// </summary>
         public void Loan()
         {
-            var loan = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("60DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var loan = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             loanAppService.ApplyLoan(loan);
         }

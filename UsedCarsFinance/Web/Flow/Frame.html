@@ -62,12 +62,10 @@
 
         function RanderTabs(forms) {
             var openIndex;
-
             $(forms).each(function (i, form) {
                 var link = form.Link;
 
                 link += "?state=" + form.State;
-
                 if (form.IsHandler) {
                     flow.Forms.push(form);
                 }
@@ -75,7 +73,6 @@
                 if (openIndex == undefined && form.IsOpen) {
                     openIndex = i;
                 }
-
                 $("#tabs").tabs("add", {
                     id: form.Id,
                     title: form.Name
@@ -93,7 +90,6 @@
         function TabSelect(title, index) {
             var tab = $("#tabs").tabs("getSelected");
             var url = tab.data("url");
-
             if (url) {
                 var formId = tab.attr("id");
 
@@ -168,7 +164,6 @@
 
             $(flow.Forms).each(function (i, form) {
                 var frame = frames[form.Id];
-
                 if (frame.ValidData) {
                     isValid &= frame.ValidData();
 
@@ -187,22 +182,19 @@
 
             if (isValid) {
                 var data = BuildData();
-
                 Transfer.call(this, data);
             }
         }
 
         function BuildData() {
             var data = {};
-
             $(flow.Forms).each(function (i, form) {
                 var frame = frames[form.Id];
-
                 if (frame.BuildData) {
                     data[form.Id] = frame.BuildData();
                 }
             });
-        
+         
             return data;
         }
 

@@ -46,7 +46,8 @@
 
         function Start() {
             $.ajax({
-                method: "POST",
+                type: "GET",
+                data:{flowId:"228C8C80-06A4-E611-80C5-507B9DE4A488"},
                 url: "../api/Instance/StartProcess",
                 statusCode: {
                     200: function (data) {
