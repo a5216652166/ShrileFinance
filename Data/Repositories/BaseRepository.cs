@@ -1,6 +1,7 @@
 ﻿namespace Data.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
@@ -73,21 +74,20 @@
 
         private IQueryable<TEntity> Filter(DbSet<TEntity> entities)
         {
-            var entitieList = entities.ToListAsync().Result;
+            var entitieList = new List<TEntity>();
 
-            // 如果实现了 IProcessable 接口，且 Hidden 属性值为 true，则过滤该条数据
-            foreach (var item in entitieList)
+            // 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
+            foreach (var item in entities)
             {
-                if (item is IProcessable)
+                entitieList.Add(item);
+
+                if (item is IProcessable && (item as IProcessable).Hidden)
                 {
-                    if ((item as IProcessable).Hidden)
-                    {
-                        entities.Remove(item);
-                    }
+                    entitieList.Remove(item);
                 }
             }
 
-            return entities;
+            return entitieList.AsQueryable();
         }
     }
 }
