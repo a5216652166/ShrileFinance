@@ -1,6 +1,7 @@
 ﻿namespace Data.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
@@ -31,17 +32,24 @@
 
         public virtual TEntity Get(Guid key)
         {
-            return Entities.Find(key);
+            var entities = GetAll().Where(m => m.Id == key);
+
+            if (entities.Count() == 1)
+            {
+                return entities.First();
+            }
+
+            return null;
         }
 
         public virtual IQueryable<TEntity> GetAll()
         {
-            return Entities;
+            return Filter(Entities);
         }
 
         public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
         {
-            return Entities.Where(predicate);
+            return GetAll().Where(predicate);
         }
 
         public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize)
@@ -69,6 +77,24 @@
         public virtual int Commit()
         {
             return Context.SaveChanges();
+        }
+
+        private IQueryable<TEntity> Filter(DbSet<TEntity> entities)
+        {
+            var entitieList = new List<TEntity>();
+
+            // 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
+            foreach (var item in entities)
+            {
+                entitieList.Add(item);
+
+                if (item is IProcessable && (item as IProcessable).Hidden)
+                {
+                    entitieList.Remove(item);
+                }
+            }
+
+            return entitieList.AsQueryable();
         }
     }
 }

@@ -57,6 +57,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
     <Compile Include="Entities\IO\FileSystem.cs" />
+    <Compile Include="Interfaces\IProcessable.cs" />
     <Compile Include="Interfaces\Repositories\IDatagramFileRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFileSystemRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPaymentHistoryRepository.cs" />

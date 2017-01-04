@@ -7,8 +7,10 @@
     /// <summary>
     /// 还款记录
     /// </summary>
-    public class PaymentHistory : Entity, IAggregateRoot
+    public class PaymentHistory : Entity, IAggregateRoot, IProcessable
     {
+        private bool hidden = true;
+
         public PaymentHistory(
             decimal scheduledPaymentPrincipal,
             decimal scheduledPaymentInterest,
@@ -34,6 +36,19 @@
 
         protected PaymentHistory()
         {
+        }
+
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
         }
 
         /// <summary>

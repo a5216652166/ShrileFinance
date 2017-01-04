@@ -6,7 +6,7 @@
     using Core.Entities.IO;
     using Core.Interfaces.Repositories;
 
-    public class FileRepository : BaseRepository<FileSystem>, IFileEncapsulationRepository
+    public class FileRepository : BaseRepository<FileSystem>, IFileSystemRepository
     {
         public FileRepository(MyContext context) : base(context)
         {

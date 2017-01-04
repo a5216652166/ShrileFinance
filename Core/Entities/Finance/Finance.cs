@@ -6,8 +6,10 @@
     using Partner;
     using Produce;
 
-    public class Finance : Entity, IAggregateRoot
+    public class Finance : Entity, IAggregateRoot, IProcessable
     {
+        private bool hidden = true;
+
         public Finance()
         {
             DateEffective = DateTime.Now;
@@ -32,6 +34,19 @@
             /// 一次性付息
             /// </summary>
             一次性付息 = 3
+        }
+
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
         }
 
         /// <summary>
@@ -123,7 +138,7 @@
         /// 首次租金支付日期
         /// </summary>
         public DateTime? RepayRentDate { get; set; }
-        
+
         /// <summary>
         /// 合作商
         /// </summary>

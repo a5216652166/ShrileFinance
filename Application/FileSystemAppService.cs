@@ -4,17 +4,44 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Web;
     using Core.Entities.IO;
     using Core.Interfaces.Repositories;
     using Infrastructure.File;
 
-    public class FileSystemService
+    public class FileSystemAppService
     {
-        private readonly IFileEncapsulationRepository repository;
 
-        public FileSystemService(IFileEncapsulationRepository repository)
+        private readonly IFileSystemRepository repository;
+
+        public FileSystemAppService(IFileSystemRepository repository)
         {
             this.repository = repository;
+        }
+
+        public List<FileSystem> GetAll()
+        {
+            return ImportStream(repository.GetAll());
+        }
+
+        public List<FileSystem> GetByIds(ICollection<Guid> id)
+        {
+            return ImportStream(repository.GetByIds(id));
+        }
+
+        public FileSystem Get(Guid id)
+        {
+            return ImportStream(new List<FileSystem>() { repository.Get(id) }).First();
+        }
+
+        public void Delete(IEnumerable<FileSystem> fileSystems)
+        {
+            foreach (var item in fileSystems)
+            {
+                repository.Remove(item);
+            }
+
+            repository.Commit();
         }
 
         /// <summary>
@@ -30,15 +57,9 @@
                 throw new ArgumentNullException("创建文件使用的参数为null");
             }
 
-            var ms = new MemoryStream();
-            using (var fs = fileInfo.OpenRead())
-            {
-                fs.CopyTo(ms);
+            var ms = GetStreamFormFs(fileInfo);
 
-                fs.Flush();
-            }
-
-            return ConvertToFileSystem(ms, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
+            return ConvertToFileSystem(ms, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf('.')), fileInfo.Extension, isTemp: isTemp);
         }
 
         /// <summary>
@@ -51,22 +72,16 @@
         {
             if (string.IsNullOrEmpty(path))
             {
-                throw new ArgumentNullException("创建文件使用的参数为null");
+                throw new ArgumentNullException($"{path}");
             }
 
             if (!File.Exists(path))
             {
-                throw new FileNotFoundException("创建文件使用的路径有误");
+                throw new FileNotFoundException($"{path}");
             }
 
             var fileInfo = new FileInfo(path);
-            var ms = new MemoryStream();
-            using (var fs = fileInfo.OpenRead())
-            {
-                fs.CopyTo(ms);
-
-                fs.Flush();
-            }
+            var ms = GetStreamFormFs(fileInfo);
 
             return ConvertToFileSystem(ms, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
         }
@@ -83,7 +98,7 @@
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("创建文件使用的参数为null");
+                throw new ArgumentNullException("stream");
             }
 
             return ConvertToFileSystem(stream, name, extension, isTemp: isTemp);
@@ -101,10 +116,10 @@
         {
             if (buffer == null)
             {
-                throw new ArgumentNullException("创建文件使用的参数为null");
+                throw new ArgumentNullException("buffer");
             }
 
-            return new FileSystem(name, extension, stream: new MemoryStream(buffer), isTemp: isTemp);
+            return ConvertToFileSystem(new MemoryStream(buffer), name, extension, isTemp: isTemp);
         }
 
         /// <summary>
@@ -139,10 +154,51 @@
 
         private FileSystem ConvertToFileSystem(Stream stream, string name, string extension, bool isTemp = false)
         {
-            var ms = new MemoryStream();
-            stream.CopyTo(ms);
+            var fileSystem = new FileSystem(name, extension, stream: stream, isTemp: isTemp);
 
-            return new FileSystem(name, extension, stream: ms, isTemp: isTemp);
+            fileSystem.Save();
+            repository.Create(fileSystem);
+            repository.Commit();
+
+            return fileSystem;
+        }
+
+        private List<FileSystem> ImportStream(IEnumerable<FileSystem> fileInfos)
+        {
+            foreach (var item in fileInfos)
+            {
+                if (!string.IsNullOrEmpty(item.Path))
+                {
+                    var path = HttpContext.Current.Server.MapPath(item.Path);
+
+                    if (File.Exists(path))
+                    {
+                        var fs = File.OpenRead(path);
+                        item.Stream = new MemoryStream();
+
+                        fs.CopyTo(item.Stream);
+                        fs.Dispose();
+                    }
+                }
+            }
+
+            return fileInfos.ToList();
+        }
+
+        private MemoryStream GetStreamFormFs(FileInfo fileInfo)
+        {
+            MemoryStream ms = null;
+
+            if (fileInfo != null)
+            {
+                var fs = fileInfo.OpenRead();
+                ms = new MemoryStream();
+
+                fs.CopyTo(ms);
+                fs.Dispose();
+            }
+
+            return ms;
         }
     }
 }

@@ -2,9 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using Interfaces;
 
-    public class Organization : Customer, IEnterprise
+    public class Organization : Customer, IEnterprise, IProcessable
     {
+        private bool hidden = true;
+
         public Organization()
         {
             Managers = new List<Manager>();
@@ -12,6 +15,19 @@
             AssociatedEnterprises = new List<AssociatedEnterprise>();
 
             CreatedDate = DateTime.Now;
+        }
+
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
         }
 
         /// <summary>

@@ -45,8 +45,10 @@
     /// <summary>
     /// 借据
     /// </summary>
-    public class Loan : Entity, IAggregateRoot
+    public class Loan : Entity, IAggregateRoot, IProcessable
     {
+        private bool hidden = true;
+
         public Loan(decimal principle, DateTime specialDate, DateTime matureDate, string contractNumber)
             : this()
         {
@@ -75,6 +77,19 @@
         {
             SetFourCategoryAssetsClassification(FourCategoryAssetsClassificationEnum.正常);
             Payments = new HashSet<PaymentHistory>();
+        }
+
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
         }
 
         /// <summary>

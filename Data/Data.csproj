@@ -103,11 +103,15 @@
     <Compile Include="Migrations\201612300822058_IO_FileSystem.Designer.cs">
       <DependentUpon>201612300822058_IO_FileSystem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701040932038_Processable.cs" />
+    <Compile Include="Migrations\201701040932038_Processable.Designer.cs">
+      <DependentUpon>201701040932038_Processable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="ModelConfigurations\ActionConfiguration.cs" />
-    <Compile Include="ModelConfigurations\ApplicantConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\ActionConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\ApplicantConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBaseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\LitigationSegmentConfiguration.cs" />
@@ -147,50 +151,50 @@
     <Compile Include="ModelConfigurations\Customer\AssociatedEnterpriseConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\BigEventConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\CashFlowConfiguration.cs" />
-    <Compile Include="ModelConfigurations\ContactConfiguration.cs" />
-    <Compile Include="ModelConfigurations\CreditExamineConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\ContactConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\CreditExamineConfiguration.cs" />
     <Compile Include="ModelConfigurations\DraftConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FinanceConfigration.cs" />
-    <Compile Include="ModelConfigurations\FinanceExtensionConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FinanceProduceConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FinancingProjectConfigration.cs" />
+    <Compile Include="ModelConfigurations\Finance\FinanceConfigration.cs" />
+    <Compile Include="ModelConfigurations\Finance\FinanceExtensionConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\FinanceProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Product\FinancingProjectConfigration.cs" />
     <Compile Include="ModelConfigurations\Customer\FinancialAffairsConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FlowConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FormConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FormNodeConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FormRoleConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\FlowConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\FormConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\FormNodeConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\FormRoleConfiguration.cs" />
     <Compile Include="ModelConfigurations\IO\FileSystemConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantorConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantyContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantyOrganizationConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantyPersonConfiguration.cs" />
-    <Compile Include="ModelConfigurations\InstanceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\InstanceConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\LiabilitiesConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\LitigationConfigruation.cs" />
     <Compile Include="ModelConfigurations\Loan\CreditContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\LoanConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\PaymentHistoryConfiguration.cs" />
-    <Compile Include="ModelConfigurations\LogConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\LogConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\ManagerConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\FamilyMemberConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\MortgageGuarantyContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\TraceConfiguration.cs" />
-    <Compile Include="ModelConfigurations\NodeConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\NodeConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\OrganizationConfiguration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="ModelConfigurations\Customer\ParentConfigration.cs" />
     <Compile Include="ModelConfigurations\PartnerConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FinancingItemConfigration.cs" />
+    <Compile Include="ModelConfigurations\Product\FinancingItemConfigration.cs" />
     <Compile Include="ModelConfigurations\Loan\PledgeGuarantyContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\ProfitConfiguration.cs" />
-    <Compile Include="ModelConfigurations\ProduceConfigration.cs" />
+    <Compile Include="ModelConfigurations\Product\ProduceConfigration.cs" />
     <Compile Include="ModelConfigurations\Customer\StockholderConfiguration.cs" />
     <Compile Include="ModelConfigurations\TypeConfigurationExtensions.cs" />
     <Compile Include="ModelConfigurations\AppUserConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\InstitutionIncomeExpenditureConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\InstitutionLiabilitiesConfiguration.cs" />
-    <Compile Include="ModelConfigurations\VehicleConfigration.cs" />
+    <Compile Include="ModelConfigurations\Finance\VehicleConfigration.cs" />
     <Compile Include="Models\CRET_Cities.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -301,7 +305,7 @@
     <Compile Include="Repositories\DatagramFileRepository.cs" />
     <Compile Include="Repositories\DraftRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
-    <Compile Include="Repositories\FlowRepository.cs" />
+    <Compile Include="Repositories\ProcessRepository.cs" />
     <Compile Include="Repositories\FormRepository.cs" />
     <Compile Include="Repositories\InstanceRepository.cs" />
     <Compile Include="Repositories\FinancingProjectRepository.cs" />
@@ -358,6 +362,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612300822058_IO_FileSystem.resx">
       <DependentUpon>201612300822058_IO_FileSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701040932038_Processable.resx">
+      <DependentUpon>201701040932038_Processable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

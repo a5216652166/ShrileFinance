@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Core.Interfaces;
     using Customers.Enterprise;
     using Exceptions;
+    using Interfaces;
 
     public enum CreditContractStatusEnum : byte
     {
@@ -14,8 +14,10 @@
         未结清 = 2
     }
 
-    public class CreditContract : Entity, IAggregateRoot
+    public class CreditContract : Entity, IAggregateRoot, IProcessable
     {
+        private bool hidden = true;
+
         public CreditContract()
         {
             GuarantyContract = new HashSet<GuarantyContract>();
@@ -40,6 +42,19 @@
             ExpirationDate = expirationDate;
             CreditLimit = creditLimit;
             EffectiveStatus = status;
+        }
+
+        public bool Hidden
+        {
+            get
+            {
+                return hidden;
+            }
+
+            set
+            {
+                hidden = value;
+            }
         }
 
         public Guid OrganizationId { get; set; }
