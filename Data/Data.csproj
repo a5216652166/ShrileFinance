@@ -301,7 +301,7 @@
     <Compile Include="Repositories\DatagramFileRepository.cs" />
     <Compile Include="Repositories\DraftRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
-    <Compile Include="Repositories\FlowRepository.cs" />
+    <Compile Include="Repositories\ProcessRepository.cs" />
     <Compile Include="Repositories\FormRepository.cs" />
     <Compile Include="Repositories\InstanceRepository.cs" />
     <Compile Include="Repositories\FinancingProjectRepository.cs" />
