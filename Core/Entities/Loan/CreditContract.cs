@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using Customers.Enterprise;
     using Exceptions;
@@ -42,6 +43,7 @@
             EffectiveStatus = status;
         }
 
+        [DefaultValue(true)]
         public bool Hidden { get; set; }
 
         public Guid OrganizationId { get; set; }

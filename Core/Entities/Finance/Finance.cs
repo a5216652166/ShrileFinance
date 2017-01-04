@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using Interfaces;
     using Partner;
     using Produce;
@@ -34,6 +35,7 @@
             一次性付息 = 3
         }
 
+        [DefaultValue(true)]
         public bool Hidden { get; set; }
 
         /// <summary>

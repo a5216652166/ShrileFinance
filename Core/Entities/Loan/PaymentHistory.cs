@@ -1,6 +1,7 @@
 ﻿namespace Core.Entities.Loan
 {
     using System;
+    using System.ComponentModel;
     using Exceptions;
     using Interfaces;
 
@@ -36,6 +37,7 @@
         {
         }
 
+        [DefaultValue(true)]
         public bool Hidden { get; set; }
 
         /// <summary>

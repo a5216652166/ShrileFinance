@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using Exceptions;
     using Interfaces;
@@ -77,6 +78,7 @@
             Payments = new HashSet<PaymentHistory>();
         }
 
+        [DefaultValue(true)]
         public bool Hidden { get; set; }
 
         /// <summary>

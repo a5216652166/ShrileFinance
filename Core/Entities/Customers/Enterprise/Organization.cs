@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using Interfaces;
 
     public class Organization : Customer, IEnterprise, IProcessable
@@ -15,6 +16,7 @@
             CreatedDate = DateTime.Now;
         }
 
+        [DefaultValue(true)]
         public bool Hidden { get; set; }
 
         /// <summary>
