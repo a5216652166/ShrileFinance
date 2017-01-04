@@ -32,7 +32,14 @@
 
         public virtual TEntity Get(Guid key)
         {
-            return GetAll().Single(m => m.Id == key);
+            var entities = GetAll().Where(m => m.Id == key);
+
+            if (entities.Count() == 1)
+            {
+                return entities.First();
+            }
+
+            return null;
         }
 
         public virtual IQueryable<TEntity> GetAll()
