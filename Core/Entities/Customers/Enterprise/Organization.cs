@@ -6,7 +6,7 @@
 
     public class Organization : Customer, IEnterprise, IProcessable
     {
-        private bool hidden = false;
+        private bool hidden = true;
 
         public Organization()
         {
