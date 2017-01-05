@@ -60,8 +60,9 @@
 
             repository.Commit();
             model.Base.Id = customer.Id;
-            // 报文追踪
-            messageAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate);
+
+            //// 报文追踪
+            //messageAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate);
         }
 
         public void Modify(OrganizationViewModel model)
