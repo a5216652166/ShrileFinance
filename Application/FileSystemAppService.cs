@@ -11,7 +11,6 @@
 
     public class FileSystemAppService
     {
-
         private readonly IFileSystemRepository repository;
 
         public FileSystemAppService(IFileSystemRepository repository)
@@ -47,6 +46,25 @@
         /// <summary>
         /// 创建文件
         /// </summary>
+        /// <param name="postedFile">文件信息</param>
+        /// <param name="isTemp">临时文件</param>
+        /// <returns>文件</returns>
+        public FileSystem CreatFile(HttpPostedFile postedFile, bool isTemp = false)
+        {
+            if (postedFile == null)
+            {
+                throw new ArgumentNullException("postedFile", "创建文件使用的参数为null");
+            }
+
+            var ms = postedFile.InputStream;
+            var name = postedFile.FileName;
+
+            return ConvertToFileSystem(ms, name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
+        }
+
+        /// <summary>
+        /// 创建文件
+        /// </summary>
         /// <param name="fileInfo">文件信息</param>
         /// <param name="isTemp">临时文件</param>
         /// <returns>文件</returns>
@@ -54,7 +72,7 @@
         {
             if (fileInfo == null)
             {
-                throw new ArgumentNullException("创建文件使用的参数为null");
+                throw new ArgumentNullException("fileInfo", "创建文件使用的参数为null");
             }
 
             var ms = GetStreamFormFs(fileInfo);
@@ -72,12 +90,12 @@
         {
             if (string.IsNullOrEmpty(path))
             {
-                throw new ArgumentNullException($"{path}");
+                throw new ArgumentNullException(paramName: $"{path}", message: "路径错误");
             }
 
             if (!File.Exists(path))
             {
-                throw new FileNotFoundException($"{path}");
+                throw new FileNotFoundException(message: $"{path}文件不存在");
             }
 
             var fileInfo = new FileInfo(path);
@@ -98,7 +116,7 @@
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException("stream", "流为null");
             }
 
             return ConvertToFileSystem(stream, name, extension, isTemp: isTemp);
@@ -116,7 +134,7 @@
         {
             if (buffer == null)
             {
-                throw new ArgumentNullException("buffer");
+                throw new ArgumentNullException("buffer", "buffer为null");
             }
 
             return ConvertToFileSystem(new MemoryStream(buffer), name, extension, isTemp: isTemp);
