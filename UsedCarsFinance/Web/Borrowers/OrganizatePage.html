@@ -130,7 +130,8 @@
             if ($("div#showSecton").find("input[id=TF_I]")[0].checked == true) {
                 data["Parent"] = FieldsetSerializeFactory('Parent', 'text');
             }
-            if (data.Base.HasParent) {
+            
+            if (data.Base.HasParent=="true") {
                 data["Parent"] = FieldsetSerializeFactory('Parent', 'text');
             }
 
@@ -288,8 +289,13 @@
         function DataInit() {
             var query = {};
 
-            query.Method = GetQueryString("method");
-            debugger
+            query.Method = GetQueryString("state");
+            
+            if (GetQueryString("state") == 1) {
+                query.Method = "add";
+            }
+
+            // 加载草稿
             draft.Load();
             if (query.Method != "add") {
                 query.Id = GetQueryString("Id");
@@ -414,12 +420,15 @@
         }
 
         function ValidData() {
+            
             var data = BuildData();
+            
             return ValidDate(data);
         }
 
         // 数据校验
         function ValidDate(data) {
+            
             if (data == null) {
                 return false;
             }
@@ -645,29 +654,6 @@
             return data;
         }
 
-
-
-        // 数组转字符串
-        function ArrayToString(arr) {
-            if (arr == null) {
-                return '';
-            }
-
-            if (Object.prototype.toString.call(arr) === '[object Array]') {
-                return arr.join(',');
-            }
-
-            return arr;
-        }
-
-        // 字符串转数组
-        function StringToArray(str) {
-            if (str == null) {
-                return [];
-            }
-
-            return str.split(',');
-        }
         function ChooseRegisterAdministrativeDivision(record) {
             if (record != "null" && record != "") {
                 $.ajax({
