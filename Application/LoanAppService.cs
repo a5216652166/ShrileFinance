@@ -130,6 +130,15 @@
 
             foreach (var payment in payments)
             {
+                if (loan.SpecialDate > payment.ActualDatePayment)
+                {
+                    throw new ArgumentOutOfRangeAppException(message: "借据放款日期不得在实际还款日期之前");
+                }
+                else if (loan.SpecialDate > payment.ScheduledDatePayment)
+                {
+                    throw new ArgumentOutOfRangeAppException(message: "借据放款日期不得在应还款日期之前");
+                }
+
                 paymentService.Payment(loan, payment);
 
                 ////ICollection<TraceTypeEnum> traceTypes;
