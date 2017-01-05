@@ -16,7 +16,8 @@
             Property(m => m.ScheduledPaymentInterest);
             Property(m => m.ActualPaymentPrincipal);
             Property(m => m.ActualPaymentInterest);
-            Property(m => m.DatePayment);
+            Property(m => m.ActualDatePayment);
+            Property(m => m.ScheduledDatePayment);
             Property(m => m.PaymentTypes).HasMaxLength(2);
             Property(m => m.Hidden).IsRequired();
 

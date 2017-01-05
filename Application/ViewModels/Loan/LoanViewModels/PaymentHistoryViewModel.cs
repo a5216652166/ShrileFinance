@@ -31,9 +31,14 @@
         public decimal ActualPaymentInterest { get; set; }
 
         /// <summary>
-        /// 还款日期
+        /// 应还款日期
         /// </summary>
-        public DateTime DatePayment { get; private set; }
+        public DateTime ScheduledDatePayment { get; set; }
+
+        /// <summary>
+        /// 实际还款日期
+        /// </summary>
+        public DateTime ActualDatePayment { get; set; }
 
         /// <summary>
         /// 还款方式

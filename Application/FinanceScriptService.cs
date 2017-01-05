@@ -272,15 +272,15 @@
                                 break;
                             case TraceTypeEnum.还款:
                                 // 还款 —> 报文追踪
-                                datagramAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{payment.Key.ActualPaymentPrincipal}", specialDate: payment.Key.DatePayment);
+                                datagramAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{payment.Key.ActualPaymentPrincipal}", specialDate: payment.Key.ActualDatePayment);
                                 break;
                             case TraceTypeEnum.逾期:
                                 // 逾期 —> 报文追踪
-                                datagramAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: payment.Key.DatePayment);
+                                datagramAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: payment.Key.ActualDatePayment);
                                 break;
                             case TraceTypeEnum.欠息:
                                 // 欠息 —> 报文追踪
-                                datagramAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: payment.Key.DatePayment);
+                                datagramAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: payment.Key.ActualDatePayment);
                                 break;
                         }
                     }

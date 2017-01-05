@@ -9,7 +9,7 @@
         {
             Mapper.Map(payment, this);
             还款次数 = times.ToString();
-            DatePayment = payment.DatePayment.ToString("yyyyMMdd");
+            DatePayment = payment.ActualDatePayment.ToString("yyyyMMdd");
         }
 
         protected RepaymentSegment() : base()
