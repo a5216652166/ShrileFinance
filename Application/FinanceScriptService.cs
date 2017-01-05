@@ -20,6 +20,7 @@
         private readonly DatagramAppService datagramAppService;
         private readonly ICreditContractRepository creditContractRepository;
         private readonly ILoanRepository loanRepository;
+        private readonly IOrganizationRepository organizationRepository;
 
         public FinanceScriptAppService(
             FinanceAppService financeAppService,
@@ -27,7 +28,9 @@
             LoanAppService loanAppService,
             CreditContractAppService creditContractAppService,
             DatagramAppService datagramAppService,
-            ICreditContractRepository creditContractRepository)
+            ICreditContractRepository creditContractRepository,
+            ILoanRepository loanRepository,
+            IOrganizationRepository organizationRepository)
         {
             this.financeAppService = financeAppService;
             this.organizationAppService = organizationAppService;
@@ -35,6 +38,8 @@
             this.creditContractAppService = creditContractAppService;
             this.datagramAppService = datagramAppService;
             this.creditContractRepository = creditContractRepository;
+            this.loanRepository = loanRepository;
+            this.organizationRepository = organizationRepository;
         }
 
         public Instance Instance { get; set; }
@@ -151,6 +156,21 @@
             Instance.RootKey = org.Base.Id;
 
             Instance.Title = $"{org.Property.InstitutionChName}";
+        }
+
+        /// <summary>
+        /// 添加机构 - 审批通过
+        /// </summary>
+        public void OrganizationFinish()
+        {
+            // 获取机构实体
+            var organization = organizationRepository.Get(Instance.RootKey.Value);
+
+            // 报文追踪
+            Trace(organization);
+
+            // 设置Hidden为false
+            SetHidden(organization);
         }
 
         /// <summary>
