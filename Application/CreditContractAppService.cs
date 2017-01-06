@@ -51,7 +51,7 @@
             credit.ValidateEffective(credit);
             repository.Create(credit);
             repository.Commit();
-
+            model.Id = credit.Id;
             ////// 报文追踪(贷款合同信息记录)
             ////messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订授信合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate);
 

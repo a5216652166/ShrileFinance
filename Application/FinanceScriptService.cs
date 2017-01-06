@@ -202,6 +202,11 @@
             var creditContract = GetData<CreditContractViewModel>("60DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             creditContractAppService.Create(creditContract);
+
+            // 设置流程实例关联的业务标识
+            Instance.RootKey = creditContract.Id;
+            var organization = organizationRepository.Get(creditContract.OrganizationId);
+            Instance.Title = $"{"机构名："+ organization.Property.InstitutionChName+" 授信合同编号："+ creditContract.CreditContractCode}";
         }
 
         /// <summary>

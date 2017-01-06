@@ -15,20 +15,21 @@
         uc.form = new UCForm(".container");
         $(function () {
             LoadAllOrgainzate();
-            if (query.id != null) {
-                if (query.status == "0") {
+            query.creditId = parent.flow.RootKey;
+            if (query.creditId != null) {
+                if (query.state == "0") {
                     $("#save").hide();
                     uc.form.DisableForm();
 
                 }
-                else if (query.status == "1") {
+                else if (query.state == "1") {
                     $("#EffectiveStatus").combobox({ "readonly": true })
                     $("#ExpirationDate").textbox({ "readonly": true });
                     $("#CreditContractCode").textbox({ "readonly": true });
                 }
                 Init();
             }
-            if (query.method == "creditadd") {
+            if (query.creditId ==undefined) {
                 $.extend($.fn.validatebox.defaults.rules, {
                     //重复验证
                     checkCreditContractNumberRepeat: {
@@ -58,7 +59,7 @@
             $.ajax({
                 async: false,
                 method: "GET",
-                data: { id: query.id },
+                data: { id: query.creditId },
                 url: "../api/CreditContract/Get",
                 success: function (data) {
                     LoadData(data);
@@ -145,17 +146,21 @@
                     e.Margin = $('fieldset#CreditContract input[textboxname=CreditLimit]').textbox('getValue');
                 });
             }
-
+            if (value.HasGuarantee == "1") {
+                value.HasGuarantee = true;
+            }
+            else {
+                value.HasGuarantee = false;
+            }
             return value;
         }
 
-        function ValidData(data) {
+        function ValidDate(data) {
             if (!$("form").form("validate")) {
                 $.messager.show({ msg: '请正确填写完必填项！' });
 
                 return false;
             }
-
             if (data.EffectiveDate > data.ExpirationDate) {
                 $.messager.show({ msg: '授信合同终止日期不得在生效日期之前！' });
 
@@ -189,6 +194,11 @@
             return true;
         }
 
+        function ValidData() {
+            var model = BuildData();
+            return  ValidDate(model);
+        }
+
         function Submit() {
             $("div#btn #save").linkbutton("disable");
 
@@ -200,7 +210,7 @@
                 model.HasGuarantee = true
             }
 
-            if (!ValidData(model)) {
+            if (!ValidDate(model)) {
                 $("div#btn #save").linkbutton("enable");
                 return false;
             }
@@ -249,7 +259,7 @@
                 $.ajax({
                     async: false,
                     method: "GET",
-                    data: { id: query.id, limit: $("#CreditLimit").textbox("getValue") },
+                    data: { id: query.creditId, limit: $("#CreditLimit").textbox("getValue") },
                     url: "../api/CreditContract/GetCreditBalance",
                     statusCode: {
                         200: function (data) {

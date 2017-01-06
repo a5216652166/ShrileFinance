@@ -105,6 +105,19 @@
                 }
             });
         }
+
+        function Start() {
+            $.ajax({
+                method: "GET",
+                data: { flowId: "05824FE1-78D1-E611-80CA-507B9DE4A488" },
+                url: "../api/Instance/StartProcess",
+                statusCode: {
+                    200: function (data) {
+                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data);
+                    }
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -139,8 +152,8 @@
         </div>
 
         <div style="height:30px; width:auto;">
-            <a id="creditadd" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:CreditEdit,iconCls:'icon-add',plain:true">添加</a>
-            <a id="creditmod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:CreditEdit,iconCls:'icon-edit',plain:true">修改</a>
+            <a id="creditadd" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起贷款申请</a>
+            <!--<a id="creditmod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:CreditEdit,iconCls:'icon-edit',plain:true">修改</a>-->
             <a id="ChangeAmount" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:ChangeAmount,iconCls:'icon-edit',plain:true">修改授信额度</a>
             <a id="stopstatus" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:StopStatus,iconCls:'icon-edit',plain:true">终止合同</a>
             <a id="creditview" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:CreditEdit,iconCls:'icon-search',plain:true">查看详情</a>
