@@ -44,7 +44,8 @@
 
         public virtual IQueryable<TEntity> GetAll()
         {
-            return Filter(Entities);
+            return Entities;
+            //return Filter(Entities);
         }
 
         public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
