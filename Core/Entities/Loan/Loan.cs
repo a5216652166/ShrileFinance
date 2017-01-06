@@ -188,13 +188,26 @@
 
             if (payment.ActualDatePayment < SpecialDate)
             {
-                throw new ArgumentOutOfRangeAppException(nameof(payment.ActualDatePayment), "还款日期必须晚于放款日期.");
+                throw new ArgumentOutOfRangeAppException(nameof(payment.ActualDatePayment), "实际还款日期必须晚于放款日期.");
+            }
+
+            if (payment.ScheduledDatePayment < SpecialDate)
+            {
+                throw new ArgumentOutOfRangeAppException(nameof(payment.ActualDatePayment), "应还款日期必须晚于放款日期.");
             }
 
             var lastPayment = Payments.LastOrDefault();
             if (lastPayment != null && payment.ActualDatePayment < lastPayment.ActualDatePayment)
             {
-                throw new ArgumentOutOfRangeAppException(nameof(payment.ActualPaymentPrincipal), "还款日期必须晚于最后一次还款的日期.");
+                if (payment.ActualDatePayment < lastPayment.ActualDatePayment)
+                {
+                    throw new ArgumentOutOfRangeAppException(nameof(payment.ActualPaymentPrincipal), "实际还款日期必须晚于最后一次实际还款的日期.");
+                }
+
+                if (payment.ScheduledDatePayment < lastPayment.ScheduledDatePayment)
+                {
+                    throw new ArgumentOutOfRangeAppException(nameof(payment.ActualPaymentPrincipal), "应还款日期必须晚于最后一次应还款的日期.");
+                }
             }
 
             Payments.Add(payment);
