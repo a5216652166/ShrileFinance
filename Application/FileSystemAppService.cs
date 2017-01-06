@@ -56,10 +56,11 @@
                 throw new ArgumentNullException("postedFile", "创建文件使用的参数为null");
             }
 
-            var ms = postedFile.InputStream;
             var name = postedFile.FileName;
 
-            return ConvertToFileSystem(ms, name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(postedFile, name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
+
+            return fileSystem;
         }
 
         /// <summary>
@@ -75,9 +76,9 @@
                 throw new ArgumentNullException("fileInfo", "创建文件使用的参数为null");
             }
 
-            var ms = GetStreamFormFs(fileInfo);
+            var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf('.')), fileInfo.Extension, isTemp: isTemp);
 
-            return ConvertToFileSystem(ms, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf('.')), fileInfo.Extension, isTemp: isTemp);
+            return fileSystem;
         }
 
         /// <summary>
@@ -99,9 +100,10 @@
             }
 
             var fileInfo = new FileInfo(path);
-            var ms = GetStreamFormFs(fileInfo);
 
-            return ConvertToFileSystem(ms, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(path, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
+
+            return fileSystem;
         }
 
         /// <summary>
@@ -119,7 +121,9 @@
                 throw new ArgumentNullException("stream", "流为null");
             }
 
-            return ConvertToFileSystem(stream, name, extension, isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(stream, name, extension, isTemp: isTemp);
+
+            return fileSystem;
         }
 
         /// <summary>
@@ -137,7 +141,11 @@
                 throw new ArgumentNullException("buffer", "buffer为null");
             }
 
-            return ConvertToFileSystem(new MemoryStream(buffer), name, extension, isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(buffer, name, extension, isTemp: isTemp);
+
+            SaveFileSystem(fileSystem);
+
+            return fileSystem;
         }
 
         /// <summary>
@@ -170,15 +178,53 @@
             return FileHelper.Compression(dictonary);
         }
 
-        private FileSystem ConvertToFileSystem(Stream stream, string name, string extension, bool isTemp = false)
+        private FileSystem ConvertToFileSystem<T>(T value, string name, string extension, bool isTemp = false)
         {
+            Stream stream = null;
+
+            if (value is HttpPostedFile)
+            {
+                stream = (value as HttpPostedFile).InputStream;
+            }
+            else if (value is FileInfo)
+            {
+                stream = GetStreamFormFs(value as FileInfo);
+            }
+            else if (value is string)
+            {
+                stream = GetStreamFormFs(new FileInfo(value as string));
+            }
+            else if (value is Stream)
+            {
+                stream = value as Stream;
+            }
+            else if (value is byte[])
+            {
+                stream = new MemoryStream(value as byte[]);
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException(message:"流为空",innerException:new Exception("不支持的类型:"+value.GetType().FullName));
+            }
+
             var fileSystem = new FileSystem(name, extension, stream: stream, isTemp: isTemp);
 
-            fileSystem.Save();
-            repository.Create(fileSystem);
-            repository.Commit();
-
             return fileSystem;
+        }
+
+        private void SaveFileSystem(FileSystem fileSystem)
+        {
+            if (fileSystem.Id == Guid.Empty)
+            {
+                repository.Create(fileSystem);
+            }
+            else
+            {
+                repository.Modify(fileSystem);
+            }
+
+            repository.Commit();
         }
 
         private List<FileSystem> ImportStream(IEnumerable<FileSystem> fileInfos)
