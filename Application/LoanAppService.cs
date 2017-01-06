@@ -84,8 +84,7 @@
 
             repository.Commit();
 
-            ////// 报文追踪（放款）
-            ////messageAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
+            //// 报文追踪转移至流程处理
         }
 
         /// <summary>
@@ -140,37 +139,12 @@
                 }
 
                 paymentService.Payment(loan, payment);
-
-                ////ICollection<TraceTypeEnum> traceTypes;
-
-                ////paymentService.Payment(loan, payment, out traceTypes);
-
-                ////traces.Add(payment, traceTypes);
             }
 
             repository.Modify(loan);
             repository.Commit();
 
-            ////foreach (var payment in traces)
-            ////{
-            ////    foreach (var type in payment.Value)
-            ////    {
-            ////        switch (type)
-            ////        {
-            ////            case TraceTypeEnum.还款:
-            ////                messageAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{payment.Key.ActualPaymentPrincipal}", specialDate: payment.Key.DatePayment);
-            ////                break;
-            ////            case TraceTypeEnum.逾期:
-            ////                messageAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: payment.Key.DatePayment);
-            ////                break;
-            ////            case TraceTypeEnum.欠息:
-            ////                messageAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: payment.Key.DatePayment);
-            ////                break;
-            ////            default:
-            ////                break;
-            ////        }
-            ////    }
-            ////}
+            //// 报文追踪转移至流程处理
         }
 
         /// <summary>
