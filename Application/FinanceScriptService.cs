@@ -29,6 +29,7 @@
             LoanAppService loanAppService,
             CreditContractAppService creditContractAppService,
             DatagramAppService datagramAppService,
+            IFinanceRepository financeRepository,
             ICreditContractRepository creditContractRepository,
             ILoanRepository loanRepository,
             IOrganizationRepository organizationRepository)
@@ -38,6 +39,7 @@
             this.loanAppService = loanAppService;
             this.creditContractAppService = creditContractAppService;
             this.datagramAppService = datagramAppService;
+            this.financeRepository = financeRepository;
             this.creditContractRepository = creditContractRepository;
             this.loanRepository = loanRepository;
             this.organizationRepository = organizationRepository;
@@ -409,8 +411,6 @@
             if (entity is Core.Interfaces.IProcessable)
             {
                 (entity as Core.Interfaces.IProcessable).Hidden = false;
-
-                ////entity.GetType().GetProperty("Hidden").SetValue(entity,false);
             }
         }
 
