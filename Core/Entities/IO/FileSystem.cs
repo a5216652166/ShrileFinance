@@ -29,6 +29,7 @@
 
         public FileSystem(string oldName, string extension, Stream stream = null, bool isTemp = false)
         {
+            Id = Guid.Empty;
             OldName = oldName;
             Extension = extension;
 
