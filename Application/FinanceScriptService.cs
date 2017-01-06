@@ -161,7 +161,7 @@
         {
             // 获取融资实体
             var finance = financeRepository.Get(Instance.RootKey.Value);
-            
+
             // 设置Hidden为false
             SetHidden(finance);
         }
@@ -208,7 +208,7 @@
             // 设置流程实例关联的业务标识
             Instance.RootKey = creditContract.Id;
             var organization = organizationRepository.Get(creditContract.OrganizationId);
-            Instance.Title = $"{"机构名："+ organization.Property.InstitutionChName+" 授信合同编号："+ creditContract.CreditContractCode}";
+            Instance.Title = $"{"机构名：" + organization.Property.InstitutionChName + " 授信合同编号：" + creditContract.CreditContractCode}";
         }
 
         /// <summary>
@@ -306,7 +306,7 @@
                 // 添加机构 —> 报文追踪
                 datagramAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate);
             }
-            else if (entity is CreditContract && describe == null)
+            else if (entity is CreditContract && describe != null)
             {
                 var credit = entity as CreditContract;
 
