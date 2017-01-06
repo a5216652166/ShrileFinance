@@ -42,6 +42,14 @@
             this.organizationRepository = organizationRepository;
         }
 
+        private enum CreditContractChangeEnum
+        {
+            签订合同 = 0,
+            有效期变更 = 1,
+            金额发生变化 = 2,
+            合同终止 = 3
+        }
+
         public Instance Instance { get; set; }
 
         public JObject Data { get; set; }
@@ -278,7 +286,7 @@
                 // 添加机构 —> 报文追踪
                 datagramAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate);
             }
-            else if (entity is CreditContract && describe==null)
+            else if (entity is CreditContract && describe == null)
             {
                 var credit = entity as CreditContract;
 
@@ -391,6 +399,7 @@
         /// <summary>
         /// 授信合同 - 审批通过
         /// </summary>
+        /// <param name="describe">描述</param>
         private void CreditContractFinish(CreditContractChangeEnum describe)
         {
             // 获取授信合同实体
@@ -401,13 +410,6 @@
 
             // 设置Hidden为false
             SetHidden(creditContract);
-        }
-
-        private enum CreditContractChangeEnum {
-            签订合同 = 0,
-            有效期变更 = 1,
-            金额发生变化 = 2,
-            合同终止 = 3
         }
     }
 }
