@@ -177,8 +177,8 @@
 
 
             new FAction { Id = new Guid("{A36FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "提交", Type = ActionTypeEnum.发起, AllocationType = ActionAllocationEnum.无, Method = "Organization" },
-            new FAction { Id = new Guid("{A46FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "通过", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.指定, Method = null },
-            new FAction { Id = new Guid("{A56FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.指定, Method = null },
+            new FAction { Id = new Guid("{A46FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "通过", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.无, Method = null },
+            new FAction { Id = new Guid("{A56FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.无, Method = null },
             new FAction { Id = new Guid("{A66FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = null, Name = "完成", Type = ActionTypeEnum.完成, AllocationType = ActionAllocationEnum.无, Method = null },
             new FAction { Id = new Guid("{A76FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.记录, Method = null },
             new FAction { Id = new Guid("{A86FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "提交", Type = ActionTypeEnum.发起, AllocationType = ActionAllocationEnum.指定, Method = null },
@@ -283,16 +283,27 @@
                 new FormNode { NodeId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{5FDC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
                 new FormNode { NodeId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{5FDC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{5FDC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{60DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
+                new FormNode { NodeId = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{60DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{60DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{61DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
+                new FormNode { NodeId = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{61DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{61DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
+                new FormNode { NodeId = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = true, IsHandler = true },
-                new FormNode { NodeId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = true, IsHandler = true }
+                new FormNode { NodeId = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = true, IsHandler = true },
+                new FormNode { NodeId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false }
 
                 );
 

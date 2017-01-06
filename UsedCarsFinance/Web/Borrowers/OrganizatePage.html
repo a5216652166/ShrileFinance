@@ -287,16 +287,15 @@
         // 数据初始化
         function DataInit() {
             var query = {};
-
-            query.Method = GetQueryString("method");
-            debugger
+            query.state = GetQueryString("state");
+            query.orgid = parent.flow.RootKey;
+            //query.Method = GetQueryString("method");
             draft.Load();
-            if (query.Method != "add") {
-                query.Id = GetQueryString("Id");
+            if (query.orgid) {
                 // 加载数据
-                LoadData(LoadDateForId(query.Id));
+                LoadData(LoadDateForId(query.orgid));
 
-                if (query.Method == "view") {
+                if (query.state == 0) {
                     // 禁用fieldset
                     Disabled($("fieldset"));
 
@@ -445,7 +444,6 @@
                 ShowError("重要股东 必填");
                 return false;
             }
-
             // 上级机构（主管单位）
             if (data.Parent != undefined) {
                 // 登记注册号类型和登记注册号码需成对出现
