@@ -42,6 +42,14 @@
             this.organizationRepository = organizationRepository;
         }
 
+        private enum CreditContractChangeEnum
+        {
+            签订合同 = 0,
+            有效期变更 = 1,
+            金额发生变化 = 2,
+            合同终止 = 3
+        }
+
         public Instance Instance { get; set; }
 
         public JObject Data { get; set; }
@@ -189,6 +197,38 @@
         }
 
         /// <summary>
+        /// 授信合同 - 签订
+        /// </summary>
+        public void CreditContractSigned()
+        {
+            CreditContractFinish(describe: CreditContractChangeEnum.签订合同);
+        }
+
+        /// <summary>
+        /// 授信合同 - 有效期变更
+        /// </summary>
+        public void CreditContractEffectiveDate()
+        {
+            CreditContractFinish(describe: CreditContractChangeEnum.有效期变更);
+        }
+
+        /// <summary>
+        /// 授信合同 - 金额发生变化
+        /// </summary>
+        public void CreditContractMoney()
+        {
+            CreditContractFinish(describe: CreditContractChangeEnum.金额发生变化);
+        }
+
+        /// <summary>
+        /// 授信合同 - 合同终止
+        /// </summary>
+        public void CreditContractTerminate()
+        {
+            CreditContractFinish(describe: CreditContractChangeEnum.合同终止);
+        }
+
+        /// <summary>
         /// 借据
         /// </summary>
         public void Loan()
@@ -196,6 +236,39 @@
             var loan = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             loanAppService.ApplyLoan(loan);
+        }
+
+        /// <summary>
+        /// 借据 - 放款
+        /// </summary>
+        public void LoanFinish()
+        {
+            // 获取借据实体
+            var loan = loanRepository.Get(Instance.RootKey.Value);
+
+            // 报文追踪
+            Trace(loan);
+
+            // 设置Hidden为false
+            SetHidden(loan);
+        }
+
+        /// <summary>
+        /// 还款记录 - 还款
+        /// </summary>
+        public void PaymentFinish()
+        {
+            // 获取借据实体
+            var loan = loanRepository.Get(Instance.RootKey.Value);
+
+            // 报文追踪
+            Trace(loan.Payments);
+
+            // 设置Hidden为false
+            foreach (var payment in loan.Payments)
+            {
+                SetHidden(payment);
+            }
         }
 
         private T GetData<T>(string formId) where T : class, new()
@@ -209,7 +282,7 @@
         /// <typeparam name="T">类型</typeparam>
         /// <param name="entity">实体</param>
         /// <param name="describe">描述</param>
-        private void Trace<T>(T entity, string describe = null)
+        private void Trace<T>(T entity, CreditContractChangeEnum? describe = null)
         {
             if (entity is Core.Entities.Customers.Enterprise.Organization)
             {
@@ -218,7 +291,7 @@
                 // 添加机构 —> 报文追踪
                 datagramAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate);
             }
-            else if (entity is CreditContract && string.IsNullOrEmpty(describe) == false)
+            else if (entity is CreditContract && describe == null)
             {
                 var credit = entity as CreditContract;
 
@@ -227,22 +300,22 @@
                     default:
                         break;
 
-                    case "签订合同":
+                    case CreditContractChangeEnum.签订合同:
                         // 授信合同 - 签订 —> 报文追踪
                         datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订授信合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate);
                         break;
 
-                    case "有效期变更":
+                    case CreditContractChangeEnum.有效期变更:
                         // 授信合同 - 合同有效期变更 —> 报文追踪
                         datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"授信合同：{credit.CreditContractCode}有效日期变更", specialDate: credit.EffectiveDate);
                         break;
 
-                    case "金额发生变化":
+                    case CreditContractChangeEnum.金额发生变化:
                         // 授信合同 - 合同金额发生变化 —> 报文追踪
                         datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "授信额度变更", specialDate: credit.EffectiveDate);
                         break;
 
-                    case "合同终止":
+                    case CreditContractChangeEnum.合同终止:
                         // 授信合同 - 终止 —> 报文追踪
                         datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate);
                         break;
@@ -253,7 +326,7 @@
                 var loan = entity as Loan;
                 var credit = creditContractRepository.Get(loan.CreditId);
 
-                // 放款 —> 报文追踪
+                // 借据 放款 —> 报文追踪
                 datagramAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
             }
             else if (entity is IEnumerable<PaymentHistory>)
@@ -326,6 +399,22 @@
 
                 ////entity.GetType().GetProperty("Hidden").SetValue(entity,false);
             }
+        }
+
+        /// <summary>
+        /// 授信合同 - 审批通过
+        /// </summary>
+        /// <param name="describe">描述</param>
+        private void CreditContractFinish(CreditContractChangeEnum describe)
+        {
+            // 获取授信合同实体
+            var creditContract = creditContractRepository.Get(Instance.RootKey.Value);
+
+            // 报文追踪
+            Trace(creditContract, describe: describe);
+
+            // 设置Hidden为false
+            SetHidden(creditContract);
         }
     }
 }
