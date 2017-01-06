@@ -374,7 +374,7 @@
                    onDblClickRow: onEdit, onEndEdit: onEndEdit, rowStyler: PaymentStyler">
                 <thead>
                     <tr>
-                        <th data-options="field:'ScheduledPaymentPrincipal',width:150,align:'right',
+                        <th data-options="field:'ScheduledPaymentPrincipal',width:128.57,align:'right',
                         editor:{
                             type:'textbox',
                             options:{
@@ -382,7 +382,7 @@
                                 validType:'Price'
                             }
                         }">应还本金（元）</th>
-                        <th data-options="field:'ActualPaymentPrincipal',width:150,align:'right',
+                        <th data-options="field:'ActualPaymentPrincipal',width:128.57,align:'right',
                         editor:{
                             type:'textbox',
                             options:{
@@ -390,7 +390,7 @@
                                 validType:'Price'
                             }
                         }">实际偿还本金（元）</th>
-                        <th data-options="field:'ScheduledPaymentInterest',width:150,align:'right',
+                        <th data-options="field:'ScheduledPaymentInterest',width:128.57,align:'right',
                         editor:{
                             type:'textbox',
                             options:{
@@ -398,7 +398,7 @@
                                 validType:'Price'
                             }
                         }">应还利息（元）</th>
-                        <th data-options="field:'ActualPaymentInterest',width:150,align:'right',
+                        <th data-options="field:'ActualPaymentInterest',width:128.57,align:'right',
                         editor:{
                             type:'textbox',
                             options:{
@@ -406,8 +406,23 @@
                                 validType:'Price'
                             }
                         }">实际偿还利息（元）</th>
-                        <th data-options="field:'DatePayment',width:150,align:'right'">还款日期</th>
-                        <th data-options="field:'PaymentTypes',width:150,align:'right',
+                        <th data-options="field:'ScheduledDatePayment',width:128.57,align:'right',
+                            editor:{
+                            type:'datebox',
+                            options:{
+                                required:true,
+                                editable:false
+                            }
+                        }">应还款日期</th>
+                        <th data-options="field:'ActualDatePayment',width:128.57,align:'right',
+                            editor:{
+                            type:'datebox',
+                            options:{
+                                required:true,
+                                editable:false
+                            }
+                        }">实际还款日期</th>
+                        <th data-options="field:'PaymentTypes',width:128.57,align:'right',
                         formatter:function(value,row){
                             return row.PaymentTypesDesc;
                         },
@@ -486,7 +501,8 @@
                             ScheduledPaymentInterest: 0,
                             ActualPaymentPrincipal: 0,
                             ActualPaymentInterest: 0,
-                            DatePayment: new Date().toLocaleDateString(),
+                            ScheduledDatePayment: new Date().toLocaleDateString(),
+                            ActualDatePayment: new Date().toLocaleDateString(),
                             PaymentTypes: "01"
                         });
 

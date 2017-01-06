@@ -12,10 +12,16 @@ namespace Data.Migrations
             AddColumn("dbo.LOAN_CreditContranct", "Hidden", c => c.Boolean(nullable: false));
             AddColumn("dbo.LOAN_Loan", "Hidden", c => c.Boolean(nullable: false));
             AddColumn("dbo.LOAN_PaymentHistory", "Hidden", c => c.Boolean(nullable: false));
+            AddColumn("dbo.LOAN_PaymentHistory", "ActualDatePayment", c => c.DateTime(nullable: false));
+            AddColumn("dbo.LOAN_PaymentHistory", "ScheduledDatePayment", c => c.DateTime(nullable: false));
+            DropColumn("dbo.LOAN_PaymentHistory", "DatePayment");
         }
         
         public override void Down()
         {
+            AddColumn("dbo.LOAN_PaymentHistory", "DatePayment", c => c.DateTime(nullable: false));
+            DropColumn("dbo.LOAN_PaymentHistory", "ScheduledDatePayment");
+            DropColumn("dbo.LOAN_PaymentHistory", "ActualDatePayment");
             DropColumn("dbo.LOAN_PaymentHistory", "Hidden");
             DropColumn("dbo.LOAN_Loan", "Hidden");
             DropColumn("dbo.LOAN_CreditContranct", "Hidden");
