@@ -18,6 +18,7 @@
         private readonly OrganizationAppService organizationAppService;
         private readonly CreditContractAppService creditContractAppService;
         private readonly DatagramAppService datagramAppService;
+        private readonly IFinanceRepository financeRepository;
         private readonly ICreditContractRepository creditContractRepository;
         private readonly ILoanRepository loanRepository;
         private readonly IOrganizationRepository organizationRepository;
@@ -149,6 +150,18 @@
         {
             // 修改信审审核人
             financeAppService.SetApprover(Instance.RootKey.Value);
+        }
+
+        /// <summary>
+        /// 融资 - 完成
+        /// </summary>
+        public void FinanceFinish()
+        {
+            // 获取融资实体
+            var finance = financeRepository.Get(Instance.RootKey.Value);
+            
+            // 设置Hidden为false
+            SetHidden(finance);
         }
 
         /// <summary>
