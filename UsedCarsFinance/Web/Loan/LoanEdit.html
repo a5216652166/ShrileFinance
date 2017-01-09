@@ -116,7 +116,7 @@
 
                 page.setSubmit("../api/Loan/PaymentPut", "PUT", function () {
                     var rows = $("#payment_dg").datagrid("getRows");
-
+                    
                     var addedRows = $(rows).map(function (i, e) {
                         if (!e.Id) {
                             return e;
@@ -165,6 +165,26 @@
 
                 var data = submit.buildData();
 
+                // 还款日期不得在放款日期之前
+                if (data.Payments)
+                {
+                    var specialDate=$("fieldset#loan_info input[textboxname=SpecialDate]").combobox("getValue");
+
+                    for (var i in data.Payments) {
+                        if (data.Payments[i].ScheduledDatePayment < specialDate) {
+                            $.messager.show({ msg: "应还款日期不得在放款日期之前" });
+
+                            return false;
+                        }
+
+                        if (data.Payments[i].ActualDatePayment < specialDate) {
+                            $.messager.show({ msg: "实际还款日期不得在放款日期之前。" });
+
+                            return false;
+                        }
+                    }
+                }
+                
                 uc.form.Submit({
                     url: submit.url,
                     method: submit.method,

@@ -126,51 +126,15 @@
             var loan = repository.Get(model.LoanId);
             var payments = Mapper.Map<IEnumerable<PaymentHistory>>(model.Payments);
 
-            ////var traces = new Dictionary<PaymentHistory, ICollection<TraceTypeEnum>>();
-
             foreach (var payment in payments)
             {
-                if (loan.SpecialDate > payment.ActualDatePayment)
-                {
-                    throw new ArgumentOutOfRangeAppException(message: "借据放款日期不得在实际还款日期之前");
-                }
-                else if (loan.SpecialDate > payment.ScheduledDatePayment)
-                {
-                    throw new ArgumentOutOfRangeAppException(message: "借据放款日期不得在应还款日期之前");
-                }
-
                 paymentService.Payment(loan, payment);
-
-                ////ICollection<TraceTypeEnum> traceTypes;
-
-                ////paymentService.Payment(loan, payment, out traceTypes);
-
-                ////traces.Add(payment, traceTypes);
             }
 
             repository.Modify(loan);
             repository.Commit();
 
-            ////foreach (var payment in traces)
-            ////{
-            ////    foreach (var type in payment.Value)
-            ////    {
-            ////        switch (type)
-            ////        {
-            ////            case TraceTypeEnum.还款:
-            ////                messageAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{payment.Key.ActualPaymentPrincipal}", specialDate: payment.Key.DatePayment);
-            ////                break;
-            ////            case TraceTypeEnum.逾期:
-            ////                messageAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: payment.Key.DatePayment);
-            ////                break;
-            ////            case TraceTypeEnum.欠息:
-            ////                messageAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: payment.Key.DatePayment);
-            ////                break;
-            ////            default:
-            ////                break;
-            ////        }
-            ////    }
-            ////}
+            //// 报文追踪转移至流程处理
         }
 
         /// <summary>

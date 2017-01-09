@@ -32,20 +32,12 @@
 
         public virtual TEntity Get(Guid key)
         {
-            var entities = GetAll().Where(m => m.Id == key);
-
-            if (entities.Count() == 1)
-            {
-                return entities.First();
-            }
-
-            return null;
+            return Entities.FindAsync(key).Result;
         }
 
         public virtual IQueryable<TEntity> GetAll()
         {
-            return Entities;
-            //return Filter(Entities);
+            return Filter(Entities);
         }
 
         public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
