@@ -20,20 +20,21 @@
 
         $(function () {
             var query = uc.GetParams();
+            query.loanId = parent.flow.RootKey;
             // 1.加载选项.
             $.when(
                 LoadCreditContractNumber(),
                 LoadLoansToOptions())
             .then(function () {
                 // 2.加载数据
-                if (query.Id) {
-                    page.Load(query.Id);
+                if (query.loanId) {
+                    page.Load(query.loanId);
                 }
-
+                debugger
                 // 3.调整页面
                 Render(query);
             })
-            if (query.method == "add") {
+            if (query.loanId == undefined) {
                 $.extend($.fn.validatebox.defaults.rules, {
                     //重复验证
                     CheckLoanNumber: {
@@ -59,13 +60,27 @@
             }
         });
 
+        function ValidData() {
+            if (!$("#loan_info").form("validate")) {
+                $.messager.show({ msg: '请正确填写完必填项！' });
+
+                return false;
+            }
+            return true;
+        }
+
+        function BuildData() {
+            var loan = $("#loan_info").serializeJson();
+            loan.CreditId = $("select[comboname='CreditId']").combobox("getValue");
+            return loan;
+        }
+
         function Render(query) {
-            if (query.view == "loan") {
+            if (query.state!= "3") {
                 LoanView(query.method);
-            } else if (query.view == "payment") {
+            } else{
                 PaymentView();
             }
-
             // 申请贷款
             function LoanView(method) {
                 var buildData = function () {
@@ -74,12 +89,11 @@
 
                     return loan;
                 }
-
-                if (method == "add") {
+                if (query.state == "1") {
                     $("#payment_history").hide();
 
                     page.setSubmit("../api/Loan/Post", "POST", buildData);
-                } else if (method == "mod") {
+                } else if (query.state == "2") {
                     $("input[textboxname='ContractNumber']").textbox("readonly", true);
                     $("input[textboxname='Principle']").textbox("readonly", true);
                     $("input[textboxname='SpecialDate']").textbox("readonly", true);
@@ -87,7 +101,7 @@
                     uc.form.DisableForm("#credit_contract");
 
                     page.setSubmit("../api/Loan/Put", "PUT", buildData);
-                } else {
+                } else if (query.state=="0") {
                     $("#save").linkbutton("disable");
                     uc.form.DisableForm();
                 }
@@ -539,10 +553,10 @@
             </script>
         </fieldset>
 
-        <div id="btn">
+        <!--<div id="btn">
             <a href="javascript:void(0)" id="save" class="easyui-linkbutton" data-options="iconCls:'icon-save',onClick:page.Submit">保存</a>
             <a href="javascript:void(0)" id="back" class="easyui-linkbutton" data-options="iconCls:'icon-redo',onClick:uc.form.Cancel">返回</a>
-        </div>
+        </div>-->
     </form>
 </body>
 </html>

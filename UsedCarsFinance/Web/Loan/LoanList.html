@@ -42,6 +42,27 @@
 
             uc.ShowWindow("借据详情", url);
         }
+
+        function Start() {
+            var flowId = "";
+            var view = $(this).data("view");
+            if (view == "loan") {
+                flowId ="06824FE1-78D1-E611-80CA-507B9DE4A488";
+            }
+            else {
+                flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
+            }
+            $.ajax({
+                method: "GET",
+                data: { flowId: flowId },
+                url: "../api/Instance/StartProcess",
+                statusCode: {
+                    200: function (data) {
+                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data);
+                    }
+                }
+            });
+        }
     </script>
 </head>
 
@@ -79,9 +100,9 @@
         </form>
 
         <div>
-            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="add" data-options="onClick:Open,iconCls:'icon-add',plain:true">新增借据</a>
-            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="payment" data-method="mod" data-options="onClick:Open,iconCls:'icon-add',plain:true">还款</a>
-            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="mod" data-options="onClick:Open,iconCls:'icon-edit',plain:true">编辑</a>
+            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="add" data-options="onClick:Start,iconCls:'icon-add',plain:true">新增借据</a>
+            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="payment" data-method="mod" data-options="onClick:Start,iconCls:'icon-add',plain:true">还款</a>
+            <!--<a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="mod" data-options="onClick:Open,iconCls:'icon-edit',plain:true">编辑</a>-->
             <a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="view" data-options="onClick:Open,iconCls:'icon-search',plain:true">查看</a>
         </div>
     </div>

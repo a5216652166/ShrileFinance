@@ -83,7 +83,7 @@
             repository.Create(loan);
 
             repository.Commit();
-
+            model.Id = loan.Id;
             ////// 报文追踪（放款）
             ////messageAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
         }

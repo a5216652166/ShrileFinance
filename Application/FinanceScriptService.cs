@@ -236,6 +236,11 @@
             var loan = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             loanAppService.ApplyLoan(loan);
+
+            // 设置流程实例关联的业务标识
+            Instance.RootKey = loan.Id;
+            var credit = creditContractAppService.Get(loan.CreditId);
+            Instance.Title = $"{"授信合同编号：" + credit.CreditContractCode + " 借据编号：" + loan.ContractNumber}";
         }
 
         /// <summary>
