@@ -11,8 +11,8 @@
         {
             CreateMap<LoanViewModel, Loan>()
                 .IgnoreAllPropertiesWithAnInaccessibleSetter();
-            CreateMap<PaymentHistoryViewModel, PaymentHistory>()
-                .IgnoreAllPropertiesWithAnInaccessibleSetter();
+            CreateMap<PaymentHistoryViewModel, PaymentHistory>();
+               /* .IgnoreAllPropertiesWithAnInaccessibleSetter()*/;
 
             CreateMap<CreditContractViewModel, CreditContract>()
                 .ForMember(d => d.GuarantyContract, o => o.Ignore());
