@@ -128,8 +128,12 @@
             model.Payments.Where(m => m.Hidden).ToList().ForEach(payment=> {
                 if (payment.Id != null)
                 {
+                    var temp = loan.Payments.Where(m => m.Hidden).Single(m => m.Id == payment.Id.Value);
+
                     // 修改
                     Mapper.Map(payment, loan.Payments.Where(m=>m.Hidden).Single(m => m.Id == payment.Id.Value));
+
+                    var a = 0;
                 }
                 else
                 {

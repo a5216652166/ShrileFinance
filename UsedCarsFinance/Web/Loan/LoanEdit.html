@@ -159,7 +159,6 @@
                 uc.form.DisableForm("#loan_info");
                 page.setSubmit("../api/Loan/PaymentPut", "PUT", function () {
                     var rows = $("#payment_dg").datagrid("getRows");
-                    debugger
                     var addedRows = $(rows).map(function (i, e) {
                         if (e.Hidden==false) {
                             return e;
@@ -438,7 +437,7 @@
 
                     <tr>
                         <th data-options="field:'hidden',hidden:true"></th>
-                        <th data-options="field:'Id'"></th>
+                        <th data-options="field:'Id',hidden:true"></th>
                         <th data-options="field:'ScheduledPaymentPrincipal',width:128.57,align:'right',
                         editor:{
                             type:'textbox',
@@ -537,7 +536,6 @@
                         if (endEditing()) {
                             var row = $("#payment_dg").datagrid("selectRow", index)
                                 .datagrid("getSelected");
-                            debugger
                             if (row.Hidden == true || row.Hidden == undefined) {
                                 $("#payment_dg").datagrid("beginEdit", index);
 

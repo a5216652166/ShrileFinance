@@ -8,7 +8,7 @@
         /// <summary>
         /// 还款记录标识
         /// </summary>
-        public Guid? Id { get; private set; }
+        public Guid? Id { get; set; }
 
         public bool Hidden { get; set; }
 
