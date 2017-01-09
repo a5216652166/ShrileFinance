@@ -14,17 +14,6 @@
 
         public FileSystem()
         {
-            if (!string.IsNullOrEmpty(Path) && File.Exists(Path))
-            {
-                var fileStream = File.OpenRead(Path);
-
-                Stream = new MemoryStream();
-
-                fileStream.CopyTo(Stream);
-
-                fileStream.Flush();
-                fileStream.Dispose();
-            }
         }
 
         public FileSystem(string oldName, string extension, Stream stream = null, bool isTemp = false)
@@ -41,8 +30,7 @@
                 }
                 else
                 {
-                    Stream = Stream ?? new MemoryStream();
-
+                    Stream = new MemoryStream();
                     stream.CopyTo(Stream);
                 }
             }
@@ -68,17 +56,17 @@
         /// <summary>
         /// 路径
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; private set; }
 
         /// <summary>
-        /// 流
+        /// 内存流
         /// </summary>
         public MemoryStream Stream { get; set; }
 
         /// <summary>
         /// 是否为临时文件
         /// </summary>
-        public bool IsTemp { get; set; }
+        public bool IsTemp { get; private set; }
 
         /// <summary>
         /// 保存
@@ -87,19 +75,22 @@
         {
             if (Stream == null)
             {
-                throw new IOException("流为null");
+                throw new ArgumentNullException(nameof(Stream), "流为null");
             }
 
             Name = GenerateName();
 
-            // 文件所属文件夹
+            // 文件所属文件夹路径（虚拟路径）
             var direct = IsTemp ? VirtualPath + @"Temps" : VirtualPath + DateTime.Now.ToString("yyyyMM");
             Path = direct + @"\" + Name + Extension;
 
+            // 创建文件夹
             Directory.CreateDirectory(HttpContext.Current.Server.MapPath(direct));
 
+            // 在文件夹下创建新文件，返回文件流
             var fs = File.Create(HttpContext.Current.Server.MapPath(Path));
 
+            // 新文件写入内容
             var buffer = Stream.ToArray();
             fs.Write(buffer, 0, buffer.Length);
             fs.Flush();

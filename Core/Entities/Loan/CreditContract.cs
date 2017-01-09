@@ -16,8 +16,6 @@
 
     public class CreditContract : Entity, IAggregateRoot, IProcessable
     {
-        private bool hidden = true;
-
         public CreditContract()
         {
             GuarantyContract = new HashSet<GuarantyContract>();
@@ -44,18 +42,7 @@
             EffectiveStatus = status;
         }
 
-        public bool Hidden
-        {
-            get
-            {
-                return hidden;
-            }
-
-            set
-            {
-                hidden = value;
-            }
-        }
+        public bool Hidden { get; set; } = true;
 
         public Guid OrganizationId { get; set; }
 

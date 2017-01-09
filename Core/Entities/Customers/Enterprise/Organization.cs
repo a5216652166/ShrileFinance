@@ -6,8 +6,6 @@
 
     public class Organization : Customer, IEnterprise, IProcessable
     {
-        private bool hidden = true;
-
         public Organization()
         {
             Managers = new List<Manager>();
@@ -17,18 +15,7 @@
             CreatedDate = DateTime.Now;
         }
 
-        public bool Hidden
-        {
-            get
-            {
-                return hidden;
-            }
-
-            set
-            {
-                hidden = value;
-            }
-        }
+        public bool Hidden { get; set; } = true;
 
         /// <summary>
         /// 客户号
