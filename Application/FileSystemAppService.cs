@@ -18,24 +18,45 @@
             this.repository = repository;
         }
 
+        /// <summary>
+        /// 获取所有
+        /// </summary>
+        /// <returns>文件列表</returns>
         public List<FileSystem> GetAll() => ImportStream(repository.GetAll());
 
+        /// <summary>
+        /// 通过标识集合获取
+        /// </summary>
+        /// <param name="id">标识集合</param>
+        /// <returns>文件列表</returns>
         public List<FileSystem> GetByIds(ICollection<Guid> id) => ImportStream(repository.GetByIds(id));
 
+        /// <summary>
+        /// 通过标识获取
+        /// </summary>
+        /// <param name="id">标识</param>
+        /// <returns>文件</returns>
         public FileSystem Get(Guid id) => ImportStream(
             new List<FileSystem>()
             {
                 repository.Get(id)
             })?.First();
 
-        public void Delete(IEnumerable<FileSystem> fileSystems)
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="fileSystemIds">标识集合</param>
+        /// <returns>删除数目</returns>
+        public int Delete(IEnumerable<Guid> fileSystemIds)
         {
+            var fileSystems = repository.GetByIds(fileSystemIds.ToList());
+
             foreach (var item in fileSystems)
             {
                 repository.Remove(item);
             }
 
-            repository.Commit();
+            return repository.Commit();
         }
 
         /// <summary>

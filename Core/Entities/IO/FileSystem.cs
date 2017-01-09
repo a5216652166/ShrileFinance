@@ -56,7 +56,7 @@
         /// <summary>
         /// 路径
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; private set; }
 
         /// <summary>
         /// 内存流
@@ -66,7 +66,7 @@
         /// <summary>
         /// 是否为临时文件
         /// </summary>
-        public bool IsTemp { get; set; }
+        public bool IsTemp { get; private set; }
 
         /// <summary>
         /// 保存
@@ -75,7 +75,7 @@
         {
             if (Stream == null)
             {
-                throw new ArgumentNullException(nameof(Stream),"流为null");
+                throw new ArgumentNullException(nameof(Stream), "流为null");
             }
 
             Name = GenerateName();
