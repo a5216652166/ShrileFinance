@@ -20,61 +20,37 @@
             this.context = context;
         }
 
-        protected DbContext Context
-        {
-            get { return context; }
-        }
+        protected DbContext Context => context;
 
-        private DbSet<TEntity> Entities
-        {
-            get { return context.Set<TEntity>(); }
-        }
+        private DbSet<TEntity> Entities => context.Set<TEntity>();
 
-        public virtual TEntity Get(Guid key)
-        {
-            return Entities.FindAsync(key).Result;
-        }
+        public virtual TEntity Get(Guid key) => Entities?.FindAsync(key).Result;
 
-        public virtual IQueryable<TEntity> GetAll()
-        {
-            return Filter(Entities);
-        }
+        public virtual IQueryable<TEntity> GetAll() => Filter(Entities);
 
-        public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
-        {
-            return GetAll().Where(predicate);
-        }
+        public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate) => GetAll().Where(predicate);
 
         public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize)
         {
             return GetAll(predicate).OrderByDescending(m => m.Id).ToPagedList(pageNumber, pageSize);
         }
 
-        public virtual Guid Create(TEntity entity)
-        {
-            Entities.Add(entity);
+        public virtual Guid Create(TEntity entity) => Entities.Add(entity).Id;
 
-            return entity.Id;
-        }
+        public virtual void Modify(TEntity entity) => Context.Entry(entity).State = EntityState.Modified;
 
-        public virtual void Modify(TEntity entity)
-        {
-            Context.Entry(entity).State = EntityState.Modified;
-        }
+        public virtual void Remove(TEntity entity) => Context.Entry(entity).State = EntityState.Deleted;
 
-        public virtual void Remove(TEntity entity)
-        {
-            Context.Entry(entity).State = EntityState.Deleted;
-        }
-
-        public virtual int Commit()
-        {
-            return Context.SaveChanges();
-        }
+        public virtual int Commit() => Context.SaveChanges();
 
         private IQueryable<TEntity> Filter(DbSet<TEntity> entities)
         {
             var entitieList = new List<TEntity>();
+
+            if (entities == null)
+            {
+                return entitieList.AsQueryable();
+            }
 
             // 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
             foreach (var item in entities)

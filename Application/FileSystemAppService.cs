@@ -18,20 +18,15 @@
             this.repository = repository;
         }
 
-        public List<FileSystem> GetAll()
-        {
-            return ImportStream(repository.GetAll());
-        }
+        public List<FileSystem> GetAll() => ImportStream(repository.GetAll());
 
-        public List<FileSystem> GetByIds(ICollection<Guid> id)
-        {
-            return ImportStream(repository.GetByIds(id));
-        }
+        public List<FileSystem> GetByIds(ICollection<Guid> id) => ImportStream(repository.GetByIds(id));
 
-        public FileSystem Get(Guid id)
-        {
-            return ImportStream(new List<FileSystem>() { repository.Get(id) }).First();
-        }
+        public FileSystem Get(Guid id) => ImportStream(
+            new List<FileSystem>()
+            {
+                repository.Get(id)
+            })?.First();
 
         public void Delete(IEnumerable<FileSystem> fileSystems)
         {
@@ -53,7 +48,7 @@
         {
             if (postedFile == null)
             {
-                throw new ArgumentNullException("postedFile", "创建文件使用的参数为null");
+                throw new ArgumentNullException(nameof(postedFile), "创建文件使用的参数为null");
             }
 
             var name = postedFile.FileName;
@@ -73,7 +68,7 @@
         {
             if (fileInfo == null)
             {
-                throw new ArgumentNullException("fileInfo", "创建文件使用的参数为null");
+                throw new ArgumentNullException(nameof(fileInfo), "创建文件使用的参数为null");
             }
 
             var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf('.')), fileInfo.Extension, isTemp: isTemp);
@@ -91,12 +86,12 @@
         {
             if (string.IsNullOrEmpty(path))
             {
-                throw new ArgumentNullException(paramName: $"{path}", message: "路径错误");
+                throw new ArgumentNullException(nameof(path), "空路径");
             }
 
             if (!File.Exists(path))
             {
-                throw new FileNotFoundException(message: $"{path}文件不存在");
+                throw new FileNotFoundException($"{path}文件不存在");
             }
 
             var fileInfo = new FileInfo(path);
@@ -118,7 +113,7 @@
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream", "流为null");
+                throw new ArgumentNullException(nameof(stream), "流为null");
             }
 
             var fileSystem = ConvertToFileSystem(stream, name, extension, isTemp: isTemp);
@@ -138,7 +133,7 @@
         {
             if (buffer == null)
             {
-                throw new ArgumentNullException("buffer", "buffer为null");
+                throw new ArgumentNullException(nameof(buffer), "buffer为null");
             }
 
             var fileSystem = ConvertToFileSystem(buffer, name, extension, isTemp: isTemp);
@@ -205,7 +200,7 @@
 
             if (stream == null)
             {
-                throw new ArgumentNullException(message:"流为空",innerException:new Exception("不支持的类型:"+value.GetType().FullName));
+                throw new ArgumentNullException(nameof(stream), "不支持的类型:" + value.GetType().FullName);
             }
 
             var fileSystem = new FileSystem(name, extension, stream: stream, isTemp: isTemp);
@@ -246,7 +241,7 @@
                 }
             }
 
-            return fileInfos.ToList();
+            return fileInfos?.ToList();
         }
 
         private MemoryStream GetStreamFormFs(FileInfo fileInfo)
