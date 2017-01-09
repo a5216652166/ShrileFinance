@@ -9,8 +9,6 @@
     /// </summary>
     public class PaymentHistory : Entity, IAggregateRoot, IProcessable
     {
-        private bool hidden = true;
-
         public PaymentHistory(
             decimal scheduledPaymentPrincipal,
             decimal scheduledPaymentInterest,
@@ -38,18 +36,7 @@
         {
         }
 
-        public bool Hidden
-        {
-            get
-            {
-                return hidden;
-            }
-
-            set
-            {
-                hidden = value;
-            }
-        }
+        public bool Hidden { get; set; } = true;
 
         /// <summary>
         /// 借据标识

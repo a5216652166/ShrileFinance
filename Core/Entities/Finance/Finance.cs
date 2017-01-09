@@ -8,8 +8,6 @@
 
     public class Finance : Entity, IAggregateRoot, IProcessable
     {
-        private bool hidden = true;
-
         public Finance()
         {
             DateEffective = DateTime.Now;
@@ -36,18 +34,7 @@
             一次性付息 = 3
         }
 
-        public bool Hidden
-        {
-            get
-            {
-                return hidden;
-            }
-
-            set
-            {
-                hidden = value;
-            }
-        }
+        public bool Hidden { get; set; } = true;
 
         /// <summary>
         /// 产品ID

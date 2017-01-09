@@ -47,8 +47,6 @@
     /// </summary>
     public class Loan : Entity, IAggregateRoot, IProcessable
     {
-        private bool hidden = true;
-
         public Loan(decimal principle, DateTime specialDate, DateTime matureDate, string contractNumber)
             : this()
         {
@@ -79,18 +77,7 @@
             Payments = new HashSet<PaymentHistory>();
         }
 
-        public bool Hidden
-        {
-            get
-            {
-                return hidden;
-            }
-
-            set
-            {
-                hidden = value;
-            }
-        }
+        public bool Hidden { get; set; } = true;
 
         /// <summary>
         /// 授信合同标识
