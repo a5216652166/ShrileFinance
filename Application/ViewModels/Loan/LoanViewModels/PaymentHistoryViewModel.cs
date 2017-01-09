@@ -3,12 +3,14 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class PaymentHistoryViewModel
+    public class PaymentHistoryViewModel 
     {
         /// <summary>
         /// 还款记录标识
         /// </summary>
         public Guid? Id { get; private set; }
+
+        public bool Hidden { get; set; }
 
         /// <summary>
         /// 应还本金

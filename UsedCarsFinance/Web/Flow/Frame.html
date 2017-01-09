@@ -19,6 +19,7 @@
         var flow = {
             InstanceId: "",
             RootKey: "",
+            statusCode:"",
             Forms: [],
             InnerOpinions: [],
             ExnerOpinions: []
@@ -27,10 +28,11 @@
 
         $(function () {
             flow.InstanceId = uc.GetParams().instanceId;
+            flow.statusCode = uc.GetParams().statusCode;
             if (flow.InstanceId) {
                 LoadFrame(flow.InstanceId);
             }
-
+          
             // 开启草稿保存
             draft.AutoSave(3 * 60 * 1000);
         });
@@ -44,7 +46,9 @@
                 statusCode: {
                     200: function (data) {
                         flow.RootKey = data.RootKey;
-
+                        if (uc.GetParams().LoanId != undefined && uc.GetParams().LoanId != "") {
+                            flow.RootKey = uc.GetParams().LoanId;
+                        }
                         RanderTabs(data.Forms);
                         RanderButtons(data.Actions);
 
@@ -178,9 +182,7 @@
                     return false;
                 }
             });
-            debugger
             if (isValid) {
-                debugger
                 var data = BuildData();
                 Transfer.call(this, data);
             }

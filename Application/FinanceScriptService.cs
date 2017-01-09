@@ -1,5 +1,6 @@
 ﻿namespace Application
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Core.Entities.CreditInvestigation;
@@ -271,6 +272,18 @@
 
             // 设置Hidden为false
             SetHidden(loan);
+        }
+
+        public void Payment()
+        {
+            var payment = GetData<ViewModels.Loan.LoanViewModels.PaymentViewModel>("62DC5FCF-18A4-E611-80C5-507B9DE4A488");
+
+            loanAppService.Payment(payment);
+
+            // 设置流程实例关联的业务标识
+            Instance.RootKey = payment.LoanId;
+            var loan = loanAppService.Get(payment.LoanId);
+            Instance.Title = $"{"借据编号：" + loan.ContractNumber+" 还款时间:"+DateTime.Now.ToString("yyyy-MM-dd")}";
         }
 
         /// <summary>

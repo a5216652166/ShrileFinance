@@ -11,15 +11,22 @@
     <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script src="../Scripts/usedcars.js"></script>
     <style>
-        td > .textbox[style*="height: 22px;"] { height: 22px !important; }
-        td > .textbox[style*="height: 22px;"] > .textbox-text { padding: 0px 4px !important; font-size: 12px !important; line-height: 1.42857143; }
+        td > .textbox[style*="height: 22px;"] {
+            height: 22px !important;
+        }
+
+            td > .textbox[style*="height: 22px;"] > .textbox-text {
+                padding: 0px 4px !important;
+                font-size: 12px !important;
+                line-height: 1.42857143;
+            }
     </style>
     <script>
         uc.form = new UCForm("#ff");
         var page = new Page();
+        var query = uc.GetParams();
 
         $(function () {
-            var query = uc.GetParams();
             query.loanId = parent.flow.RootKey;
             // 1.加载选项.
             $.when(
@@ -30,7 +37,6 @@
                 if (query.loanId) {
                     page.Load(query.loanId);
                 }
-                debugger
                 // 3.调整页面
                 Render(query);
             })
@@ -66,23 +72,64 @@
 
                 return false;
             }
+            var rows = $("#payment_dg").datagrid("getRows");
+            var specialDate = $("#SpecialDate").textbox("getValue");
+            if (rows) {
+                for (var i in rows) {
+                    if (rows[i].ScheduledDatePayment < specialDate) {
+                        $.messager.show({ msg: "应还款日期不得在放款日期之前" });
+
+                        return false;
+                    }
+
+                    if (rows[i].ActualDatePayment < specialDate) {
+                        $.messager.show({ msg: "实际还款日期不得在放款日期之前。" });
+
+                        return false;
+                    }
+                }
+            }
             return true;
         }
 
         function BuildData() {
-            var loan = $("#loan_info").serializeJson();
-            loan.CreditId = $("select[comboname='CreditId']").combobox("getValue");
-            return loan;
+            // 状态为3表示还款
+            if (query.state != "3") {
+                var loan = $("#loan_info").serializeJson();
+                loan.CreditId = $("select[comboname='CreditId']").combobox("getValue");
+                return loan;
+            }
+            else {
+                var data = {};
+                var rows = $("#payment_dg").datagrid("getRows");
+                var addedRows = $(rows).map(function (i, e) {
+                    if (e.Hidden==true) {
+                        return e;
+                    }
+                });
+                data.LoanId = $("input[name='Id']").val(),
+                data.Payments = addedRows.toArray();
+                return data;
+            }
+
         }
 
         function Render(query) {
-            if (query.state!= "3") {
-                LoanView(query.method);
-            } else{
+            if (parent.flow.statusCode == "loan") {
+                LoanView();
+            } else if (parent.flow.statusCode == "payment") {
                 PaymentView();
             }
+            else if (query.state == "0") {
+                uc.form.DisableForm();
+            }
+            else if (query.state == "3") {
+                uc.form.DisableForm("#credit_contract");
+                uc.form.DisableForm("#loan_info");
+            }
+
             // 申请贷款
-            function LoanView(method) {
+            function LoanView() {
                 var buildData = function () {
                     var loan = $("#loan_info").serializeJson();
                     loan.CreditId = $("select[comboname='CreditId']").combobox("getValue");
@@ -90,8 +137,6 @@
                     return loan;
                 }
                 if (query.state == "1") {
-                    $("#payment_history").hide();
-
                     page.setSubmit("../api/Loan/Post", "POST", buildData);
                 } else if (query.state == "2") {
                     $("input[textboxname='ContractNumber']").textbox("readonly", true);
@@ -101,11 +146,10 @@
                     uc.form.DisableForm("#credit_contract");
 
                     page.setSubmit("../api/Loan/Put", "PUT", buildData);
-                } else if (query.state=="0") {
-                    $("#save").linkbutton("disable");
+                } else if (query.state == "0") {
                     uc.form.DisableForm();
                 }
-
+                $("#payment_history").hide();
                 $("#payment_tb").hide();
             }
 
@@ -113,16 +157,14 @@
             function PaymentView() {
                 uc.form.DisableForm("#credit_contract");
                 uc.form.DisableForm("#loan_info");
-
                 page.setSubmit("../api/Loan/PaymentPut", "PUT", function () {
                     var rows = $("#payment_dg").datagrid("getRows");
-                    
+                    debugger
                     var addedRows = $(rows).map(function (i, e) {
-                        if (!e.Id) {
+                        if (e.Hidden==false) {
                             return e;
                         }
                     });
-
                     return {
                         LoanId: $("input[name='Id']").val(),
                         Payments: addedRows.toArray()
@@ -140,6 +182,12 @@
                     onLoadSuccess: function (data) {
                         $("select[comboname='CreditId']").combobox("select", data.CreditId);
                         $("#payment_dg").datagrid("loadData", data.Payments);
+                        if (data.Payments != null) {
+                            $("#payment_history").show();
+                        }
+                        if (parent.flow.statusCode == "view" || query.state == "0") {
+                            $("#payment_tb").hide();
+                        }
                     }
                 });
             }
@@ -166,25 +214,6 @@
                 var data = submit.buildData();
 
                 // 还款日期不得在放款日期之前
-                if (data.Payments)
-                {
-                    var specialDate=$("fieldset#loan_info input[textboxname=SpecialDate]").combobox("getValue");
-
-                    for (var i in data.Payments) {
-                        if (data.Payments[i].ScheduledDatePayment < specialDate) {
-                            $.messager.show({ msg: "应还款日期不得在放款日期之前" });
-
-                            return false;
-                        }
-
-                        if (data.Payments[i].ActualDatePayment < specialDate) {
-                            $.messager.show({ msg: "实际还款日期不得在放款日期之前。" });
-
-                            return false;
-                        }
-                    }
-                }
-                
                 uc.form.Submit({
                     url: submit.url,
                     method: submit.method,
@@ -238,7 +267,6 @@
                         statusCode: {
                             200: function (data) {
                                 $("select[comboname='CreditId']").combobox("loadData", data);
-
                                 ded.resolve();
                             },
                             400: uc.E400
@@ -292,7 +320,7 @@
             <div class="row">
                 <div class="col-6">
                     <label>放款日期:</label>
-                    <input name="SpecialDate" class="easyui-datebox" data-options="required:true,validType:'Date'" />
+                    <input name="SpecialDate" id="SpecialDate" class="easyui-datebox" data-options="required:true,validType:'Date'" />
                 </div>
 
                 <div class="col-6">
@@ -407,7 +435,10 @@
                    rownumbers: true, toolbar: '#payment_tb',
                    onDblClickRow: onEdit, onEndEdit: onEndEdit, rowStyler: PaymentStyler">
                 <thead>
+
                     <tr>
+                        <th data-options="field:'hidden',hidden:true"></th>
+                        <th data-options="field:'Id'"></th>
                         <th data-options="field:'ScheduledPaymentPrincipal',width:128.57,align:'right',
                         editor:{
                             type:'textbox',
@@ -506,13 +537,13 @@
                         if (endEditing()) {
                             var row = $("#payment_dg").datagrid("selectRow", index)
                                 .datagrid("getSelected");
-
-                            if (!row.Id) {
+                            debugger
+                            if (row.Hidden == true || row.Hidden == undefined) {
                                 $("#payment_dg").datagrid("beginEdit", index);
 
                                 editIndex = index;
                             } else {
-                                $.messager.show({ msg: "已有的还款记录不可更改。" });
+                                $.messager.show({ msg: "已完成的还款记录不可更改。" });
                             }
                         } else {
                             setTimeout(function () {
@@ -541,7 +572,6 @@
                         });
 
                         editIndex = $("#payment_dg").datagrid("getRows").length - 1;
-
                         $("#payment_dg").datagrid("selectRow", editIndex)
                             .datagrid("beginEdit", editIndex);
                     }

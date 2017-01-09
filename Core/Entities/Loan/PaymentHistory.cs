@@ -54,7 +54,7 @@
         /// <summary>
         /// 借据标识
         /// </summary>
-        public Guid LoanId { get; private set; }
+        public Guid LoanId { get;private set; }
 
         /// <summary>
         /// 应还本金

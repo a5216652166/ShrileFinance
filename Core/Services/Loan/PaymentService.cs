@@ -18,7 +18,7 @@
         public void Payment(Loan loan, PaymentHistory payment)
         {
             // 新增还款记录
-            loan.AddPaymentHistory(payment);
+           // loan.AddPaymentHistory(payment);
 
             ////traceTypes = new List<TraceTypeEnum>();
 

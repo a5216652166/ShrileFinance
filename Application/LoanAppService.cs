@@ -124,16 +124,33 @@
             }
 
             var loan = repository.Get(model.LoanId);
-            var payments = Mapper.Map<IEnumerable<PaymentHistory>>(model.Payments);
 
-            foreach (var payment in payments)
+            model.Payments.Where(m => m.Hidden).ToList().ForEach(payment=> {
+                if (payment.Id != null)
+                {
+                    // 修改
+                    Mapper.Map(payment, loan.Payments.Where(m=>m.Hidden).Single(m => m.Id == payment.Id.Value));
+                }
+                else
+                {
+                    // 新增
+                    loan.AddPaymentHistory(Mapper.Map<PaymentHistory>(payment));
+                }
+            });
+
+           
+           
+            //var payments = Mapper.Map<IEnumerable<PaymentHistory>>(model.Payments);
+            //new UpdateBind().Bind(loan.Payments, model.Payments);
+
+            foreach (var payment in loan.Payments)
             {
+               // payment.LoanId = model.LoanId;
                 paymentService.Payment(loan, payment);
             }
 
             repository.Modify(loan);
             repository.Commit();
-
             //// 报文追踪转移至流程处理
         }
 
