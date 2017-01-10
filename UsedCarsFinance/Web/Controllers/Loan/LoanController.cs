@@ -78,5 +78,13 @@
 
             return Ok(result);
         }
+
+        [HttpGet]
+        public IHttpActionResult GetBalance(Guid id, decimal principle)
+        {
+            var result = service.GetBalance(id, principle);
+
+            return Ok(result);
+        }
     }
 }

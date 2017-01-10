@@ -56,17 +56,6 @@
                 }
             });
         }
-
-        function Process() {
-            var url = "Flow/Frame.html";
-
-            var row = uc.grid.GetSelected();
-            if (row) {
-                url += "?instanceId=" + row.Id;
-
-                uc.ShowWindow("详情页", url);
-            }
-        }
     </script>
 </head>
 
@@ -114,7 +103,7 @@
 
         <div>
             <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true" style="display:none;">发起流程</a>
-            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Process,iconCls:'icon-edit',plain:true">处理</a>
+            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-edit',plain:true">处理</a>
         </div>
     </div>
 </body>
