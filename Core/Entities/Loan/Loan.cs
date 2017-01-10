@@ -243,7 +243,7 @@
         private decimal CalculateBalance()
         {
             // 借据余额 = 借据金额 - Sum(实际偿还本金)
-            var balance = Principle - Payments.Where(m=>m.Hidden==false).Sum(m => m.ActualPaymentPrincipal);
+            var balance = Principle - Payments.Where(m => m.Hidden == false).Sum(m => m.ActualPaymentPrincipal);
 
             return balance;
         }

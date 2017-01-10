@@ -19,7 +19,6 @@ namespace Data.Migrations
                         IsTemp = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
-            
         }
         
         public override void Down()

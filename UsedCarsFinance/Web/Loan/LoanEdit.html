@@ -109,7 +109,6 @@
                 });
                 data.LoanId = $("input[name='Id']").val(),
                 data.Payments = addedRows.toArray();
-                debugger
                 return data;
             }
 
@@ -181,7 +180,6 @@
                     onLoadSuccess: function (data) {
                         $("select[comboname='CreditId']").combobox("select", data.CreditId);
                         $("#payment_dg").datagrid("loadData", data.Payments);
-                        debugger
                         if (data.Payments.length>0) {
                             $("#payment_history").show();
                         }
