@@ -644,10 +644,7 @@
                 function RemovePayment() {
                     var row = $("#payment_dg").datagrid("getSelected");
                     var index = $("#payment_dg").datagrid("getRowIndex", row);
-                   // var row = $("#payment_dg").datagrid("selectRow", index)
-                    //.datagrid("getSelected");
                     if (row.Hidden == false) { return;}
-                    //if (editIndex == undefined) { return; }
                     $("#payment_dg")
                             .datagrid("deleteRow", index);
                     editIndex = undefined;
