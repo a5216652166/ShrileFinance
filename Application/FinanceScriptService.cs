@@ -298,10 +298,9 @@
             Trace(loan.Payments);
 
             // 设置Hidden为false
-            foreach (var payment in loan.Payments)
-            {
+            loan.Payments.Where(m => m.Hidden).ToList().ForEach(payment => {
                 SetHidden(payment);
-            }
+            });
         }
 
         private T GetData<T>(string formId) where T : class, new()
@@ -365,7 +364,7 @@
             else if (entity is IEnumerable<PaymentHistory>)
             {
                 // 还款
-                var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden);
+                var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden).ToList();
 
                 var loan = loanRepository.Get(payments.First().LoanId);
 
@@ -393,9 +392,9 @@
                     traces.Add(payment, traceTypes);
                 }
 
-                foreach (var payment in traces)
+                foreach (var trace in traces)
                 {
-                    foreach (var type in payment.Value)
+                    foreach (var type in trace.Value)
                     {
                         switch (type)
                         {
@@ -403,15 +402,15 @@
                                 break;
                             case TraceTypeEnum.还款:
                                 // 还款 —> 报文追踪
-                                datagramAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{payment.Key.ActualPaymentPrincipal}", specialDate: payment.Key.ActualDatePayment);
+                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{trace.Key.ActualPaymentPrincipal}", specialDate: trace.Key.ActualDatePayment);
                                 break;
                             case TraceTypeEnum.逾期:
                                 // 逾期 —> 报文追踪
-                                datagramAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: payment.Key.ActualDatePayment);
+                                datagramAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: trace.Key.ActualDatePayment);
                                 break;
                             case TraceTypeEnum.欠息:
                                 // 欠息 —> 报文追踪
-                                datagramAppService.Trace(referenceId: payment.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: payment.Key.ActualDatePayment);
+                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: trace.Key.ActualDatePayment);
                                 break;
                         }
                     }

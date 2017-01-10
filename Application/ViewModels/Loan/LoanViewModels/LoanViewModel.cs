@@ -102,6 +102,12 @@
         public string LoanTypes { get; set; }
 
         /// <summary>
+        /// 授信合同编号
+        /// </summary>
+        [Display(Name = "授信合同编号")]
+        public string CreditContractCode { get; set; }
+
+        /// <summary>
         /// 还款记录
         /// </summary>
         [Display(Name = "还款记录")]

@@ -49,6 +49,8 @@
         [JsonConverter(typeof(StringEnumConverter))]
         public CreditContractStatusEnum EffectiveStatus { get; set; }
 
+        public string OrganizationName { get; set; }
+
         /// <summary>
         /// 是否有担保
         /// </summary>

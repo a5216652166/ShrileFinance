@@ -229,6 +229,13 @@
 
             var models = Mapper.Map<IPagedList<CreditContractViewModel>>(pageList);
 
+            models.ToList().ForEach(model =>
+            {
+                var entity = pageList.Single(m => m.Id == model.Id.Value);
+
+                model.OrganizationName = entity.Organization.Property.InstitutionChName;
+            });
+
             return models;
         }
 
