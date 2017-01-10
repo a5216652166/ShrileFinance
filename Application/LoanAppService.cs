@@ -125,15 +125,12 @@
 
             var loan = repository.Get(model.LoanId);
 
-            model.Payments.Where(m => m.Hidden).ToList().ForEach(payment=> {
+            model.Payments.Where(m => m.Hidden).ToList().ForEach(payment =>
+            {
                 if (payment.Id != null)
                 {
-                    var temp = loan.Payments.Where(m => m.Hidden).Single(m => m.Id == payment.Id.Value);
-
                     // 修改
-                    Mapper.Map(payment, loan.Payments.Where(m=>m.Hidden).Single(m => m.Id == payment.Id.Value));
-
-                    var a = 0;
+                    Mapper.Map(payment, loan.Payments.Where(m => m.Hidden).Single(m => m.Id == payment.Id.Value));
                 }
                 else
                 {
@@ -142,14 +139,8 @@
                 }
             });
 
-           
-           
-            //var payments = Mapper.Map<IEnumerable<PaymentHistory>>(model.Payments);
-            //new UpdateBind().Bind(loan.Payments, model.Payments);
-
             foreach (var payment in loan.Payments)
             {
-               // payment.LoanId = model.LoanId;
                 paymentService.Payment(loan, payment);
             }
 
