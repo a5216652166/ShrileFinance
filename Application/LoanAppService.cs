@@ -163,6 +163,12 @@
 
             var models = Mapper.Map<IPagedList<LoanViewModel>>(loans);
 
+            models.ToList().ForEach(model=> {
+                var credit = creditRepository.Get(model.CreditId);
+                
+                model.CreditContractCode = credit.CreditContractCode;
+            });
+            
             return models;
         }
     }

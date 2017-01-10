@@ -77,20 +77,39 @@
     </script>
 </head>
 
+<!--rownumbers: true,
+           singleSelect: true,
+           fitColumns: true,
+           nowrap: true,
+           height: 630,
+           width:1400,
+           striped: true,
+           pagination: true,
+           pageSize: 20,
+           pageList: [10,20,30,40,50],
+           url: '../api/Loan/SearchList',
+           method: 'GET',
+           onBeforeLoad: SetFilters, -->
+
 <body>
-    <table id="dg" class="easyui-datagrid" data-options="toolbar: '#tb',
-           rownumbers: true, singleSelect: true,
-           fitColumns: true, nowrap: true, height: 630, striped: true,
-           pagination: true, pageSize: 20, pageList: [10,20,30,40,50],
-           url: '../api/Loan/SearchList', method: 'GET', onBeforeLoad: SetFilters, loadMsg: '正在加载，请稍候...'">
+    <table id="dg" class="easyui-datagrid" data-options="height:630,toolbar:'#tb',rownumbers:true,
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            pageList: [10,20,30,40,50],
+            method: 'GET',
+            onBeforeLoad: SetFilters,
+            url: '../api/Loan/SearchList',
+            loadMsg: '正在加载，请稍候...'">
         <thead>
             <tr>
-                <th data-options="field:'ContractNumber',width:150,align:'left'">借据编号</th>
-                <th data-options="field:'SpecialDate',width:150,align:'left'">放款日期</th>
-                <th data-options="field:'MatureDate',width:150,align:'left'">到期日期</th>
-                <th data-options="field:'Principle',width:150,align:'right'">借据金额</th>
-                <th data-options="field:'Balance',width:150,align:'right'">借据余额</th>
-                <th data-options="field:'Status',width:150,align:'center'">借据状态</th>
+                <th data-options="field:'ContractNumber',width:140,align:'left'">借据编号</th>
+                <th data-options="field:'SpecialDate',width:140,align:'left'">放款日期</th>
+                <th data-options="field:'MatureDate',width:140,align:'left'">到期日期</th>
+                <th data-options="field:'Principle',width:140,align:'right'">借据金额</th>
+                <th data-options="field:'Balance',width:140,align:'right'">借据余额</th>
+                <th data-options="field:'Status',width:140,align:'center'">借据状态</th>
+                <th data-options="field:'CreditContractCode',width:140,align:'left'">授信合同编号</th>
             </tr>
         </thead>
     </table>

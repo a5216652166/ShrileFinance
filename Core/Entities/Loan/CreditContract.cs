@@ -69,13 +69,7 @@
         /// <summary>
         /// 授信余额
         /// </summary>
-        public decimal CreditBalance
-        {
-            get
-            {
-                return CalculateCreditBalance();
-            }
-        }
+        public decimal CreditBalance => CalculateCreditBalance();
 
         /// <summary>
         /// 合同有效状态
@@ -85,13 +79,7 @@
         /// <summary>
         /// 是否有担保
         /// </summary>
-        public bool HasGuarantee
-        {
-            get
-            {
-                return GuarantyContract.Count > 0;
-            }
-        }
+        public bool HasGuarantee => GuarantyContract.Count > 0;
 
         /// <summary>
         /// 担保合同
