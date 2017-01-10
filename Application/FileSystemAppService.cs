@@ -76,6 +76,8 @@
 
             var fileSystem = ConvertToFileSystem(postedFile, name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
 
+            SaveFileSystem(fileSystem);
+
             return fileSystem;
         }
 
@@ -93,6 +95,8 @@
             }
 
             var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf('.')), fileInfo.Extension, isTemp: isTemp);
+
+            SaveFileSystem(fileSystem);
 
             return fileSystem;
         }
@@ -119,6 +123,8 @@
 
             var fileSystem = ConvertToFileSystem(path, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
 
+            SaveFileSystem(fileSystem);
+
             return fileSystem;
         }
 
@@ -138,6 +144,8 @@
             }
 
             var fileSystem = ConvertToFileSystem(stream, name, extension, isTemp: isTemp);
+
+            SaveFileSystem(fileSystem);
 
             return fileSystem;
         }
