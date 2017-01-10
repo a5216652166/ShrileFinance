@@ -37,7 +37,7 @@
 
             // 节点筛选
             if (currentNodeId.HasValue)
-                {
+            {
                 instances = instances.Where(m => m.CurrentNodeId == currentNodeId);
             }
 
@@ -53,8 +53,8 @@
                 instances = instances.Where(m => m.StartTime < endTime);
             }
 
-            // 排序
-            instances = instances.OrderByDescending(m => m.Id);
+            // 排序(发起时间降序)
+            instances = instances.OrderByDescending(m => m.StartTime);
 
             // 分页查询
             return instances.ToPagedList(page, size);
@@ -102,8 +102,8 @@
                 instances = instances.Where(m => m.Status == status);
             }
 
-            // 排序
-            instances = instances.OrderByDescending(m => m.Id);
+            // 排序(处理时间降序)
+            instances = instances.OrderByDescending(m => m.ProcessTime);
 
             // 分页查询
             return instances.ToPagedList(page, size);
