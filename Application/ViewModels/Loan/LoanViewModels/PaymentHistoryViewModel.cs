@@ -10,7 +10,7 @@
         /// </summary>
         public Guid? Id { get; set; }
 
-        public bool Hidden { get; set; }
+        public bool Hidden { get; set; } = true;
 
         /// <summary>
         /// 应还本金

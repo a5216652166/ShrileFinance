@@ -103,12 +103,13 @@
                 var data = {};
                 var rows = $("#payment_dg").datagrid("getRows");
                 var addedRows = $(rows).map(function (i, e) {
-                    if (e.Hidden==true) {
+                    if (e.Hidden!=false) {
                         return e;
                     }
                 });
                 data.LoanId = $("input[name='Id']").val(),
                 data.Payments = addedRows.toArray();
+                debugger
                 return data;
             }
 
@@ -127,7 +128,6 @@
                 uc.form.DisableForm("#credit_contract");
                 uc.form.DisableForm("#loan_info");
             }
-
             // 申请贷款
             function LoanView() {
                 var buildData = function () {
@@ -160,7 +160,7 @@
                 page.setSubmit("../api/Loan/PaymentPut", "PUT", function () {
                     var rows = $("#payment_dg").datagrid("getRows");
                     var addedRows = $(rows).map(function (i, e) {
-                        if (e.Hidden==false) {
+                        if (e.Hidden!=false) {
                             return e;
                         }
                     });
@@ -436,7 +436,7 @@
                 <thead>
 
                     <tr>
-                        <th data-options="field:'hidden',hidden:true"></th>
+                        <th data-options="field:'Hidden',hidden:true"></th>
                         <th data-options="field:'Id',hidden:true"></th>
                         <th data-options="field:'ScheduledPaymentPrincipal',width:128.57,align:'right',
                         editor:{
