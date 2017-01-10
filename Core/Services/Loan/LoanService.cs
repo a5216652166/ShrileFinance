@@ -18,7 +18,7 @@
         {
             if (!credit.CanApplyLoan(loan.Principle, loan.SpecialDate))
             {
-                throw new InvalidOperationAppException("申请贷款失败, 请确认授信合同是否有效或授信余额是否充足.");
+                throw new InvalidOperationAppException("申请贷款失败, 请确认授信合同是否有效、授信余额是否充足借据放款时间是否在合同有效期内.");
             }
 
             credit.Loans.Add(loan);

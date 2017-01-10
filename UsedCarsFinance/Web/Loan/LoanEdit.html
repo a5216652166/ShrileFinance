@@ -101,6 +101,8 @@
             }
             else {
                 var data = {};
+                // 点击提交时自动保存编辑状态下的还款列表
+                AcceptPayment();
                 var rows = $("#payment_dg").datagrid("getRows");
                 var addedRows = $(rows).map(function (i, e) {
                     if (e.Hidden!=false) {
@@ -112,6 +114,25 @@
                 return data;
             }
 
+        }
+
+        function GetBalance() {
+            if ($("#Id").val() == "") {
+                $("#Balance").textbox("setValue", $("#Principle").textbox("getValue"))
+            }
+            else {
+                $.ajax({
+                    async: false,
+                    method: "GET",
+                    data: { id: parent.flow.RootKey, principle: $("#Principle").textbox("getValue") },
+                    url: "../api/loan/GetBalance",
+                    statusCode: {
+                        200: function (data) {
+                            $("#Balance").textbox("setValue", data)
+                        },
+                    }
+                });
+            }
         }
 
         function Render(query) {
@@ -248,16 +269,31 @@
                             valueField:'Id',textField:'CreditContractCode',onSelect:onSelectCreditContractNumber"></select>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <label>合同生效时间:</label>
+                    <input name="EffectiveDate" id="EffectiveDate" class="easyui-textbox" data-options="readonly:true" />
+                    <span class="unit">元</span>
+                </div>
+
+                <div class="col-6">
+                    <label>合同终止时间:</label>
+                    <input name="ExpirationDate" id="ExpirationDate" class="easyui-textbox" data-options="readonly:true" />
+                    <span class="unit">元</span>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-6">
                     <label>授信额度:</label>
-                    <input name="CreditLimit" class="easyui-textbox" data-options="readonly:true" />
+                    <input name="CreditLimit" id="CreditLimit" class="easyui-textbox" data-options="readonly:true" />
                     <span class="unit">元</span>
                 </div>
 
                 <div class="col-6">
                     <label>授信余额:</label>
-                    <input name="CreditBalance" class="easyui-textbox" data-options="readonly:true" />
+                    <input name="CreditBalance" id="CreditBalance" class="easyui-textbox" data-options="readonly:true" />
                     <span class="unit">元</span>
                 </div>
             </div>
@@ -283,6 +319,8 @@
                 function onSelectCreditContractNumber(record) {
                     $("input[textboxname='CreditLimit'").textbox("setValue", record.CreditLimit);
                     $("input[textboxname='CreditBalance'").textbox("setValue", record.CreditBalance);
+                    $("input[textboxname='EffectiveDate'").textbox("setValue", record.EffectiveDate);
+                    $("input[textboxname='ExpirationDate'").textbox("setValue", record.ExpirationDate);
                 }
             </script>
         </fieldset>
@@ -291,7 +329,7 @@
             <legend>借据信息</legend>
 
             <div class="hidden">
-                <input name="Id" type="hidden" />
+                <input name="Id" id="Id" type="hidden" />
             </div>
 
             <div class="row">
@@ -310,13 +348,13 @@
             <div class="row">
                 <div class="col-6">
                     <label>借据金额:</label>
-                    <input name="Principle" class="easyui-textbox" data-options="required:true,validType:'Price'" />
+                    <input name="Principle" id="Principle" class="easyui-textbox" data-options="required:true,onChange:GetBalance,validType:'Price'" />
                     <span class="unit">元</span>
                 </div>
 
                 <div class="col-6">
                     <label>借据余额:</label>
-                    <input name="Balance" class="easyui-textbox" data-options="readonly:true" />
+                    <input name="Balance" id="Balance" class="easyui-textbox" data-options="readonly:true" />
                     <span class="unit">元</span>
                 </div>
             </div>
@@ -335,7 +373,7 @@
 
             <div class="row">
                 <div class="col-6">
-                    <label>贷款业务种类:</label>
+                    <label>流动资金贷款:</label>
                     <select name="LoanBusinessTypes" class="easyui-combobox" data-options="required:true,editable:false,value:6">
                         <option value="1">流动资金贷款</option>
                         <option value="2">固定资产贷款</option>
@@ -384,7 +422,7 @@
             <div class="row">
                 <div class="col-6">
                     <label>贷款种类:</label>
-                    <select name="LoanTypes" class="easyui-combobox" data-options="required:true,editable:false,value:10">
+                    <select name="LoanTypes" class="easyui-combobox" data-options="required:true,editable:false,value:11">
                         <option value="10">短期贷款</option>
                         <option value="11">短期流动资金贷款</option>
                         <option value="19">短期其他贷款</option>
@@ -443,7 +481,7 @@
                     <tr>
                         <th data-options="field:'Hidden',hidden:true"></th>
                         <th data-options="field:'Id',hidden:true"></th>
-                        <th data-options="field:'ScheduledPaymentPrincipal',width:128.57,align:'right',
+                        <th data-options="field:'ScheduledPaymentPrincipal',width:108.57,align:'right',
                         editor:{
                             type:'textbox',
                             options:{
@@ -459,7 +497,7 @@
                                 validType:'Price'
                             }
                         }">实际偿还本金（元）</th>
-                        <th data-options="field:'ScheduledPaymentInterest',width:128.57,align:'right',
+                        <th data-options="field:'ScheduledPaymentInterest',width:108.57,align:'right',
                         editor:{
                             type:'textbox',
                             options:{
@@ -491,7 +529,7 @@
                                 editable:false
                             }
                         }">实际还款日期</th>
-                        <th data-options="field:'PaymentTypes',width:128.57,align:'right',
+                        <th data-options="field:'PaymentTypes',width:88.57,align:'right',
                         formatter:function(value,row){
                             return row.PaymentTypesDesc;
                         },
@@ -513,6 +551,9 @@
                                 ]
                             }
                         }">还款方式</th>
+                        <th data-options="field:'hidden',width:68.57,align:'right',
+                        formatter:StatusFormatter
+                        ">还款状态</th>
                     </tr>
                 </thead>
             </table>
@@ -525,12 +566,25 @@
             </div>
 
             <script>
+                function StatusFormatter(value,row) {
+                    debugger 
+                    if (row.Hidden == 0) {
+                        return "审核完成";
+                    }
+                    else if (row.Hidden == 0) {
+                        return "审核完成";
+                    }
+                    else {
+                        return "待审核";
+                    }
+                }
+
                 var editIndex = undefined;
                 function endEditing() {
                     if (editIndex == undefined) { return true; }
                     if ($("#payment_dg").datagrid("validateRow", editIndex)) {
                         $("#payment_dg").datagrid("endEdit", editIndex);
-                        editIndex = undefined;
+                        editIndex = editIndex;
                         return true;
                     } else {
                         return false;
@@ -541,7 +595,7 @@
                         if (endEditing()) {
                             var row = $("#payment_dg").datagrid("selectRow", index)
                                 .datagrid("getSelected");
-                            if (row.Hidden == true || row.Hidden == undefined) {
+                            if (row.Hidden != false) {
                                 $("#payment_dg").datagrid("beginEdit", index);
 
                                 editIndex = index;
@@ -588,9 +642,14 @@
                     }
                 }
                 function RemovePayment() {
-                    if (editIndex == undefined) { return; }
-                    $("#payment_dg").datagrid("cancelEdit", editIndex)
-                            .datagrid("deleteRow", editIndex);
+                    var row = $("#payment_dg").datagrid("getSelected");
+                    var index = $("#payment_dg").datagrid("getRowIndex", row);
+                   // var row = $("#payment_dg").datagrid("selectRow", index)
+                    //.datagrid("getSelected");
+                    if (row.Hidden == false) { return;}
+                    //if (editIndex == undefined) { return; }
+                    $("#payment_dg")
+                            .datagrid("deleteRow", index);
                     editIndex = undefined;
                 }
                 function AcceptPayment() {
@@ -599,7 +658,7 @@
                     }
                 }
                 function PaymentStyler(index, row) {
-                    if (row.Id) {
+                    if (row.Hidden==false) {
                         return "background-color:#F5FFFA;color:#000;";
                     }
                 }

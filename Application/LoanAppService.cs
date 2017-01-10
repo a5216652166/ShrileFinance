@@ -88,6 +88,12 @@
             ////messageAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
         }
 
+        public decimal GetBalance(Guid id, decimal principle)
+        {
+            var loan = repository.Get(id);
+            return loan.Balance + (principle - loan.Principle);
+        }
+
         /// <summary>
         /// 修改借据
         /// </summary>
