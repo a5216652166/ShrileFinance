@@ -181,8 +181,15 @@
                     onLoadSuccess: function (data) {
                         $("select[comboname='CreditId']").combobox("select", data.CreditId);
                         $("#payment_dg").datagrid("loadData", data.Payments);
-                        if (data.Payments != null) {
+                        debugger
+                        if (data.Payments.length>0) {
                             $("#payment_history").show();
+                        }
+                        else if (parent.flow.statusCode == "payment") {
+                            $("#payment_history").show();
+                        }
+                        else {
+                            $("#payment_history").hide();
                         }
                         if (parent.flow.statusCode == "view" || query.state == "0") {
                             $("#payment_tb").hide();
