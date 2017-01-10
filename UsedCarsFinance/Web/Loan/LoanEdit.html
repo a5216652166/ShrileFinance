@@ -319,8 +319,9 @@
                 function onSelectCreditContractNumber(record) {
                     $("input[textboxname='CreditLimit'").textbox("setValue", record.CreditLimit);
                     $("input[textboxname='CreditBalance'").textbox("setValue", record.CreditBalance);
-                    $("input[textboxname='EffectiveDate'").textbox("setValue", record.EffectiveDate);
-                    $("input[textboxname='ExpirationDate'").textbox("setValue", record.ExpirationDate);
+                    debugger
+                    $("input[textboxname='EffectiveDate'").textbox("setValue", record.EffectiveDate.substring(0, 10));
+                    $("input[textboxname='ExpirationDate'").textbox("setValue",record.ExpirationDate.substring(0, 10));
                 }
             </script>
         </fieldset>
@@ -519,7 +520,7 @@
                             options:{
                                 required:true,
                                 editable:false
-                            }
+                            },  
                         }">应还款日期</th>
                         <th data-options="field:'ActualDatePayment',width:128.57,align:'right',
                             editor:{
@@ -527,7 +528,7 @@
                             options:{
                                 required:true,
                                 editable:false
-                            }
+                            },  
                         }">实际还款日期</th>
                         <th data-options="field:'PaymentTypes',width:88.57,align:'right',
                         formatter:function(value,row){
@@ -567,7 +568,6 @@
 
             <script>
                 function StatusFormatter(value,row) {
-                    debugger 
                     if (row.Hidden == 0) {
                         return "审核完成";
                     }
@@ -577,6 +577,14 @@
                     else {
                         return "待审核";
                     }
+                }
+
+                function ActualDatePaymentFormatter(value, row) {
+                    return row.ActualDatePayment.substring(0, 10)
+                }
+
+                function ScheduledDatePaymentFormatter(value, row) {
+                    return row.ScheduledDatePayment.substring(0,10)
                 }
 
                 var editIndex = undefined;
