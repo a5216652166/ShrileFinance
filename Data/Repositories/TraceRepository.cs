@@ -12,9 +12,9 @@
         {
         }
 
-        public int CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId)
+        public int CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId,TraceTypeEnum traceType)
         {
-            return GetAll().Count(m => m.ReferenceId == referenceId && m.DateCreated == dateCreated);
+            return GetAll().Count(m => m.ReferenceId == referenceId && m.DateCreated == dateCreated && m.Type == traceType);
         }
 
         public int MaxSerialNumberByDateCreated(DateTime dateCreated)

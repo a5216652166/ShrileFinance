@@ -37,7 +37,7 @@
         public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime specialDate, string defaultName = null)
         {
             var dateCreated = DateTime.Now.Date;
-            var count = repository.CountByDateCreatedAndReference(dateCreated, referenceId);
+            var count = repository.CountByDateCreatedAndReference(dateCreated, referenceId, traceType);
 
             if (count == 0)
             {

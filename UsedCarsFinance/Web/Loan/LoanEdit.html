@@ -640,24 +640,16 @@
             </div>
 
             <script>
-                function StatusFormatter(value,row) {
-                    if (row.Hidden == 0) {
+                function StatusFormatter(value, row) {
+                    if (row.Hidden == false) {
                         return "审核完成";
                     }
-                    else if (row.Hidden == 0) {
-                        return "审核完成";
+                    else if (row.Hidden == true) {
+                        return "审核中";
                     }
                     else {
                         return "待审核";
                     }
-                }
-
-                function ActualDatePaymentFormatter(value, row) {
-                    return row.ActualDatePayment.substring(0, 10)
-                }
-
-                function ScheduledDatePaymentFormatter(value, row) {
-                    return row.ScheduledDatePayment.substring(0,10)
                 }
 
                 var editIndex = undefined;
