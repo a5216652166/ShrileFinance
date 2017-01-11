@@ -319,7 +319,6 @@
                 function onSelectCreditContractNumber(record) {
                     $("input[textboxname='CreditLimit'").textbox("setValue", record.CreditLimit);
                     $("input[textboxname='CreditBalance'").textbox("setValue", record.CreditBalance);
-                    debugger
                     $("input[textboxname='EffectiveDate'").textbox("setValue", record.EffectiveDate.substring(0, 10));
                     $("input[textboxname='ExpirationDate'").textbox("setValue",record.ExpirationDate.substring(0, 10));
                 }
@@ -567,12 +566,13 @@
             </div>
 
             <script>
-                function StatusFormatter(value,row) {
-                    if (row.Hidden == 0) {
+                function StatusFormatter(value, row) {
+                    debugger
+                    if (row.Hidden == false) {
                         return "审核完成";
                     }
-                    else if (row.Hidden == 0) {
-                        return "审核完成";
+                    else if (row.Hidden == true) {
+                        return "审核中";
                     }
                     else {
                         return "待审核";

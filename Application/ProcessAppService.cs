@@ -139,8 +139,10 @@
                 default:
                     throw new InvalidOperationAppException("创建寻找用户策略失败!");
             }
-
-            instance.CurrentNode = action.Transfer;
+            if (action.Transfer != null)
+            {
+                instance.CurrentNode = action.Transfer;
+            }
             instance.CurrentUserId = user?.Id;
 
             if (action.Type == ActionTypeEnum.完成)
