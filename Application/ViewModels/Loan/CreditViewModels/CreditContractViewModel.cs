@@ -51,6 +51,8 @@
 
         public string OrganizationName { get; set; }
 
+        public ICollection<LoanViewModels.LoanViewModel> Loans { get; set; }
+
         /// <summary>
         /// 是否有担保
         /// </summary>

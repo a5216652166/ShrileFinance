@@ -105,7 +105,7 @@
                 AcceptPayment();
                 var rows = $("#payment_dg").datagrid("getRows");
                 var addedRows = $(rows).map(function (i, e) {
-                    if (e.Hidden!=false) {
+                    if (e.Hidden != false) {
                         return e;
                     }
                 });
@@ -117,6 +117,11 @@
         }
 
         function GetBalance() {
+            if (parent.flow.statusCode == "payment")
+            {
+                return true;
+            }
+
             if ($("#Id").val() == "") {
                 $("#Balance").textbox("setValue", $("#Principle").textbox("getValue"))
             }
@@ -175,12 +180,39 @@
 
             // 还款
             function PaymentView() {
-                uc.form.DisableForm("#credit_contract");
-                uc.form.DisableForm("#loan_info");
+                $.ajax({
+                    aync: false,
+                    url: "../api/CreditContract/Option",
+                    statusCode: {
+                        200: function (data) {
+                            var options = $(data).map(function (i, e) {
+                                for (var j in e.Loans) {
+                                    if (e.Loans[j].Hidden == false) {
+                                        return e;
+                                    }
+                                }
+                            });
+
+                            $("select[comboname='CreditId']").combobox("loadData", options);
+                        },
+                        400: uc.E400
+                    }
+                });
+
+
+
+                ContractNumberView();
+
+                uc.form.DisableForm("fieldset#credit_contract");
+                uc.form.DisableForm("fieldset#loan_info");
+
+                $("fieldset#credit_contract select[textboxname=CreditId]").combobox({ disabled: false });
+                $("fieldset#loan_info select[textboxname=ContractNumber]").combobox({ disabled: false });
+
                 page.setSubmit("../api/Loan/PaymentPut", "PUT", function () {
                     var rows = $("#payment_dg").datagrid("getRows");
                     var addedRows = $(rows).map(function (i, e) {
-                        if (e.Hidden!=false) {
+                        if (e.Hidden != false) {
                             return e;
                         }
                     });
@@ -189,6 +221,14 @@
                         Payments: addedRows.toArray()
                     };
                 });
+            }
+
+            function ContractNumberView() {
+                $($('fieldset#loan_info>div.row>template#ContractNumber').html()).insertAfter($('fieldset#loan_info>div.row >div#ContractNumber'));
+                $.parser.parse($('fieldset#loan_info div.row div>select[name=ContractNumber]').parent());
+
+                $('fieldset#loan_info>div.row>div#ContractNumber').remove();
+                $('fieldset#loan_info>div.row>template#ContractNumber').remove();
             }
         }
 
@@ -201,7 +241,7 @@
                     onLoadSuccess: function (data) {
                         $("select[comboname='CreditId']").combobox("select", data.CreditId);
                         $("#payment_dg").datagrid("loadData", data.Payments);
-                        if (data.Payments.length>0) {
+                        if (data.Payments.length > 0) {
                             $("#payment_history").show();
                         }
                         else if (parent.flow.statusCode == "payment") {
@@ -274,13 +314,13 @@
                 <div class="col-6">
                     <label>合同生效时间:</label>
                     <input name="EffectiveDate" id="EffectiveDate" class="easyui-textbox" data-options="readonly:true" />
-                    <span class="unit">元</span>
+                    <span class="unit"></span>
                 </div>
 
                 <div class="col-6">
                     <label>合同终止时间:</label>
                     <input name="ExpirationDate" id="ExpirationDate" class="easyui-textbox" data-options="readonly:true" />
-                    <span class="unit">元</span>
+                    <span class="unit"></span>
                 </div>
             </div>
 
@@ -319,9 +359,26 @@
                 function onSelectCreditContractNumber(record) {
                     $("input[textboxname='CreditLimit'").textbox("setValue", record.CreditLimit);
                     $("input[textboxname='CreditBalance'").textbox("setValue", record.CreditBalance);
-                    debugger
+
                     $("input[textboxname='EffectiveDate'").textbox("setValue", record.EffectiveDate.substring(0, 10));
-                    $("input[textboxname='ExpirationDate'").textbox("setValue",record.ExpirationDate.substring(0, 10));
+                    $("input[textboxname='ExpirationDate'").textbox("setValue", record.ExpirationDate.substring(0, 10));
+
+                    var LoanNumberCombobox = $('fieldset#loan_info>div.row>div>select[comboname=ContractNumber]');
+                    debugger
+                    if (LoanNumberCombobox.length == 1) {
+                        debugger
+                        var options = $(record.Loans).map(function (i, e) {
+                            if (e.Hidden == false) {
+                                return e;
+                            }
+                        });
+
+
+                        $('fieldset#loan_info').form("clear");
+
+                        LoanNumberCombobox.combobox("loadData", options);
+                        debugger
+                    }
                 }
             </script>
         </fieldset>
@@ -334,10 +391,26 @@
             </div>
 
             <div class="row">
-                <div class="col-6">
+                <div class="col-6" id="ContractNumber">
                     <label>借据编号:</label>
                     <input name="ContractNumber" class="easyui-textbox" data-options="required:true,validType:'CheckLoanNumber'" />
                 </div>
+                <template id="ContractNumber">
+                    <div class="col-6">
+                        <label>借据编号:</label>
+                        <select name="ContractNumber" class="easyui-combobox" data-options="required:true,editable:false,
+                            valueField:'Id',textField:'ContractNumber',onSelect:onSelectLoanContractNumber"></select>
+                    </div>
+                </template>
+
+                <script type="text/javascript">
+                    function onSelectLoanContractNumber(record) {
+                        debugger
+                        if (record) {
+                            $('fieldset#loan_info').form("load", record);
+                        }
+                    }
+                </script>
 
                 <div class="col-6">
                     <label>年利率:</label>
@@ -520,7 +593,7 @@
                             options:{
                                 required:true,
                                 editable:false
-                            },  
+                            },
                         }">应还款日期</th>
                         <th data-options="field:'ActualDatePayment',width:128.57,align:'right',
                             editor:{
@@ -528,7 +601,7 @@
                             options:{
                                 required:true,
                                 editable:false
-                            },  
+                            },
                         }">实际还款日期</th>
                         <th data-options="field:'PaymentTypes',width:88.57,align:'right',
                         formatter:function(value,row){
