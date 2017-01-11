@@ -11,6 +11,8 @@
     {
         public Guid? Id { get; set; }
 
+        public bool Hidden { get; set; } = true;
+
         [Required]
         [Display(Name = "授信合同")]
         public Guid CreditId { get; set; }

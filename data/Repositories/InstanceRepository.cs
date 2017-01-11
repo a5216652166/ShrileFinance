@@ -106,10 +106,10 @@
             IsNull(refSource, nodeId) ? refSource : refSource.Where(m => m.CurrentNodeId == nodeId);
 
         private IQueryable<Instance> FiterForBeginTime(IQueryable<Instance> refSource, DateTime? beginTime) =>
-            IsNull(refSource, beginTime) ? refSource : refSource.Where(m => m.StartTime == beginTime);
+            IsNull(refSource, beginTime) ? refSource : refSource.Where(m => m.StartTime >= beginTime);
 
         private IQueryable<Instance> FiterForEndTime(IQueryable<Instance> refSource, DateTime? endTime) =>
-            IsNull(refSource, endTime) ? refSource : refSource.Where(m => m.EndTime == endTime);
+            IsNull(refSource, endTime) ? refSource : refSource.Where(m => m.EndTime <= endTime.Value.AddDays(1));
 
         private IQueryable<Instance> FiterForStatus(IQueryable<Instance> refSource, InstanceStatusEnum? status) =>
             IsNull(refSource, status) ? refSource : refSource.Where(m => m.Status == status);
