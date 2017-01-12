@@ -65,7 +65,8 @@
 
             var startNode = flow.Nodes.Single(m => m.Actions.Any(n => n.Type == ActionTypeEnum.发起));
 
-            var instance = new Instance {
+            var instance = new Instance
+            {
                 Flow = flow,
                 CurrentNode = startNode,
                 CurrentUser = CurrentUser,
@@ -159,12 +160,14 @@
                 instance.EndTime = DateTime.Now;
             }
 
-            instance.Logs.Add(new Log {
+            instance.Logs.Add(new Log
+            {
                 Node = action.Node,
                 Action = action,
                 ProcessUser = CurrentUser,
                 ProcessTime = DateTime.Now,
-                Opinion = new AuditOpinion {
+                Opinion = new AuditOpinion
+                {
                     ExnernalOpinion = model.ExnernalOpinion,
                     InternalOpinion = model.InternalOpinion
                 }
@@ -229,6 +232,8 @@
         /// <returns></returns>
         public IPagedList<InstanceViewModel> DoingPagedList(string searchString, int page, int size, Guid? currentNode = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
+            RemoveErrorInstance();
+
             var instances = instanceReopsitory.DoingPagedList(CurrentUser, searchString, page, size, currentNodeId: currentNode, beginTime: beginTime, endTime: endTime);
 
             var instanceViewModels = Mapper.Map<IPagedList<InstanceViewModel>>(instances);
@@ -269,7 +274,8 @@
             var instance = instanceReopsitory.Get(instanceId);
 
             var nodeForms = formRepository.GetByNode(instance.CurrentNodeId.Value)
-                .Select(m => new FormViewModel {
+                .Select(m => new FormViewModel
+                {
                     Id = m.FormId,
                     Name = m.Form.Name,
                     Link = m.Form.Link,
@@ -285,7 +291,8 @@
             else
             {
                 var roleForms = formRepository.GetByRole(CurrentUser.RoleId)
-                    .Select(m => new FormViewModel {
+                    .Select(m => new FormViewModel
+                    {
                         Id = m.FormId,
                         Name = m.Form.Name,
                         Link = m.Form.Link,
@@ -296,7 +303,8 @@
             }
 
             frame.HasInnerOpinion = roleManager.FindByIdAsync(CurrentUser.RoleId).Result.Power < 4;
-            frame.ExnerOpinions = instance.Logs.Select(m => new OpinionViewModel {
+            frame.ExnerOpinions = instance.Logs.Select(m => new OpinionViewModel
+            {
                 ProcessUser = m.ProcessUser.Name,
                 Node = m.Node.Name,
                 Action = m.Action.Name,
@@ -306,7 +314,8 @@
 
             if (frame.HasInnerOpinion)
             {
-                frame.InnerOpinions = instance.Logs.Select(m => new OpinionViewModel {
+                frame.InnerOpinions = instance.Logs.Select(m => new OpinionViewModel
+                {
                     ProcessUser = m.ProcessUser.Name,
                     Node = m.Node.Name,
                     Action = m.Action.Name,
@@ -318,6 +327,24 @@
             frame.RootKey = instance.RootKey;
 
             return frame;
+        }
+
+        /// <summary>
+        /// 移除错误流程
+        /// </summary>
+        private void RemoveErrorInstance()
+        {
+            var errorInstances = instanceReopsitory.GetAll(m => m.RootKey == null || m.RootKey.Value == Guid.Empty);
+
+            foreach (var item in errorInstances)
+            {
+                instanceReopsitory.Remove(item);
+            }
+
+            if (errorInstances.Count() > 0)
+            {
+                instanceReopsitory.Commit();
+            }
         }
     }
 }
