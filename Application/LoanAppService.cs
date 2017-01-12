@@ -1,10 +1,8 @@
 ﻿namespace Application
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
-    using Core.Entities.CreditInvestigation;
     using Core.Entities.Loan;
     using Core.Exceptions;
     using Core.Interfaces.Repositories;
@@ -124,10 +122,12 @@
         /// <param name="model">还款记录视图模型</param>
         public void Payment(PaymentViewModel model)
         {
-            if (model.Payments == null)
+            if (model.Payments == null )
             {
                 throw new ArgumentAppException("还款记录不可为空.");
             }
+
+            model.Payments.Where(m => m.Hidden).Count();
 
             var loan = repository.Get(model.LoanId);
 
@@ -152,7 +152,6 @@
 
             repository.Modify(loan);
             repository.Commit();
-            //// 报文追踪转移至流程处理
         }
 
         /// <summary>

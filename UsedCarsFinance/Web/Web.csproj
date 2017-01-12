@@ -1149,6 +1149,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Contracts\FinancingLease.docx" />
+    <None Include="Properties\PublishProfiles\newTest.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml">
       <SubType>Designer</SubType>
     </None>

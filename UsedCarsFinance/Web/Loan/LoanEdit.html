@@ -75,7 +75,7 @@
             var hiddenCount = 0;
             var rows = $("#payment_dg").datagrid("getRows");
             var specialDate = $("#SpecialDate").textbox("getValue");
-            if (rows) {
+            if (rows.length>0) {
                 for (var i in rows) {
                     if (rows[i].ScheduledDatePayment < specialDate) {
                         $.messager.show({ msg: "应还款日期不得在放款日期之前" });

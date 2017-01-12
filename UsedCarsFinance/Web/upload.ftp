@@ -1,0 +1,7 @@
+open 10.0.1.12 8081 
+gongyong 
+huaao123@ 
+cd Upload 
+put ucf.rar 
+quote site exec upload.bat ucf D:\Web\Test\UsedCarsFinance 
+quit 
