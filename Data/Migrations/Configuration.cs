@@ -52,7 +52,9 @@
                 new AppRole { Id = "C142BEE1-05A4-E611-80C5-507B9DE4A488", Name = "财务", Power = 3 },
                 new AppRole { Id = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "总经理", Power = 2 },
                 new AppRole { Id = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "客户经理", Power = 4 },
-                new AppRole { Id = "C442BEE1-05A4-E611-80C5-507B9DE4A488", Name = "渠道经理", Power = 4 });
+                new AppRole { Id = "C442BEE1-05A4-E611-80C5-507B9DE4A488", Name = "渠道经理", Power = 4 },
+                new AppRole { Id = "C542BEE1-05A4-E611-80C5-507B9DE4A488", Name = "出纳", Power = 3 },
+                new AppRole { Id = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "有权审核人", Power = 3 });
 
             context.Set<AppUser>().AddOrUpdate(
                 m => m.Id,
@@ -128,17 +130,17 @@
                 new Node { Id = new Guid("{1595D79F-08A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", Name = "财务打款" },
 
                 new Node { Id = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构信息" },
-                new Node { Id = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构审核" },
+                new Node { Id = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构审核" },
                 new Node { Id = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构审批" },
                 new Node { Id = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "授信合同" },
-                new Node { Id = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", Name = "授信合同审核" },
+                new Node { Id = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "授信合同审核" },
                 new Node { Id = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "授信合同审批" },
                 new Node { Id = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "借据管理" },
-                new Node { Id = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", Name = "借据管理审核" },
+                new Node { Id = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "借据管理审核" },
                 new Node { Id = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "借据管理审批" },
                 new Node { Id = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "还款管理" },
-                new Node { Id = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", Name = "还款管理审核" },
-                new Node { Id = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", Name = "还款管理审批" }
+                new Node { Id = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C542BEE1-05A4-E611-80C5-507B9DE4A488", Name = "还款管理审核" },
+                new Node { Id = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "还款管理审批" }
 
                 );
 
@@ -360,14 +362,14 @@
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") }
+                new FormRole { RoleId = "C542BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") }
                 );
 
             context.SaveChanges();
