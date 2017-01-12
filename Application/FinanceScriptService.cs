@@ -294,6 +294,11 @@
             // 获取借据实体
             var loan = loanRepository.Get(Instance.RootKey.Value);
 
+            if (loan.Payments.Where(m => m.Hidden).Count() == 0)
+            {
+                throw new ArgumentNullException(nameof(loan.Payments),"错误流程，未新增还款记录");
+            }
+
             // 报文追踪
             Trace(loan.Payments);
 
