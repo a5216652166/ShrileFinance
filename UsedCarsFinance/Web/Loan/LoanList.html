@@ -43,33 +43,51 @@
             uc.ShowWindow("借据详情", url);
         }
 
+        //function Start() {
+        //    var flowId = "";
+        //    var loanId = "";
+        //    var statusCode = "";
+        //    var view = $(this).data("view");
+        //    if (view == "loan") {
+        //        flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
+        //        statusCode = view;
+        //    }
+        //    else if (view == "payment" || view == "view") {
+        //        var row = uc.grid.GetSelected();
+        //        if (row) {
+        //            flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
+        //            loanId = row.Id;
+        //            statusCode = view;
+        //        }
+        //        else {
+        //            return false;
+        //        }
+        //    }
+        //    $.ajax({
+        //        method: "GET",
+        //        data: { flowId: flowId },
+        //        url: "../api/Instance/StartProcess",
+        //        statusCode: {
+        //            200: function (data) {
+        //                uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&LoanId=" + loanId + "&statusCode=" + statusCode);
+        //            }
+        //        }
+        //    });
+        //}
+
         function Start() {
-            var flowId = "";
-            var loanId = "";
-            var statusCode = "";
-            var view = $(this).data("view");
-            if (view == "loan") {
-                flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
-                statusCode = view;
+            var row = uc.grid.GetSelected();
+            if (!row) {
+                return false;
             }
-            else if (view == "payment" || view == "view") {
-                var row = uc.grid.GetSelected();
-                if (row) {
-                    flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
-                    loanId = row.Id;
-                    statusCode = view;
-                }
-                else {
-                    return false;
-                }
-            }
+
             $.ajax({
                 method: "GET",
-                data: { flowId: flowId },
+                data: { flowId: "07824FE1-78D1-E611-80CA-507B9DE4A488" },
                 url: "../api/Instance/StartProcess",
                 statusCode: {
                     200: function (data) {
-                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&LoanId=" + loanId + "&statusCode=" + statusCode);
+                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&LoanId=" + row.Id + "&statusCode=view");
                     }
                 }
             });
@@ -130,8 +148,8 @@
         </form>
 
         <div>
-            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="add" data-options="onClick:Start,iconCls:'icon-add',plain:true">新增借据</a>
-            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="payment" data-method="mod" data-options="onClick:Start,iconCls:'icon-add',plain:true">还款</a>
+            <!--<a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="add" data-options="onClick:Start,iconCls:'icon-add',plain:true">新增借据</a>-->
+            <!--<a class="easyui-linkbutton" href="javascript:void(0)" data-view="payment" data-method="mod" data-options="onClick:Start,iconCls:'icon-add',plain:true">还款</a>-->
             <!--<a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="mod" data-options="onClick:Open,iconCls:'icon-edit',plain:true">编辑</a>-->
             <a class="easyui-linkbutton" href="javascript:void(0)" data-view="view" data-method="view" data-options="onClick:Start,iconCls:'icon-search',plain:true">查看</a>
         </div>

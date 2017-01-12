@@ -14,7 +14,14 @@
 
         $(function () {
             if (top.$("#role_name").text() == "客户经理") {
-                $("#add").show();
+                // 从模板创建并新增控件
+                $($("template#StartFlow").html()).insertBefore($('div#tb div a#mod'));
+
+                // 移除模板
+                $("template#StartFlow").remove();
+
+                // 解析控件
+                $.parser.parse($('div#tb div'));
             }
         });
 
@@ -42,19 +49,6 @@
                     delete params[p];
                 }
             }
-        }
-
-        function Start() {
-            $.ajax({
-                type: "GET",
-                data:{flowId:"228C8C80-06A4-E611-80C5-507B9DE4A488"},
-                url: "../api/Instance/StartProcess",
-                statusCode: {
-                    200: function (data) {
-                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data);
-                    }
-                }
-            });
         }
 
         function Process() {
@@ -113,8 +107,81 @@
         </form>
 
         <div>
-            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true" style="display:none;">发起流程</a>
-            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Process,iconCls:'icon-edit',plain:true">处理</a>
+            <template id="StartFlow">
+                <a id="StartFlow" data-flow="Finance" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起融资流程</a>
+                <a id="StartFlow" data-flow="Organization" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起机构流程</a>
+                <a id="StartFlow" data-flow="Credit" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起授信流程</a>
+                <a id="StartFlow" data-flow="Loan" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起借据流程</a>
+                <a id="StartFlow" data-flow="Payment" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起还款流程</a>
+                <script type="text/javascript">
+                    function Start() {
+                        debugger
+                    switch ($(this).data("flow")) {
+                        default: break;
+                        case "Finance": FinanceFlow();
+                            break;
+                        case "Organization": OrganizationFlow();
+                            break;
+                        case "Credit": CreditFlow();
+                            break;
+                        case "Loan": LoanFlow();
+                            break;
+                        case "Payment": PaymentFlow();
+                            break;
+                    }
+
+                    function FinanceFlow() {
+                        var flowId = "228C8C80-06A4-E611-80C5-507B9DE4A488";
+
+                        StartProcess(flowId, "");
+                    }
+
+                    function OrganizationFlow() {
+                        var flowId = "04824FE1-78D1-E611-80CA-507B9DE4A488";
+
+                        StartProcess(flowId, "");
+                    }
+
+                    function CreditFlow() {
+                        var flowId = "05824FE1-78D1-E611-80CA-507B9DE4A488";
+
+                        StartProcess(flowId, "");
+                    }
+
+                    function LoanFlow() {
+                        var flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
+
+                        StartProcess(flowId, "loan");
+                    }
+
+                    function PaymentFlow() {
+                        var flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
+
+                        StartProcess(flowId, "payment");
+                    }
+
+                    function StartProcess(flowId, statusCode)
+                    {
+                        if (flowId == null)
+                        {
+                            return;
+                        }
+
+                        $.ajax({
+                            method: "GET",
+                            data: { flowId: flowId },
+                            url: "../api/Instance/StartProcess",
+                            statusCode: {
+                                200: function (data) {
+                                    uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&statusCode=" + statusCode);
+                                }
+                            }
+                        });
+                    }
+                }
+                </script>
+            </template>
+            <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Process,iconCls:'icon-edit',plain:true">处理流程</a>
         </div>
     </div>
 </body>

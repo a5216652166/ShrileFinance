@@ -58,7 +58,7 @@
         </div>
 
         <div>
-            <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Start,">发起流程</a>
+            <!--<a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',plain:true,onClick:Start,">发起流程</a>-->
             <!--<a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-edit',plain:true,onClick:PrganizateEdit,">修改</a>-->
             <a id="view" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',plain:true,onClick:PrganizateEdit,">查看详情</a>
         </div>
@@ -98,18 +98,18 @@
         uc.grid = new UCGrid("#dg");
 
 
-        function Start() {
-            $.ajax({
-                method: "GET",
-                data: { flowId: "04824FE1-78D1-E611-80CA-507B9DE4A488" },
-                url: "../api/Instance/StartProcess",
-                statusCode: {
-                    200: function (data) {
-                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data);
-                    }
-                }
-            });
-        }
+        //function Start() {
+        //    $.ajax({
+        //        method: "GET",
+        //        data: { flowId: "04824FE1-78D1-E611-80CA-507B9DE4A488" },
+        //        url: "../api/Instance/StartProcess",
+        //        statusCode: {
+        //            200: function (data) {
+        //                uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data);
+        //            }
+        //        }
+        //    });
+        //}
 
         // table 添加/编辑按钮
         function PrganizateEdit() {
