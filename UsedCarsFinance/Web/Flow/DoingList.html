@@ -106,79 +106,96 @@
             <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:uc.grid.Reset,iconCls:'icon-reload',plain:true">重置</a>
         </form>
 
-        <div>
+        <div id="Flow" data-flowType="">
             <template id="StartFlow">
-                <a id="StartFlow" data-flow="Finance" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起融资流程</a>
-                <a id="StartFlow" data-flow="Organization" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起机构流程</a>
-                <a id="StartFlow" data-flow="Credit" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起授信流程</a>
-                <a id="StartFlow" data-flow="Loan" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起借据流程</a>
-                <a id="StartFlow" data-flow="Payment" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true">发起还款流程</a>
+                <select id="FlowType" class="easyui-combobox" data-options="editable:false,onSelect:SelectFlow">
+                    <!--<option value="-">　</option>-->
+                    <option value="-">=请选择=</option>
+                    <option value="Finance-融资">融资流程</option>
+                    <option value="Organization-机构">机构流程</option>
+                    <option value="Credit-授信">授信流程</option>
+                    <option value="Loan-借据">借据流程</option>
+                    <option value="Payment-还款">还款流程</option>
+                </select>
+                <a id="StartFlow" data-flowType="　" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true,disabled:true">发起流程</a>
+                <!--<span>　</span>-->
                 <script type="text/javascript">
                     function Start() {
-                        debugger
-                    switch ($(this).data("flow")) {
-                        default: break;
-                        case "Finance": FinanceFlow();
-                            break;
-                        case "Organization": OrganizationFlow();
-                            break;
-                        case "Credit": CreditFlow();
-                            break;
-                        case "Loan": LoanFlow();
-                            break;
-                        case "Payment": PaymentFlow();
-                            break;
-                    }
-
-                    function FinanceFlow() {
-                        var flowId = "228C8C80-06A4-E611-80C5-507B9DE4A488";
-
-                        StartProcess(flowId, "");
-                    }
-
-                    function OrganizationFlow() {
-                        var flowId = "04824FE1-78D1-E611-80CA-507B9DE4A488";
-
-                        StartProcess(flowId, "");
-                    }
-
-                    function CreditFlow() {
-                        var flowId = "05824FE1-78D1-E611-80CA-507B9DE4A488";
-
-                        StartProcess(flowId, "");
-                    }
-
-                    function LoanFlow() {
-                        var flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
-
-                        StartProcess(flowId, "loan");
-                    }
-
-                    function PaymentFlow() {
-                        var flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
-
-                        StartProcess(flowId, "payment");
-                    }
-
-                    function StartProcess(flowId, statusCode)
-                    {
-                        if (flowId == null)
-                        {
-                            return;
+                        switch ($(this).data("flowType")) {
+                            default: $.messager.show({ msg: "请选择流程" });
+                                break;
+                            case "Finance": FinanceFlow();
+                                break;
+                            case "Organization": OrganizationFlow();
+                                break;
+                            case "Credit": CreditFlow();
+                                break;
+                            case "Loan": LoanFlow();
+                                break;
+                            case "Payment": PaymentFlow();
+                                break;
                         }
 
-                        $.ajax({
-                            method: "GET",
-                            data: { flowId: flowId },
-                            url: "../api/Instance/StartProcess",
-                            statusCode: {
-                                200: function (data) {
-                                    uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&statusCode=" + statusCode);
-                                }
+                        function FinanceFlow() {
+                            var flowId = "228C8C80-06A4-E611-80C5-507B9DE4A488";
+
+                            StartProcess(flowId, "");
+                        }
+
+                        function OrganizationFlow() {
+                            var flowId = "04824FE1-78D1-E611-80CA-507B9DE4A488";
+
+                            StartProcess(flowId, "");
+                        }
+
+                        function CreditFlow() {
+                            var flowId = "05824FE1-78D1-E611-80CA-507B9DE4A488";
+
+                            StartProcess(flowId, "");
+                        }
+
+                        function LoanFlow() {
+                            var flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
+
+                            StartProcess(flowId, "loan");
+                        }
+
+                        function PaymentFlow() {
+                            var flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
+
+                            StartProcess(flowId, "payment");
+                        }
+
+                        function StartProcess(flowId, statusCode) {
+                            if (flowId == null) {
+                                return;
                             }
-                        });
+
+                            $.ajax({
+                                method: "GET",
+                                data: { flowId: flowId },
+                                url: "../api/Instance/StartProcess",
+                                statusCode: {
+                                    200: function (data) {
+                                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&statusCode=" + statusCode);
+                                    }
+                                }
+                            });
+                        }
                     }
-                }
+
+                    function SelectFlow(record) {
+                        if (record.value!="-") {
+                            $("div#tb>div a#StartFlow>span>span.l-btn-text").text("发起" + record.value.split("-")[1] + "流程");
+                            $("div#tb>div a#StartFlow").linkbutton("enable");
+                        }
+                        else {
+                            $("div#tb>div a#StartFlow>span>span.l-btn-text").text("发起流程");
+                            $("div#tb>div a#StartFlow").linkbutton("disable");
+                        }
+
+                        $("div#tb>div a#StartFlow").data("flowType", record.value.split("-")[0]);
+                    }
                 </script>
             </template>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Process,iconCls:'icon-edit',plain:true">处理流程</a>
