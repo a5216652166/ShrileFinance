@@ -72,6 +72,7 @@
 
                 return false;
             }
+            var hiddenCount = 0;
             var rows = $("#payment_dg").datagrid("getRows");
             var specialDate = $("#SpecialDate").textbox("getValue");
             if (rows) {
@@ -81,12 +82,19 @@
 
                         return false;
                     }
-
+                    if (rows[i].Hidden != false) {
+                        hiddenCount++;
+                    }
                     if (rows[i].ActualDatePayment < specialDate) {
                         $.messager.show({ msg: "实际还款日期不得在放款日期之前。" });
 
                         return false;
                     }
+                }
+                if (hiddenCount == 0) {
+                    $.messager.show({ msg: "请添加还款信息。" });
+
+                    return false;
                 }
             }
             return true;
@@ -117,8 +125,7 @@
         }
 
         function GetBalance() {
-            if (parent.flow.statusCode == "payment")
-            {
+            if (parent.flow.statusCode == "payment") {
                 return true;
             }
 
@@ -717,7 +724,7 @@
                 function RemovePayment() {
                     var row = $("#payment_dg").datagrid("getSelected");
                     var index = $("#payment_dg").datagrid("getRowIndex", row);
-                    if (row.Hidden == false) { return;}
+                    if (row.Hidden == false) { return; }
                     $("#payment_dg")
                             .datagrid("deleteRow", index);
                     editIndex = undefined;
@@ -728,7 +735,7 @@
                     }
                 }
                 function PaymentStyler(index, row) {
-                    if (row.Hidden==false) {
+                    if (row.Hidden == false) {
                         return "background-color:#F5FFFA;color:#000;";
                     }
                 }
