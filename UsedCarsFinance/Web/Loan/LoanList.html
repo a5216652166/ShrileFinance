@@ -92,6 +92,22 @@
                 }
             });
         }
+
+
+        function LoanView() {
+            var url = "Loan/LoanEdit.html";
+            var method = $(this).attr("id");
+
+            var row = $("#dg").datagrid("getSelected");
+            if (row == null) {
+                top.$.messager.show({ msg: "请选择一行" });
+                return false;
+            }
+            else {
+                url = url + "?id=" + row.Id + "&status=0" + "&method=" + method;
+            }
+            uc.ShowWindow("借据详情", url);
+        }
     </script>
 </head>
 
@@ -151,7 +167,7 @@
             <!--<a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="add" data-options="onClick:Start,iconCls:'icon-add',plain:true">新增借据</a>-->
             <!--<a class="easyui-linkbutton" href="javascript:void(0)" data-view="payment" data-method="mod" data-options="onClick:Start,iconCls:'icon-add',plain:true">还款</a>-->
             <!--<a class="easyui-linkbutton" href="javascript:void(0)" data-view="loan" data-method="mod" data-options="onClick:Open,iconCls:'icon-edit',plain:true">编辑</a>-->
-            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="view" data-method="view" data-options="onClick:Start,iconCls:'icon-search',plain:true">查看</a>
+            <a class="easyui-linkbutton" href="javascript:void(0)" data-view="view" id="view" data-method="view" data-options="onClick:LoanView,iconCls:'icon-search',plain:true">查看</a>
         </div>
     </div>
 </body>

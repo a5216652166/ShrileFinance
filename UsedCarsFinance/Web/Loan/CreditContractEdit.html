@@ -15,12 +15,17 @@
         uc.form = new UCForm(".container");
         $(function () {
             LoadAllOrgainzate();
-            query.creditId = parent.flow.RootKey;
+            if (query.method == "creditview") {
+                query.creditId = query.id;
+                uc.form.DisableForm();
+            }
+            else {
+                query.creditId = parent.flow.RootKey;
+            }
             if (query.creditId != null) {
                 if (query.state == "0") {
                     $("#save").hide();
                     uc.form.DisableForm();
-
                 }
                 else if (query.state == "1") {
                     $("#EffectiveStatus").combobox({ "readonly": true })

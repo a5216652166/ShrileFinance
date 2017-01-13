@@ -98,43 +98,21 @@
         uc.grid = new UCGrid("#dg");
 
 
-        //function Start() {
-        //    $.ajax({
-        //        method: "GET",
-        //        data: { flowId: "04824FE1-78D1-E611-80CA-507B9DE4A488" },
-        //        url: "../api/Instance/StartProcess",
-        //        statusCode: {
-        //            200: function (data) {
-        //                uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data);
-        //            }
-        //        }
-        //    });
-        //}
-
         // table 添加/编辑按钮
         function PrganizateEdit() {
             var url = "Borrowers/OrganizatePage.html?method=" + this.id;
-
-            if (this.id != "add") {
                 var row = $('#dg').datagrid('getSelected');
                 if (row) {
                     url += "&Id=" + row.Id;
                     if (this.id == "view") {
-                        url += "&method=" + this.id;
+                        url += "&method=" + this.id + "&status=0";
                     }
                 }
                 else {
                     top.$.messager.show({ msg: "请选择一行" });
                     return false;
                 }
-            }
             uc.ShowWindow("机构信息", url);
-
-            //$("#Organizate_frame").attr("src", url);
-
-            //// 打开弹窗
-            ////$("#Organizate_dd").dialog({ closed: false });
-            //$("#Organizate_dd").window("open");
         }
     </script>
     <div id="Organizate_dd" class="easyui-window" data-options="title:'机构信息',width:'100%',height:'100%',top:0,modal:true,closed:true">

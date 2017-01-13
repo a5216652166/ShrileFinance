@@ -22,24 +22,14 @@
         function CreditEdit() {
             var url = "Loan/CreditContractEdit.html";
             var method = $(this).attr("id");
-            if (this.id == "creditadd") {
-                url = url + "?method=" + method
-            }
-            else if (this.id == "creditmod" || this.id == "creditview") {
-                var row = $("#dg").datagrid("getSelected");
-                if (row == null) {
-                    top.$.messager.show({ msg: "请选择一行" });
-                    return false;
-                }
-                else {
-                    if (this.id == "creditmod") {
-                        url = url + "?id=" + row.Id + "&status=1" + "&method=" + method;
-                    }
-                    else {
-                        url = url + "?id=" + row.Id + "&status=0" + "&method=" + method;
-                    }
 
-                }
+            var row = $("#dg").datagrid("getSelected");
+            if (row == null) {
+                top.$.messager.show({ msg: "请选择一行" });
+                return false;
+            }
+            else {
+                url = url + "?id=" + row.Id + "&status=0" + "&method=" + method;
             }
             uc.ShowWindow("授信申请", url);
         }
@@ -90,7 +80,7 @@
             var Id = $("#creditcontractId").val();
             $.ajax({
                 async: false,
-                data: { limit: limit,id:Id },
+                data: { limit: limit, id: Id },
                 type: "GET",
                 url: "../api/CreditContract/ChangeLimit",
                 statusCode: {
@@ -106,18 +96,6 @@
             });
         }
 
-        //function Start() {
-        //    $.ajax({
-        //        method: "GET",
-        //        data: { flowId: "05824FE1-78D1-E611-80CA-507B9DE4A488" },
-        //        url: "../api/Instance/StartProcess",
-        //        statusCode: {
-        //            200: function (data) {
-        //                uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data);
-        //            }
-        //        }
-        //    });
-        //}
     </script>
 </head>
 <body>
@@ -163,12 +141,12 @@
 
     <div id="dl" class="easyui-dialog" data-options="title:'修改授信额度',width:'340px',height:'100px',top:10,modal:true,closed:true">
         <div>
-            <input name="creditcontractId" id="creditcontractId" hidden/>
+            <input name="creditcontractId" id="creditcontractId" hidden />
         </div>
-        <div  style="margin-top:20px;margin-left:10px ">
+        <div style="margin-top:20px;margin-left:10px ">
             <div class="col-12">
                 <label>授信额度:</label>
-                <input name="CreditLimit" id="CreditLimit" class="easyui-textbox"/>
+                <input name="CreditLimit" id="CreditLimit" class="easyui-textbox" />
                 <span class="unit">元</span>
                 <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',plain:true,onClick:Submit">保存</a>
             </div>

@@ -31,7 +31,7 @@
 
     <script type="text/javascript">
         var draft = new Draft(BuildData, LoadData);
-
+        var uc = uc.GetParams();
         $(function () {
             Init();
             // 开启草稿保存
@@ -289,7 +289,13 @@
         function DataInit() {
             var query = {};
             query.state = GetQueryString("state");
-            query.orgid = parent.flow.RootKey;
+            if (uc.method == "view") {
+                query.orgid = uc.Id;
+                uc.form.DisableForm();
+            }
+            else {
+                query.orgid = parent.flow.RootKey;
+            }
             //query.Method = GetQueryString("method");
             draft.Load();
             if (query.orgid) {

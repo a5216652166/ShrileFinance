@@ -25,9 +25,18 @@
         uc.form = new UCForm("#ff");
         var page = new Page();
         var query = uc.GetParams();
-
+        var code = ""
         $(function () {
-            query.loanId = parent.flow.RootKey;
+            if (query.method == "view") {
+                query.loanId = query.id;
+                code == "view";
+                uc.form.DisableForm();
+                $("#payment_tb").hide();
+            }
+            else {
+                query.loanId = parent.flow.RootKey;
+                code = parent.flow.statusCode
+            }
             // 1.加载选项.
             $.when(
                 LoadCreditContractNumber(),
@@ -125,7 +134,7 @@
         }
 
         function GetBalance() {
-            if (parent.flow.statusCode == "payment") {
+            if (code == "payment") {
                 return true;
             }
 
@@ -136,7 +145,7 @@
                 $.ajax({
                     async: false,
                     method: "GET",
-                    data: { id: parent.flow.RootKey, principle: $("#Principle").textbox("getValue") },
+                    data: { id: query.loanId, principle: $("#Principle").textbox("getValue") },
                     url: "../api/loan/GetBalance",
                     statusCode: {
                         200: function (data) {
@@ -148,9 +157,9 @@
         }
 
         function Render(query) {
-            if (parent.flow.statusCode == "loan") {
+            if (code == "loan") {
                 LoanView();
-            } else if (parent.flow.statusCode == "payment") {
+            } else if (code == "payment") {
                 PaymentView();
             }
             else if (query.state == "0") {
@@ -251,13 +260,13 @@
                         if (data.Payments.length > 0) {
                             $("#payment_history").show();
                         }
-                        else if (parent.flow.statusCode == "payment") {
+                        else if (code == "payment") {
                             $("#payment_history").show();
                         }
                         else {
                             $("#payment_history").hide();
                         }
-                        if (parent.flow.statusCode == "view" || query.state == "0") {
+                        if (code == "view" || query.state == "0") {
                             $("#payment_tb").hide();
                         }
                     }
@@ -371,9 +380,7 @@
                     $("input[textboxname='ExpirationDate'").textbox("setValue", record.ExpirationDate.substring(0, 10));
 
                     var LoanNumberCombobox = $('fieldset#loan_info>div.row>div>select[comboname=ContractNumber]');
-                    debugger
                     if (LoanNumberCombobox.length == 1) {
-                        debugger
                         var options = $(record.Loans).map(function (i, e) {
                             if (e.Hidden == false) {
                                 return e;
@@ -384,7 +391,6 @@
                         $('fieldset#loan_info').form("clear");
 
                         LoanNumberCombobox.combobox("loadData", options);
-                        debugger
                     }
                 }
             </script>
@@ -412,7 +418,6 @@
 
                 <script type="text/javascript">
                     function onSelectLoanContractNumber(record) {
-                        debugger
                         if (record) {
                             $('fieldset#loan_info').form("load", record);
                         }
