@@ -676,22 +676,20 @@
                     }
                 }
                 function onEdit(index) {
-                    if (editIndex != index) {
-                        if (endEditing()) {
-                            var row = $("#payment_dg").datagrid("selectRow", index)
-                                .datagrid("getSelected");
-                            if (row.Hidden != false) {
-                                $("#payment_dg").datagrid("beginEdit", index);
+                    if (endEditing()) {
+                        var row = $("#payment_dg").datagrid("selectRow", index)
+                            .datagrid("getSelected");
+                        if (row.Hidden != false) {
+                            $("#payment_dg").datagrid("beginEdit", index);
 
-                                editIndex = index;
-                            } else {
-                                $.messager.show({ msg: "已完成的还款记录不可更改。" });
-                            }
+                            editIndex = index;
                         } else {
-                            setTimeout(function () {
-                                $("#payment_dg").datagrid("selectRow", editIndex);
-                            }, 0);
+                            $.messager.show({ msg: "已完成的还款记录不可更改。" });
                         }
+                    } else {
+                        setTimeout(function () {
+                            $("#payment_dg").datagrid("selectRow", editIndex);
+                        }, 0);
                     }
                 }
                 function onEndEdit(index, row) {
@@ -719,6 +717,7 @@
                     }
                 }
                 function ModifyPayment() {
+                debugger
                     var row = $("#payment_dg").datagrid("getSelected");
                     var index = $("#payment_dg").datagrid("getRowIndex", row);
 

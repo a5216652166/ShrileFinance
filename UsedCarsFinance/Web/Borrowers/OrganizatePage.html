@@ -291,7 +291,7 @@
             query.state = GetQueryString("state");
             if (uc.method == "view") {
                 query.orgid = uc.Id;
-                uc.form.DisableForm();
+                Disabled($("fieldset"));
             }
             else {
                 query.orgid = parent.flow.RootKey;
