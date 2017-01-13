@@ -422,8 +422,7 @@
                             // 加载借据信息
                             $('fieldset#loan_info').form("load", record);
 
-                            // 加载还款信息
-                            debugger //record.Payments
+                            // 加载还款信息（审核完成 + 审核中）
                             $('fieldset#payment_history table#payment_dg').datagrid('loadData', record.Payments);
                         }
                     }
