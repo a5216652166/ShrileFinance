@@ -45,7 +45,7 @@
                     }
 
                     // 禁用fieldset
-                    Disabled($("fieldset"));
+                    Disabled("fieldset");
 
                     // 禁用保存按钮
                     $("#save").linkbutton("disable");
@@ -222,6 +222,7 @@
                 certificateNumber.textbox({ validType: ['length[0,18]', 'AN'] });
             }
         }
+
         // 股东类型 切换
         function ChangeType() {
             var value = $(this).parents('fieldset').find("input[name=ShareholdersType]").val();

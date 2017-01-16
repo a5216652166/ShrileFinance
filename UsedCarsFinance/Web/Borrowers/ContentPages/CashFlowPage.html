@@ -27,7 +27,7 @@
             if (query.method == "CashFlow_mod" || query.method == "CashFlow_view") {
                 //获取选中行
                 var row = self.parent.$("#CashFlow_dg").datagrid('getSelected');
-                
+
                 if (query.method == "CashFlow_mod") {
                     if (row) {
                         //加载数据
@@ -40,7 +40,7 @@
                     }
 
                     // 禁用fieldset
-                    Disabled($("fieldset"));
+                    Disabled("fieldset");
 
                     // 禁用保存按钮
                     $("#save").linkbutton("disable");
@@ -50,8 +50,7 @@
 
         // 加载数据
         function LoadDate(row) {
-            if (row == null)
-            {
+            if (row == null) {
                 row = [];
             }
             // 加载现金流量信息
@@ -74,18 +73,17 @@
 
             // 更新现金流量信息表
             if (query.method == "CashFlow_mod") {
-
                 //获取选中行
                 var row = self.parent.$("#CashFlow_dg").datagrid('getSelected');
 
                 if (row) {
                     var RowIndex = self.parent.$("#CashFlow_dg").datagrid('getRowIndex', row);
-                    
+
                     //更新行
                     self.parent.$("#CashFlow_dg").datagrid('updateRow', { index: RowIndex, row: obj });
                 }
             }
-            if (query.method == "CashFlow_add") {
+            else if (query.method == "CashFlow_add") {
                 //追加一行
                 self.parent.$("#CashFlow_dg").datagrid('appendRow', obj);
             }
@@ -137,7 +135,7 @@
 
         // 现金及现金等价物净增加额(五) 9231 = 经营活动产生的现金流量净额 9208 + 投资活动产生的现金流量净额 9220 + 筹集活动产生的现金流量净额 9229 + 汇率变动对现金及现金等价物的影响 9230
         function Cal_S_9231() {
-            var array = ["J9208", "J9220","J9229","J9230"];
+            var array = ["J9208", "J9220", "J9229", "J9230"];
             var ch = '+';
             var result = 'J9231';
 
@@ -483,7 +481,7 @@
                             筹集活动产生的现金流量净额：
                             <a class="easyui-tooltip tooltip-f" style="background:rgba(0, 0, 0, 0) url('../img/InfoImg.png') no-repeat scroll 0 0" title="筹集活动产生的现金流量净额">　</a>
                         </label>
-                        <input name="FinancingNetCash" id="J9229" class="easyui-textbox" data-options="required:false,readonly:true,value:0,onChange:Cal_J9229"/>
+                        <input name="FinancingNetCash" id="J9229" class="easyui-textbox" data-options="required:false,readonly:true,value:0,onChange:Cal_J9229" />
                     </div>
                     <div class="col-6">
                         <label>
