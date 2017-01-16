@@ -30,13 +30,13 @@
     </style>
 
     <script type="text/javascript">
-        var draft = new Draft(BuildData, LoadData);
-        var uc = uc.GetParams();
+        ////var draft = new Draft(BuildData, LoadData);
+        ////var uc = uc.GetParams();
         $(function () {
             Init();
 
-            // 开启草稿保存
-            draft.AutoSave(3 * 60 * 1000);
+            ////// 开启草稿保存
+            ////draft.AutoSave(3 * 60 * 1000);
         });
 
         function Init() {
@@ -102,7 +102,7 @@
                     query.orgid = parent.flow.RootKey;
                 }
 
-                draft.Load();
+                ////draft.Load();
 
                 if (query.orgid) {
                     // 加载数据
