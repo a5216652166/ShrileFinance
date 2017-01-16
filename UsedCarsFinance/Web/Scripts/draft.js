@@ -14,7 +14,6 @@ function Draft(onSave, onLoad) {
 			PageLink: pageLink,
 			PageData: jsonData
 		};
-
 		$.ajax({
 			async: true,
 			data: postedData,
