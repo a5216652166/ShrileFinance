@@ -288,24 +288,24 @@
         // 数据初始化
         function DataInit() {
             var query = {};
-            query.state = GetQueryString("state");
+            
             if (uc.method == "view") {
                 query.orgid = uc.Id;
-                Disabled($("fieldset"));
             }
             else {
                 query.orgid = parent.flow.RootKey;
             }
-            //query.Method = GetQueryString("method");
+
             draft.Load();
+            
             if (query.orgid) {
                 // 加载数据
                 LoadData(LoadDateForId(query.orgid));
 
-                if (query.state == 0) {
+                if (GetQueryString("method") == "view") {
                     // 禁用fieldset
                     Disabled($("fieldset"));
-
+                    
                     // 禁用table
                     $("div[id*=_tb]>a").addClass("Remove").hide();
                     $("div[id*=_tb]>a[id*=view]").removeClass("Remove").show();
