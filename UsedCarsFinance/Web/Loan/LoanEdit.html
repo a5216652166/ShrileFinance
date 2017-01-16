@@ -75,6 +75,28 @@
             }
         });
 
+        function LoadData(data) {
+            // 授信编号
+            $("fieldset#credit_contract select[textboxname=CreditId]").combobox("select", data.CreditId).combobox("unselect", data.CreditId).combobox("select", data.CreditId);
+            debugger
+            // 借据
+            if (query.state != "3") {
+                // 借据信息
+                $("fieldset#loan_info").form('load', data.Loan);
+
+                
+            }
+            else {
+                // 还款
+
+                // 借据编号
+                $("fieldset#loan_info select[textboxname=ContractNumber]").combobox("select", data.ContractNumber);
+
+                // 还款信息
+                $("table#payment_dg").datagrid("loadDate", data.AllPayments);
+            }
+        }
+
         function ValidData() {
             if (!$("#loan_info").form("validate")) {
                 $.messager.show({ msg: '请正确填写完必填项！' });
@@ -110,16 +132,22 @@
         }
 
         function BuildData() {
+            var data = {};
+
             // 状态为3表示还款
             if (query.state != "3") {
-                var loan = $("#loan_info").serializeJson();
-                loan.CreditId = $("select[comboname='CreditId']").combobox("getValue");
-                return loan;
+                // 借据
+                var data = $("#loan_info").serializeJson();
+
+                data.CreditId = $("select[comboname='CreditId']").combobox("getValue");
+                data.Loan = $("#loan_info").serializeJson();
             }
             else {
-                var data = {};
+                // 还款
+
                 // 点击提交时自动保存编辑状态下的还款列表
                 AcceptPayment();
+
                 var rows = $("#payment_dg").datagrid("getRows");
                 var addedRows = $(rows).map(function (i, e) {
                     if (e.Hidden != false) {
@@ -128,9 +156,13 @@
                 });
                 data.LoanId = $("input[name='Id']").val(),
                 data.Payments = addedRows.toArray();
-                return data;
+
+                data.CreditId = $("fieldset#credit_contract select[textboxname=CreditId]").combobox("getValue");
+                data.ContractNumber = $("fieldset#loan_info select[textboxname=ContractNumber]").combobox("getValue");
+                data.AllPayments = $("#payment_dg").datagrid("getRows");
             }
 
+            return data;
         }
 
         function GetBalance() {
@@ -257,7 +289,6 @@
                     onLoadSuccess: function (data) {
                         $("select[comboname='CreditId']").combobox("select", data.CreditId);
                         $("#payment_dg").datagrid("loadData", data.Payments);
-        debugger
                         if (data.Payments.length > 0) {
                             $("#payment_history").show();
                         }
@@ -420,6 +451,7 @@
                 <script type="text/javascript">
                     function onSelectLoanContractNumber(record) {
                         if (record) {
+                            debugger
                             // 加载借据信息
                             $('fieldset#loan_info').form("load", record);
 

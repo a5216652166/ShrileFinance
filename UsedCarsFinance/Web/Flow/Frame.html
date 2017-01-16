@@ -83,7 +83,6 @@
             });
             // 加载草稿
             draft.Load();
-
             if (forms.length > 0) {
                 $("#tabs").tabs("select", openIndex || 0);
             }
@@ -108,7 +107,7 @@
                     var draft = tab.data("draft");
                     if (draft) {
                         var frame = frames[formId];
-
+                        debugger
                         if (frame.LoadData) {
                             frame.LoadData(draft);
                         }

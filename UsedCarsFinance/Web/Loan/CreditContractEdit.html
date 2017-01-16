@@ -67,8 +67,8 @@
                 data: { id: query.creditId },
                 url: "../api/CreditContract/Get",
                 success: function (data) {
-                    LoadData(data);
                     OrganizateInfo(data.OrganizationId)
+                    LoadData(data);
                 }
             });
         }
@@ -77,9 +77,11 @@
             if (data == null) {
                 return;
             }
-
             // 加载贷款合同基本信息
             $("#ff fieldset#CreditContract").form("load", data);
+            if (data.OrganizationId != "") {
+                $("#InstitutionChName").combobox('setValue', data.OrganizationId).combobox("unselect", data.OrganizationId).combobox('select', data.OrganizationId);
+            }
             // 显示/隐藏 担保合同列表
             var HasGuarantee = $("fieldset#CreditContract #HasGuarantee").combobox("getValue");
 
@@ -157,7 +159,6 @@
             else {
                 value.HasGuarantee = false;
             }
-            debugger
             return value;
         }
 
@@ -294,6 +295,7 @@
         function LoadAllOrgainzate() {
             $('#InstitutionChName').combobox({
                 method: "GET",
+                async:false,
                 url: '../api/Customer/GetAll',
                 valueField: 'Id',
                 textField: 'InstitutionChName'
