@@ -53,10 +53,22 @@
 
         function Process() {
             var url = "Flow/Frame.html";
-
+            var statusCode = "";
             var row = uc.grid.GetSelected();
+            debugger
             if (row) {
-                url += "?instanceId=" + row.Id;
+                debugger
+                if (row.Flow == "借据")
+                    statusCode = "loan"
+                else if (row.Flow == "还款")
+                    statusCode = "payment"
+                else if (row.Flow == "贷款合同")
+                    statusCode = "credit"
+                else if (row.Flow == "机构")
+                    statusCode = "organization"
+                else if (row.Flow == "融资流程")
+                    statusCode = "finance"
+                url += "?instanceId=" + row.Id + "&statusCode=" + statusCode;
 
                 uc.ShowWindow("详情页", url);
             }
@@ -139,19 +151,19 @@
                         function FinanceFlow() {
                             var flowId = "228C8C80-06A4-E611-80C5-507B9DE4A488";
 
-                            StartProcess(flowId, "");
+                            StartProcess(flowId, "finance");
                         }
 
                         function OrganizationFlow() {
                             var flowId = "04824FE1-78D1-E611-80CA-507B9DE4A488";
 
-                            StartProcess(flowId, "");
+                            StartProcess(flowId, "organization");
                         }
 
                         function CreditFlow() {
                             var flowId = "05824FE1-78D1-E611-80CA-507B9DE4A488";
 
-                            StartProcess(flowId, "");
+                            StartProcess(flowId, "credit");
                         }
 
                         function LoanFlow() {

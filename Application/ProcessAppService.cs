@@ -232,7 +232,7 @@
         /// <returns></returns>
         public IPagedList<InstanceViewModel> DoingPagedList(string searchString, int page, int size, Guid? currentNode = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
-            RemoveErrorInstance();
+            //RemoveErrorInstance();
 
             var instances = instanceReopsitory.DoingPagedList(CurrentUser, searchString, page, size, currentNodeId: currentNode, beginTime: beginTime, endTime: endTime);
 

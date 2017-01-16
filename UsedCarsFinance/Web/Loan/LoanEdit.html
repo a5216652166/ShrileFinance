@@ -257,6 +257,7 @@
                     onLoadSuccess: function (data) {
                         $("select[comboname='CreditId']").combobox("select", data.CreditId);
                         $("#payment_dg").datagrid("loadData", data.Payments);
+        debugger
                         if (data.Payments.length > 0) {
                             $("#payment_history").show();
                         }
@@ -721,7 +722,6 @@
                     }
                 }
                 function ModifyPayment() {
-                debugger
                     var row = $("#payment_dg").datagrid("getSelected");
                     var index = $("#payment_dg").datagrid("getRowIndex", row);
 
