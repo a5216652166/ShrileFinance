@@ -380,16 +380,21 @@
                     CurrentUser = CurrentUser,
                     StartUser = CurrentUser,
                     StartTime = DateTime.Now,
-                    Status = InstanceStatusEnum.正常
+                    Status = InstanceStatusEnum.正常,
+                    ProcessType= (ProcessTypeEnum)((int)processType.Value)
                 };
 
                 instanceReopsitory.Create(instance);
-                instanceReopsitory.Commit();
             }
             else
             {
                 instance = instances.Single();
+                instance.StartTime = DateTime.Now;
+
+                instanceReopsitory.Modify(instance);
             }
+
+            instanceReopsitory.Commit();
 
             return instance;
         }

@@ -188,7 +188,7 @@
 
                             $.ajax({
                                 method: "GET",
-                                data: { flowId: flowId },
+                                data: { processType: flowId },
                                 url: "../api/Instance/StartProcess",
                                 statusCode: {
                                     200: function (data) {
