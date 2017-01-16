@@ -36,17 +36,21 @@
                         //加载数据
                         LoadDate(row);
                     }
-                } else if (query.method == "ExecutivesMajorParticipant_view") {
+                }
+                else if (query.method == "ExecutivesMajorParticipant_view") {
                     if (row) {
                         //加载数据
                         LoadDate(row);
                     }
 
                     // 禁用fieldset
-                    Disabled($("fieldset"));
+                    Disabled("fieldset");
 
                     // 禁用保存按钮
                     $("#save").linkbutton("disable");
+
+                    // 移除家庭成员复选框
+                    $("section#F input#FamilyFiedSetShow").parent().parent().remove();
 
                     // 禁用家庭信息 +/-
                     $("section#I div[name=tools]>a").hide();
@@ -55,25 +59,21 @@
         }
 
         // 加载数据
-        function LoadDate(row)
-        {
-            var familyInfoArray = new Array();
-            if (row.FamilyMembers.length>0)
-            {
+        function LoadDate(row) {
+            if (row.FamilyMembers.length > 0) {
                 // 显示家族信息section
                 $("input[id=FamilyFiedSetShow]")[0].checked = true;
                 $("section[id=I]").show();
 
-                familyInfoArray = row.FamilyMembers;
-            }
+                var familyInfoArray = row.FamilyMembers;
+                $(familyInfoArray).each(function (index, item) {
+                    // 新增家族信息输入filedset
+                    $("section[id=I]>div>div>a[id=Iadd]").click();
 
-            $(familyInfoArray).each(function (index, item) {
-                // 新增家族信息输入filedset
-                $("section[id=I]>div>div>a[id=Iadd]").click();
-                
-                // 加载家族信息
-                $("section[id=I]").find("fieldset:last").form('load', item);
-            });
+                    // 加载家族信息
+                    $("section[id=I]").find("fieldset:last").form('load', item);
+                });
+            }
 
             // 加载高管及主要关系人基本信息
             $('fieldset[id=F]').form('load', row);
@@ -95,7 +95,7 @@
 
             // 序列化fieldset 家族信息
             obj.FamilyMembers = SerializeFamilyInfos();
-            
+
             // 更新家族信息表
             if (query.method == "ExecutivesMajorParticipant_mod") {
 
@@ -119,6 +119,18 @@
 
             // 关闭弹窗
             self.parent.$("#ExecutivesMajorParticipant_dd").dialog({ closed: true });
+
+            // 序列化家族信息
+            function SerializeFamilyInfos() {
+                var familyObjs = $("fieldset[id*=I]");
+                var familyArray = new Array();
+
+                $(familyObjs).each(function (index, item) {
+                    familyArray.push($(item).serializeJson());
+                });
+
+                return familyArray;
+            }
         }
 
         // 取消按钮
@@ -144,7 +156,7 @@
 
             var value = $(this).parents("fieldset").find("select[textboxname=CertificateType]").combobox("getValue");
             var certificateNumber = $(this).parents("fieldset").find("input[textboxname=CertificateCode]");
-            
+
             ChangeCertificateType(value, certificateNumber);
         }
 
@@ -161,30 +173,6 @@
                 $(Obj).parents('section').find('div:hidden').find("a[id*=minus]").click();
             }
         }
-        
-        // 家族成员信息 展示/隐藏
-        function ShowFamilyFiedSet(Obj) {
-            Obj.checked = Obj.checked;
-
-            if (Obj.checked) {
-                // 点击 +
-                $('section[name=FamliySection]>div>div>a[id*=add]').click();
-
-                // 显示section
-                $('section[name=FamliySection]').show();
-            }
-            else {
-                // 隐藏section
-                $('section[name=FamliySection]').hide();
-
-                // 移除fildset
-                var count = $('section[name=FamliySection]').find('fieldset').length;
-                for (var i = 0; i < count; i++) {
-                    // 点击 -
-                    $('section[name=FamliySection]>div>div>a[id*=minus]').click();
-                }
-            }
-        }
 
         // 点击 +  新增家族信息输入，为新的fieldset设置name
         function AddFamilyFiledset(Obj) {
@@ -194,19 +182,7 @@
             // 为新的fieldset设置name
             $(Obj).parents("section").find("filedset:last").attr("name", "FamilyMembers");
         }
-
-        // 序列化家族信息
-        function SerializeFamilyInfos()
-        {
-            var familyObjs = $("fieldset[id*=I]");
-            var familyArray = new Array();
-
-            $(familyObjs).each(function (index, item) {
-                familyArray.push($(item).serializeJson());
-            });
-
-            return familyArray;
-        }
+        
         function ChooseFamilyType(data) {
             var value = $(this).parents("fieldset").find("select[textboxname=CertificateType]").combobox("getValue");
             var certificateNumber = $(this).parents("fieldset").find("input[textboxname=CertificateCode]");
@@ -225,7 +201,6 @@
                 certificateNumber.textbox({ validType: ['length[0,18]', 'AN'] });
             }
         }
-
     </script>
 </head>
 <body>
@@ -297,6 +272,31 @@
                     <div class="col-12">
                         <input type="checkbox" id="FamilyFiedSetShow" onclick="ShowFamilyFiedSet(this)" /><span onclick="$(this).parent().find('input[type=checkbox]').eq(0).click()">家族成员信息</span>
                     </div>
+                    <script type="text/javascript">
+                        // 家族成员信息 展示/隐藏
+                        function ShowFamilyFiedSet(Obj) {
+                            Obj.checked = Obj.checked;
+
+                            if (Obj.checked) {
+                                // 点击 +
+                                $('section[name=FamliySection]>div>div>a[id*=add]').click();
+
+                                // 显示section
+                                $('section[name=FamliySection]').show();
+                            }
+                            else {
+                                // 隐藏section
+                                $('section[name=FamliySection]').hide();
+
+                                // 移除fildset
+                                var count = $('section[name=FamliySection]').find('fieldset').length;
+                                for (var i = 0; i < count; i++) {
+                                    // 点击 -
+                                    $('section[name=FamliySection]>div>div>a[id*=minus]').click();
+                                }
+                            }
+                        }
+                    </script>
                 </div>
             </fieldset>
         </section>

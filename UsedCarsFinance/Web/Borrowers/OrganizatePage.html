@@ -34,9 +34,134 @@
         var uc = uc.GetParams();
         $(function () {
             Init();
+
             // 开启草稿保存
             draft.AutoSave(3 * 60 * 1000);
         });
+
+        function Init() {
+            // 页面初始化
+            PageInit();
+
+            setTimeout(function () {
+                // 数据初始化
+                DataInit();
+            }, 200);
+
+            // 页面初始化
+            function PageInit() {
+                // 设置所有是否填写复选框不选中
+                $('input[id*=TF]').each(function (index, Obj) {
+                    Obj.checked = false;
+                });
+
+                // 设置除B外的所有section隐藏
+                $('section[id!=B]').each(function (index, Obj) {
+                    $(Obj).hide();
+                    $(Obj).parent().parent().hide();
+                })
+
+                // 对B设置name
+                $('section[id=B]').find('fieldset').attr('name', 'Base');
+
+                // 加载其他需要显示的section
+                loadSecctions(["C", "D", "E", "F", "G", "H"]);
+
+                // 清空表单
+                $("input[type=reset]").click();
+
+                // 客户类型恢复默认值
+                $("#CustomerType_Text").textbox();
+
+                // 设置部分section显示
+                function loadSecctions(array) {
+                    if (array == undefined || array == null) {
+                        return false;
+                    }
+
+                    $('div[id=showSecton]').find("input[id*=TF_]").each(function (index, Obj) {
+                        if ($.inArray($(Obj).attr('id').substr(3, 1), array) != -1) {
+                            $(Obj).click();
+                        }
+                        else {
+                            $(Obj).parent().show();
+                        }
+                    });
+                }
+            }
+
+            // 数据初始化
+            function DataInit() {
+                var query = {};
+
+                if (GetQueryString("method") == "view") {
+                    debugger
+                    query.orgid = GetQueryString("Id");
+                }
+                else {
+                    query.orgid = parent.flow.RootKey;
+                }
+
+                draft.Load();
+
+                if (query.orgid) {
+                    // 加载数据
+                    LoadData(LoadDateForId(query.orgid));
+
+                    if (GetQueryString("method") == "view" || GetQueryString("state") == 0) {
+                        PageDisable();
+                    }
+                }
+                else {
+                    // 机构属性 经济行业分类异常处理
+                    var data = {};
+                    data.EconomicSectorsClassification = "";
+                    data.RegisterAdministrativeDivision = "";
+                    $("fieldset[name=Property]").form("load", data);
+                }
+
+                // 查询数据
+                function LoadDateForId(Id) {
+                    if (Id == null) {
+                        return;
+                    }
+
+                    // 通过Id获取数据
+                    var resultDate;
+                    $.ajax({
+                        async: false,
+                        data: { Id: Id },
+                        type: "GET",
+                        url: "../api/Customer/Get",
+                        statusCode: {
+                            200: function (data) {
+                                resultDate = data;
+                            },
+                            500: function (data) {
+                                $.messager.alert('错误', data.responseJSON.ExceptionMessage);
+                            },
+                            400: function (data) {
+                                $.messager.alert('错误', data.responseJSON.Message, "info");
+                            }
+                        }
+                    });
+
+                    return resultDate;
+                }
+
+                function PageDisable() {
+                    // 禁用fieldset
+                    Disabled("fieldset");
+
+                    $("div#showSecton").remove();
+
+                    // 禁用table
+                    $("div[id*=_tb]>a").addClass("Remove").hide();
+                    $("div[id*=_tb]>a[id*=view]").removeClass("Remove").show();
+                    $("div[id*=_tb]>a.Remove").remove();
+                }
+            }
+        }
 
         // 加载数据
         function LoadData(data) {
@@ -102,11 +227,108 @@
                 FieldsetLoadDateFactory("BigEvent", "table", data.BigEvent);
             }
 
+            // fieldset 数据加载工厂（type: text or table）
+            function FieldsetLoadDateFactory(name, type, data) {
+                if (name == null || type == null || $.inArray(type, ["text", "table"]) == -1 || !data) {
+                    return null;
+                }
+
+                if ($("fieldset[name=" + name + "]").length > 0) {
+                    if (type == "text") {
+                        // 加载数据 text
+                        $("fieldset[name=" + name + "]").form('load', data);
+                    }
+                    else {
+                        // 加载数据 table
+                        $(data).each(function (index, item) {
+                            // 通过value识别出text
+                            item = ValueReadText(name, item);
+
+                            // 赋值
+                            //$("fieldset[name=" + name + "]").find("[id=" + name + "_dg" + "]").datagrid('appendRow', item);
+                        });
+
+                        $("fieldset[name=" + name + "]").find("[id=" + name + "_dg" + "]").datagrid('loadData', data);
+                    }
+                }
+                return data;
+
+                // value识别text
+                function ValueReadText(name, data) {
+                    var nameArray = ["Managers", "Shareholders", "AssociatedEnterprises"];
+
+                    if (data == null || $.inArray(name, nameArray) == -1) {
+                        return data;
+                    }
+
+                    // 高级主管
+                    if (name == "Managers") {
+                        // 关系人类型
+                        var TypeArray = ["0-实际控制人", "1-董事长", "2-总经理/主要负责人", "3-财务负责人", "4-监事长", "5-法定代表人"];
+                        $(TypeArray).each(function (index, item) {
+                            if (item.substr(0, 1) == data.Type) {
+                                // 添加text
+                                data.Type_Txt = item.substr(2);
+                            }
+                        });
+
+                        // 证件类型
+                        var CertificateTypeArray = ["0-身份证", "1-户口簿", "2-护照", "3-军官证", "4-士兵证", "5-港澳居民来往内地通行证", "6-台湾同胞来往内地通行证", "7-临时身份证", "8-外国人居留证", "9-警官证", "A-香港身份证", "B-澳门身份证", "C-台湾身份证", "X-其他证件"];
+                        $(CertificateTypeArray).each(function (index, item) {
+                            if (item.substr(0, 1) == data.CertificateType) {
+                                // 添加text
+                                data.CertificateType_Txt = item.substr(2);
+                            }
+                        });
+                    }
+                        // 重要股东
+                    else if (name == "Shareholders") {
+                        // 股东类型
+                        var ShareholdersTypeArray = ["1-自然人", "2-机构"];
+                        $(ShareholdersTypeArray).each(function (index, item) {
+                            if (item.substr(0, 1) == data.ShareholdersType) {
+                                // 添加text
+                                data.ShareholdersType_Txt = item.substr(2);
+                            }
+                        });
+
+                        // 证件类型/登记注册号类型
+                        var RegistraterTypeArray = ["0-身份证", "1-户口簿", "2-护照", "3-军官证", "4-士兵证", "5-港澳居民来往内地通行证", "6-台湾同胞来往内地通行证", "7-临时身份证", "8-外国人居留证", "9-警官证", "A-香港身份证", "B-澳门身份证", "C-台湾身份证", "X-其他证件",
+                            "01-工商注册号", "02-机关和事业单位登记号", "03-社会团体登记号", "04-民办非企业单位登记号", "05-基金会登记号", "06-宗教活动场所登记号", "07-统一社会信用代码", "08-商事与非商事登记证号", "99-其他"];
+                        $(RegistraterTypeArray).each(function (index, item) {
+                            if (item.substr(0, item.indexOf('-')) == data.RegistraterType) {
+                                // 添加text
+                                data.RegistraterType_Txt = item.substr(item.indexOf('-') + 1);
+                            }
+                        });
+                    }
+                        // 主要关联企业
+                    else if (name == "AssociatedEnterprises") {
+                        // 关联类型
+                        var AssociatedTypeArray = ["20-实际控制人", "21-除本企业的股东外，直接或间接控制本企业的关联企业", "22-本企业直接或间接控制的关联企业", "23-直接或间接被同一控制方控制的关联企业", "24-符合《企业会计制度》第147条规定的其他关联企业"];
+                        $(AssociatedTypeArray).each(function (index, item) {
+                            if (item.substr(0, 2) == data.AssociatedType) {
+                                // 添加text
+                                data.AssociatedType_Txt = item.substr(3);
+                            }
+                        });
+
+                        // 登记注册号类型
+                        var RegistraterTypeArray = ["01-工商注册号", "02-机关和事业单位登记号", "03-社会团体登记号", "04-民办非企业单位登记号", "05-基金会登记号", "06-宗教活动场所登记号", "07-统一社会信用代码", "08-商事与非商事登记证号", "99-其他"];
+                        $(RegistraterTypeArray).each(function (index, item) {
+                            if (item.substr(0, 2) == data.RegistraterType) {
+                                // 添加text
+                                data.RegistraterType_Txt = item.substr(3);
+                            }
+                        });
+                    }
+
+
+                    return data;
+                }
+            }
         }
 
-        function OnLoadSuccess() {
-            ChooseRegisterAdministrativeDivision($("#RegisterAdministrativeDivision").combobox("getValue"));
-        }
         // 数据构建
         function BuildData() {
             var data = new Object();
@@ -159,523 +381,138 @@
                 data.BigEvent = FieldsetSerializeFactory("BigEvent", "table");
             }
             return data;
-        }
-    </script>
 
-    <script type="text/javascript">
-        function Init() {
-            // 页面初始化
-            PageInit();
-
-            setTimeout(function () {
-                // 数据初始化
-                DataInit();
-            }, 200);
-        };
-
-        // 页面初始化
-        function PageInit() {
-            // 设置所有是否填写复选框不选中
-            $('input[id*=TF]').each(function (index, Obj) {
-                Obj.checked = false;
-            });
-
-            // 设置除B外的所有section隐藏
-            $('section[id!=B]').each(function (index, Obj) {
-                $(Obj).hide();
-                $(Obj).parent().parent().hide();
-            })
-
-            // 对B设置name
-            $('section[id=B]').find('fieldset').attr('name', 'Base');
-
-            // 加载其他需要显示的section
-            loadSecctions(["C", "D", "E", "F", "G", "H"]);
-
-            // 清空表单
-            $("input[type=reset]").click();
-
-            // 客户类型恢复默认值
-            $("#CustomerType_Text").textbox();
-        }
-
-        // 设置部分section显示
-        function loadSecctions(array) {
-            if (array == undefined || array == null) {
-                return false;
-            }
-
-            $('div[id=showSecton]').find("input[id*=TF_]").each(function (index, Obj) {
-                if ($.inArray($(Obj).attr('id').substr(3, 1), array) != -1) {
-                    $(Obj).click();
+            // fieldset 数据序列化工厂（type: text or table）
+            function FieldsetSerializeFactory(name, type) {
+                if (name == null || type == null || $.inArray(type, ["text", "table"]) == -1) {
+                    return null;
                 }
-                else {
-                    $(Obj).parent().show();
-                }
-            });
-        }
 
-        // 是否填写 复选框onClick事件
-        function checkboxOnclick(Obj, sectionId) {
-            Obj.checked = Obj.checked;
+                var json = new Object();
 
-            if (sectionId == "I") {
-                $("input[name=HasParent]:hidden").val(Obj.checked);
-            }
-
-            // 被选中后，执行以下操作
-            if (Obj.checked) {
-                var section = $("section[id*=" + sectionId + "]");
-
-                // 点击 + ,添加fileset
-                section.find('div:hidden').find("a[id=" + sectionId + "add]").click();
-
-                // 对新增(显示)的fieldset设置name
-                $("section[id=" + sectionId + "]").find('fieldset').attr('name', getFieldsetName(sectionId));
-
-                // 清空fieldset下的数据
-                section.find('fieldset').each(function (i, e) {
-                    if ($(e).find("table").length == 0) {
-                        var data = $(e).serializeJson();
-                        for (var name in data) {
-                            if (typeof (data[name]) != "function") {
-                                data[name] = null;
-                            }
-                        }
-                        $(e).form("load", data);
+                if ($("fieldset[name=" + name + "]").length > 0) {
+                    if (type == "text") {
+                        // 序列化 text
+                        json = $("fieldset[name=" + name + "]").serializeJson();
                     }
                     else {
-                        $(e).find("table[id*=_dg]").each(function (index, item) {
-                            $(item).datagrid("loadData", [])
-                        });
-                    }
-                });
-
-                // 显示section
-                section.show();
-                section.parent().parent().show();
-            }
-            else {
-                // 点击 - ，移除fieldset
-                $("section[id=" + sectionId + "]").find('div:hidden').find("a[id*=minus]").click();
-
-                // 隐藏section
-                $("section[id*=" + sectionId + "]").hide();
-                $("section[id*=" + sectionId + "]").parent().parent().hide();
-            }
-        }
-
-        // 获取fieldset相对应的name
-        function getFieldsetName(idValue) {
-            if (idValue == undefined || idValue == null) {
-                return "";
-            }
-
-            var IdArray = new Array("B-Base", "C-Property", "D-State", "E-Contact", "F-Managers", "G-Shareholders", "H-AssociatedEnterprises",
-                "I-Parent", "J-FinancialAffairsBase", "K-Litigation", "L-BigEvent");
-            var resultName = "";
-
-            for (var i = 0; i < IdArray.length; i++) {
-                if (IdArray[i].substr(0, 1) == idValue.substr(0, 1)) {
-                    resultName = IdArray[i].substr(2);
-                    break;
-                }
-            }
-
-            return resultName;
-        }
-
-        // 数据初始化
-        function DataInit() {
-            var query = {};
-            
-            if (uc.method == "view") {
-                query.orgid = uc.Id;
-            }
-            else {
-                query.orgid = parent.flow.RootKey;
-            }
-
-            draft.Load();
-            
-            if (query.orgid) {
-                // 加载数据
-                LoadData(LoadDateForId(query.orgid));
-
-                if (GetQueryString("method") == "view") {
-                    // 禁用fieldset
-                    Disabled($("fieldset"));
-                    
-                    // 禁用table
-                    $("div[id*=_tb]>a").addClass("Remove").hide();
-                    $("div[id*=_tb]>a[id*=view]").removeClass("Remove").show();
-                    $("div[id*=_tb]>a.Remove").remove();
-
-                    // 禁用保存按钮
-                    $("#submit").linkbutton("disable");
-                }
-            }
-            else {
-                // 机构属性 经济行业分类异常处理
-                var data = {};
-                data.EconomicSectorsClassification = "";
-                data.RegisterAdministrativeDivision = "";
-                $("fieldset[name=Property]").form("load", data);
-            }
-        }
-
-        // 查询数据
-        function LoadDateForId(Id) {
-            if (Id == null) {
-                return;
-            }
-
-            // 通过Id获取数据
-            var resultDate;
-            $.ajax({
-                async: false,
-                data: { Id: Id },
-                type: "GET",
-                url: "../api/Customer/Get",
-                statusCode: {
-                    200: function (data) {
-                        resultDate = data;
-                    },
-                    500: function (data) {
-                        $.messager.alert('错误', data.responseJSON.ExceptionMessage);
-                    },
-                    400: function (data) {
-                        $.messager.alert('错误', data.responseJSON.Message, "info");
+                        // 序列化 table
+                        var json = $("fieldset[name=" + name + "]").find("[id=" + name + "_dg" + "]").datagrid("getRows");
                     }
                 }
-            });
 
-            return resultDate;
+                return json;
+            }
         }
-
-        // 提交按钮
-        function OrganizateSubmit() {
-            if ($("#content").form("validate")) {
-                // 禁用提交按钮
-                $("#submit").linkbutton("disable");
-            } else {
-                ShowError("请填写剩下的必填内容!");
-                return false;
-            }
-
-            // 构建数据
-            var data = BuildData();
-
-            // 验证数据
-            if (!ValidDate(data)) {
-                $("#submit").linkbutton("enable");
-                return false;
-            }
-
-            // 提交
-            var query = {};
-            query.method = GetQueryString("method");
-            if (query.method == "mod") {
-                query.Method = "Modify";
-            }
-            else if (query.method == "add") {
-                query.Method = "Add";
-            }
-            if ($.inArray(query.Method, ["Add", "Modify"]) != -1) {
-                var url = "../api/Customer/" + query.Method;
-
-                $.ajax({
-                    async: false,
-                    data: data,
-                    type: "POST",
-                    url: url,
-                    statusCode: {
-                        200: function (data) {
-                            OrganizateCancel();
-                            $.messager.show({ msg: "提交成功！" });
-                            draft.Clear();
-                        },
-                        500: function (data) {
-                            $.messager.alert('错误', data.responseJSON.ExceptionMessage);
-                        },
-                        400: function (data) {
-                            var result = ""
-                            $.each(data.responseJSON.ModelState, function () {
-                                $.messager.alert('错误', this, "info");
-                            });
-                        }
-                    }
-                });
-            }
-
-            $("#submit").linkbutton("enable");
-        }
-
-        // 取消按钮
-        function OrganizateCancel() {
-            // 清空表单，避免再次打开时闪现之前填入的数据
-            $('input[type=reset]').click();
-
-            self.parent.uc.CloseWindow();
-        }
-
+        
+        // 数据校验
         function ValidData() {
-            
             var data = BuildData();
             
             return ValidDate(data);
-        }
 
-        // 数据校验
-        function ValidDate(data) {
-            
-            if (data == null) {
-                return false;
-            }
-            // 组织机构代码和登记注册号码不能同时为空
-            if (data.Base.OrganizateCode.toString().length == 0 && data.Base.RegistraterCode.toString().length == 0) {
-                ShowError("基础信息 组织机构代码和登记注册号码不能同时为空");
-                return false;
-            }
-            // 基础信息 登记注册号类型和登记注册号码需成对出现
-            if (!(data.Base.RegistraterType.toString().length == 0 && data.Base.RegistraterCode.toString().length == 0)) {
-                if (!(data.Base.RegistraterType.toString().length > 0 && data.Base.RegistraterCode.toString().length > 0)) {
-                    ShowError("基础信息 登记注册号类型和登记注册号码需成对出现");
+            // 数据校验
+            function ValidDate(data) {
+                if (data == null) {
                     return false;
                 }
-            }
-
-            if (data.Managers.length == 0) {
-                ShowError("高级主管 必填");
-                return false;
-            }
-
-            if (data.Shareholders.length == 0) {
-                ShowError("重要股东 必填");
-                return false;
-            }
-            // 上级机构（主管单位）
-            if (data.Parent != undefined) {
-                // 登记注册号类型和登记注册号码需成对出现
-                if (!(data.Parent.RegistraterType.toString().length == 0 && data.Parent.RegistraterCode.toString().length == 0)) {
-                    if (!(data.Parent.RegistraterType.toString().length > 0 && data.Parent.RegistraterCode.toString().length > 0)) {
-                        ShowError("上级机构（主管单位） 登记注册号类型和登记注册号需成对出现");
+                // 组织机构代码和登记注册号码不能同时为空
+                if (data.Base.OrganizateCode.toString().length == 0 && data.Base.RegistraterCode.toString().length == 0) {
+                    ShowError("基础信息 组织机构代码和登记注册号码不能同时为空");
+                    return false;
+                }
+                // 基础信息 登记注册号类型和登记注册号码需成对出现
+                if (!(data.Base.RegistraterType.toString().length == 0 && data.Base.RegistraterCode.toString().length == 0)) {
+                    if (!(data.Base.RegistraterType.toString().length > 0 && data.Base.RegistraterCode.toString().length > 0)) {
+                        ShowError("基础信息 登记注册号类型和登记注册号码需成对出现");
                         return false;
                     }
                 }
 
-                // 登记注册号码、组织机构代码和机构信用代码不能同时为空
-                if (data.Parent.RegistraterCode.toString().length == 0 && data.Parent.OrganizateCode.toString().length == 0 && data.Parent.InstitutionCreditCode.toString().length == 0) {
-                    ShowError("上级机构（主管单位） 登记注册号码、组织机构代码和机构信用代码不能同时为空");
+                if (data.Managers.length == 0) {
+                    ShowError("高级主管 必填");
                     return false;
                 }
-            }
 
-            if (data.AssociatedEnterprises.length == 0) {
-                ShowError("主要关联企业 必填");
-                return false;
-            }
-
-            // 财务判断
-            if ($("div#showSecton").find("input[id=TF_J]")[0].checked == true) {
-                // 序列化财务基本信息
-                if (data.FinancialAffairs == undefined) {
-                    ShowError("请填写财务信息！");
-
+                if (data.Shareholders.length == 0) {
+                    ShowError("重要股东 必填");
                     return false;
                 }
-                else {
-                    var tableCount = 0;
-                    if (data.FinancialAffairs.CashFlow != undefined && data.FinancialAffairs.CashFlow.length > 0) {
-                        tableCount = 1;
-                    }
-                    else if (data.FinancialAffairs.Liabilities != undefined && data.FinancialAffairs.Liabilities.length > 0) {
-                        tableCount = 1;
-                    }
-                    else if (data.FinancialAffairs.Profit != undefined && data.FinancialAffairs.Profit.length > 0) {
-                        tableCount = 1;
-                    }
-                    else if (data.FinancialAffairs.IncomeExpenditur != undefined && data.FinancialAffairs.IncomeExpenditur.length > 0) {
-                        tableCount = 1;
-                    }
-                    else if (data.FinancialAffairs.InstitutionLiabilities != undefined && data.FinancialAffairs.InstitutionLiabilities.length > 0) {
-                        tableCount = 1;
-                    }
-
-                    if (tableCount == 0) {
-                        ShowError("财务 现金流量、资产负债、利润以及利润分配、事业单位收入支出、事业单位资产负债不可同时为空！");
-
-                        return false;
-                    }
-                }
-            }
-
-            // 诉讼事件判断
-            if ($("div#showSecton").find("input[id=TF_K]")[0].checked == true) {
-                if (data.Litigation == undefined || data.Litigation.length == 0) {
-                    ShowError("请填写诉讼事件！");
-
-                    return false;
-                }
-            }
-
-            // 大事件判断
-            if ($("div#showSecton").find("input[id=TF_L]")[0].checked == true) {
-                if (data.BigEvent == undefined || data.BigEvent.length == 0) {
-                    ShowError("请填写大事件！");
-
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        // fieldset 数据序列化工厂（type: text or table）
-        function FieldsetSerializeFactory(name, type) {
-            if (name == null || type == null || $.inArray(type, ["text", "table"]) == -1) {
-                return null;
-            }
-
-            var json = new Object();
-
-            if ($("fieldset[name=" + name + "]").length > 0) {
-                if (type == "text") {
-                    // 序列化 text
-                    json = $("fieldset[name=" + name + "]").serializeJson();
-                }
-                else {
-                    // 序列化 table
-                    var json = $("fieldset[name=" + name + "]").find("[id=" + name + "_dg" + "]").datagrid("getRows");
-                }
-            }
-
-            return json;
-        }
-
-        // fieldset 数据加载工厂（type: text or table）
-        function FieldsetLoadDateFactory(name, type, data) {
-            if (name == null || type == null || $.inArray(type, ["text", "table"]) == -1 || !data) {
-                return null;
-            }
-
-            if ($("fieldset[name=" + name + "]").length > 0) {
-                if (type == "text") {
-                    // 加载数据 text
-                    $("fieldset[name=" + name + "]").form('load', data);
-                }
-                else {
-                    // 加载数据 table
-                    $(data).each(function (index, item) {
-                        // 通过value识别出text
-                        item = ValueReadText(name, item);
-
-                        // 赋值
-                        //$("fieldset[name=" + name + "]").find("[id=" + name + "_dg" + "]").datagrid('appendRow', item);
-                    });
-
-                    $("fieldset[name=" + name + "]").find("[id=" + name + "_dg" + "]").datagrid('loadData', data);
-                }
-            }
-            return data;
-        }
-
-        // value识别text
-        function ValueReadText(name, data) {
-            var nameArray = ["Managers", "Shareholders", "AssociatedEnterprises"];
-
-            if (data == null || $.inArray(name, nameArray) == -1) {
-                return data;
-            }
-
-            // 高级主管
-            if (name == "Managers") {
-                // 关系人类型
-                var TypeArray = ["0-实际控制人", "1-董事长", "2-总经理/主要负责人", "3-财务负责人", "4-监事长", "5-法定代表人"];
-                $(TypeArray).each(function (index, item) {
-                    if (item.substr(0, 1) == data.Type) {
-                        // 添加text
-                        data.Type_Txt = item.substr(2);
-                    }
-                });
-
-                // 证件类型
-                var CertificateTypeArray = ["0-身份证", "1-户口簿", "2-护照", "3-军官证", "4-士兵证", "5-港澳居民来往内地通行证", "6-台湾同胞来往内地通行证", "7-临时身份证", "8-外国人居留证", "9-警官证", "A-香港身份证", "B-澳门身份证", "C-台湾身份证", "X-其他证件"];
-                $(CertificateTypeArray).each(function (index, item) {
-                    if (item.substr(0, 1) == data.CertificateType) {
-                        // 添加text
-                        data.CertificateType_Txt = item.substr(2);
-                    }
-                });
-            }
-                // 重要股东
-            else if (name == "Shareholders") {
-                // 股东类型
-                var ShareholdersTypeArray = ["1-自然人", "2-机构"];
-                $(ShareholdersTypeArray).each(function (index, item) {
-                    if (item.substr(0, 1) == data.ShareholdersType) {
-                        // 添加text
-                        data.ShareholdersType_Txt = item.substr(2);
-                    }
-                });
-
-                // 证件类型/登记注册号类型
-                var RegistraterTypeArray = ["0-身份证", "1-户口簿", "2-护照", "3-军官证", "4-士兵证", "5-港澳居民来往内地通行证", "6-台湾同胞来往内地通行证", "7-临时身份证", "8-外国人居留证", "9-警官证", "A-香港身份证", "B-澳门身份证", "C-台湾身份证", "X-其他证件",
-                    "01-工商注册号", "02-机关和事业单位登记号", "03-社会团体登记号", "04-民办非企业单位登记号", "05-基金会登记号", "06-宗教活动场所登记号", "07-统一社会信用代码", "08-商事与非商事登记证号", "99-其他"];
-                $(RegistraterTypeArray).each(function (index, item) {
-                    if (item.substr(0, item.indexOf('-')) == data.RegistraterType) {
-                        // 添加text
-                        data.RegistraterType_Txt = item.substr(item.indexOf('-') + 1);
-                    }
-                });
-            }
-                // 主要关联企业
-            else if (name == "AssociatedEnterprises") {
-                // 关联类型
-                var AssociatedTypeArray = ["20-实际控制人", "21-除本企业的股东外，直接或间接控制本企业的关联企业", "22-本企业直接或间接控制的关联企业", "23-直接或间接被同一控制方控制的关联企业", "24-符合《企业会计制度》第147条规定的其他关联企业"];
-                $(AssociatedTypeArray).each(function (index, item) {
-                    if (item.substr(0, 2) == data.AssociatedType) {
-                        // 添加text
-                        data.AssociatedType_Txt = item.substr(3);
-                    }
-                });
-
-                // 登记注册号类型
-                var RegistraterTypeArray = ["01-工商注册号", "02-机关和事业单位登记号", "03-社会团体登记号", "04-民办非企业单位登记号", "05-基金会登记号", "06-宗教活动场所登记号", "07-统一社会信用代码", "08-商事与非商事登记证号", "99-其他"];
-                $(RegistraterTypeArray).each(function (index, item) {
-                    if (item.substr(0, 2) == data.RegistraterType) {
-                        // 添加text
-                        data.RegistraterType_Txt = item.substr(3);
-                    }
-                });
-            }
-
-
-            return data;
-        }
-
-        function ChooseRegisterAdministrativeDivision(record) {
-            if (record != "null" && record != "") {
-                $.ajax({
-                    async: false,
-                    method: "GET",
-                    data: { code: record },
-                    url: "../api/Method/GetParrent",
-                    statusCode: {
-                        200: function (data) {
-                            $("#RegisterAdministrativeDivision").combobox("setText", data);
+                // 上级机构（主管单位）
+                if (data.Parent != undefined) {
+                    // 登记注册号类型和登记注册号码需成对出现
+                    if (!(data.Parent.RegistraterType.toString().length == 0 && data.Parent.RegistraterCode.toString().length == 0)) {
+                        if (!(data.Parent.RegistraterType.toString().length > 0 && data.Parent.RegistraterCode.toString().length > 0)) {
+                            ShowError("上级机构（主管单位） 登记注册号类型和登记注册号需成对出现");
+                            return false;
                         }
                     }
-                });
-            }
 
-            //if (record.children == null) {
-            //    var secondParent = $($(record.target.parentElement.parentElement).prev()).children("span:last").html();
-            //    var firstParent = $($(record.target.parentElement.parentElement.parentElement.parentElement).prev()).children("span:last").html();
-            //    var text = firstParent + " " + secondParent + " " + record.text
-            //}
-            //else {
-            //    return false;
-            //}
+                    // 登记注册号码、组织机构代码和机构信用代码不能同时为空
+                    if (data.Parent.RegistraterCode.toString().length == 0 && data.Parent.OrganizateCode.toString().length == 0 && data.Parent.InstitutionCreditCode.toString().length == 0) {
+                        ShowError("上级机构（主管单位） 登记注册号码、组织机构代码和机构信用代码不能同时为空");
+                        return false;
+                    }
+                }
+
+                if (data.AssociatedEnterprises.length == 0) {
+                    ShowError("主要关联企业 必填");
+                    return false;
+                }
+
+                // 财务判断
+                if ($("div#showSecton").find("input[id=TF_J]")[0].checked == true) {
+                    // 序列化财务基本信息
+                    if (data.FinancialAffairs == undefined) {
+                        ShowError("请填写财务信息！");
+
+                        return false;
+                    }
+                    else {
+                        var tableCount = 0;
+                        if (data.FinancialAffairs.CashFlow != undefined && data.FinancialAffairs.CashFlow.length > 0) {
+                            tableCount = 1;
+                        }
+                        else if (data.FinancialAffairs.Liabilities != undefined && data.FinancialAffairs.Liabilities.length > 0) {
+                            tableCount = 1;
+                        }
+                        else if (data.FinancialAffairs.Profit != undefined && data.FinancialAffairs.Profit.length > 0) {
+                            tableCount = 1;
+                        }
+                        else if (data.FinancialAffairs.IncomeExpenditur != undefined && data.FinancialAffairs.IncomeExpenditur.length > 0) {
+                            tableCount = 1;
+                        }
+                        else if (data.FinancialAffairs.InstitutionLiabilities != undefined && data.FinancialAffairs.InstitutionLiabilities.length > 0) {
+                            tableCount = 1;
+                        }
+
+                        if (tableCount == 0) {
+                            ShowError("财务 现金流量、资产负债、利润以及利润分配、事业单位收入支出、事业单位资产负债不可同时为空！");
+
+                            return false;
+                        }
+                    }
+                }
+
+                // 诉讼事件判断
+                if ($("div#showSecton").find("input[id=TF_K]")[0].checked == true) {
+                    if (data.Litigation == undefined || data.Litigation.length == 0) {
+                        ShowError("请填写诉讼事件！");
+
+                        return false;
+                    }
+                }
+
+                // 大事件判断
+                if ($("div#showSecton").find("input[id=TF_L]")[0].checked == true) {
+                    if (data.BigEvent == undefined || data.BigEvent.length == 0) {
+                        ShowError("请填写大事件！");
+
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
     </script>
 </head>
@@ -791,6 +628,78 @@
                                 <span style="display:none"><input type="checkbox" id="TF_L" onclick="checkboxOnclick(this, 'L')" /><span onclick="$(this).parent().find('input[id=TF_L]').click()">大事件</span></span>
                             </div>
                             <input name="HasParent" type="hidden" value="false" onclick="$(this).parent().find('#TF_I').click()" placeholder="是否有上级机构" />
+
+                            <script type="text/javascript">
+                                // 是否填写 复选框onClick事件
+                                function checkboxOnclick(Obj, sectionId) {
+                                    Obj.checked = Obj.checked;
+
+                                    if (sectionId == "I") {
+                                        $("input[name=HasParent]:hidden").val(Obj.checked);
+                                    }
+
+                                    // 被选中后，执行以下操作
+                                    if (Obj.checked) {
+                                        var section = $("section[id*=" + sectionId + "]");
+
+                                        // 点击 + ,添加fileset
+                                        section.find('div:hidden').find("a[id=" + sectionId + "add]").click();
+
+                                        // 对新增(显示)的fieldset设置name
+                                        $("section[id=" + sectionId + "]").find('fieldset').attr('name', getFieldsetName(sectionId));
+
+                                        // 清空fieldset下的数据
+                                        section.find('fieldset').each(function (i, e) {
+                                            if ($(e).find("table").length == 0) {
+                                                var data = $(e).serializeJson();
+                                                for (var name in data) {
+                                                    if (typeof (data[name]) != "function") {
+                                                        data[name] = null;
+                                                    }
+                                                }
+                                                $(e).form("load", data);
+                                            }
+                                            else {
+                                                $(e).find("table[id*=_dg]").each(function (index, item) {
+                                                    $(item).datagrid("loadData", [])
+                                                });
+                                            }
+                                        });
+
+                                        // 显示section
+                                        section.show();
+                                        section.parent().parent().show();
+                                    }
+                                    else {
+                                        // 点击 - ，移除fieldset
+                                        $("section[id=" + sectionId + "]").find('div:hidden').find("a[id*=minus]").click();
+
+                                        // 隐藏section
+                                        $("section[id*=" + sectionId + "]").hide();
+                                        $("section[id*=" + sectionId + "]").parent().parent().hide();
+                                    }
+
+                                    // 获取fieldset相对应的name
+                                    function getFieldsetName(idValue) {
+                                        if (idValue == undefined || idValue == null) {
+                                            return "";
+                                        }
+
+                                        var IdArray = new Array("B-Base", "C-Property", "D-State", "E-Contact", "F-Managers", "G-Shareholders", "H-AssociatedEnterprises",
+                                            "I-Parent", "J-FinancialAffairsBase", "K-Litigation", "L-BigEvent");
+                                        var resultName = "";
+
+                                        for (var i = 0; i < IdArray.length; i++) {
+                                            if (IdArray[i].substr(0, 1) == idValue.substr(0, 1)) {
+                                                resultName = IdArray[i].substr(2);
+                                                break;
+                                            }
+                                        }
+
+                                        return resultName;
+                                    }
+                                }
+                            </script>
                         </div>
                     </fieldset>
                 </section>
@@ -845,6 +754,38 @@
                                     onLoadSuccess:OnLoadSuccess,
                                     onChange:ChooseRegisterAdministrativeDivision,
                                        "></select>
+                                <script type="text/javascript">
+                                    function OnLoadSuccess() {
+                                        var value = $("#RegisterAdministrativeDivision").combobox("getValue");
+
+                                        ChooseRegisterAdministrativeDivision(value);
+                                    }
+
+                                    function ChooseRegisterAdministrativeDivision(record) {
+                                        if (record != "null" && record != "") {
+                                            $.ajax({
+                                                async: false,
+                                                method: "GET",
+                                                data: { code: record },
+                                                url: "../api/Method/GetParrent",
+                                                statusCode: {
+                                                    200: function (data) {
+                                                        $("#RegisterAdministrativeDivision").combobox("setText", data);
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        ////if (record.children == null) {
+                                        ////    var secondParent = $($(record.target.parentElement.parentElement).prev()).children("span:last").html();
+                                        ////    var firstParent = $($(record.target.parentElement.parentElement.parentElement.parentElement).prev()).children("span:last").html();
+                                        ////    var text = firstParent + " " + secondParent + " " + record.text
+                                        ////}
+                                        ////else {
+                                        ////    return false;
+                                        ////}
+                                    }
+                                </script>
                             </div>
                             <div class="col-6">
                                 <label>
@@ -2002,12 +1943,7 @@
             </div>-->
         </div>
 
-        <div id="btn" style="display:none">
-            <a id="saveTempData" class="easyui-linkbutton" data-options="iconCls: 'icon-edit',onClick: draft.Save" style="margin:0 auto">保存草稿</a>
-            <a id="submit" class="easyui-linkbutton" data-options="iconCls: 'icon-edit'" style="margin:0 auto" onclick="OrganizateSubmit()">提交</a>
-            <a id="cancel" class="easyui-linkbutton" data-options="iconCls: 'icon-redo'" style="margin:0 auto" onclick="OrganizateCancel()">取消</a>
-            <input type="reset" hidden />
-        </div>
+        
     </form>
 </body>
 </html>

@@ -134,8 +134,13 @@ function GetQueryString(name) {
 function Disabled(selector) {
     selector = selector || "fieldset";
 
-    $(selector).attr("disabled", "disabled");
-    //$(selector + " select.easyui-combobox").combobox("disable");
+    //$(selector).attr("disabled", "disabled");
+    $(selector + " select.easyui-combobox").combobox("disable");
+    $(selector + " input.easyui-combobox").combobox("disable");
+    $(selector + " input.easyui-datebox").combobox("disable");
+    $(selector + " input.easyui-textbox").combobox("disable");
+    $(selector + " input.easyui-combotree").combobox("disable");
+    $(selector + " select.easyui-combotree").combobox("disable");
 }
 
 // 最多保留2位小数
