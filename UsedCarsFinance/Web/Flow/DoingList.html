@@ -147,48 +147,33 @@
                         }
 
                         function FinanceFlow() {
-                            //var flowId = "228C8C80-06A4-E611-80C5-507B9DE4A488";
-                            var flowId = 1;
-
-                            StartProcess(flowId, "finance");
+                            StartProcess(1, "finance");
                         }
 
                         function OrganizationFlow() {
-                            //var flowId = "04824FE1-78D1-E611-80CA-507B9DE4A488";
-                            var flowId = 2;
-
-                            StartProcess(flowId, "organization");
+                            StartProcess(2, "organization");
                         }
 
                         function CreditFlow() {
-                            //var flowId = "05824FE1-78D1-E611-80CA-507B9DE4A488";
-                            var flowId = 3;
-
-                            StartProcess(flowId, "credit");
+                            StartProcess(3, "credit");
                         }
 
                         function LoanFlow() {
-                            //var flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
-                            var flowId = 4;
-
-                            StartProcess(flowId, "loan");
+                            StartProcess(4, "loan");
                         }
 
                         function PaymentFlow() {
-                            //var flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
-                            var flowId = 5;
-
-                            StartProcess(flowId, "payment");
+                            StartProcess(5, "payment");
                         }
 
-                        function StartProcess(flowId, statusCode) {
-                            if (flowId == null) {
+                        function StartProcess(processType, statusCode) {
+                            if (processType == null) {
                                 return;
                             }
 
                             $.ajax({
                                 method: "GET",
-                                data: { processType: flowId },
+                                data: { processType: processType },
                                 url: "../api/Instance/StartProcess",
                                 statusCode: {
                                     200: function (data) {

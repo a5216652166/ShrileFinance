@@ -111,7 +111,7 @@
             IsNull(refSource, beginTime) ? refSource : refSource.Where(m => m.StartTime >= beginTime);
 
         private IQueryable<Instance> FiterForEndTime(IQueryable<Instance> refSource, DateTime? endTime) =>
-            IsNull(refSource, endTime) ? refSource : refSource.Where(m => m.EndTime <= endTime.Value.AddDays(1));
+            IsNull(refSource, endTime) ? refSource : refSource.Where(m => m.StartTime <= endTime.Value.AddDays(1));
 
         private IQueryable<Instance> FiterForStatus(IQueryable<Instance> refSource, InstanceStatusEnum? status) =>
             IsNull(refSource, status) ? refSource : refSource.Where(m => m.Status == status);

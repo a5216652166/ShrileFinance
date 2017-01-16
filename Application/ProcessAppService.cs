@@ -54,15 +54,8 @@
         /// <summary>
         /// 发起流程
         /// </summary>
-        /// <param name="flowId">流程标识</param>
+        /// <param name="processType">流程类型</param>
         /// <returns>流程实例标识</returns>
-        public Guid StartNew(Guid flowId)
-        {
-            var instance = GetInstance(null);
-
-            return instance.Id;
-        }
-
         public Guid StartNew(ProcessPostedViewModel.ProcessTypeEnum? processType)
         {
             var instance = GetInstance(processType);
@@ -321,55 +314,47 @@
         }
 
         /// <summary>
-        /// 移除错误流程
+        /// 获取流程实例
         /// </summary>
-        private void RemoveErrorInstance()
-        {
-            var errorInstances = instanceReopsitory.GetAll(m => m.RootKey == null || m.RootKey.Value == Guid.Empty);
-
-            foreach (var item in errorInstances)
-            {
-                instanceReopsitory.Remove(item);
-            }
-
-            if (errorInstances.Count() > 0)
-            {
-                instanceReopsitory.Commit();
-            }
-        }
-
+        /// <param name="processType">流程类型</param>
+        /// <returns>流程实例</returns>
         private Instance GetInstance(ProcessPostedViewModel.ProcessTypeEnum? processType)
         {
-            var flowId = string.Empty;
+            // 流程标识
+            var flowId = Guid.Empty;
 
+            // 由实例类型解析实例标识
             switch (processType)
             {
                 default:
-                    throw new ArgumentNullAppException();
+                    throw new ArgumentNullAppException(nameof(processType));
                 case ProcessPostedViewModel.ProcessTypeEnum.融资:
-                    flowId = "228C8C80-06A4-E611-80C5-507B9DE4A488";
+                    flowId = Guid.Parse("228C8C80-06A4-E611-80C5-507B9DE4A488");
                     break;
                 case ProcessPostedViewModel.ProcessTypeEnum.机构:
-                    flowId = "04824FE1-78D1-E611-80CA-507B9DE4A488";
+                    flowId = Guid.Parse("04824FE1-78D1-E611-80CA-507B9DE4A488");
                     break;
                 case ProcessPostedViewModel.ProcessTypeEnum.授信:
-                    flowId = "05824FE1-78D1-E611-80CA-507B9DE4A488";
+                    flowId = Guid.Parse("05824FE1-78D1-E611-80CA-507B9DE4A488");
                     break;
                 case ProcessPostedViewModel.ProcessTypeEnum.借据:
-                    flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
+                    flowId = Guid.Parse("06824FE1-78D1-E611-80CA-507B9DE4A488");
                     break;
                 case ProcessPostedViewModel.ProcessTypeEnum.还款:
-                    flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
+                    flowId = Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488");
                     break;
             }
 
+            // 流程实例
             Instance instance = null;
 
+            // 获取指定用户下，指定类型的临时流程实例
             var instances = instanceReopsitory.GetAll().Where(m => m.RootKey == null && m.CurrentUser.Id == CurrentUser.Id && (int)m.ProcessType == (int)processType.Value).ToListAsync().Result;
 
+            // 临时流程实例不存在，则新增流程实例，否则，返回该实例
             if (instances.Count == 0)
             {
-                var flow = flowRepository.Get(Guid.Parse(flowId));
+                var flow = flowRepository.Get(flowId);
 
                 var startNode = flow.Nodes.Single(m => m.Actions.Any(n => n.Type == ActionTypeEnum.发起));
 
@@ -381,7 +366,7 @@
                     StartUser = CurrentUser,
                     StartTime = DateTime.Now,
                     Status = InstanceStatusEnum.正常,
-                    ProcessType= (ProcessTypeEnum)((int)processType.Value)
+                    ProcessType = (ProcessTypeEnum)((int)processType.Value)
                 };
 
                 instanceReopsitory.Create(instance);
