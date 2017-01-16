@@ -33,6 +33,8 @@
 
         public InstanceStatusEnum Status { get; set; }
 
+        public ProcessTypeEnum ProcessType { get; set; }
+
         public Guid? RootKey { get; set; }
 
         public virtual Flow Flow { get; set; }

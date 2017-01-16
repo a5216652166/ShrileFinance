@@ -19,10 +19,12 @@
             // 筛选 1.状态为正常
             //      2.当前用户的角色可处理的节点
             //      3.该实例限定于角色而非用户
+            //      4.该实例RootKey存在
             var instances = GetAll(m =>
                 m.Status == InstanceStatusEnum.正常
                 && m.CurrentNode.RoleId == currentUser.RoleId
-                && (m.CurrentUserId == null || m.CurrentUserId == currentUser.Id));
+                && (m.CurrentUserId == null || m.CurrentUserId == currentUser.Id)
+                && (m.RootKey != null && m.RootKey != Guid.Empty));
 
             // 标题模糊搜索
             instances = FiterForTitle(instances, searchString);

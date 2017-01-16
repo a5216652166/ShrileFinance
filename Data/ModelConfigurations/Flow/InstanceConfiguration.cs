@@ -18,7 +18,8 @@
             Property(m => m.StartUserId);
             Property(m => m.StartTime);
             Property(m => m.EndTime);
-            Property(m => m.Status);
+            Property(m => m.Status); 
+            Property(m => m.ProcessType);
             Property(m => m.RootKey);
 
             HasRequired(m => m.Flow).WithMany();

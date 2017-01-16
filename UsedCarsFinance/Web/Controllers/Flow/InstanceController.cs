@@ -50,11 +50,13 @@
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IHttpActionResult StartProcess(Guid flowId)
+        public IHttpActionResult StartProcess(ProcessPostedViewModel.ProcessTypeEnum? processType)
         {
             var finacneFlow = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}");
 
-            var instanceId = service.StartNew(flowId);
+            ////var instanceId = service.StartNew(flowId);
+
+            var instanceId = service.StartNew(processType);
 
             return Ok(instanceId);
         }

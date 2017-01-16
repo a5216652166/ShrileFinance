@@ -49,10 +49,7 @@
         /// <summary>
         /// 获取当前登录的用户
         /// </summary>
-        protected AppUser CurrentUser
-        {
-            get { return userManager.CurrentUser(); }
-        }
+        protected AppUser CurrentUser => userManager.CurrentUser();
 
         /// <summary>
         /// 发起流程
@@ -61,22 +58,14 @@
         /// <returns>流程实例标识</returns>
         public Guid StartNew(Guid flowId)
         {
-            var flow = flowRepository.Get(flowId);
+            var instance = GetInstance(null);
 
-            var startNode = flow.Nodes.Single(m => m.Actions.Any(n => n.Type == ActionTypeEnum.发起));
+            return instance.Id;
+        }
 
-            var instance = new Instance
-            {
-                Flow = flow,
-                CurrentNode = startNode,
-                CurrentUser = CurrentUser,
-                StartUser = CurrentUser,
-                StartTime = DateTime.Now,
-                Status = InstanceStatusEnum.正常
-            };
-
-            instanceReopsitory.Create(instance);
-            instanceReopsitory.Commit();
+        public Guid StartNew(ProcessPostedViewModel.ProcessTypeEnum? processType)
+        {
+            var instance = GetInstance(processType);
 
             return instance.Id;
         }
@@ -140,10 +129,12 @@
                 default:
                     throw new InvalidOperationAppException("创建寻找用户策略失败!");
             }
+
             if (action.Transfer != null)
             {
                 instance.CurrentNode = action.Transfer;
             }
+
             instance.CurrentUserId = user?.Id;
 
             if (action.Type == ActionTypeEnum.完成)
@@ -232,7 +223,7 @@
         /// <returns></returns>
         public IPagedList<InstanceViewModel> DoingPagedList(string searchString, int page, int size, Guid? currentNode = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
-            //RemoveErrorInstance();
+            ////RemoveErrorInstance();
 
             var instances = instanceReopsitory.DoingPagedList(CurrentUser, searchString, page, size, currentNodeId: currentNode, beginTime: beginTime, endTime: endTime);
 
@@ -345,6 +336,62 @@
             {
                 instanceReopsitory.Commit();
             }
+        }
+
+        private Instance GetInstance(ProcessPostedViewModel.ProcessTypeEnum? processType)
+        {
+            var flowId = string.Empty;
+
+            switch (processType)
+            {
+                default:
+                    throw new ArgumentNullAppException();
+                case ProcessPostedViewModel.ProcessTypeEnum.融资:
+                    flowId = "228C8C80-06A4-E611-80C5-507B9DE4A488";
+                    break;
+                case ProcessPostedViewModel.ProcessTypeEnum.机构:
+                    flowId = "04824FE1-78D1-E611-80CA-507B9DE4A488";
+                    break;
+                case ProcessPostedViewModel.ProcessTypeEnum.授信:
+                    flowId = "05824FE1-78D1-E611-80CA-507B9DE4A488";
+                    break;
+                case ProcessPostedViewModel.ProcessTypeEnum.借据:
+                    flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
+                    break;
+                case ProcessPostedViewModel.ProcessTypeEnum.还款:
+                    flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
+                    break;
+            }
+
+            Instance instance = null;
+
+            var instances = instanceReopsitory.GetAll().Where(m => m.RootKey == null && m.CurrentUser.Id == CurrentUser.Id && (int)m.ProcessType == (int)processType.Value).ToListAsync().Result;
+
+            if (instances.Count == 0)
+            {
+                var flow = flowRepository.Get(Guid.Parse(flowId));
+
+                var startNode = flow.Nodes.Single(m => m.Actions.Any(n => n.Type == ActionTypeEnum.发起));
+
+                instance = new Instance
+                {
+                    Flow = flow,
+                    CurrentNode = startNode,
+                    CurrentUser = CurrentUser,
+                    StartUser = CurrentUser,
+                    StartTime = DateTime.Now,
+                    Status = InstanceStatusEnum.正常
+                };
+
+                instanceReopsitory.Create(instance);
+                instanceReopsitory.Commit();
+            }
+            else
+            {
+                instance = instances.Single();
+            }
+
+            return instance;
         }
     }
 }
