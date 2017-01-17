@@ -216,8 +216,6 @@
         /// <returns></returns>
         public IPagedList<InstanceViewModel> DoingPagedList(string searchString, int page, int size, Guid? currentNode = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
-            ////RemoveErrorInstance();
-
             var instances = instanceReopsitory.DoingPagedList(CurrentUser, searchString, page, size, currentNodeId: currentNode, beginTime: beginTime, endTime: endTime);
 
             var instanceViewModels = Mapper.Map<IPagedList<InstanceViewModel>>(instances);
@@ -351,9 +349,21 @@
             // 获取指定用户下，指定类型的临时流程实例
             var instances = instanceReopsitory.GetAll().Where(m => m.RootKey == null && m.CurrentUser.Id == CurrentUser.Id && (int)m.ProcessType == (int)processType.Value).ToListAsync().Result;
 
-            // 临时流程实例不存在，则新增流程实例，否则，返回该实例
-            if (instances.Count == 0)
+            // 临时流程实例存在一个，则返回该流程实例，否则，新增流程实例（若存在多个，则清除）
+            if (instances.Count == 1)
             {
+                instance = instances.Single();
+                instance.StartTime = DateTime.Now;
+
+                instanceReopsitory.Modify(instance);
+            }
+            else
+            {
+                // 清除错误流程实例
+                instances.ForEach(item=> {
+                    instanceReopsitory.Remove(item);
+                });
+
                 var flow = flowRepository.Get(flowId);
 
                 var startNode = flow.Nodes.Single(m => m.Actions.Any(n => n.Type == ActionTypeEnum.发起));
@@ -370,13 +380,6 @@
                 };
 
                 instanceReopsitory.Create(instance);
-            }
-            else
-            {
-                instance = instances.Single();
-                instance.StartTime = DateTime.Now;
-
-                instanceReopsitory.Modify(instance);
             }
 
             instanceReopsitory.Commit();
