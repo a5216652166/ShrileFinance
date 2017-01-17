@@ -77,14 +77,14 @@
 
         function LoadData(data) {
             // 授信编号
-            $("fieldset#credit_contract select[textboxname=CreditId]").combobox("select", data.CreditId).combobox("unselect", data.CreditId).combobox("select", data.CreditId);
-            debugger
+            $("fieldset#credit_contract select[textboxname=CreditId]")//.combobox("select", data.CreditId)
+                .combobox("unselect", data.CreditId)
+                .combobox("select", data.CreditId);
+            
             // 借据
             if (query.state != "3") {
                 // 借据信息
                 $("fieldset#loan_info").form('load', data.Loan);
-
-                
             }
             else {
                 // 还款
@@ -93,7 +93,9 @@
                 $("fieldset#loan_info select[textboxname=ContractNumber]").combobox("select", data.ContractNumber);
 
                 // 还款信息
-                $("table#payment_dg").datagrid("loadDate", data.AllPayments);
+                $(data.AddPayments).each(function (i, e) {
+                    $("table#payment_dg").datagrid("appendRow", e);
+                });
             }
         }
 
@@ -106,7 +108,7 @@
             var hiddenCount = 0;
             var rows = $("#payment_dg").datagrid("getRows");
             var specialDate = $("#SpecialDate").textbox("getValue");
-            if (rows.length>0) {
+            if (rows.length > 0) {
                 for (var i in rows) {
                     if (rows[i].ScheduledDatePayment < specialDate) {
                         $.messager.show({ msg: "应还款日期不得在放款日期之前" });
@@ -159,7 +161,7 @@
 
                 data.CreditId = $("fieldset#credit_contract select[textboxname=CreditId]").combobox("getValue");
                 data.ContractNumber = $("fieldset#loan_info select[textboxname=ContractNumber]").combobox("getValue");
-                data.AllPayments = $("#payment_dg").datagrid("getRows");
+                data.AddPayments = addedRows.toArray();
             }
 
             return data;
@@ -450,12 +452,16 @@
 
                 <script type="text/javascript">
                     function onSelectLoanContractNumber(record) {
-                        if (record) {
-                            debugger
-                            // 加载借据信息
-                            $('fieldset#loan_info').form("load", record);
-
-                            // 加载还款信息（审核完成 + 审核中）
+                        if (record == undefined) {
+                            record = $(this).combobox("getData")[0];
+                        }
+                        
+                        // 加载借据信息
+                        $('fieldset#loan_info').form("load", record);
+                        
+                        // 加载还款信息（审核完成 + 审核中）
+                        if (record.Payments.length > 0)
+                        {
                             $('fieldset#payment_history table#payment_dg').datagrid('loadData', record.Payments);
                         }
                     }
