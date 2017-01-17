@@ -70,6 +70,10 @@
         public void Process(ProcessPostedViewModel model)
         {
             var instance = instanceReopsitory.Get(model.InstanceId);
+
+            // 拦截非法流程发起请求
+            InterceptIllegalRequest(instance);
+
             var action = instance.CurrentNode.Actions.Single(m => m.Id == model.ActionId);
 
             if ((instance.CurrentUser != CurrentUser && instance.CurrentUser != null) ||
@@ -360,7 +364,8 @@
             else
             {
                 // 清除错误流程实例
-                instances.ForEach(item=> {
+                instances.ForEach(item =>
+                {
                     instanceReopsitory.Remove(item);
                 });
 
@@ -385,6 +390,24 @@
             instanceReopsitory.Commit();
 
             return instance;
+        }
+
+        /// <summary>
+        /// 拦截非法流程发起请求
+        /// </summary>
+        /// <param name="instance">流程实例</param>
+        private void InterceptIllegalRequest(Instance instance)
+        {
+            if (instance.RootKey == null)
+            {
+                var curentRole = roleManager.FindByIdAsync(CurrentUser.RoleId).Result;
+
+                // 若当前角色的标识与客户经理不同，则认为该请求非法
+                if (!curentRole.Id.Equals("C342BEE1-05A4-E611-80C5-507B9DE4A488"))
+                {
+                    throw new ArgumentOutOfRangeAppException(message: $"亲爱的{curentRole.Name}，您没有权限发起流程！");
+                }
+            }
         }
     }
 }
