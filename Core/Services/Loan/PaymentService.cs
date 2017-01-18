@@ -26,7 +26,7 @@
                 ////traceTypes.Add(TraceTypeEnum.还款);
             }
 
-            if (payment.ScheduledPaymentPrincipal > payment.ActualPaymentPrincipal)
+            if (payment.ScheduledPaymentPrincipal > payment.ActualPaymentPrincipal || payment.ActualDatePayment>payment.ScheduledDatePayment)
             {
                 // 逾期
                 // 调整四级分类

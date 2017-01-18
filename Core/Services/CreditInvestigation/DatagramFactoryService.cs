@@ -260,7 +260,7 @@
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanContractInfoRecord(credit))
-                .AddRecord(new LoanIousInfoRecord(loan, credit));
+                .AddRecord(new LoanIousInfoRecord(loan, credit,loan.SpecialDate));
 
             return datagramFile;
         }
@@ -279,7 +279,7 @@
             var datagramFile = new LoanDatagramFile(trace.SerialNumber);
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
-                .AddRecord(new LoanIousInfoRecord(loan, credit))
+                .AddRecord(new LoanIousInfoRecord(loan, credit, payment.ActualDatePayment))
                 .AddRecord(new LoanRepayInfoRecord(credit, loan, payment));
 
             return datagramFile;
@@ -298,7 +298,7 @@
             var datagramFile = new LoanDatagramFile(trace.SerialNumber);
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
-                .AddRecord(new LoanIousInfoRecord(loan, credit));
+                .AddRecord(new LoanIousInfoRecord(loan, credit,loan.SpecialDate));
 
             return datagramFile;
         }
