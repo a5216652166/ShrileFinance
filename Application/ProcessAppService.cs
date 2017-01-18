@@ -58,7 +58,11 @@
         /// <returns>流程实例标识</returns>
         public Guid StartNew(ProcessPostedViewModel.ProcessTypeEnum? processType)
         {
-            var instance = GetInstance(processType);
+            // 流程标识
+            var processId = GetProcessIdByType(processType);
+
+            // 流程实例
+            var instance = GetInstance(processId);
 
             return instance.Id;
         }
@@ -316,11 +320,11 @@
         }
 
         /// <summary>
-        /// 获取流程实例
+        /// 由流程类型得到流程标识
         /// </summary>
         /// <param name="processType">流程类型</param>
-        /// <returns>流程实例</returns>
-        private Instance GetInstance(ProcessPostedViewModel.ProcessTypeEnum? processType)
+        /// <returns>流程标识</returns>
+        private Guid GetProcessIdByType(ProcessPostedViewModel.ProcessTypeEnum? processType)
         {
             // 流程标识
             var flowId = Guid.Empty;
@@ -329,7 +333,7 @@
             switch (processType)
             {
                 default:
-                    throw new ArgumentNullAppException(nameof(processType));
+                    throw new ArgumentNullAppException(message: $"不存在该流程类型{nameof(processType)}");
                 case ProcessPostedViewModel.ProcessTypeEnum.融资:
                     flowId = Guid.Parse("228C8C80-06A4-E611-80C5-507B9DE4A488");
                     break;
@@ -347,11 +351,21 @@
                     break;
             }
 
+            return flowId;
+        }
+
+        /// <summary>
+        /// 获取流程实例
+        /// </summary>
+        /// <param name="processId">流程类型</param>
+        /// <returns>流程实例</returns>
+        private Instance GetInstance(Guid processId)
+        {
             // 流程实例
             Instance instance = null;
 
             // 获取指定用户下，指定类型的临时流程实例
-            var instances = instanceReopsitory.GetAll().Where(m => m.RootKey == null && m.CurrentUser.Id == CurrentUser.Id && (int)m.ProcessType == (int)processType.Value).ToListAsync().Result;
+            var instances = instanceReopsitory.GetAll().Where(m => m.RootKey == null && m.CurrentUser.Id == CurrentUser.Id && m.FlowId == processId).ToListAsync().Result;
 
             // 临时流程实例存在一个，则返回该流程实例，否则，新增流程实例（若存在多个，则清除）
             if (instances.Count == 1)
@@ -369,19 +383,18 @@
                     instanceReopsitory.Remove(item);
                 });
 
-                var flow = flowRepository.Get(flowId);
+                var process = flowRepository.Get(processId);
 
-                var startNode = flow.Nodes.Single(m => m.Actions.Any(n => n.Type == ActionTypeEnum.发起));
+                var startNode = process.Nodes.Single(m => m.Actions.Any(n => n.Type == ActionTypeEnum.发起));
 
                 instance = new Instance
                 {
-                    Flow = flow,
+                    Flow = process,
                     CurrentNode = startNode,
                     CurrentUser = CurrentUser,
                     StartUser = CurrentUser,
                     StartTime = DateTime.Now,
                     Status = InstanceStatusEnum.正常,
-                    ProcessType = (ProcessTypeEnum)((int)processType.Value)
                 };
 
                 instanceReopsitory.Create(instance);
@@ -391,7 +404,7 @@
 
             return instance;
         }
-
+        
         /// <summary>
         /// 拦截非法流程发起请求
         /// </summary>
