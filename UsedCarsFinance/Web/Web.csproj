@@ -154,7 +154,7 @@
     <Content Include="Account\UserEdit.html" />
     <Content Include="Account\UserInfo.html" />
     <Content Include="CreditInvestigation\CreditMessageManage1.html" />
-    <Content Include="CreditInvestigation\Dategram.html" />
+    <Content Include="CreditInvestigation\CreditMessageManage.html" />
     <Content Include="Statistics\LoanCount.html" />
     <Content Include="Finance\FinanceApproval.html" />
     <Content Include="Finance\Unused\FinanceCustomer.html" />
