@@ -364,7 +364,7 @@
                 var credit = creditContractRepository.Get(loan.CreditId);
 
                 // 借据 放款 —> 报文追踪
-                datagramAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
+                datagramAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据：{loan.ContractNumber}，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
             }
             else if (entity is IEnumerable<PaymentHistory>)
             {
