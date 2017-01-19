@@ -10,10 +10,10 @@
     /// </summary>
     public class CreditBaseSegment : Segment
     {
-        public CreditBaseSegment(RecordTypeEnum type, CreditContract creditContract)
+        public CreditBaseSegment(RecordTypeEnum type, CreditContract creditContract, DateTime specialDate)
         {
             信息记录类型 = type.ToString("D");
-            业务发生日期 = DateTime.Now.ToString("yyyyMMdd");
+            业务发生日期 = specialDate.ToString("yyyyMMdd");
 
             LoanCardCode = creditContract.Organization.LoanCardCode;
             CreditContractCode = creditContract.Id.ToString();

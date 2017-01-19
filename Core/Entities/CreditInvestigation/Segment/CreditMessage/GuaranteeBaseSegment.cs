@@ -14,7 +14,7 @@
             信息记录类型 = type.ToString("D");
             LoanCardCode = creditContract.Organization.LoanCardCode;
             CreditId = creditContract.Id.ToString();
-            业务发生日期 =DateTime.Now.ToString("yyyyMMdd");
+            业务发生日期 = creditContract.EffectiveDate.ToString("yyyyMMdd");
         }
 
         protected GuaranteeBaseSegment() : base()
