@@ -179,7 +179,9 @@
 
                 $("#downloadForm").submit();
 
-                PageReload();
+                $("#downloadForm").children().remove();
+
+                TableReload();
             }
         }
 
@@ -211,23 +213,29 @@
                 }
             });
 
-            PageReload();
+            TableReload();
         }
 
-        function PageReload()
-        {
+        // 重置按钮
+        function PageReset() {
             $("input[textboxname=Name]").textbox("setValue", "");
             $("input[textboxname=BeginTime]").datebox("setValue", "");
             $("input[textboxname=EndTime]").datebox("setValue", "");
             $("select[textboxname=Status]").combobox("select", "");
-
-            $("a.easyui-linkbutton").linkbutton("disable");
-            $("a.easyui-linkbutton").linkbutton("enable");
-            $("table#dg").datagrid('reload');
-
-            $("#downloadForm").children().remove();
+            
+            TableReload();
         }
 
+        // 表格重新加载
+        function TableReload()
+        {
+            $("a.easyui-linkbutton").linkbutton("disable");
+            $("a.easyui-linkbutton").linkbutton("enable");
+
+            $("a#search").click();
+        }
+
+        // 搜索
         function Search() {
             uc.grid.Reload();
         }
@@ -277,7 +285,7 @@
             </select>
             &nbsp;&nbsp;
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',onClick:Search,plain:true">搜索</a>
-            <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:PageReload,iconCls:'icon-reload',plain:true">重置</a>
+            <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:PageReset,iconCls:'icon-reload',plain:true">重置</a>
         </div>
         
         <div>
