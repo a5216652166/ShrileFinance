@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -46,6 +48,44 @@
             }
 
             return new KeyValuePair<bool, int>(false, -1);
+        }
+
+        /// <summary>
+        /// MD5加密（16位）
+        /// </summary>
+        /// <param name="inputValue">输入字符串</param>
+        /// <returns>加密结果</returns>
+        public static string MD5Encrypt_16bit(string inputValue)
+        {
+            if (string.IsNullOrEmpty(inputValue))
+            {
+                throw new ArgumentException("输入字符串有误！");
+            }
+
+            var inputBytes = new MD5CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(inputValue));
+
+            var outputVaue = BitConverter.ToString(inputBytes, 4, 8).Replace("-","");
+
+            return outputVaue;
+        }
+
+        /// <summary>
+        /// MD5加密（32位）
+        /// </summary>
+        /// <param name="inputValue">输入字符串</param>
+        /// <returns>加密结果</returns>
+        public static string MD5Encrypt_32bit(string inputValue)
+        {
+            if (string.IsNullOrEmpty(inputValue))
+            {
+                throw new ArgumentException("输入字符串有误！");
+            }
+
+            var inputBytes = new MD5CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(inputValue));
+
+            var outputVaue = BitConverter.ToString(inputBytes).Replace("-", "");
+
+            return outputVaue;
         }
     }
 }
