@@ -62,9 +62,9 @@
                 throw new ArgumentException("输入字符串有误！");
             }
 
-            var inputBytes = new MD5CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(inputValue));
+            var inputBytes = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(inputValue));
 
-            var outputVaue = BitConverter.ToString(inputBytes, 4, 8).Replace("-","");
+            var outputVaue = BitConverter.ToString(inputBytes, 4, 8).Replace("-", string.Empty);
 
             return outputVaue;
         }
@@ -81,9 +81,9 @@
                 throw new ArgumentException("输入字符串有误！");
             }
 
-            var inputBytes = new MD5CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(inputValue));
+            var inputBytes = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(inputValue));
 
-            var outputVaue = BitConverter.ToString(inputBytes).Replace("-", "");
+            var outputVaue = BitConverter.ToString(inputBytes).Replace("-", string.Empty);
 
             return outputVaue;
         }
