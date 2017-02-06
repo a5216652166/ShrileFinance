@@ -16,14 +16,19 @@
     /// </summary>
     public class DatagramAppService
     {
-        private readonly ITraceRepostitory repository;
+        private readonly ITraceRepostitory traceRepository;
+        private readonly IDatagramFileRepository datagramFileRepository;
         private readonly IDatagramFileRepository datagramRepository;
         private readonly DatagramFactoryService factory;
 
-        public DatagramAppService(ITraceRepostitory repository, IDatagramFileRepository datagramRepository, DatagramFactoryService factory)
+        public DatagramAppService(ITraceRepostitory traceRepository,
+            IDatagramFileRepository datagramFileRepository,
+            IDatagramFileRepository datagramRepository,
+            DatagramFactoryService factory)
         {
-            this.repository = repository;
+            this.traceRepository = traceRepository;
             this.datagramRepository = datagramRepository;
+            this.datagramFileRepository = datagramFileRepository;
             this.factory = factory;
         }
 
@@ -37,16 +42,16 @@
         public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime specialDate, string defaultName = null)
         {
             var dateCreated = DateTime.Now.Date;
-            var count = repository.CountByDateCreatedAndReference(dateCreated, referenceId, traceType);
+            var count = traceRepository.CountByDateCreatedAndReference(dateCreated, referenceId, traceType);
 
             if (count == 0)
             {
                 // 生成序列号
-                var serialNumber = repository.MaxSerialNumberByDateCreated(dateCreated) + 1;
+                var serialNumber = traceRepository.MaxSerialNumberByDateCreated(dateCreated) + 1;
                 var trace = new Trace(referenceId, traceType, serialNumber, specialDate, defaultName);
 
-                repository.Create(trace);
-                repository.Commit();
+                traceRepository.Create(trace);
+                traceRepository.Commit();
             }
         }
 
@@ -57,7 +62,7 @@
         /// <returns>报文（名称-内存流）</returns>
         public KeyValuePair<string, byte[]> Download(DownloadViewModel model)
         {
-            var traces = repository.GetByIds(model.Ids);
+            var traces = traceRepository.GetByIds(model.Ids);
 
             var files = new Dictionary<string, byte[]>();
 
@@ -67,7 +72,7 @@
                 {
                     trace.AddDatagram(factory.Generate(trace));
 
-                    repository.Modify(trace);
+                    traceRepository.Modify(trace);
                 }
 
                 foreach (var datagramFile in trace.DatagramFiles)
@@ -79,7 +84,7 @@
                 }
             }
 
-            repository.Commit();
+            traceRepository.Commit();
 
             // 压缩打包
             var compressionBytes = FileHelper.ZipArchiveCompression(files);
@@ -96,21 +101,21 @@
         /// <param name="traceIds">追踪标识集合</param>
         public void Generate(IEnumerable<Guid> traceIds)
         {
-            var traces = repository.GetByIds(traceIds);
+            var traces = traceRepository.GetByIds(traceIds);
 
             // 移除已生成的报文
             foreach (var trace in traces)
             {
-                trace.DatagramFiles.Clear();
-
-                // 生成报文
-                var datagramFile = factory.Generate(trace);
+                trace.DatagramFiles.ToList().ForEach(file =>
+                {
+                    datagramFileRepository.Remove(file);
+                });
 
                 // 添加文件
-                trace.AddDatagram(datagramFile);
+                trace.AddDatagram(factory.Generate(trace));
             }
 
-            repository.Commit();
+            traceRepository.Commit();
         }
 
         /// <summary>
@@ -119,16 +124,18 @@
         /// <param name="traceIds">追踪标识集合</param>
         public void Rebuid(IEnumerable<Guid> traceIds)
         {
-            repository.GetByIds(traceIds).ToList().ForEach(trace =>
+            traceRepository.GetByIds(traceIds).ToList().ForEach(trace =>
             {
-                // 清空报文文件
-                trace.DatagramFiles.Clear();
+                trace.DatagramFiles.ToList().ForEach(file =>
+                {
+                    datagramFileRepository.Remove(file);
+                });
 
                 // 添加报文
                 trace.AddDatagram(factory.Generate(trace));
             });
 
-            repository.Commit();
+            traceRepository.Commit();
         }
 
         /// <summary>
@@ -143,7 +150,7 @@
         /// <returns></returns>
         public IPagedList<TraceViewModel> GetPageList(string search, int page, int size, TraceStatusEmum? status = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
-            var messageTrack = repository.GetPageList(search, page, size, status, beginTime, endTime);
+            var messageTrack = traceRepository.GetPageList(search, page, size, status, beginTime, endTime);
 
             var pageList = messageTrack.ToPagedList(page, size);
 
@@ -158,12 +165,12 @@
         /// <param name="model">视图模型</param>
         public void ModifyName(ModifyNameViewModel model)
         {
-            var trace = repository.Get(model.Id);
+            var trace = traceRepository.Get(model.Id);
 
             trace.Name = model.Name;
 
-            repository.Modify(trace);
-            repository.Commit();
+            traceRepository.Modify(trace);
+            traceRepository.Commit();
         }
     }
 }
