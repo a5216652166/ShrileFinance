@@ -129,10 +129,7 @@
         /// 合同有效期变更
         /// </summary>
         /// <param name="expirationDate">终止日期</param>
-        public void ChangeExpirationDate(DateTime expirationDate)
-        {
-            ExpirationDate = expirationDate;
-        }
+        public void ChangeExpirationDate(DateTime expirationDate) => ExpirationDate = expirationDate;
 
         /// <summary>
         /// 可否申请贷款
@@ -153,19 +150,14 @@
         /// <summary>
         /// 终止授信协议
         /// </summary>
-        public void ChangeStutus()
-        {
-            EffectiveStatus = CreditContractStatusEnum.失效;
-        }
+        public void ChangeStutus() => EffectiveStatus = CreditContractStatusEnum.失效;
 
         /// <summary>
         /// 计算授信余额
         /// </summary>
-        /// <returns></returns>
-        public decimal CalculateCreditBalance()
-        {
-            return CreditLimit - Loans.Sum(m => m.Balance);
-        }
+        /// <returns>授信余额</returns>
+        public decimal CalculateCreditBalance() =>
+            CreditLimit - Loans.Where(m => m.Hidden == false).Sum(m => m.Balance);
 
         /// <summary>
         ///  融资额度是否充足
@@ -187,13 +179,8 @@
         /// </summary>
         /// <param name="loanDate">放款发生日期</param>
         /// <returns></returns>
-        private bool IsEffectiveDate(DateTime loanDate)
-        {
-            var today = DateTime.Now.Date;
-
-            return (EffectiveDate <= loanDate)
-                && (loanDate <= ExpirationDate);
-        }
+        private bool IsEffectiveDate(DateTime loanDate) =>
+            (EffectiveDate <= loanDate) && (loanDate <= ExpirationDate);
 
         /// <summary>
         /// 判断合同状态是否有效
@@ -233,9 +220,6 @@
         /// 更改合同有效状态
         /// </summary>
         /// <param name="status">合同状态</param>
-        private void ChangeEffective(CreditContractStatusEnum status)
-        {
-            EffectiveStatus = status;
-        }
+        private void ChangeEffective(CreditContractStatusEnum status) => EffectiveStatus = status;
     }
 }

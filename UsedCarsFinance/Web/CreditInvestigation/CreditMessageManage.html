@@ -165,6 +165,8 @@
 
         // 下载
         function Download() {
+            $("a.easyui-linkbutton").linkbutton("disable");
+
             $("#download input").remove();
             var rows = $("table#dg").datagrid("getChecked");
 
@@ -179,17 +181,23 @@
 
                 $("#downloadForm").submit();
 
-                PageReload();
+                $("#downloadForm").children().remove();
+
+                TableReload();
+
+                $("a.easyui-linkbutton").linkbutton("enable");
             }
         }
 
         // 重生成
         function Rebuid() {
+            $("a.easyui-linkbutton").linkbutton("disable");
+
             var Ids = [];
-            $($("table#dg").datagrid("getSelected")).each(function (i, e) {
+            $($("table#dg").datagrid("getChecked")).each(function (i, e) {
                 Ids.push(e.Id);
             });
-
+            
             if (Ids.length == 0)
             {
                 $.messager.show({ msg: "请选择需要生成的跟踪记录" });
@@ -211,25 +219,41 @@
                 }
             });
 
-            PageReload();
+            TableReload();
+
+            $("a.easyui-linkbutton").linkbutton("enable");
         }
 
-        function PageReload()
-        {
+        // 重置按钮
+        function PageReset() {
+            $("a.easyui-linkbutton").linkbutton("disable");
+
             $("input[textboxname=Name]").textbox("setValue", "");
             $("input[textboxname=BeginTime]").datebox("setValue", "");
             $("input[textboxname=EndTime]").datebox("setValue", "");
             $("select[textboxname=Status]").combobox("select", "");
+            
+            TableReload();
 
-            $("a.easyui-linkbutton").linkbutton("disable");
             $("a.easyui-linkbutton").linkbutton("enable");
-            $("table#dg").datagrid('reload');
-
-            $("#downloadForm").children().remove();
         }
 
+        // 表格重新加载
+        function TableReload()
+        {
+            $("a.easyui-linkbutton").linkbutton("disable");
+            $("a.easyui-linkbutton").linkbutton("enable");
+
+            $("a#search").click();
+        }
+
+        // 搜索
         function Search() {
+            $("a.easyui-linkbutton").linkbutton("disable");
+
             uc.grid.Reload();
+
+            $("a.easyui-linkbutton").linkbutton("enable");
         }
     </script>
 </head>
@@ -277,7 +301,7 @@
             </select>
             &nbsp;&nbsp;
             <a id="search" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',onClick:Search,plain:true">搜索</a>
-            <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:PageReload,iconCls:'icon-reload',plain:true">重置</a>
+            <a id="reset" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:PageReset,iconCls:'icon-reload',plain:true">重置</a>
         </div>
         
         <div>

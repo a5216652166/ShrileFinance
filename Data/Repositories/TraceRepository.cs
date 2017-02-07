@@ -57,7 +57,7 @@
             // 结束日期筛选
             if (endTime.HasValue)
             {
-                messageTrack = messageTrack.Where(m => m.SpecialDate < endTime);
+                messageTrack = messageTrack.Where(m => m.SpecialDate <= endTime);
             }
 
             messageTrack = messageTrack.OrderBy(m => m.Status).ThenByDescending(m => m.SpecialDate);

@@ -92,10 +92,7 @@
         /// <summary>
         /// 借据余额
         /// </summary>
-        public decimal Balance
-        {
-            get { return CalculateBalance(); }
-        }
+        public decimal Balance => CalculateBalance();
 
         /// <summary>
         /// 放款日期
@@ -237,16 +234,11 @@
         }
 
         /// <summary>
-        /// 计算余额
+        /// 计算余额 借据余额 = 借据金额 - Sum(实际偿还本金)
         /// </summary>
         /// <returns></returns>
-        private decimal CalculateBalance()
-        {
-            // 借据余额 = 借据金额 - Sum(实际偿还本金)
-            var balance = Principle - Payments.Where(m => m.Hidden == false).Sum(m => m.ActualPaymentPrincipal);
-
-            return balance;
-        }
+        private decimal CalculateBalance() =>
+            Principle - Payments.Where(m => m.Hidden == false).Sum(m => m.ActualPaymentPrincipal);
 
         /// <summary>
         /// 变更借据状态
