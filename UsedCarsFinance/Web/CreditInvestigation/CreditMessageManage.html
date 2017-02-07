@@ -156,7 +156,7 @@
                 var dd = new Date();
                 var today = dd.toLocaleDateString().replace('/', '-').replace('/', '-');
                 if ($.inArray(e.DateCreated.substr(0, 10), [yesterday, today]) == -1) {
-                    if ($.inArray(e.StatusDesc, ["待生成", "待发送"]) != -1) {
+                    if ($.inArray(e.StatusDesc, ["待生成"]) != -1) {
                         $("table#dg").datagrid('checkRow', i);
                     }
                 }
