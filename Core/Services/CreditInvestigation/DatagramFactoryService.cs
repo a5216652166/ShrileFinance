@@ -84,7 +84,7 @@
             
             datagramFiles.ForEach(item =>
             {
-                //// item.TraceId = trace.Id;
+                item.TraceId = trace.Id;
                 item.SerialNumber = datagramFileRepository.AllotSerialNumber(item);
             });
 
