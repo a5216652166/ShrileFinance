@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201701040932038_Processable.Designer.cs">
       <DependentUpon>201701040932038_Processable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702070943130_addTranceIdForDatagramfile.cs" />
+    <Compile Include="Migrations\201702070943130_addTranceIdForDatagramfile.Designer.cs">
+      <DependentUpon>201702070943130_addTranceIdForDatagramfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -365,6 +369,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701040932038_Processable.resx">
       <DependentUpon>201701040932038_Processable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702070943130_addTranceIdForDatagramfile.resx">
+      <DependentUpon>201702070943130_addTranceIdForDatagramfile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

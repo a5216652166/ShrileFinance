@@ -13,6 +13,7 @@
 
             Property(m => m.SerialNumber).IsRequired().HasMaxLength(4);
             Property(m => m.DateCreated);
+            Property(m => m.TraceId);
 
             Map<OrganizationDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.机构基本信息采集报文文件));
             Map<BorrowerDatagramFile>(m => m.Requires("Type").HasValue((int)DatagramFileType.借款人基本信息文件));

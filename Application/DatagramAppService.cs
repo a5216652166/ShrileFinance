@@ -18,16 +18,13 @@
     {
         private readonly ITraceRepostitory traceRepository;
         private readonly IDatagramFileRepository datagramFileRepository;
-        private readonly IDatagramFileRepository datagramRepository;
         private readonly DatagramFactoryService factory;
 
         public DatagramAppService(ITraceRepostitory traceRepository,
             IDatagramFileRepository datagramFileRepository,
-            IDatagramFileRepository datagramRepository,
             DatagramFactoryService factory)
         {
             this.traceRepository = traceRepository;
-            this.datagramRepository = datagramRepository;
             this.datagramFileRepository = datagramFileRepository;
             this.factory = factory;
         }

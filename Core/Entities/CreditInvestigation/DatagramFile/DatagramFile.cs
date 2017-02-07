@@ -31,16 +31,13 @@
         protected DatagramFile(int serialNumber)
         {
             DateCreated = DateTime.Now;
-            SerialNumber = serialNumber.ToString("D4");
+            //SerialNumber = serialNumber.ToString("D4");
         }
 
         /// <summary>
         /// 金融机构代码
         /// </summary>
-        public virtual string FinancialOrganizationCode
-        {
-            get { return FINANCIALORGANIZATIONCODE; }
-        }
+        public virtual string FinancialOrganizationCode => FINANCIALORGANIZATIONCODE;
 
         /// <summary>
         /// 报文文件种类
@@ -50,12 +47,14 @@
         /// <summary>
         /// 序列号
         /// </summary>
-        public string SerialNumber { get; private set; }
+        public string SerialNumber { get; set; }
 
         /// <summary>
         /// 报文生成日期
         /// </summary>
         public DateTime DateCreated { get; private set; }
+
+        public Guid TraceId { get; internal set; }
 
         /// <summary>
         /// 报文集合
