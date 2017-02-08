@@ -58,6 +58,9 @@
         /// <returns>流程实例标识</returns>
         public Guid StartNew(ProcessPostedViewModel.ProcessTypeEnum? processType)
         {
+            // 拦截非法流程发起请求
+            InterceptIllegalRequest();
+
             // 流程标识
             var processId = GetProcessIdByType(processType);
 
@@ -74,9 +77,6 @@
         public void Process(ProcessPostedViewModel model)
         {
             var instance = instanceReopsitory.Get(model.InstanceId);
-
-            // 拦截非法流程发起请求
-            InterceptIllegalRequest(instance);
 
             var action = instance.CurrentNode.Actions.Single(m => m.Id == model.ActionId);
 
@@ -365,7 +365,7 @@
             Instance instance = null;
 
             // 获取指定用户下，指定类型的临时流程实例
-            var instances = instanceReopsitory.GetAll().Where(m => m.RootKey == null && m.CurrentUser.Id == CurrentUser.Id && m.FlowId == processId).ToListAsync().Result;
+            var instances = instanceReopsitory.GetAll(m => m.RootKey == null).ToList().Where(m => m.CurrentUserId == CurrentUser.Id && m.FlowId == processId).ToListAsync().Result;
 
             // 临时流程实例存在一个，则返回该流程实例，否则，新增流程实例（若存在多个，则清除）
             if (instances.Count == 1)
@@ -404,22 +404,19 @@
 
             return instance;
         }
-        
+
         /// <summary>
         /// 拦截非法流程发起请求
         /// </summary>
-        /// <param name="instance">流程实例</param>
-        private void InterceptIllegalRequest(Instance instance)
+        private void InterceptIllegalRequest()
         {
-            if (instance.RootKey == null)
-            {
-                var curentRole = roleManager.FindByIdAsync(CurrentUser.RoleId).Result;
+            // 当前用户的角色
+            var curentRole = roleManager.FindByIdAsync(CurrentUser.RoleId).Result;
 
-                // 若当前角色的标识与客户经理不同，则认为该请求非法
-                if (!curentRole.Id.Equals("C342BEE1-05A4-E611-80C5-507B9DE4A488"))
-                {
-                    throw new ArgumentOutOfRangeAppException(message: $"亲爱的{curentRole.Name}，您没有权限发起流程！");
-                }
+            // 若当前角色的标识与客户经理不同，则认为该请求非法
+            if (!curentRole.Id.Equals("C342BEE1-05A4-E611-80C5-507B9DE4A488"))
+            {
+                throw new ArgumentOutOfRangeAppException(message: $"亲爱的{curentRole.Name}，您没有权限发起流程！");
             }
         }
     }
