@@ -100,7 +100,8 @@
         {
             var organization = organizationRepository.Get(trace.ReferenceId);
 
-            var datagramFile = new OrganizationDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new OrganizationDatagramFile(trace.SerialNumber);
+            var datagramFile = OrganizationDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.机构基本信息报文)
                 .AddRecord(new OrganizationBaseRecord(organization));
@@ -123,7 +124,8 @@
         {
             var organization = organizationRepository.Get(trace.ReferenceId);
 
-            var datagramFile = new BorrowerDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new BorrowerDatagramFile(trace.SerialNumber);
+            var datagramFile = BorrowerDatagramFile.Create();
 
             var financialDatagram = datagramFile.GetDatagram(DatagramTypeEnum.财务报表信息采集报文);
             if (organization.FinancialAffairs != null)
@@ -178,7 +180,9 @@
         {
             var credit = creditRepository.Get(trace.ReferenceId);
 
-            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+
+            var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanContractInfoRecord(credit));
@@ -230,7 +234,8 @@
         {
             var credit = creditRepository.Get(trace.ReferenceId);
 
-            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanContractInfoRecord(credit));
@@ -247,7 +252,8 @@
         {
             var credit = creditRepository.Get(trace.ReferenceId);
 
-            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanContractInfoRecord(credit));
@@ -265,7 +271,8 @@
             var loan = loanRepository.Get(trace.ReferenceId);
             var credit = creditRepository.Get(loan.CreditId);
 
-            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanContractInfoRecord(credit))
@@ -285,7 +292,8 @@
             var loan = loanRepository.Get(payment.LoanId);
             var credit = creditRepository.Get(loan.CreditId);
 
-            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanIousInfoRecord(loan, credit, payment.ActualDatePayment))
@@ -304,7 +312,8 @@
             var loan = loanRepository.Get(trace.ReferenceId);
             var credit = creditRepository.Get(loan.CreditId);
 
-            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanIousInfoRecord(loan, credit, loan.SpecialDate));
@@ -323,7 +332,8 @@
             var loan = loanRepository.Get(payment.LoanId);
             var credit = creditRepository.Get(loan.CreditId);
 
-            var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            ////var datagramFile = new LoanDatagramFile(trace.SerialNumber);
+            var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.欠息信息采集报文)
                 .AddRecord(new DebitInterestInfoRecord(credit, payment));

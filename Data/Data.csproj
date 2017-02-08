@@ -111,6 +111,10 @@
     <Compile Include="Migrations\201702070943130_addTranceIdForDatagramfile.Designer.cs">
       <DependentUpon>201702070943130_addTranceIdForDatagramfile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702080412389_RemoveSeriaNumberForTrace.cs" />
+    <Compile Include="Migrations\201702080412389_RemoveSeriaNumberForTrace.Designer.cs">
+      <DependentUpon>201702080412389_RemoveSeriaNumberForTrace.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -372,6 +376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702070943130_addTranceIdForDatagramfile.resx">
       <DependentUpon>201702070943130_addTranceIdForDatagramfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702080412389_RemoveSeriaNumberForTrace.resx">
+      <DependentUpon>201702080412389_RemoveSeriaNumberForTrace.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
