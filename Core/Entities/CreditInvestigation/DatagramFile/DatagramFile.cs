@@ -28,11 +28,10 @@
         {
         }
 
-        protected DatagramFile(int serialNumber)
-        {
-            DateCreated = DateTime.Now;
-            //SerialNumber = serialNumber.ToString("D4");
-        }
+        ////protected DatagramFile(int serialNumber = 0)
+        ////{
+        ////    DateCreated = DateTime.Now;
+        ////}
 
         /// <summary>
         /// 金融机构代码
@@ -52,7 +51,7 @@
         /// <summary>
         /// 报文生成日期
         /// </summary>
-        public DateTime DateCreated { get; private set; }
+        public DateTime DateCreated { get; protected set; }
 
         public Guid TraceId { get; internal set; }
 
@@ -95,10 +94,7 @@
             return Encoding.GetEncoding("GB2312").GetBytes(content);
         }
 
-        public Datagram GetDatagram(DatagramTypeEnum type)
-        {
-            return Datagrams.Single(m => m.Type == type);
-        }
+        public Datagram GetDatagram(DatagramTypeEnum type) => Datagrams.Single(m => m.Type == type);
 
         /// <summary>
         /// 封装

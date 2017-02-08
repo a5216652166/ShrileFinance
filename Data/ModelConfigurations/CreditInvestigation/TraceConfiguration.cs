@@ -16,7 +16,6 @@
             Property(m => m.Type);
             Property(m => m.Name).HasMaxLength(200);
             Property(m => m.Status);
-            Property(m => m.SerialNumber);
             Property(m => m.DateCreated).HasColumnType("DATE");
 
             HasMany(m => m.DatagramFiles).WithOptional().WillCascadeOnDelete();

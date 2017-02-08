@@ -29,12 +29,12 @@
 
     public class Trace : Entity, IAggregateRoot
     {
-        public Trace(Guid referenceId, TraceTypeEnum type, int serialNumber, DateTime specialDate, string name = null)
+        public Trace(Guid referenceId, TraceTypeEnum type, DateTime specialDate, string name = null)
         {
             Name = name;
             Type = type;
             ReferenceId = referenceId;
-            SerialNumber = serialNumber;
+            ////SerialNumber = serialNumber;
             SpecialDate = specialDate;
             DateCreated = DateTime.Now.Date;
             Status = TraceStatusEmum.待生成;
@@ -69,10 +69,10 @@
         /// </summary>
         public TraceStatusEmum Status { get; private set; }
 
-        /// <summary>
-        /// 报文顺序号
-        /// </summary>
-        public int SerialNumber { get; set; }
+        /////// <summary>
+        /////// 报文顺序号
+        /////// </summary>
+        ////public int SerialNumber { get; set; }
 
         /// <summary>
         /// 跟踪日期

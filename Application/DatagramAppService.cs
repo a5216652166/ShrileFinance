@@ -43,9 +43,9 @@
 
             if (count == 0)
             {
-                // 生成序列号
-                var serialNumber = traceRepository.MaxSerialNumberByDateCreated(dateCreated) + 1;
-                var trace = new Trace(referenceId, traceType, serialNumber, specialDate, defaultName);
+                ////// 生成序列号
+                ////var serialNumber = traceRepository.MaxSerialNumberByDateCreated(dateCreated) + 1;
+                var trace = new Trace(referenceId, traceType, specialDate, defaultName);
 
                 traceRepository.Create(trace);
                 traceRepository.Commit();

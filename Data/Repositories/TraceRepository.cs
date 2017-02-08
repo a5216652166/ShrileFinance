@@ -17,12 +17,12 @@
             return GetAll().Count(m => m.ReferenceId == referenceId && m.DateCreated == dateCreated && m.Type == traceType);
         }
 
-        public int MaxSerialNumberByDateCreated(DateTime dateCreated)
-        {
-            var traces = GetByDateCreated(dateCreated);
+        ////public int MaxSerialNumberByDateCreated(DateTime dateCreated)
+        ////{
+        ////    var traces = GetByDateCreated(dateCreated);
 
-            return traces.Any() ? traces.Max(m => m.SerialNumber) : 0;
-        }
+        ////    return traces.Any() ? traces.Max(m => m.SerialNumber) : 0;
+        ////}
 
         public IEnumerable<Trace> GetByDateCreated(DateTime dateCreated)
         {
