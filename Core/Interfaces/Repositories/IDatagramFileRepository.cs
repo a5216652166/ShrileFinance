@@ -4,5 +4,6 @@
 
     public interface IDatagramFileRepository : IRepository<DatagramFile>
     {
+        string AllotSerialNumber(DatagramFile datagramFile);
     }
 }

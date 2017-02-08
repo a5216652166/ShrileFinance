@@ -47,7 +47,7 @@
         {
             var entitieList = new List<TEntity>();
 
-            if (entities == null)
+            if (entities == null || entities.Count() == 0)
             {
                 return entitieList.AsQueryable();
             }

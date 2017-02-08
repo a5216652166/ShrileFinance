@@ -13,17 +13,20 @@
 
     public class DatagramFactoryService
     {
+        private readonly IDatagramFileRepository datagramFileRepository;
         private readonly IOrganizationRepository organizationRepository;
         private readonly ICreditContractRepository creditRepository;
         private readonly ILoanRepository loanRepository;
         private readonly IPaymentHistoryRepository paymentRepository;
 
         public DatagramFactoryService(
+            IDatagramFileRepository datagramFileRepository,
             IOrganizationRepository organizationRepository,
             ICreditContractRepository creditRepository,
             ILoanRepository loanRepository,
             IPaymentHistoryRepository paymentRepository)
         {
+            this.datagramFileRepository = datagramFileRepository;
             this.organizationRepository = organizationRepository;
             this.creditRepository = creditRepository;
             this.loanRepository = loanRepository;
@@ -78,6 +81,12 @@
                 default:
                     throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
             }
+            
+            datagramFiles.ForEach(item =>
+            {
+                item.TraceId = trace.Id;
+                item.SerialNumber = datagramFileRepository.AllotSerialNumber(item);
+            });
 
             return datagramFiles;
         }
@@ -260,7 +269,7 @@
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
                 .AddRecord(new LoanContractInfoRecord(credit))
-                .AddRecord(new LoanIousInfoRecord(loan, credit,loan.SpecialDate));
+                .AddRecord(new LoanIousInfoRecord(loan, credit, loan.SpecialDate));
 
             return datagramFile;
         }
@@ -298,7 +307,7 @@
             var datagramFile = new LoanDatagramFile(trace.SerialNumber);
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
-                .AddRecord(new LoanIousInfoRecord(loan, credit,loan.SpecialDate));
+                .AddRecord(new LoanIousInfoRecord(loan, credit, loan.SpecialDate));
 
             return datagramFile;
         }

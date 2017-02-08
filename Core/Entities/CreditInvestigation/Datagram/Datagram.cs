@@ -41,34 +41,22 @@
         /// <summary>
         /// 报文头标识
         /// </summary>
-        public string HeaderIdentity
-        {
-            get { return "A"; }
-        }
+        public string HeaderIdentity => "A";
 
         /// <summary>
         /// 报文尾标识
         /// </summary>
-        public string FooterIdentity
-        {
-            get { return "Z"; }
-        }
+        public string FooterIdentity => "Z";
 
         /// <summary>
         /// 报文格式版本号
         /// </summary>
-        public virtual string FormatVersion
-        {
-            get { return "2.1"; }
-        }
+        public virtual string FormatVersion => "2.1";
 
         /// <summary>
         /// 金融机构代码
         /// </summary>
-        public string FinancialOrganizationCode
-        {
-            get { return DatagramFile.FINANCIALORGANIZATIONCODE; }
-        }
+        public string FinancialOrganizationCode => DatagramFile.FINANCIALORGANIZATIONCODE;
 
         /// <summary>
         /// 报文生成时间
@@ -83,15 +71,14 @@
         /// <summary>
         /// 预留字段
         /// </summary>
-        public string Reserved
-        {
-            get { return string.Empty.PadLeft(30, ' '); }
-        }
+        public string Reserved => string.Empty.PadLeft(30, ' ');
 
         /// <summary>
         /// 报文文件标识
         /// </summary>
         public Guid DatagramFileId { get; private set; }
+
+        public Guid TraceId { get; set; }
 
         /// <summary>
         /// 信息记录集合
