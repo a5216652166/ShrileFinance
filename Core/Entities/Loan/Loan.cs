@@ -82,7 +82,7 @@
         /// <summary>
         /// 授信合同标识
         /// </summary>
-        public Guid CreditId { get; private set; }
+        public Guid CreditId { get; set; }
 
         /// <summary>
         /// 借据金额

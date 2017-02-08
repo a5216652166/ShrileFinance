@@ -75,7 +75,13 @@
         {
             var credit = creditRepository.Get(model.CreditId);
             var loan = Mapper.Map<Loan>(model);
-
+            var bbb = repository.GetAll();
+            var aaa = repository.GetAll(m => m.CreditId == model.CreditId);
+            var loanlist = repository.GetAll(m => m.CreditId == model.CreditId && m.Hidden == true);
+            if (loanlist.Count() > 0)
+            {
+                throw new ArgumentAppException("该授信合同下存在未审批的借据，请审批通过之后在发起.");
+            }
             loanService.Loan(loan, credit);
 
             repository.Create(loan);
@@ -130,7 +136,11 @@
             model.Payments.Where(m => m.Hidden).Count();
 
             var loan = repository.Get(model.LoanId);
-
+            var paymentList = loan.Payments.Where(m => m.Hidden == true);
+            if (paymentList.Count() > 0)
+            {
+                throw new ArgumentAppException("该借据合同下存在未审批的还款，请审批通过之后在发起.");
+            }
             model.Payments.Where(m => m.Hidden).ToList().ForEach(payment =>
             {
                 if (payment.Id != null)
