@@ -94,12 +94,18 @@
                     throw new ArgumentNullAppException(nameof(model.Data));
                 }
 
+                // 是否为撤回
+                var isBack = instance.RootKey.HasValue;
+
                 scriptService.Instance = instance;
                 scriptService.Data = Newtonsoft.Json.Linq.JObject.Parse(model.Data);
 
                 var method = scriptService.GetType().GetMethod(action.Method);
 
                 method.Invoke(scriptService, null);
+
+                // 单流程校验
+                SignProcessValid(instance,isBack);
             }
 
             // 流转
@@ -417,6 +423,20 @@
             if (!curentRole.Id.Equals("C342BEE1-05A4-E611-80C5-507B9DE4A488"))
             {
                 throw new ArgumentOutOfRangeAppException(message: $"亲爱的{curentRole.Name}，您没有权限发起流程！");
+            }
+        }
+
+        private void SignProcessValid(Instance instance, bool isBack = true)
+        {
+            if (!isBack)
+            {
+                // 查找审核中的还款流程实例的RootKey集合（借据Id集合）
+                var query = from item in instanceReopsitory.GetAll(m => m.RootKey != null && m.FlowId == Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488") && m.Status == InstanceStatusEnum.正常) select item.RootKey;
+
+                if (query.ToListAsync().Result.Contains(instance.RootKey))
+                {
+                    throw new InvalidOperationAppException("已存在未审批的流程，请处理完成之后在发起");
+                }
             }
         }
     }

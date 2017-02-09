@@ -1,6 +1,7 @@
 ﻿namespace Application
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.Loan;
@@ -128,19 +129,15 @@
         /// <param name="model">还款记录视图模型</param>
         public void Payment(PaymentViewModel model)
         {
-            if (model.Payments == null )
+            if (model.Payments.Count()==0)
             {
                 throw new ArgumentAppException("还款记录不可为空.");
             }
-
+            decimal paymentCount = 0;
             model.Payments.Where(m => m.Hidden).Count();
 
             var loan = repository.Get(model.LoanId);
-            var paymentList = loan.Payments.Where(m => m.Hidden == true);
-            if (paymentList.Count() > 0)
-            {
-                throw new ArgumentAppException("该借据合同下存在未审批的还款，请审批通过之后在发起.");
-            }
+    
             model.Payments.Where(m => m.Hidden).ToList().ForEach(payment =>
             {
                 if (payment.Id != null)
@@ -157,11 +154,15 @@
 
             foreach (var payment in loan.Payments)
             {
+                paymentCount += payment.ActualPaymentPrincipal;
                 paymentService.Payment(loan, payment);
             }
-
+           
+            if (loan.Balance < paymentCount)
+            {
+                throw new ArgumentAppException("该借据余额已不足.");
+            }
             repository.Modify(loan);
-            repository.Commit();
         }
 
         /// <summary>
