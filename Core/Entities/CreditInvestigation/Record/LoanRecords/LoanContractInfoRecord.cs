@@ -1,5 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation.Record.LoanRecords
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Loan;
@@ -11,12 +12,12 @@
     /// </summary>
     public class LoanContractInfoRecord : Record
     {
-        public LoanContractInfoRecord(CreditContract credit)
+        public LoanContractInfoRecord(CreditContract credit,DateTime datetime)
         {
             Segments = new List<Segment>()
             {
                 // 基础段
-                new CreditBaseSegment(Type, credit, credit.EffectiveDate),
+                new CreditBaseSegment(Type, credit, datetime),
 
                 // 合同信息段
                 new CreditContractSegment(credit),
