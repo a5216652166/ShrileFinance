@@ -49,7 +49,7 @@
             this.userManager = userManager;
             this.loanRepository = loanRepository;
             this.creditContractRepository = creditContractRepository;
-
+            this.roleManager = roleManager;
         }
 
         /// <summary>
@@ -367,29 +367,6 @@
         }
 
         /// <summary>
-        /// 获取流程类型
-        /// </summary>
-        /// <param name="processId">流程标识</param>
-        /// <returns>流程类型</returns>
-        private ProcessTypeEnum? GetInstanceStatusEnumByProcessId(Guid processId)
-        {
-            var dictionary = new Dictionary<Guid, ProcessTypeEnum>();
-
-            dictionary.Add(Guid.Parse("228C8C80-06A4-E611-80C5-507B9DE4A488"), ProcessTypeEnum.融资);
-            dictionary.Add(Guid.Parse("04824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.机构);
-            dictionary.Add(Guid.Parse("05824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.授信);
-            dictionary.Add(Guid.Parse("06824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.借据);
-            dictionary.Add(Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.还款);
-
-            if (!dictionary.Keys.Contains(processId))
-            {
-                return null;
-            }
-
-            return dictionary[processId];
-        }
-
-        /// <summary>
         /// 获取流程实例
         /// </summary>
         /// <param name="processId">流程类型</param>
@@ -470,7 +447,7 @@
             // 验证还款流程
             var validResult = true;
 
-            switch (GetInstanceStatusEnumByProcessId(instance.FlowId))
+            switch (instance.ProcessType)
             {
                 case ProcessTypeEnum.融资:
                     break;
@@ -513,6 +490,11 @@
             return query.Count() == 1;
         }
 
+        /// <summary>
+        /// 验证还款新流程实例是否合法
+        /// </summary>
+        /// <param name="instance">新还款流程实例</param>
+        /// <returns>结果</returns>
         private bool ValidLoanProcess(Instance instance)
         {
             var loan = loanRepository.Get(instance.RootKey.Value);

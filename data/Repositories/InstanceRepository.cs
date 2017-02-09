@@ -14,6 +14,14 @@
         {
         }
 
+        public override Instance Get(Guid key)
+        {
+            var instance = base.Get(key);
+            instance.ProcessType = GetProcessTypeByProcessId(instance.FlowId);
+
+            return instance;
+        }
+
         public IPagedList<Instance> DoingPagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId = null, Guid? currentNodeId = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
             // 筛选 1.状态为正常
@@ -77,6 +85,19 @@
 
             // 分页查询
             return instances.ToPagedList(page, size);
+        }
+
+        public ProcessTypeEnum GetProcessTypeByProcessId(Guid processId)
+        {
+            var dictionary = new Dictionary<Guid, ProcessTypeEnum>();
+
+            dictionary.Add(Guid.Parse("228C8C80-06A4-E611-80C5-507B9DE4A488"), ProcessTypeEnum.融资);
+            dictionary.Add(Guid.Parse("04824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.机构);
+            dictionary.Add(Guid.Parse("05824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.授信);
+            dictionary.Add(Guid.Parse("06824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.借据);
+            dictionary.Add(Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.还款);
+
+            return dictionary[processId];
         }
 
         private IQueryable<Instance> FiterForTitle(IQueryable<Instance> refSource, string searchString)
