@@ -94,8 +94,8 @@
                     throw new ArgumentNullAppException(nameof(model.Data));
                 }
 
-                // 是否为撤回
-                var isBack = instance.RootKey.HasValue;
+                // 是否为新发起的正式流程
+                var isNewInstance = instance.RootKey == null;
 
                 scriptService.Instance = instance;
                 scriptService.Data = Newtonsoft.Json.Linq.JObject.Parse(model.Data);
@@ -105,7 +105,7 @@
                 method.Invoke(scriptService, null);
 
                 // 单流程校验
-                SignProcessValid(instance,isBack);
+                SingleProcessValid(instance, isNewInstance);
             }
 
             // 流转
@@ -426,18 +426,44 @@
             }
         }
 
-        private void SignProcessValid(Instance instance, bool isBack = true)
+        /// <summary>
+        /// 单流程校验
+        /// </summary>
+        /// <param name="instance">流程实例</param>
+        /// <param name="isNewInstance">是否为新流程</param>
+        private void SingleProcessValid(Instance instance, bool isNewInstance = false)
         {
-            if (!isBack)
+            if (!isNewInstance)
             {
-                // 查找审核中的还款流程实例的RootKey集合（借据Id集合）
-                var query = from item in instanceReopsitory.GetAll(m => m.RootKey != null && m.FlowId == Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488") && m.Status == InstanceStatusEnum.正常) select item.RootKey;
-
-                if (query.ToListAsync().Result.Contains(instance.RootKey))
-                {
-                    throw new InvalidOperationAppException("已存在未审批的流程，请处理完成之后在发起");
-                }
+                return;
             }
+
+            // 验证还款流程
+            var validResult = ValidPaymentProcess(instance);
+
+            if (validResult == false)
+            {
+                throw new InvalidOperationAppException("已存在未审批的流程，请处理完成之后在发起");
+            }
+        }
+
+        /// <summary>
+        /// 验证还款新流程实例是否合法
+        /// </summary>
+        /// <param name="instance">新还款流程实例</param>
+        /// <returns>结果</returns>
+        private bool ValidPaymentProcess(Instance instance)
+        {
+            var paymentFlowId = Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488");
+
+            // 查找审核中的还款流程实例的RootKey集合（借据Id集合）
+            var query = instanceReopsitory.GetAll(
+                m => 
+                m.FlowId == paymentFlowId && 
+                m.Status == InstanceStatusEnum.正常 && 
+                m.RootKey == instance.RootKey.Value);
+
+            return query.Count() == 1;
         }
     }
 }
