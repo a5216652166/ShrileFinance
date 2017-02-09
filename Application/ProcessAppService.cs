@@ -361,6 +361,29 @@
         }
 
         /// <summary>
+        /// 获取流程类型
+        /// </summary>
+        /// <param name="processId">流程标识</param>
+        /// <returns>流程类型</returns>
+        private ProcessTypeEnum? GetInstanceStatusEnumByProcessId(Guid processId)
+        {
+            var dictionary = new Dictionary<Guid, ProcessTypeEnum>();
+
+            dictionary.Add(Guid.Parse("228C8C80-06A4-E611-80C5-507B9DE4A488"), ProcessTypeEnum.融资);
+            dictionary.Add(Guid.Parse("04824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.机构);
+            dictionary.Add(Guid.Parse("05824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.授信);
+            dictionary.Add(Guid.Parse("06824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.借据);
+            dictionary.Add(Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.还款);
+
+            if (!dictionary.Keys.Contains(processId))
+            {
+                return null;
+            }
+
+            return dictionary[processId];
+        }
+
+        /// <summary>
         /// 获取流程实例
         /// </summary>
         /// <param name="processId">流程类型</param>
@@ -439,7 +462,24 @@
             }
 
             // 验证还款流程
-            var validResult = ValidPaymentProcess(instance);
+            var validResult = true;
+
+            switch (GetInstanceStatusEnumByProcessId(instance.FlowId))
+            {
+                case ProcessTypeEnum.融资:
+                    break;
+                case ProcessTypeEnum.机构:
+                    break;
+                case ProcessTypeEnum.授信:
+                    break;
+                case ProcessTypeEnum.借据:
+                    break;
+                case ProcessTypeEnum.还款:
+                    validResult &= ValidPaymentProcess(instance);
+                    break;
+                default:
+                    break;
+            }
 
             if (validResult == false)
             {
@@ -456,11 +496,11 @@
         {
             var paymentFlowId = Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488");
 
-            // 查找审核中的还款流程实例的RootKey集合（借据Id集合）
+            // 查找与流程实例对应的审核中的还款流程实例
             var query = instanceReopsitory.GetAll(
-                m => 
-                m.FlowId == paymentFlowId && 
-                m.Status == InstanceStatusEnum.正常 && 
+                m =>
+                m.FlowId == paymentFlowId &&
+                m.Status == InstanceStatusEnum.正常 &&
                 m.RootKey == instance.RootKey.Value);
 
             return query.Count() == 1;
