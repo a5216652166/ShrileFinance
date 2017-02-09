@@ -49,7 +49,7 @@
             this.userManager = userManager;
             this.loanRepository = loanRepository;
             this.creditContractRepository = creditContractRepository;
-
+            this.roleManager = roleManager;
         }
 
         /// <summary>
@@ -521,7 +521,15 @@
 
             if (loanIds.Count() > 1)
             {
+                // 移除错误借据
                 loanRepository.Remove(loan);
+
+                // 流程实例还原为临时流程
+                instance.RootKey = null;
+                instance.Title = null;
+                instanceReopsitory.Modify(instance);
+
+                // 提交修改
                 loanRepository.Commit();
 
                 return false;
