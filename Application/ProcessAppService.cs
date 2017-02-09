@@ -25,6 +25,8 @@
         private readonly AppUserManager userManager;
         private readonly AppRoleManager roleManager;
         private readonly FinanceScriptAppService scriptService;
+        private readonly ILoanRepository loanRepository;
+        private readonly ICreditContractRepository creditContractRepository;
 
         public ProcessAppService(
             IFlowRepository flowRepository,
@@ -34,6 +36,8 @@
             IFinanceRepository financeRepository,
             FinanceScriptAppService scriptService,
             AppUserManager userManager,
+            ILoanRepository loanRepository,
+            ICreditContractRepository creditContractRepository,
             AppRoleManager roleManager)
         {
             this.flowRepository = flowRepository;
@@ -43,7 +47,9 @@
             this.financeRepository = financeRepository;
             this.scriptService = scriptService;
             this.userManager = userManager;
-            this.roleManager = roleManager;
+            this.loanRepository = loanRepository;
+            this.creditContractRepository = creditContractRepository;
+
         }
 
         /// <summary>
@@ -473,6 +479,7 @@
                 case ProcessTypeEnum.授信:
                     break;
                 case ProcessTypeEnum.借据:
+                    validResult &= ValidLoanProcess(instance);
                     break;
                 case ProcessTypeEnum.还款:
                     validResult &= ValidPaymentProcess(instance);
@@ -504,6 +511,23 @@
                 m.RootKey == instance.RootKey.Value);
 
             return query.Count() == 1;
+        }
+
+        private bool ValidLoanProcess(Instance instance)
+        {
+            var loan = loanRepository.Get(instance.RootKey.Value);
+            var credit = creditContractRepository.Get(loan.CreditId);
+            var loanIds = from item in credit.Loans.Where(m => m.Hidden) select item.Id;
+
+            if (loanIds.Count() > 1)
+            {
+                loanRepository.Remove(loan);
+                loanRepository.Commit();
+
+                return false;
+            }
+
+            return true;
         }
     }
 }
