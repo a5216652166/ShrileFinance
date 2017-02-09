@@ -115,16 +115,28 @@
             }
 
             // 流转
-            AppUser user;
+            AppUser user = null;
 
             switch (action.AllocationType)
             {
                 case ActionAllocationEnum.指定:
-                    var finance = financeRepository.Get(instance.RootKey.Value);
-
-                    var partner = finance.CreateOf;
-
-                    user = partner.Approvers.Single(m => m.RoleId == action.Transfer.RoleId);
+                    switch (instance.ProcessType)
+                    {
+                        case ProcessTypeEnum.融资:
+                            var partner = financeRepository.Get(instance.RootKey.Value).CreateOf;
+                            user = partner.Approvers.Single(m => m.RoleId == action.Transfer.RoleId);
+                            break;
+                        case ProcessTypeEnum.机构:
+                            break;
+                        case ProcessTypeEnum.授信:
+                            break;
+                        case ProcessTypeEnum.借据:
+                            break;
+                        case ProcessTypeEnum.还款:
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case ActionAllocationEnum.记录:
                     user = instance.Logs.Last(m => m.NodeId == action.TransferId).ProcessUser;
@@ -496,7 +508,7 @@
         private bool ValidLoanProcess(Instance instance)
         {
             var loan = loanRepository.Get(instance.RootKey.Value);
-            var loanIds = from item 
+            var loanIds = from item
                           in creditContractRepository.Get(loan.CreditId).Loans.Where(m => m.Hidden)
                           select item.Id;
 

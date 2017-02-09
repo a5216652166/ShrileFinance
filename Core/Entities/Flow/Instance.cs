@@ -20,10 +20,7 @@
 
         public string CurrentUserId { get; set; }
 
-        public DateTime? ProcessTime
-        {
-            get { return Logs.LastOrDefault()?.ProcessTime; }
-        }
+        public DateTime? ProcessTime=> Logs.LastOrDefault()?.ProcessTime;
 
         public string StartUserId { get; set; }
 
@@ -43,10 +40,7 @@
 
         public virtual AppUser CurrentUser { get; set; }
 
-        public virtual AppUser ProcessUser
-        {
-            get { return Logs.LastOrDefault()?.ProcessUser; }
-        }
+        public virtual AppUser ProcessUser => Logs.LastOrDefault()?.ProcessUser;
 
         public virtual AppUser StartUser { get; set; }
 
