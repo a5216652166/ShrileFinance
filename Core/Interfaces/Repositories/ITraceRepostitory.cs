@@ -11,16 +11,9 @@
         /// </summary>
         /// <param name="dateCreated">报文创建日期</param>
         /// <param name="referenceId">引用标识</param>
-        /// <param name="tracrType">操作类型</param>
+        /// <param name="traceType">操作类型</param>
         /// <returns></returns>
         int CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId, TraceTypeEnum traceType);
-
-        /////// <summary>
-        /////// 获取最大的序列号根据报文创建日期
-        /////// </summary>
-        /////// <param name="dateCreated">报文创建日期</param>
-        /////// <returns></returns>
-        ////int MaxSerialNumberByDateCreated(DateTime dateCreated);
 
         /// <summary>
         /// 获取跟踪集合根据报文创建日期

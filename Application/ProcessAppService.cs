@@ -478,12 +478,10 @@
         /// <returns>结果</returns>
         private bool ValidPaymentProcess(Instance instance)
         {
-            var paymentFlowId = Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488");
-
             // 查找与流程实例对应的审核中的还款流程实例
             var query = instanceReopsitory.GetAll(
                 m =>
-                m.FlowId == paymentFlowId &&
+                m.FlowId == instance.FlowId &&
                 m.Status == InstanceStatusEnum.正常 &&
                 m.RootKey == instance.RootKey.Value);
 
@@ -491,15 +489,16 @@
         }
 
         /// <summary>
-        /// 验证还款新流程实例是否合法
+        /// 验证借据新流程实例是否合法
         /// </summary>
         /// <param name="instance">新还款流程实例</param>
         /// <returns>结果</returns>
         private bool ValidLoanProcess(Instance instance)
         {
             var loan = loanRepository.Get(instance.RootKey.Value);
-            var credit = creditContractRepository.Get(loan.CreditId);
-            var loanIds = from item in credit.Loans.Where(m => m.Hidden) select item.Id;
+            var loanIds = from item 
+                          in creditContractRepository.Get(loan.CreditId).Loans.Where(m => m.Hidden)
+                          select item.Id;
 
             if (loanIds.Count() > 1)
             {

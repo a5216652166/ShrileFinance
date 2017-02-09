@@ -12,27 +12,14 @@
         {
         }
 
-        public int CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId,TraceTypeEnum traceType)
-        {
-            return GetAll().Count(m => m.ReferenceId == referenceId && m.DateCreated == dateCreated && m.Type == traceType);
-        }
+        public int CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId, TraceTypeEnum traceType) =>
+           GetAll().Count(m => m.ReferenceId == referenceId && m.DateCreated == dateCreated && m.Type == traceType);
 
-        ////public int MaxSerialNumberByDateCreated(DateTime dateCreated)
-        ////{
-        ////    var traces = GetByDateCreated(dateCreated);
+        public IEnumerable<Trace> GetByDateCreated(DateTime dateCreated) =>
+           GetAll(m => m.DateCreated == dateCreated);
 
-        ////    return traces.Any() ? traces.Max(m => m.SerialNumber) : 0;
-        ////}
-
-        public IEnumerable<Trace> GetByDateCreated(DateTime dateCreated)
-        {
-            return GetAll(m => m.DateCreated == dateCreated);
-        }
-
-        public IEnumerable<Trace> GetByIds(IEnumerable<Guid> traceIds)
-        {
-            return GetAll(m => traceIds.Contains(m.Id));
-        }
+        public IEnumerable<Trace> GetByIds(IEnumerable<Guid> traceIds) =>
+            GetAll(m => traceIds.Contains(m.Id));
 
         public IEnumerable<Trace> GetPageList(string search, int page, int size, TraceStatusEmum? status = null, DateTime? beginTime = null, DateTime? endTime = null)
         {

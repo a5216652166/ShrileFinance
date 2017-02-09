@@ -12,7 +12,7 @@
     /// </summary>
     public class LoanIousInfoRecord : Record
     {
-        public LoanIousInfoRecord(Loan loan, CreditContract credit,DateTime datetime)
+        public LoanIousInfoRecord(Loan loan, CreditContract credit, DateTime datetime)
         {
             Segments = new List<Segment>()
             {

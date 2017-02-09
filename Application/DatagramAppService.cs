@@ -20,7 +20,8 @@
         private readonly IDatagramFileRepository datagramFileRepository;
         private readonly DatagramFactoryService factory;
 
-        public DatagramAppService(ITraceRepostitory traceRepository,
+        public DatagramAppService(
+            ITraceRepostitory traceRepository,
             IDatagramFileRepository datagramFileRepository,
             DatagramFactoryService factory)
         {

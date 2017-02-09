@@ -87,7 +87,7 @@
             return instances.ToPagedList(page, size);
         }
 
-        public ProcessTypeEnum GetProcessTypeByProcessId(Guid processId)
+        private ProcessTypeEnum GetProcessTypeByProcessId(Guid processId)
         {
             var dictionary = new Dictionary<Guid, ProcessTypeEnum>();
 

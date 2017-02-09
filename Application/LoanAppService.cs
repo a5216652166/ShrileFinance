@@ -76,13 +76,7 @@
         {
             var credit = creditRepository.Get(model.CreditId);
             var loan = Mapper.Map<Loan>(model);
-            var bbb = repository.GetAll();
-            var aaa = repository.GetAll(m => m.CreditId == model.CreditId);
-            var loanlist = repository.GetAll(m => m.CreditId == model.CreditId && m.Hidden == true);
-            if (loanlist.Count() > 0)
-            {
-                throw new ArgumentAppException("该授信合同下存在未审批的借据，请审批通过之后在发起.");
-            }
+
             loanService.Loan(loan, credit);
 
             repository.Create(loan);
@@ -129,15 +123,16 @@
         /// <param name="model">还款记录视图模型</param>
         public void Payment(PaymentViewModel model)
         {
-            if (model.Payments.Count()==0)
+            if (model.Payments.Count() == 0)
             {
                 throw new ArgumentAppException("还款记录不可为空.");
             }
+
             decimal paymentCount = 0;
             model.Payments.Where(m => m.Hidden).Count();
 
             var loan = repository.Get(model.LoanId);
-    
+
             model.Payments.Where(m => m.Hidden).ToList().ForEach(payment =>
             {
                 if (payment.Id != null)
@@ -157,11 +152,12 @@
                 paymentCount += payment.ActualPaymentPrincipal;
                 paymentService.Payment(loan, payment);
             }
-           
+
             if (loan.Balance < paymentCount)
             {
                 throw new ArgumentAppException("该借据余额已不足.");
             }
+
             repository.Modify(loan);
         }
 

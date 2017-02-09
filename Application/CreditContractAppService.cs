@@ -204,7 +204,7 @@
         /// <returns></returns>
         public IEnumerable<CreditContractViewModel> Option()
         {
-            var credits = repository.GetAll().Where(m=>m.EffectiveStatus!= CreditContractStatusEnum.失效).AsEnumerable();
+            var credits = repository.GetAll().Where(m => m.EffectiveStatus != CreditContractStatusEnum.失效).AsEnumerable();
 
             return Mapper.Map<IEnumerable<CreditContractViewModel>>(credits);
         }
