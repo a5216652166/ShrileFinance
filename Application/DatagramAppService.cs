@@ -132,9 +132,9 @@
 
                 // 添加报文
                 trace.AddDatagram(factory.Generate(trace));
-            });
 
-            traceRepository.Commit();
+                traceRepository.Commit();
+            });
         }
 
         /// <summary>
