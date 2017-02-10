@@ -31,9 +31,7 @@
             {
                 var filesMaxSerialNumber = files.Max(m => Convert.ToInt32(m.SerialNumber));
 
-                var maxSerialNumber = filesMaxSerialNumber > files.Count() ? filesMaxSerialNumber : files.Count();
-
-                serialNumber = (maxSerialNumber + 1).ToString("D4");
+                serialNumber = (Math.Max(files.Count(), filesMaxSerialNumber) + 1).ToString("D4");
             }
 
             return serialNumber;
