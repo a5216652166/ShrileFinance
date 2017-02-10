@@ -151,7 +151,10 @@
 
             foreach (var payment in loan.Payments)
             {
-                paymentCount += payment.ActualPaymentPrincipal;
+                if (payment.Hidden)
+                {
+                    paymentCount += payment.ActualPaymentPrincipal;
+                }
                 paymentService.Payment(loan, payment);
             }
 
