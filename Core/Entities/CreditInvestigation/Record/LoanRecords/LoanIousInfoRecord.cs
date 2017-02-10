@@ -14,17 +14,18 @@
     {
         public LoanIousInfoRecord(Loan loan, CreditContract credit, DateTime datetime)
         {
-            var balance = loan.Principle - loan.Payments.Where(m => m.ActualDatePayment <= datetime).Sum(m=>m.ActualPaymentPrincipal);
+            var balance = loan.Principle - loan.Payments.Where(m => m.ActualDatePayment <= datetime).Sum(m => m.ActualPaymentPrincipal);
 
             Segments = new List<Segment>()
             {
                 // 基础段
                 new CreditBaseSegment(Type, credit, datetime),
+
                 // 借据信息段
-                new LoanSegment(loan,balance)
+                new LoanSegment(loan, balance)
             };
 
-        ((CreditBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
+            ((CreditBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();
         }
 
         protected LoanIousInfoRecord() : base()

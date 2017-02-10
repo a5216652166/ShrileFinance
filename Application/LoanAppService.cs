@@ -138,6 +138,7 @@
                 if (payment.Id != null)
                 {
                     var payments = loan.Payments.Where(m => m.Hidden).Single(m => m.Id == payment.Id.Value);
+
                     // 修改
                     Mapper.Map(payment, payments);
                 }

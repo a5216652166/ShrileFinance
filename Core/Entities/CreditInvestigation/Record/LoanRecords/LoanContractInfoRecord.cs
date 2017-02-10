@@ -12,9 +12,9 @@
     /// </summary>
     public class LoanContractInfoRecord : Record
     {
-        public LoanContractInfoRecord(CreditContract credit,DateTime datetime)
+        public LoanContractInfoRecord(CreditContract credit, DateTime datetime)
         {
-            var balance = credit.CreditLimit -credit.Loans.Where(m => m.Hidden == false&&m.SpecialDate<=datetime).Sum(m => m.Balance);
+            var balance = credit.CreditLimit - credit.Loans.Where(m => m.Hidden == false && m.SpecialDate <= datetime).Sum(m => m.Balance);
             Segments = new List<Segment>()
             {
                 // 基础段
@@ -24,7 +24,7 @@
                 new CreditContractSegment(credit),
 
                 // 合同金额信息段（币种CNY）
-                new CreditContractAmountSegment(credit,balance)
+                new CreditContractAmountSegment(credit, balance)
             };
 
             ((CreditBaseSegment)Segments.First()).信息记录长度 = GetLength().ToString();

@@ -82,7 +82,7 @@
                 default:
                     throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
             }
-            
+
             datagramFiles.ForEach(item =>
             {
                 item.TraceId = trace.Id;
@@ -186,7 +186,7 @@
             var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
-                .AddRecord(new LoanContractInfoRecord(credit,credit.EffectiveDate));
+                .AddRecord(new LoanContractInfoRecord(credit, credit.EffectiveDate));
             var guarantyDatagram = datagramFile.GetDatagram(DatagramTypeEnum.担保业务信息采集报文);
 
             foreach (var item in credit.GuarantyContract)
@@ -239,7 +239,7 @@
             var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
-                .AddRecord(new LoanContractInfoRecord(credit,DateTime.Now));
+                .AddRecord(new LoanContractInfoRecord(credit, DateTime.Now));
 
             return datagramFile;
         }
@@ -257,7 +257,7 @@
             var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
-                .AddRecord(new LoanContractInfoRecord(credit,credit.ExpirationDate));
+                .AddRecord(new LoanContractInfoRecord(credit, credit.ExpirationDate));
 
             return datagramFile;
         }
@@ -276,7 +276,7 @@
             var datagramFile = LoanDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.贷款业务信息采集报文)
-                .AddRecord(new LoanContractInfoRecord(credit,loan.SpecialDate))
+                .AddRecord(new LoanContractInfoRecord(credit, loan.SpecialDate))
                 .AddRecord(new LoanIousInfoRecord(loan, credit, loan.SpecialDate));
 
             return datagramFile;
