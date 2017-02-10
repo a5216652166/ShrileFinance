@@ -165,7 +165,6 @@
 
         // 加载数据
         function LoadData(data) {
-            debugger
             if (!data || data == null) {
                 return null;
             }
@@ -456,10 +455,10 @@
                     }
                 }
 
-                if (data.AssociatedEnterprises.length == 0) {
-                    ShowError("主要关联企业 必填");
-                    return false;
-                }
+                //if (data.AssociatedEnterprises.length == 0) {
+                //    ShowError("主要关联企业 必填");
+                //    return false;
+                //}
 
                 // 财务判断
                 if ($("div#showSecton").find("input[id=TF_J]")[0].checked == true) {
