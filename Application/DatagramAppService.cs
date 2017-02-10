@@ -122,6 +122,7 @@
         /// <param name="traceIds">追踪标识集合</param>
         public void Rebuid(IEnumerable<Guid> traceIds)
         {
+            var traces = traceRepository.GetByIds(traceIds);
             traceRepository.GetByIds(traceIds).ToList().ForEach(trace =>
             {
                 trace.DatagramFiles.ToList().ForEach(file =>

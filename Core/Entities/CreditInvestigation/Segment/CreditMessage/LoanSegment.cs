@@ -5,9 +5,10 @@
 
     public class LoanSegment : Segment
     {
-        public LoanSegment(Loan loan)
+        public LoanSegment(Loan loan, decimal balance)
         {
             Mapper.Map(loan, this);
+            Balance = balance.ToString();
             SpecialDate = loan.SpecialDate.ToString("yyyyMMdd");
             MatureDate = loan.MatureDate.ToString("yyyyMMdd");
             FourCategoryAssetsClassification = loan.FourCategoryAssetsClassification?.ToString("D");

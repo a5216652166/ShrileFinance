@@ -4,9 +4,10 @@
 
     public class CreditContractAmountSegment : Segment
     {
-        public CreditContractAmountSegment(CreditContract credit)
+        public CreditContractAmountSegment(CreditContract credit,decimal balance)
         {
             AutoMapper.Mapper.Map(credit, this);
+            CreditBalance = balance.ToString();
         }
 
         protected CreditContractAmountSegment() : base()
