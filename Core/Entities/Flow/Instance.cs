@@ -20,7 +20,7 @@
 
         public string CurrentUserId { get; set; }
 
-        public DateTime? ProcessTime=> Logs.LastOrDefault()?.ProcessTime;
+        public DateTime? ProcessTime => Logs.LastOrDefault()?.ProcessTime;
 
         public string StartUserId { get; set; }
 

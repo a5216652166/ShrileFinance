@@ -137,8 +137,10 @@
             {
                 if (payment.Id != null)
                 {
+                    var payments = loan.Payments.Where(m => m.Hidden).Single(m => m.Id == payment.Id.Value);
+
                     // 修改
-                    Mapper.Map(payment, loan.Payments.Where(m => m.Hidden).Single(m => m.Id == payment.Id.Value));
+                    Mapper.Map(payment, payments);
                 }
                 else
                 {
@@ -149,7 +151,10 @@
 
             foreach (var payment in loan.Payments)
             {
-                paymentCount += payment.ActualPaymentPrincipal;
+                if (payment.Hidden)
+                {
+                    paymentCount += payment.ActualPaymentPrincipal;
+                }
                 paymentService.Payment(loan, payment);
             }
 

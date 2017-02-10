@@ -131,6 +131,7 @@
                         var userId = action.Transfer.Role.Users.First().UserId;
                         user = action.Transfer != null ? userManager.FindByIdAsync(userId).Result : null;
                     }
+
                     break;
                 case ActionAllocationEnum.记录:
                     user = instance.Logs.Last(m => m.NodeId == action.TransferId).ProcessUser;
