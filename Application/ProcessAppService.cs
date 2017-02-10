@@ -120,22 +120,16 @@
             switch (action.AllocationType)
             {
                 case ActionAllocationEnum.指定:
-                    switch (instance.ProcessType)
+                    if (instance.ProcessType == ProcessTypeEnum.融资)
                     {
-                        case ProcessTypeEnum.融资:
-                            var partner = financeRepository.Get(instance.RootKey.Value).CreateOf;
-                            user = partner.Approvers.Single(m => m.RoleId == action.Transfer.RoleId);
-                            break;
-                        case ProcessTypeEnum.机构:
-                            break;
-                        case ProcessTypeEnum.授信:
-                            break;
-                        case ProcessTypeEnum.借据:
-                            break;
-                        case ProcessTypeEnum.还款:
-                            break;
-                        default:
-                            break;
+                        var partner = financeRepository.Get(instance.RootKey.Value).CreateOf;
+                        user = partner.Approvers.Single(m => m.RoleId == action.Transfer.RoleId);
+                    }
+                    else
+                    {
+                        // 根据角色设置下一位流程操作者(若存在同角色的多位用户，默认取第一位)
+                        var userId = action.Transfer.Role.Users.First().UserId;
+                        user = action.Transfer != null ? userManager.FindByIdAsync(userId).Result : null;
                     }
                     break;
                 case ActionAllocationEnum.记录:
@@ -155,20 +149,27 @@
                     throw new InvalidOperationAppException("创建寻找用户策略失败!");
             }
 
+            instance.CurrentUserId = user?.Id;
+
             if (action.Transfer != null)
             {
                 instance.CurrentNode = action.Transfer;
             }
 
-            instance.CurrentUserId = user?.Id;
-
-            if (action.Type == ActionTypeEnum.完成)
+            switch (action.Type)
             {
-                instance.Status = InstanceStatusEnum.完成;
-            }
-            else if (action.Type == ActionTypeEnum.终止)
-            {
-                instance.Status = InstanceStatusEnum.终止;
+                case ActionTypeEnum.发起:
+                    break;
+                case ActionTypeEnum.流转:
+                    break;
+                case ActionTypeEnum.完成:
+                    instance.Status = InstanceStatusEnum.完成;
+                    break;
+                case ActionTypeEnum.终止:
+                    instance.Status = InstanceStatusEnum.终止;
+                    break;
+                default:
+                    break;
             }
 
             if (instance.Status != InstanceStatusEnum.正常)
