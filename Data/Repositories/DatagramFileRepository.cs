@@ -29,7 +29,7 @@
             }
             else
             {
-                var filesMaxSerialNumber = files.Max(m => Convert.ToInt32(m.SerialNumber));
+                var filesMaxSerialNumber = files.Count() == 0 ? 0 : files.Max(m => Convert.ToInt32(m.SerialNumber));
 
                 serialNumber = (Math.Max(files.Count(), filesMaxSerialNumber) + 1).ToString("D4");
             }
