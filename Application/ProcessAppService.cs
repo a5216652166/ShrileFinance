@@ -125,11 +125,18 @@
                         var partner = financeRepository.Get(instance.RootKey.Value).CreateOf;
                         user = partner.Approvers.Single(m => m.RoleId == action.Transfer.RoleId);
                     }
-                    else
+                    else if (action.TransferId != null)
                     {
                         // 根据角色设置下一位流程操作者(若存在同角色的多位用户，默认取第一位)
-                        var userId = action.Transfer.Role.Users.First().UserId;
-                        user = action.Transfer != null ? userManager.FindByIdAsync(userId).Result : null;
+                        var userIds = from item in action.Transfer.Role.Users select item.UserId;
+                        var users = userManager.Users.Where(item => userIds.Contains(item.Id) && item.LockoutEnabled == false);
+
+                        if (users.Count() == 0)
+                        {
+                            throw new ArgumentNullAppException(message: $"系统中不存在正常启用的“{action.Transfer.Role.Name}”");
+                        }
+
+                        user = users.First();
                     }
 
                     break;
