@@ -71,6 +71,7 @@
                     trace.AddDatagram(factory.Generate(trace));
 
                     traceRepository.Modify(trace);
+                    traceRepository.Commit();
                 }
 
                 foreach (var datagramFile in trace.DatagramFiles)
