@@ -12,7 +12,7 @@
         {
         }
 
-        public IQueryable<FileSystem> GetByIds(ICollection<Guid> ids)
+        IQueryable<FileSystem> IFileSystemRepository.GetByIds(ICollection<Guid> ids)
         {
             return GetAll(m => ids.Contains(m.Id));
         }

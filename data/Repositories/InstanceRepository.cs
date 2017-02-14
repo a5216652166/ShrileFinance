@@ -14,15 +14,7 @@
         {
         }
 
-        public override Instance Get(Guid key)
-        {
-            var instance = base.Get(key);
-            instance.ProcessType = GetProcessTypeByProcessId(instance.FlowId);
-
-            return instance;
-        }
-
-        public IPagedList<Instance> DoingPagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId = null, Guid? currentNodeId = null, DateTime? beginTime = null, DateTime? endTime = null)
+        IPagedList<Instance> IInstanceRepository.DoingPagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime)
         {
             // 筛选 1.状态为正常
             //      2.当前用户的角色可处理的节点
@@ -56,7 +48,7 @@
             return instances.ToPagedList(page, size);
         }
 
-        public IPagedList<Instance> DonePagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId = null, Guid? currentNodeId = null, DateTime? beginTime = null, DateTime? endTime = null, InstanceStatusEnum? status = null)
+        IPagedList<Instance> IInstanceRepository.DonePagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime, InstanceStatusEnum? status)
         {
             // 筛选 1.获取当前用户处理过的流程
             var instances = GetAll(m =>
@@ -85,6 +77,14 @@
 
             // 分页查询
             return instances.ToPagedList(page, size);
+        }
+
+        public override Instance Get(Guid key)
+        {
+            var instance = base.Get(key);
+            instance.ProcessType = GetProcessTypeByProcessId(instance.FlowId);
+
+            return instance;
         }
 
         private ProcessTypeEnum GetProcessTypeByProcessId(Guid processId)

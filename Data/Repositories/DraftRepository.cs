@@ -10,7 +10,7 @@
         {
         }
 
-        public Draft GetByUserAndPageLink(string userId, string pageLink)
+        Draft IDraftRepository.GetByUserAndPageLink(string userId, string pageLink)
         {
             return GetAll().FirstOrDefault(m => m.UserId == userId && m.PageLink == pageLink);
         }

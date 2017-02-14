@@ -24,24 +24,29 @@
 
         private DbSet<TEntity> Entities => context.Set<TEntity>();
 
-        public virtual TEntity Get(Guid key) => Entities?.FindAsync(key).Result;
+        void IRepository<TEntity>.Modify(TEntity entity) =>
+           Context.Entry(entity).State = EntityState.Modified;
 
-        public virtual IQueryable<TEntity> GetAll() => Filter(Entities);
+        public virtual TEntity Get(Guid key) =>
+            Entities?.FindAsync(key).Result;
 
-        public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate) => GetAll().Where(predicate);
+        public virtual IQueryable<TEntity> GetAll() =>
+            Filter(Entities);
 
-        public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize)
-        {
-            return GetAll(predicate).OrderByDescending(m => m.Id).ToPagedList(pageNumber, pageSize);
-        }
+        public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate) =>
+            GetAll().Where(predicate);
 
-        public virtual Guid Create(TEntity entity) => Entities.Add(entity).Id;
+        public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize) =>
+            GetAll(predicate).OrderByDescending(m => m.Id).ToPagedList(pageNumber, pageSize);
 
-        public virtual void Modify(TEntity entity) => Context.Entry(entity).State = EntityState.Modified;
+        public virtual Guid Create(TEntity entity) =>
+            Entities.Add(entity).Id;
 
-        public virtual void Remove(TEntity entity) => Context.Entry(entity).State = EntityState.Deleted;
+        public virtual void Remove(TEntity entity) =>
+            Context.Entry(entity).State = EntityState.Deleted;
 
-        public virtual int Commit() => Context.SaveChanges();
+        public virtual int Commit() =>
+            Context.SaveChanges();
 
         private IQueryable<TEntity> Filter(DbSet<TEntity> entities)
         {
@@ -57,7 +62,7 @@
             {
                 entitieList.Add(item);
 
-                if (item is IProcessable && (item as IProcessable).Hidden)
+                if (item is IProcessable && ((IProcessable)item).Hidden)
                 {
                     entitieList.Remove(item);
                 }

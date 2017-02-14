@@ -12,16 +12,16 @@
         {
         }
 
-        public int CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId, TraceTypeEnum traceType) =>
+        int ITraceRepostitory.CountByDateCreatedAndReference(DateTime dateCreated, Guid referenceId, TraceTypeEnum traceType) =>
            GetAll().Count(m => m.ReferenceId == referenceId && m.DateCreated == dateCreated && m.Type == traceType);
 
-        public IEnumerable<Trace> GetByDateCreated(DateTime dateCreated) =>
+        IEnumerable<Trace> ITraceRepostitory.GetByDateCreated(DateTime dateCreated) =>
            GetAll(m => m.DateCreated == dateCreated);
 
-        public IEnumerable<Trace> GetByIds(IEnumerable<Guid> traceIds) =>
+        IEnumerable<Trace> ITraceRepostitory.GetByIds(IEnumerable<Guid> traceIds) =>
             GetAll(m => traceIds.Contains(m.Id));
 
-        public IEnumerable<Trace> GetPageList(string search, int page, int size, TraceStatusEmum? status = null, DateTime? beginTime = null, DateTime? endTime = null)
+        IEnumerable<Trace> ITraceRepostitory.GetPageList(string search, int page, int size, TraceStatusEmum? status = null, DateTime? beginTime = null, DateTime? endTime = null)
         {
             var messageTrack = GetAll();
 

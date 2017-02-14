@@ -11,7 +11,7 @@
         {
         }
 
-        public IPagedList<Loan> PagedList(string searchString, int page, int size, LoanStatusEnum? status)
+        IPagedList<Loan> ILoanRepository.PagedList(string searchString, int page, int size, LoanStatusEnum? status)
         {
             var loans = GetAll();
 

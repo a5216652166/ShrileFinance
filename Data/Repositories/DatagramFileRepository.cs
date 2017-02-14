@@ -11,7 +11,7 @@
         {
         }
 
-        public string AllotSerialNumber(DatagramFile datagramFile)
+        string IDatagramFileRepository.AllotSerialNumber(DatagramFile datagramFile)
         {
             // 序列号
             var serialNumber = string.Empty;
