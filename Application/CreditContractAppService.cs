@@ -206,7 +206,14 @@
         {
             var credits = repository.GetAll().Where(m => m.EffectiveStatus != CreditContractStatusEnum.失效).AsEnumerable();
 
-            return Mapper.Map<IEnumerable<CreditContractViewModel>>(credits);
+            var creditViewModels = Mapper.Map<IEnumerable<CreditContractViewModel>>(credits);
+
+            foreach (var item in creditViewModels)
+            {
+                item.OrganizationName = credits.Single(m => m.Id == item.Id.Value).Organization.Property.InstitutionChName;
+            }
+
+            return creditViewModels;
         }
 
         /// <summary>

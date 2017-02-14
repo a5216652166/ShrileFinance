@@ -358,6 +358,10 @@
                     <select name="CreditId" class="easyui-combobox" data-options="required:true,editable:false,
                             valueField:'Id',textField:'CreditContractCode',onSelect:onSelectCreditContractNumber"></select>
                 </div>
+                <div class="col-6">
+                    <label>机构名称:</label>
+                    <input name="OrganizationName" class="easyui-textbox" data-options="readonly:true" />
+                </div>
             </div>
 
             <div class="row">
@@ -407,6 +411,7 @@
                 }
 
                 function onSelectCreditContractNumber(record) {
+                    $("input[textboxname='OrganizationName'").textbox("setValue", record.OrganizationName);
                     $("input[textboxname='CreditLimit'").textbox("setValue", record.CreditLimit);
                     $("input[textboxname='CreditBalance'").textbox("setValue", record.CreditBalance);
 
