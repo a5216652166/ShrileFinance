@@ -18,19 +18,22 @@
         private readonly PaymentService paymentService;
         private readonly ILoanRepository repository;
         private readonly DatagramAppService messageAppService;
+        private readonly IPaymentHistoryRepository paymentRepository;
 
         public LoanAppService(
             LoanService loanService,
             PaymentService paymentService,
             ILoanRepository repository,
             ICreditContractRepository creditRepository,
-            DatagramAppService messageAppService)
+            DatagramAppService messageAppService,
+            IPaymentHistoryRepository paymentRepository)
         {
             this.loanService = loanService;
             this.paymentService = paymentService;
             this.repository = repository;
             this.creditRepository = creditRepository;
             this.messageAppService = messageAppService;
+            this.paymentRepository = paymentRepository;
         }
 
         /// <summary>
@@ -129,11 +132,26 @@
             }
 
             decimal paymentCount = 0;
-            model.Payments.Where(m => m.Hidden).Count();
 
             var loan = repository.Get(model.LoanId);
+            var modelPaymentIds = from item in model.Payments.Where(m => m.Id != null) select item.Id.Value;
+            var removeItem = new List<PaymentHistory>();
+            foreach (var item in loan.Payments.Where(m=>m.Hidden))
+            {
+                if (modelPaymentIds.Contains(item.Id) == false)
+                {
+                    removeItem.Add(item);
+                }
+            }
 
-            model.Payments.Where(m => m.Hidden).ToList().ForEach(payment =>
+            removeItem.ForEach(m=> {
+                loan.Payments.Remove(m);
+                paymentRepository.Remove(m);
+            });
+
+           // var removeItem = loan.Payments.Where(m => !modelPaymentIds.Contains(m.Id));
+            
+            foreach (var payment in model.Payments)
             {
                 if (payment.Id != null)
                 {
@@ -147,7 +165,7 @@
                     // 新增
                     loan.AddPaymentHistory(Mapper.Map<PaymentHistory>(payment));
                 }
-            });
+            }
 
             foreach (var payment in loan.Payments)
             {
