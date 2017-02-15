@@ -340,22 +340,22 @@
 
                     case CreditContractChangeEnum.签订合同:
                         // 授信合同 - 签订 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订授信合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订贷款合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate);
                         break;
 
                     case CreditContractChangeEnum.有效期变更:
                         // 授信合同 - 合同有效期变更 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"授信合同：{credit.CreditContractCode}有效日期变更", specialDate: credit.EffectiveDate);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"贷款合同：{credit.CreditContractCode}有效日期变更", specialDate: credit.EffectiveDate);
                         break;
 
                     case CreditContractChangeEnum.金额发生变化:
                         // 授信合同 - 合同金额发生变化 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + credit.CreditContractCode + "授信额度变更", specialDate: credit.EffectiveDate);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: "贷款合同：" + credit.CreditContractCode + "授信额度变更", specialDate: credit.EffectiveDate);
                         break;
 
                     case CreditContractChangeEnum.合同终止:
                         // 授信合同 - 终止 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "贷款合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate);
                         break;
                 }
             }
@@ -363,7 +363,7 @@
             {
                 var loan = entity as Loan;
                 var credit = creditContractRepository.Get(loan.CreditId);
-
+                
                 // 借据 放款 —> 报文追踪
                 datagramAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据：{loan.ContractNumber}，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
             }
