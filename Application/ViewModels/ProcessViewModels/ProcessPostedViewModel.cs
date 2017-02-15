@@ -11,6 +11,7 @@
             授信 = 3,
             借据 = 4,
             还款 = 5,
+            机构变更 = 6
         }
 
         public Guid InstanceId { get; set; }

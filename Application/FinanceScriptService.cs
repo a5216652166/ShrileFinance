@@ -309,6 +309,22 @@
             });
         }
 
+        /// <summary>
+        /// 机构变更
+        /// </summary>
+        public void OrganizateChange()
+        {
+            // "64DC5FCF-18A4-E611-80C5-507B9DE4A488"
+        }
+
+        /// <summary>
+        /// 机构变更完成
+        /// </summary>
+        public void OrganizateChangeFinish()
+        {
+
+        }
+
         private T GetData<T>(string formId) where T : class, new()
         {
             return Data[formId.ToLower()].ToObject<T>();

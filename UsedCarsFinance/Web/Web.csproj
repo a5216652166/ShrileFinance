@@ -153,6 +153,7 @@
     <Content Include="Account\PasswordEdit.html" />
     <Content Include="Account\UserEdit.html" />
     <Content Include="Account\UserInfo.html" />
+    <Content Include="Borrowers\OrganizateChange.html" />
     <Content Include="CreditInvestigation\CreditMessageManage1.html" />
     <Content Include="CreditInvestigation\CreditMessageManage.html" />
     <Content Include="Statistics\LoanCount.html" />

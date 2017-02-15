@@ -92,10 +92,11 @@
             var dictionary = new Dictionary<Guid, ProcessTypeEnum>();
 
             dictionary.Add(Guid.Parse("228C8C80-06A4-E611-80C5-507B9DE4A488"), ProcessTypeEnum.融资);
-            dictionary.Add(Guid.Parse("04824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.机构);
+            dictionary.Add(Guid.Parse("04824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.添加机构);
             dictionary.Add(Guid.Parse("05824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.授信);
             dictionary.Add(Guid.Parse("06824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.借据);
-            dictionary.Add(Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.还款);
+            dictionary.Add(Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.还款); 
+            dictionary.Add(Guid.Parse("08824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.机构变更);
 
             return dictionary[processId];
         }
