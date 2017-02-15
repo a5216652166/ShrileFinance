@@ -382,6 +382,9 @@
                 case ProcessPostedViewModel.ProcessTypeEnum.还款:
                     flowId = Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488");
                     break;
+                case ProcessPostedViewModel.ProcessTypeEnum.机构变更:
+                    flowId = Guid.Parse("08824FE1-78D1-E611-80CA-507B9DE4A488");
+                    break;
             }
 
             return flowId;
@@ -472,7 +475,7 @@
             {
                 case ProcessTypeEnum.融资:
                     break;
-                case ProcessTypeEnum.机构:
+                case ProcessTypeEnum.添加机构:
                     break;
                 case ProcessTypeEnum.授信:
                     break;

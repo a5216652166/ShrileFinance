@@ -125,10 +125,11 @@
                     <!--<option value="-">　</option>-->
                     <option value="-">=请选择=</option>
                     <option value="Finance-融资">融资流程</option>
-                    <option value="Organization-机构">机构流程</option>
+                    <option value="Organization-新增机构">新增机构流程</option>
                     <option value="Credit-授信">贷款流程</option>
                     <option value="Loan-借据">借据流程</option>
                     <option value="Payment-还款">还款流程</option>
+                    <option value="OrganizateChange-机构变更">机构变更流程</option>
                 </select>
                 <a id="StartFlow" data-flowType="　" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Start,iconCls:'icon-add',plain:true,disabled:true">发起流程</a>
                 <!--<span>　</span>-->
@@ -146,6 +147,8 @@
                             case "Loan": LoanFlow();
                                 break;
                             case "Payment": PaymentFlow();
+                                break;
+                            case "OrganizateChange": OrganizateChangeFlow();
                                 break;
                         }
 
@@ -167,6 +170,10 @@
 
                         function PaymentFlow() {
                             StartProcess(5, "payment");
+                        }
+
+                        function OrganizateChangeFlow() {
+                            StartProcess(6, "OrganizateChange");
                         }
 
                         function StartProcess(processType, statusCode) {
@@ -202,10 +209,11 @@
                 </script>
 
                 <a id="Finance-融资" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">融资流程</a>
-                <a id="Organization-机构" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">机构流程</a>
+                <a id="Organization-新增机构" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">机构流程</a>
                 <a id="Credit-授信" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">贷款流程</a>
                 <a id="Loan-借据" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">借据流程</a>
                 <a id="Payment-还款" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">还款流程</a>
+                <a id="OrganizateChange-机构变更" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">机构变更</a>
                 <script type="text/javascript">
                 function SProcess()
                 {
