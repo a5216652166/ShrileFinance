@@ -13,31 +13,19 @@
         uc.grid = new UCGrid("#dg");
 
         $(function () {
-            //if (top.$("#role_name").text() == "客户经理") {
-            //    // 从模板创建并新增控件
-            //    $($("template#StartFlow").html()).insertBefore($('div#tb div a#mod'));
+            if (top.$("#role_name").text() == "客户经理") {
+                // 从模板创建并新增控件
+                $($("template#StartFlow").html()).insertBefore($('div#tb div a#mod'));
 
-            //    // 移除模板
-            //    $("template#StartFlow").remove();
+                // 移除模板
+                $("template#StartFlow").remove();
 
-            //    // 解析控件
-            //    $.parser.parse($('div#tb div'));
+                // 解析控件
+                $.parser.parse($('div#tb div'));
 
-            //    //$("select#FlowType").next("span").hide();
-            //    //$("select#FlowType").next().next("a#StartFlow").hide();
-            //}
-
-            // 从模板创建并新增控件
-            $($("template#StartFlow").html()).insertBefore($('div#tb div a#mod'));
-
-            // 移除模板
-            $("template#StartFlow").remove();
-
-            // 解析控件
-            $.parser.parse($('div#tb div'));
-
-            $("select#FlowType").next("span").hide();
-            $("select#FlowType").next().next("a#StartFlow").hide();
+                $("select#FlowType").next("span").hide();
+                $("select#FlowType").next().next("a#StartFlow").hide();
+            }
         });
          
         function Search() {
@@ -132,20 +120,6 @@
         </form>
 
         <div id="Flow" data-flowType="">
-            <a id="Finance-融资" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">融资流程</a>
-            <a id="Organization-机构" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">机构流程</a>
-            <a id="Credit-授信" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">贷款流程</a>
-            <a id="Loan-借据" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">借据流程</a>
-            <a id="Payment-还款" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">还款流程</a>
-            <script type="text/javascript">
-                function SProcess()
-                {
-                    $("select#FlowType").combobox("select", $(this).attr("id"));
-                    $("a#StartFlow").click();
-                }
-            </script>
-
-
             <template id="StartFlow">
                 <select id="FlowType" class="easyui-combobox" data-options="editable:false,onSelect:SelectFlow">
                     <!--<option value="-">　</option>-->
@@ -226,6 +200,20 @@
                         $("div#tb>div a#StartFlow").data("flowType", record.value.split("-")[0]);
                     }
                 </script>
+
+                <a id="Finance-融资" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">融资流程</a>
+                <a id="Organization-机构" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">机构流程</a>
+                <a id="Credit-授信" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">贷款流程</a>
+                <a id="Loan-借据" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">借据流程</a>
+                <a id="Payment-还款" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">还款流程</a>
+                <script type="text/javascript">
+                function SProcess()
+                {
+                    $("select#FlowType").combobox("select", $(this).attr("id"));
+                    $("a#StartFlow").click();
+                }
+                </script>
+
             </template>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Process,iconCls:'icon-edit',plain:true">处理流程</a>
         </div>
