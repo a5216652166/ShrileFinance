@@ -11,6 +11,7 @@
             AssociatedEnterprises = new HashSet<AssociatedEnterpriseViewModel>();
             Litigation = new HashSet<LitigationViewModel>();
             BigEvent = new HashSet<BigEventViewModel>();
+            Periods = new HashSet<string>();
         }
 
         /// <summary>
@@ -67,5 +68,7 @@
         /// 大事件
         /// </summary>
         public IEnumerable<BigEventViewModel> BigEvent { get; set; }
+
+        public IEnumerable<string> Periods { get; set; }
     }
 }
