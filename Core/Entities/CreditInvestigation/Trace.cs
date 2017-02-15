@@ -30,13 +30,14 @@
 
     public class Trace : Entity, IAggregateRoot
     {
-        public Trace(Guid referenceId, TraceTypeEnum type, DateTime specialDate, string name = null)
+        public Trace(Guid referenceId, TraceTypeEnum type, DateTime specialDate, string organizateName, string name = null)
         {
             Name = name;
             Type = type;
             ReferenceId = referenceId;
             ////SerialNumber = serialNumber;
             SpecialDate = specialDate;
+            OrganizateName = organizateName;
             DateCreated = DateTime.Now.Date;
             Status = TraceStatusEmum.待生成;
         }
@@ -44,6 +45,10 @@
         protected Trace()
         {
         }
+        /// <summary>
+        /// 机构名称
+        /// </summary>
+        public string OrganizateName { get; private set; }
 
         /// <summary>
         /// 业务发生日期
@@ -84,6 +89,11 @@
         /// 报文文件
         /// </summary>
         public virtual ICollection<DatagramFile.DatagramFile> DatagramFiles { get; private set; }
+
+        /// <summary>
+        /// 报文名
+        /// </summary>
+        public string FileName { get; private set; }
 
         /// <summary>
         /// 添加报文文件

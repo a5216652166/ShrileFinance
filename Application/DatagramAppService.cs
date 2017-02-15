@@ -37,7 +37,7 @@
         /// <param name="traceType">操作类型</param>
         /// <param name="specialDate">业务发生日期</param>
         /// <param name="defaultName">默认名称</param>
-        public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime specialDate, string defaultName = null)
+        public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime specialDate,string organizateName,string defaultName = null)
         {
             var dateCreated = DateTime.Now.Date;
             var count = traceRepository.CountByDateCreatedAndReference(dateCreated, referenceId, traceType);
@@ -46,7 +46,7 @@
             {
                 ////// 生成序列号
                 ////var serialNumber = traceRepository.MaxSerialNumberByDateCreated(dateCreated) + 1;
-                var trace = new Trace(referenceId, traceType, specialDate, defaultName);
+                var trace = new Trace(referenceId, traceType, specialDate, defaultName, organizateName);
 
                 traceRepository.Create(trace);
                 traceRepository.Commit();

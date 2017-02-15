@@ -17,6 +17,8 @@
             Property(m => m.Name).HasMaxLength(200);
             Property(m => m.Status);
             Property(m => m.DateCreated).HasColumnType("DATE");
+            Property(m => m.FileName).HasMaxLength(200);
+            Property(m => m.OrganizateName).HasMaxLength(200);
 
             HasMany(m => m.DatagramFiles).WithOptional().WillCascadeOnDelete();
 

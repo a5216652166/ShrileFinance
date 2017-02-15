@@ -327,7 +327,7 @@
                 var customer = entity as Core.Entities.Customers.Enterprise.Organization;
 
                 // 添加机构 —> 报文追踪
-                datagramAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate);
+                datagramAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate,organizateName:customer.Property.InstitutionChName);
             }
             else if (entity is CreditContract && describe != null)
             {
@@ -340,22 +340,22 @@
 
                     case CreditContractChangeEnum.签订合同:
                         // 授信合同 - 签订 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订贷款合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订贷款合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate,organizateName:credit.Organization.Property.InstitutionChName);
                         break;
 
                     case CreditContractChangeEnum.有效期变更:
                         // 授信合同 - 合同有效期变更 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"贷款合同：{credit.CreditContractCode}有效日期变更", specialDate: credit.EffectiveDate);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"贷款合同：{credit.CreditContractCode}有效日期变更", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
                         break;
 
                     case CreditContractChangeEnum.金额发生变化:
                         // 授信合同 - 合同金额发生变化 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: "贷款合同：" + credit.CreditContractCode + "授信额度变更", specialDate: credit.EffectiveDate);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: "贷款合同：" + credit.CreditContractCode + "授信额度变更", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
                         break;
 
                     case CreditContractChangeEnum.合同终止:
                         // 授信合同 - 终止 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "贷款合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "贷款合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
                         break;
                 }
             }
@@ -365,7 +365,7 @@
                 var credit = creditContractRepository.Get(loan.CreditId);
                 
                 // 借据 放款 —> 报文追踪
-                datagramAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据：{loan.ContractNumber}，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
+                datagramAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据：{loan.ContractNumber}，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate,organizateName:credit.Organization.Property.InstitutionChName);
             }
             else if (entity is IEnumerable<PaymentHistory>)
             {
@@ -373,7 +373,7 @@
                 var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden).ToList();
 
                 var loan = loanRepository.Get(payments.First().LoanId);
-
+                var credit = creditContractRepository.Get(loan.CreditId);
                 var traces = new Dictionary<PaymentHistory, ICollection<TraceTypeEnum>>();
 
                 foreach (var payment in payments)
@@ -408,15 +408,15 @@
                                 break;
                             case TraceTypeEnum.还款:
                                 // 还款 —> 报文追踪
-                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{trace.Key.ActualPaymentPrincipal}", specialDate: trace.Key.ActualDatePayment);
+                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{trace.Key.ActualPaymentPrincipal}", specialDate: trace.Key.ActualDatePayment,organizateName:credit.Organization.Property.InstitutionChName);
                                 break;
                             case TraceTypeEnum.逾期:
                                 // 逾期 —> 报文追踪
-                                datagramAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: trace.Key.ActualDatePayment);
+                                datagramAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: trace.Key.ActualDatePayment, organizateName: credit.Organization.Property.InstitutionChName);
                                 break;
                             case TraceTypeEnum.欠息:
                                 // 欠息 —> 报文追踪
-                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: trace.Key.ActualDatePayment);
+                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: trace.Key.ActualDatePayment, organizateName: credit.Organization.Property.InstitutionChName);
                                 break;
                         }
                     }
