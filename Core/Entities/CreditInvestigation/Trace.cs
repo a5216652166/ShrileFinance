@@ -93,7 +93,7 @@
         /// <summary>
         /// 报文名
         /// </summary>
-        public string FileName { get; private set; }
+        public string FileName { get; set; }
 
         /// <summary>
         /// 添加报文文件

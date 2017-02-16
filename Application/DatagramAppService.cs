@@ -46,7 +46,7 @@
             {
                 ////// 生成序列号
                 ////var serialNumber = traceRepository.MaxSerialNumberByDateCreated(dateCreated) + 1;
-                var trace = new Trace(referenceId, traceType, specialDate, defaultName, organizateName);
+                var trace = new Trace(referenceId, traceType, specialDate, organizateName, defaultName);
 
                 traceRepository.Create(trace);
                 traceRepository.Commit();
@@ -78,8 +78,10 @@
                 {
                     var filename = datagramFile.GenerateFilename();
                     var buffer = datagramFile.GetBuffer();
-
+                   
                     files.Add(filename, buffer);
+                    trace.FileName = filename;
+                    traceRepository.Modify(trace);
                 }
             }
 
