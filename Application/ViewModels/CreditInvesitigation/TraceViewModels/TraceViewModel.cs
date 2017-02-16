@@ -34,6 +34,16 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// 机构名称
+        /// </summary>
+        public string OrganizateName { get; set; }
+
+        /// <summary>
+        /// 报文文件名
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
         /// 操作类型
         /// </summary>
         [Display(Name = "操作类型")]
