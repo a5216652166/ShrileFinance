@@ -67,11 +67,66 @@
         public void Modify(OrganizationViewModel model)
         {
             var customer = repository.Get(model.Base.Id.Value);
-            Mapper.Map(model.Base, customer);
-            Mapper.Map(model, customer);
+            customer.Hidden = true;
 
-            // 映射财务
-            if (model.FinancialAffairs != null)
+            Mapper.Map(model.Base, customer);
+            customer.CustomerNumber = model.Base.CustomerNumber;
+            ////Mapper.Map(model, customer);
+
+            if (model.Periods.Contains("Property"))
+            {
+                Mapper.Map(model.Property,customer.Property);
+            }
+
+            if (model.Periods.Contains("State"))
+            {
+                Mapper.Map(model.State, customer.State);
+            }
+
+            if (model.Periods.Contains("Contact"))
+            {
+                Mapper.Map(model.Contact, customer.Contact);
+            }
+
+            if (model.Periods.Contains("Managers"))
+            {
+                new UpdateBind().Bind(customer.Managers, model.Managers);
+                model.Managers.ToList().ForEach(m =>
+                {
+                    var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
+                    if (familyMembersEntity != null)
+                    {
+                        familyMembersEntity.FamilyMembers.Clear();
+                        new UpdateBind().Bind(familyMembersEntity.FamilyMembers, m.FamilyMembers);
+                    }
+                });
+            }
+
+            if (model.Periods.Contains("Shareholders"))
+            {
+                new UpdateBind().Bind(customer.Shareholders, model.Shareholders);
+                model.Shareholders.ToList().ForEach(m =>
+                {
+                    var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
+                    if (shareholders != null)
+                    {
+                        shareholders.FamilyMembers.Clear();
+                        new UpdateBind().Bind(shareholders.FamilyMembers, m.FamilyMembers);
+                    }
+                });
+            }
+
+            if (model.Periods.Contains("AssociatedEnterprises"))
+            {
+                new UpdateBind().Bind(customer.AssociatedEnterprises, model.AssociatedEnterprises);
+            }
+
+            if (model.Periods.Contains("Parent"))
+            {
+                Mapper.Map(model.Contact, customer.Contact);
+            }
+
+            if (model.Periods.Contains("FinancialAffairs"))
             {
                 new UpdateBind().Bind(customer.FinancialAffairs.Liabilities, model.FinancialAffairs.Liabilities);
                 new UpdateBind().Bind(customer.FinancialAffairs.CashFlow, model.FinancialAffairs.CashFlow);
@@ -80,32 +135,54 @@
                 new UpdateBind().Bind(customer.FinancialAffairs.Profit, model.FinancialAffairs.Profit);
             }
 
-            new UpdateBind().Bind(customer.BigEvent, model.BigEvent);
-            new UpdateBind().Bind(customer.Litigation, model.Litigation);
-            new UpdateBind().Bind(customer.Managers, model.Managers);
-
-            model.Managers.ToList().ForEach(m =>
+            if (model.Periods.Contains("Litigation"))
             {
-                var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
-                if (familyMembersEntity != null)
-                {
-                    familyMembersEntity.FamilyMembers.Clear();
-                    new UpdateBind().Bind(familyMembersEntity.FamilyMembers, m.FamilyMembers);
-                }
-            });
-            new UpdateBind().Bind(customer.Shareholders, model.Shareholders);
+                new UpdateBind().Bind(customer.Litigation, model.Litigation);
+            }
 
-            model.Shareholders.ToList().ForEach(m =>
+            if (model.Periods.Contains("BigEvent"))
             {
-                var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
-                if (shareholders != null)
-                {
-                    shareholders.FamilyMembers.Clear();
-                    new UpdateBind().Bind(shareholders.FamilyMembers, m.FamilyMembers);
-                }
-            });
+                new UpdateBind().Bind(customer.BigEvent, model.BigEvent);
+            }
 
-            new UpdateBind().Bind(customer.AssociatedEnterprises, model.AssociatedEnterprises);
+
+            ////// 映射财务
+            ////if (model.FinancialAffairs != null)
+            ////{
+            ////    new UpdateBind().Bind(customer.FinancialAffairs.Liabilities, model.FinancialAffairs.Liabilities);
+            ////    new UpdateBind().Bind(customer.FinancialAffairs.CashFlow, model.FinancialAffairs.CashFlow);
+            ////    new UpdateBind().Bind(customer.FinancialAffairs.IncomeExpenditur, model.FinancialAffairs.IncomeExpenditur);
+            ////    new UpdateBind().Bind(customer.FinancialAffairs.InstitutionLiabilities, model.FinancialAffairs.InstitutionLiabilities);
+            ////    new UpdateBind().Bind(customer.FinancialAffairs.Profit, model.FinancialAffairs.Profit);
+            ////}
+
+            ////new UpdateBind().Bind(customer.BigEvent, model.BigEvent);
+
+            ////new UpdateBind().Bind(customer.Litigation, model.Litigation);
+
+            ////new UpdateBind().Bind(customer.Managers, model.Managers);
+            ////model.Managers.ToList().ForEach(m =>
+            ////{
+            ////    var familyMembersEntity = customer.Managers.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
+            ////    if (familyMembersEntity != null)
+            ////    {
+            ////        familyMembersEntity.FamilyMembers.Clear();
+            ////        new UpdateBind().Bind(familyMembersEntity.FamilyMembers, m.FamilyMembers);
+            ////    }
+            ////});
+
+            ////new UpdateBind().Bind(customer.Shareholders, model.Shareholders);
+            ////model.Shareholders.ToList().ForEach(m =>
+            ////{
+            ////    var shareholders = customer.Shareholders.ToList().Find(c => c.Id == m.Id && c.Id != Guid.Empty);
+            ////    if (shareholders != null)
+            ////    {
+            ////        shareholders.FamilyMembers.Clear();
+            ////        new UpdateBind().Bind(shareholders.FamilyMembers, m.FamilyMembers);
+            ////    }
+            ////});
+
+            ////new UpdateBind().Bind(customer.AssociatedEnterprises, model.AssociatedEnterprises);
 
             repository.Modify(customer);
             repository.Commit();

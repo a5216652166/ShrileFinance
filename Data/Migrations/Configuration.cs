@@ -239,8 +239,9 @@
                 new Form { Id = new Guid("{60DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "授信合同", Link = "../Loan/CreditContractEdit.html", Sort = 200 },
                 new Form { Id = new Guid("{61DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "借据申请", Link = "../Loan/LoanEdit.html", Sort = 200 },
                 new Form { Id = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "还款管理", Link = "../Loan/LoanEdit.html", Sort = 200 },
-                new Form { Id = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "审核意见", Link = "../Flow/ExamineOpinion.html", Sort = 200 },
-                new Form { Id = new Guid("{64DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{08824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "机构变更", Link = "../Borrowers/OrganizateChange.html", Sort = 200 });
+                new Form { Id = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{08824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "机构变更", Link = "../Borrowers/OrganizateChange.html", Sort = 200 },
+                new Form { Id = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "审核意见", Link = "../Flow/ExamineOpinion.html", Sort = 200 }
+                );
 
             context.Set<FormNode>().AddOrUpdate(
                 m => new { m.NodeId, m.FormId },
@@ -339,12 +340,12 @@
                 new FormNode { NodeId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
 
                 // 机构变更
-                new FormNode { NodeId = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{64DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
-                new FormNode { NodeId = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
-                new FormNode { NodeId = new Guid("{B5EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{64DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
+                new FormNode { NodeId = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{B5EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
-                new FormNode { NodeId = new Guid("{B6EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{64DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
-                new FormNode { NodeId = new Guid("{B6EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false }
+                new FormNode { NodeId = new Guid("{B5EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{B6EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
+                new FormNode { NodeId = new Guid("{B6EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false }
                 );
 
             context.Set<FormRole>().AddOrUpdate(
@@ -400,19 +401,19 @@
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("64DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("63DC5FCF-18A4-E611-80C5-507B9DE4A488") },
 
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("64DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("63DC5FCF-18A4-E611-80C5-507B9DE4A488") },
 
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C542BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("64DC5FCF-18A4-E611-80C5-507B9DE4A488") }
+                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("63DC5FCF-18A4-E611-80C5-507B9DE4A488") }
                 );
 
             context.SaveChanges();

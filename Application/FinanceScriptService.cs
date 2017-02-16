@@ -315,6 +315,9 @@
         public void OrganizateChange()
         {
             // "64DC5FCF-18A4-E611-80C5-507B9DE4A488"
+            var origanizate = GetData<OrganizationViewModel>("");
+
+            organizationAppService.Modify(origanizate);
         }
 
         /// <summary>
