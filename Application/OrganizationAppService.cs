@@ -234,6 +234,14 @@
             return custviewmodelList;
         }
 
+        public List<OriganizateOptions> GetOptions()
+        {
+            var list = from item in repository.GetAll(m => m.Hidden == false)
+                       select new OriganizateOptions() { Value=item.Id,Text=item.Property.InstitutionChName };
+
+            return list.ToListAsync().Result;
+        }
+
         /// <summary>
         /// 带分页查询
         /// </summary>

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Web.Http;
+    using System.Collections.Generic;
     using Application;
     using Application.ViewModels.OrganizationViewModels;
 
@@ -12,7 +13,7 @@
 
         public CustomerController(OrganizationAppService service, StatisticsAppService treeGridService)
         {
-            this.customerAppService = service;
+            customerAppService = service;
             this.treeGridService = treeGridService;
         }
 
@@ -77,6 +78,13 @@
             var cusCombo = customerAppService.GetAll();
 
             return Ok(cusCombo);
+        }
+
+        public IHttpActionResult GetOptions()
+        {
+            var options = customerAppService.GetOptions();
+
+            return Ok(options);
         }
 
         /// <summary>
