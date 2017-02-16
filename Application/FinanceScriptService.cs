@@ -314,10 +314,12 @@
         /// </summary>
         public void OrganizateChange()
         {
-            // "64DC5FCF-18A4-E611-80C5-507B9DE4A488"
-            var origanizate = GetData<OrganizationViewModel>("");
+            var origanizate = GetData<OrganizationViewModel>("63DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             organizationAppService.Modify(origanizate);
+
+            Instance.RootKey = origanizate.Id;
+            Instance.Title = $"{origanizate.Name} 机构信息变更";
         }
 
         /// <summary>

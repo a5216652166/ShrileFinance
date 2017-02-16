@@ -169,6 +169,7 @@
     <Compile Include="ModelConfigurations\Finance\FinanceConfigration.cs" />
     <Compile Include="ModelConfigurations\Finance\FinanceExtensionConfiguration.cs" />
     <Compile Include="ModelConfigurations\Finance\FinanceProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\ProcessTempDataConfiguration.cs" />
     <Compile Include="ModelConfigurations\Product\FinancingProjectConfigration.cs" />
     <Compile Include="ModelConfigurations\Customer\FinancialAffairsConfiguration.cs" />
     <Compile Include="ModelConfigurations\Flow\FlowConfiguration.cs" />
@@ -324,6 +325,7 @@
     <Compile Include="Repositories\LoanRepository.cs" />
     <Compile Include="Repositories\OrganizationRepository.cs" />
     <Compile Include="Repositories\PaymentHistoryRepository.cs" />
+    <Compile Include="Repositories\ProcessTempDataRepository.cs" />
     <Compile Include="Repositories\TraceRepository.cs" />
     <Compile Include="Repositories\ProduceRepository.cs" />
     <Compile Include="Repositories\FinanceRepository.cs" />

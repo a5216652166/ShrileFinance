@@ -98,15 +98,13 @@
                     query.orgid = GetQueryString("Id");
                 }
                 else {
-                    debugger
-                    var aaa = $("select[textboxname=OrganizateOptions]").combobox("getValue");
-                    debugger
                     query.orgid = parent.flow.RootKey;
                 }
 
                 if (query.orgid) {
+                    debugger
                     $("select[textboxname=OrganizateOptions]").combobox("select", query.orgid);
-
+                    debugger
                     origanizationData = LoadDateForId(query.orgid);
 
                     LoadData(origanizationData);
@@ -320,6 +318,8 @@
         function BuildData() {
             var data = new Object();
 
+            data.Id = $("select[textboxname=OrganizateOptions]").combobox("getValue");
+            data.Name = $("select[textboxname=OrganizateOptions]").combobox("getText");
             data.Periods = $("form#content>input[name=ChangePeriod]").val().split("-");
 
             $(['Base', 'Property', 'State', 'Contact']).each(function (i, e) {

@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
-    using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Interfaces.Repositories;
     using ViewModels;
@@ -67,7 +66,6 @@
         public void Modify(OrganizationViewModel model)
         {
             var customer = repository.Get(model.Base.Id.Value);
-            customer.Hidden = true;
 
             Mapper.Map(model.Base, customer);
             customer.CustomerNumber = model.Base.CustomerNumber;
@@ -185,7 +183,6 @@
             ////new UpdateBind().Bind(customer.AssociatedEnterprises, model.AssociatedEnterprises);
 
             repository.Modify(customer);
-            repository.Commit();
         }
 
         public OrganizationViewModel Get(Guid id)
