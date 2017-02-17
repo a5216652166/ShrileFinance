@@ -39,7 +39,7 @@
         function Init() {
             // 页面初始化
             PageInit();
-
+            
             setTimeout(function () {
                 // 数据初始化
                 DataInit();
@@ -93,21 +93,39 @@
             function DataInit() {
                 var query = {};
 
-                if (GetQueryString("method") == "view") {
-                    debugger
-                    query.orgid = GetQueryString("Id");
-                }
-                else {
-                    query.orgid = parent.flow.RootKey;
-                }
+                ////if (GetQueryString("method") == "view") {
+                ////    
+                ////    query.InstanceId = GetQueryString("Id");
+                ////}
+                ////else {
+                ////    
+                ////    query.InstanceId = parent.flow.InstanceId;
+                ////}
 
-                if (query.orgid) {
+                query.InstanceId = parent.flow.InstanceId;
+                debugger
+                if (query.InstanceId) {
+                    query.data = LoadDateForId(query.InstanceId);
                     debugger
-                    $("select[textboxname=OrganizateOptions]").combobox("select", query.orgid);
+                    if (query.data.json != '""')
+                    {
+                        origanizationData = JSON.parse(query.data);
+                    }
                     debugger
-                    origanizationData = LoadDateForId(query.orgid);
+                    if (origanizationData == null)
+                    {
+                        return;
+                    }
+
+                    $("select[textboxname=OrganizateOptions]").combobox("select", origanizationData.Id);
 
                     LoadData(origanizationData);
+
+                    $("form section#B div#showSecton input[type=checkbox]").each(function (i, e) {
+                        if (e.checked == false && $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods) > -1) {
+                            $(e).click();
+                        }
+                    });
 
                     if (GetQueryString("method") == "view" || GetQueryString("state") == 0) {
                         PageDisable();
@@ -133,14 +151,14 @@
             if (Id == null) {
                 return;
             }
-
+            debugger
             // 通过Id获取数据
             var resultDate;
             $.ajax({
                 async: false,
-                data: { Id: Id },
+                data: { instanceId: Id },
                 type: "GET",
-                url: "../api/Customer/Get",
+                url: "../api/Customer/GetOrganizateChange",
                 statusCode: {
                     200: function (data) {
                         resultDate = data;
@@ -165,11 +183,48 @@
 
             // 加载基础信息
             FieldsetLoadDateFactory("Base", "text", data.Base);
+        }
 
-            ////if (data.Base != undefined && data.Base.HasParent != undefined && data.Base.HasParent == true) {
-            ////    // 显示上级机构（主管单位）
-            ////    $("fieldset[id=Base]").find("input[name=HasParent]:hidden").click();
-            ////}
+        function LoadDataForOther(name, data) {
+            // 加载 机构属性、机构状态、机构联络、上级机构（主管单位）
+            if ($.inArray(name, ["Property", "State", "Contact", "Parent"]) > -1) {
+                FieldsetLoadDateFactory(name, "text", data[name]);
+                if (name == "Property" && data[name].EconomicSectorsClassification == undefined) {
+                    $("select[textboxname=EconomicSectorsClassification]").combotree("setValue", '');
+                }
+
+                if (name == "Property" && data[name].RegisterAdministrativeDivision == undefined) {
+                    $("select[textboxname=RegisterAdministrativeDivision]").combotree("setValue", '');
+                }
+            }
+
+                //加载 高级主管、重要股东、主要关联企业
+            else if ($.inArray(name, ["Managers", "Shareholders", "AssociatedEnterprises"]) > -1) {
+                FieldsetLoadDateFactory(name, "table", data[name]);
+            }
+
+                // 加载财务信息
+            else if (name == "FinancialAffairs" && data.FinancialAffairs != undefined && data.FinancialAffairs != null) {
+                // 加载财务基本信息
+                FieldsetLoadDateFactory("FinancialAffairsBase", "text", data.FinancialAffairs);
+
+                // 加载现金流量、资产负债、利润利润分配、事业单位收入支出、事业单位资产负债
+                $(["CashFlow", "Liabilities", "Profit", "IncomeExpenditur", "InstitutionLiabilities"]).each(function (index, item) {
+                    FieldsetLoadDateFactory(item, "table", data.FinancialAffairs[item]);
+                });
+            }
+
+                // 加载诉讼事件
+            else if (name = "Litigation" && data.Litigation != undefined && data.Litigation.length > 0) {
+                // 加载诉讼事件
+                FieldsetLoadDateFactory("Litigation", "table", data.Litigation);
+            }
+
+                // 加载大事件
+            else if (name = "BigEvent" && data.BigEvent != undefined && data.BigEvent.length > 0) {
+                // 加载大事件
+                FieldsetLoadDateFactory("BigEvent", "table", data.BigEvent);
+            }
         }
 
         // fieldset 数据加载工厂（type: text or table）
@@ -272,46 +327,24 @@
             }
         }
 
-        function LoadDataForOther(name, data) {
-            // 加载 机构属性、机构状态、机构联络、上级机构（主管单位）
-            if ($.inArray(name, ["Property", "State", "Contact", "Parent"]) > -1) {
-                FieldsetLoadDateFactory(name, "text", data[name]);
-                if (name == "Property" && data[name].EconomicSectorsClassification == undefined) {
-                    $("select[textboxname=EconomicSectorsClassification]").combotree("setValue", '');
+        // 获取fieldset相对应的name
+        function getFieldsetName(idValue) {
+            if (idValue == undefined || idValue == null) {
+                return "";
+            }
+
+            var IdArray = new Array("B-Base", "C-Property", "D-State", "E-Contact", "F-Managers", "G-Shareholders", "H-AssociatedEnterprises",
+                "I-Parent", "J-FinancialAffairsBase", "K-Litigation", "L-BigEvent");
+            var resultName = "";
+
+            for (var i = 0; i < IdArray.length; i++) {
+                if (IdArray[i].substr(0, 1) == idValue.substr(0, 1)) {
+                    resultName = IdArray[i].substr(2);
+                    break;
                 }
-
-                if (name == "Property" && data[name].RegisterAdministrativeDivision == undefined) {
-                    $("select[textboxname=RegisterAdministrativeDivision]").combotree("setValue", '');
-                }
             }
 
-                //加载 高级主管、重要股东、主要关联企业
-            else if ($.inArray(name, ["Managers", "Shareholders", "AssociatedEnterprises"]) > -1) {
-                FieldsetLoadDateFactory(name, "table", data[name]);
-            }
-
-                // 加载财务信息
-            else if (name == "FinancialAffairs" && data.FinancialAffairs != undefined && data.FinancialAffairs != null) {
-                // 加载财务基本信息
-                FieldsetLoadDateFactory("FinancialAffairsBase", "text", data.FinancialAffairs);
-
-                // 加载现金流量、资产负债、利润利润分配、事业单位收入支出、事业单位资产负债
-                $(["CashFlow", "Liabilities", "Profit", "IncomeExpenditur", "InstitutionLiabilities"]).each(function (index, item) {
-                    FieldsetLoadDateFactory(item, "table", data.FinancialAffairs[item]);
-                });
-            }
-
-                // 加载诉讼事件
-            else if (name = "Litigation" && data.Litigation != undefined && data.Litigation.length > 0) {
-                // 加载诉讼事件
-                FieldsetLoadDateFactory("Litigation", "table", data.Litigation);
-            }
-
-                // 加载大事件
-            else if (name = "BigEvent" && data.BigEvent != undefined && data.BigEvent.length > 0) {
-                // 加载大事件
-                FieldsetLoadDateFactory("BigEvent", "table", data.BigEvent);
-            }
+            return resultName;
         }
 
         // 数据构建
@@ -410,9 +443,9 @@
                 if (data == null) {
                     return false;
                 }
-                
+
                 var periods = $("form#content>input[name=ChangePeriod]").val().split("-");
-                
+
                 // 组织机构代码和登记注册号码不能同时为空
                 if (data.Base.OrganizateCode.toString().length == 0 && data.Base.RegistraterCode.toString().length == 0) {
                     ShowError("基础信息 组织机构代码和登记注册号码不能同时为空");
@@ -430,7 +463,7 @@
                     ShowError("高级主管 必填");
                     return false;
                 }
-                
+
                 if ($.inArray("Shareholders", periods) > -1 && data.Shareholders.length == 0) {
                     ShowError("重要股东 必填");
                     return false;
@@ -508,7 +541,7 @@
                         return false;
                     }
                 }
-                debugger
+                
                 return true;
             }
         }
@@ -539,7 +572,23 @@
 
                 var origId = $("select[textboxname=OrganizateOptions]").combobox("getValue");
 
-                origanizationData = LoadDateForId(origId);
+                $.ajax({
+                    async: false,
+                    data: { id: origId },
+                    type: "GET",
+                    url: "../api/Customer/Get",
+                    statusCode: {
+                        200: function (data) {
+                            origanizationData = data;
+                        },
+                        500: function (data) {
+                            $.messager.alert('错误', data.responseJSON.ExceptionMessage);
+                        },
+                        400: function (data) {
+                            $.messager.alert('错误', data.responseJSON.Message, "info");
+                        }
+                    }
+                });
 
                 LoadData(origanizationData);
             }
@@ -741,26 +790,6 @@
                                         }
 
                                         $("form#content>input[name=ChangePeriod]").val(newPeriods.join("-"));
-                                    }
-
-                                    // 获取fieldset相对应的name
-                                    function getFieldsetName(idValue) {
-                                        if (idValue == undefined || idValue == null) {
-                                            return "";
-                                        }
-
-                                        var IdArray = new Array("B-Base", "C-Property", "D-State", "E-Contact", "F-Managers", "G-Shareholders", "H-AssociatedEnterprises",
-                                            "I-Parent", "J-FinancialAffairsBase", "K-Litigation", "L-BigEvent");
-                                        var resultName = "";
-
-                                        for (var i = 0; i < IdArray.length; i++) {
-                                            if (IdArray[i].substr(0, 1) == idValue.substr(0, 1)) {
-                                                resultName = IdArray[i].substr(2);
-                                                break;
-                                            }
-                                        }
-
-                                        return resultName;
                                     }
                                 }
                             </script>
@@ -2011,7 +2040,7 @@
     <script type="text/javascript">
         function TestSubmit() {
             var data = BuildData();
-            debugger
+            
         }
     </script>-->
 </body>

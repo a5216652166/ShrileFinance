@@ -10,11 +10,16 @@
     {
         private readonly OrganizationAppService customerAppService;
         private readonly StatisticsAppService treeGridService;
+        private readonly ProcessTempDataAppService processTempDataAppService;
 
-        public CustomerController(OrganizationAppService service, StatisticsAppService treeGridService)
+        public CustomerController(OrganizationAppService service,
+            StatisticsAppService treeGridService,
+            ProcessTempDataAppService processTempDataAppService
+            )
         {
             customerAppService = service;
             this.treeGridService = treeGridService;
+            this.processTempDataAppService = processTempDataAppService;
         }
 
         /////// <summary>
@@ -85,6 +90,13 @@
             var options = customerAppService.GetOptions();
 
             return Ok(options);
+        }
+
+        public IHttpActionResult GetOrganizateChange(Guid instanceId)
+        {
+            var model = processTempDataAppService.GetByInstanceId<OrganizationChangeViewModel>(instanceId);
+
+            return Ok(new { json= model == null ? null : model.JsonData });
         }
 
         /// <summary>

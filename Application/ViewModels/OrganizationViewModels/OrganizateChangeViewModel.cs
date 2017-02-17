@@ -5,8 +5,6 @@
 
     public class OrganizationChangeViewModel
     {
-        
-
         public OrganizationChangeViewModel()
         {
             Managers = new HashSet<ManagerViewModel>();
@@ -17,7 +15,7 @@
             Periods = new HashSet<string>();
         }
 
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; } = Guid.Empty;
 
         public string Name { get; set; }
 

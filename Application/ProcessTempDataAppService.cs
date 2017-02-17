@@ -17,16 +17,23 @@
 
         public ProcessTempDataViewModel GetByInstanceId<T>(Guid instanceId) where T : class
         {
-            var processTempData = processTempDataRepository.GetAll(m => m.InstanceId == instanceId).Single();
+            var processTempDataViewModel = default(ProcessTempDataViewModel);
 
-            var processTempDataViewModel = new ProcessTempDataViewModel()
+            var processTempDatas = processTempDataRepository.GetAll(m => m.InstanceId == instanceId);
+
+            if (processTempDatas.Count() > 0)
             {
-                Id = processTempData.Id,
-                InstanceId = processTempData.InstanceId,
-                JsonData = processTempData.JsonData,
-                Instance = processTempData.Instance,
-                ObjData = processTempData.ConvertToObject<T>()
-            };
+                var processTempData = processTempDatas.Single();
+
+                processTempDataViewModel = new ProcessTempDataViewModel()
+                {
+                    Id = processTempData.Id,
+                    InstanceId = processTempData.InstanceId,
+                    JsonData = processTempData.JsonData,
+                    Instance = processTempData.Instance,
+                    ObjData = processTempData.ConvertToObject<T>()
+                };
+            }
 
             return processTempDataViewModel;
         }
@@ -40,10 +47,17 @@
 
             var processTempData = new ProcessTempData()
             {
-                InstanceId = processTempDataViewModel.InstanceId
+                InstanceId = processTempDataViewModel.InstanceId,
+                Instance = processTempDataViewModel.Instance
             };
 
-            processTempData.ConvertToJsonData(processTempDataViewModel.JsonData);
+            processTempData.ConvertToJsonData(processTempDataViewModel.ObjData);
+
+            var obj = processTempDataRepository.GetAll(m => m.InstanceId == processTempDataViewModel.InstanceId);
+            if (obj.Count() > 0)
+            {
+                processTempDataRepository.Remove(obj.Single());
+            }
 
             processTempDataRepository.Create(processTempData);
         }

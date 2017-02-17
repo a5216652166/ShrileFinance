@@ -11,11 +11,11 @@
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Property(m => m.InstanceId).IsRequired();
+            Property(m => m.InstanceId).IsOptional();
 
-            Property(m => m.JsonData).IsRequired().HasMaxLength(400);
+            Property(m => m.JsonData).IsRequired().HasMaxLength(800);
 
-            HasRequired(m => m.Instance);
+            HasOptional(m => m.Instance);
 
             ToTable("Process_ProcessTempData");
         }

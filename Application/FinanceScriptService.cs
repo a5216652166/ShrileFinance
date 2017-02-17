@@ -324,6 +324,7 @@
             var processTempDataViewModel = new ProcessTempDataViewModel()
             {
                 InstanceId = Instance.Id,
+                Instance=Instance,
                 ObjData= OrganizationChangeViewModel
             };
 
