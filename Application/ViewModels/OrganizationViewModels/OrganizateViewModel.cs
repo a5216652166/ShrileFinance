@@ -12,7 +12,6 @@
             AssociatedEnterprises = new HashSet<AssociatedEnterpriseViewModel>();
             Litigation = new HashSet<LitigationViewModel>();
             BigEvent = new HashSet<BigEventViewModel>();
-            Periods = new HashSet<string>();
         }
 
         public Guid? Id { get; set; }
