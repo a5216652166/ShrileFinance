@@ -119,6 +119,10 @@
     <Compile Include="Migrations\201702150743307_AddTraceFileName.Designer.cs">
       <DependentUpon>201702150743307_AddTraceFileName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702170143573_ProcessTempData.cs" />
+    <Compile Include="Migrations\201702170143573_ProcessTempData.Designer.cs">
+      <DependentUpon>201702170143573_ProcessTempData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -388,6 +392,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702150743307_AddTraceFileName.resx">
       <DependentUpon>201702150743307_AddTraceFileName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702170143573_ProcessTempData.resx">
+      <DependentUpon>201702170143573_ProcessTempData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

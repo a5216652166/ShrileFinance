@@ -9,9 +9,11 @@
         {
             HasKey(m => m.Id);
 
-            Property(m => m.ReferenceId).IsRequired();
+            Property(m => m.InstanceId).IsRequired();
 
-            Property(m => m.Data).IsRequired().HasMaxLength(400);
+            Property(m => m.JsonData).IsRequired().HasMaxLength(400);
+
+            HasRequired(m => m.Instance);
 
             ToTable("Process_ProcessTempData");
         }
