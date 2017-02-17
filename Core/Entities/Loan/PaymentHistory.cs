@@ -36,7 +36,7 @@
         {
         }
 
-        public bool Hidden { get; set; } = true;
+        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         /// <summary>
         /// 借据标识

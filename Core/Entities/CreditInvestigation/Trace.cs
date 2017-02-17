@@ -25,7 +25,7 @@
         待发送 = 1,
         已发送 = 2,
         待反馈 = 3,
-        不发送 = 4,
+        作废 = 4,
     }
 
     public class Trace : Entity, IAggregateRoot

@@ -123,6 +123,10 @@
     <Compile Include="Migrations\201702170143573_ProcessTempData.Designer.cs">
       <DependentUpon>201702170143573_ProcessTempData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702170227500_UpdateHiddenBoolTOEnum.cs" />
+    <Compile Include="Migrations\201702170227500_UpdateHiddenBoolTOEnum.Designer.cs">
+      <DependentUpon>201702170227500_UpdateHiddenBoolTOEnum.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -395,6 +399,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702170143573_ProcessTempData.resx">
       <DependentUpon>201702170143573_ProcessTempData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702170227500_UpdateHiddenBoolTOEnum.resx">
+      <DependentUpon>201702170227500_UpdateHiddenBoolTOEnum.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

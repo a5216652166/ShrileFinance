@@ -42,7 +42,7 @@
             EffectiveStatus = status;
         }
 
-        public bool Hidden { get; set; } = true;
+        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         public Guid OrganizationId { get; set; }
 
@@ -157,7 +157,7 @@
         /// </summary>
         /// <returns>授信余额</returns>
         public decimal CalculateCreditBalance() =>
-            CreditLimit - Loans.Where(m => m.Hidden == false).Sum(m => m.Balance);
+            CreditLimit - Loans.Where(m => m.Hidden == HiddenEnum.完成).Sum(m => m.Balance);
 
         /// <summary>
         ///  融资额度是否充足

@@ -27,6 +27,8 @@
         private readonly FinanceScriptAppService scriptService;
         private readonly ILoanRepository loanRepository;
         private readonly ICreditContractRepository creditContractRepository;
+        private readonly IOrganizationRepository organizationRepository;
+
 
         public ProcessAppService(
             IFlowRepository flowRepository,
@@ -38,6 +40,7 @@
             AppUserManager userManager,
             ILoanRepository loanRepository,
             ICreditContractRepository creditContractRepository,
+            IOrganizationRepository organizationRepository,
             AppRoleManager roleManager)
         {
             this.flowRepository = flowRepository;
@@ -49,6 +52,7 @@
             this.userManager = userManager;
             this.loanRepository = loanRepository;
             this.creditContractRepository = creditContractRepository;
+            this.organizationRepository = organizationRepository;
             this.roleManager = roleManager;
         }
 
@@ -512,6 +516,42 @@
             return query.Count() == 1;
         }
 
+        ///// <summary>
+        ///// 流程作废处理
+        ///// </summary>
+        ///// <param name="instanceId"></param>
+        ///// <returns></returns>
+        //public Guid ProcessAbolish(Guid instanceId)
+        //{
+        //    var instance = instanceReopsitory.Get(instanceId);
+        //    if(instance.Status== InstanceStatusEnum.完成)
+        //    {
+        //        instance.Status = InstanceStatusEnum.作废;
+        //    }
+        //    else
+        //    {
+        //        throw new InvalidOperationAppException("该流程暂未审批完成，暂时无法作废");
+        //    }
+        //    switch (instance.ProcessType)
+        //    {
+        //        case ProcessTypeEnum.融资:
+        //            break;
+        //        case ProcessTypeEnum.添加机构:
+        //            var organizate = organizationRepository.Get(instance.RootKey.Value);
+        //            break;
+        //        case ProcessTypeEnum.授信:
+        //            break;
+        //        case ProcessTypeEnum.借据:
+        //            validResult &= ValidLoanProcess(instance);
+        //            break;
+        //        case ProcessTypeEnum.还款:
+        //            validResult &= ValidPaymentProcess(instance);
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
+
         /// <summary>
         /// 验证借据新流程实例是否合法
         /// </summary>
@@ -521,7 +561,7 @@
         {
             var loan = loanRepository.Get(instance.RootKey.Value);
             var loanIds = from item
-                          in creditContractRepository.Get(loan.CreditId).Loans.Where(m => m.Hidden)
+                          in creditContractRepository.Get(loan.CreditId).Loans.Where(m => m.Hidden== HiddenEnum.审核中)
                           select item.Id;
 
             if (loanIds.Count() > 1)

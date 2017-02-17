@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
+    using Core.Entities;
     using Core.Entities.Loan;
     using Core.Exceptions;
     using Core.Interfaces.Repositories;
@@ -136,7 +137,7 @@
             var loan = repository.Get(model.LoanId);
             var modelPaymentIds = from item in model.Payments.Where(m => m.Id != null) select item.Id.Value;
             var removeItem = new List<PaymentHistory>();
-            foreach (var item in loan.Payments.Where(m=>m.Hidden))
+            foreach (var item in loan.Payments.Where(m=>m.Hidden== HiddenEnum.审核中))
             {
                 if (modelPaymentIds.Contains(item.Id) == false)
                 {
@@ -155,7 +156,7 @@
             {
                 if (payment.Id != null)
                 {
-                    var payments = loan.Payments.Where(m => m.Hidden).Single(m => m.Id == payment.Id.Value);
+                    var payments = loan.Payments.Where(m => m.Hidden== HiddenEnum.审核中).Single(m => m.Id == payment.Id.Value);
 
                     // 修改
                     Mapper.Map(payment, payments);
@@ -169,10 +170,8 @@
 
             foreach (var payment in loan.Payments)
             {
-                if (payment.Hidden)
-                {
-                    paymentCount += payment.ActualPaymentPrincipal;
-                }
+                paymentCount += payment.ActualPaymentPrincipal;
+
                 paymentService.Payment(loan, payment);
             }
 

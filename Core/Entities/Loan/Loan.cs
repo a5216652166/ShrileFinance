@@ -77,7 +77,7 @@
             Payments = new HashSet<PaymentHistory>();
         }
 
-        public bool Hidden { get; set; } = true;
+        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         /// <summary>
         /// 授信合同标识
@@ -238,7 +238,7 @@
         /// </summary>
         /// <returns></returns>
         private decimal CalculateBalance() =>
-            Principle - Payments.Where(m => m.Hidden == false).Sum(m => m.ActualPaymentPrincipal);
+            Principle - Payments.Where(m => m.Hidden == HiddenEnum.完成).Sum(m => m.ActualPaymentPrincipal);
 
         /// <summary>
         /// 变更借据状态

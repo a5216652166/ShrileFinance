@@ -77,6 +77,7 @@
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
     <Compile Include="Entities\Flow\ProcessTempData.cs" />
     <Compile Include="Entities\Flow\ProcessTypeEnum.cs" />
+    <Compile Include="Entities\HiddenEnum.cs" />
     <Compile Include="Entities\IO\FileSystem.cs" />
     <Compile Include="Interfaces\IProcessable.cs" />
     <Compile Include="Interfaces\Repositories\IDatagramFileRepository.cs" />
