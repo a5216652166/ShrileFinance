@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
-    using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Interfaces.Repositories;
     using ViewModels;
@@ -67,7 +66,6 @@
         public void Modify(OrganizationViewModel model)
         {
             var customer = repository.Get(model.Base.Id.Value);
-            customer.Hidden = Core.Entities.HiddenEnum.审核中;
 
             Mapper.Map(model.Base, customer);
             customer.CustomerNumber = model.Base.CustomerNumber;
@@ -185,7 +183,6 @@
             ////new UpdateBind().Bind(customer.AssociatedEnterprises, model.AssociatedEnterprises);
 
             repository.Modify(customer);
-            repository.Commit();
         }
 
         public OrganizationViewModel Get(Guid id)
@@ -232,6 +229,14 @@
             }
 
             return custviewmodelList;
+        }
+
+        public List<OriganizateOptions> GetOptions()
+        {
+            var list = from item in repository.GetAll(m => m.Hidden == false)
+                       select new OriganizateOptions() { Value=item.Id,Text=item.Property.InstitutionChName };
+
+            return list.ToListAsync().Result;
         }
 
         /// <summary>

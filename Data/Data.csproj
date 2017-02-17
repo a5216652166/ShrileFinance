@@ -119,6 +119,10 @@
     <Compile Include="Migrations\201702150743307_AddTraceFileName.Designer.cs">
       <DependentUpon>201702150743307_AddTraceFileName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702170143573_ProcessTempData.cs" />
+    <Compile Include="Migrations\201702170143573_ProcessTempData.Designer.cs">
+      <DependentUpon>201702170143573_ProcessTempData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -169,6 +173,7 @@
     <Compile Include="ModelConfigurations\Finance\FinanceConfigration.cs" />
     <Compile Include="ModelConfigurations\Finance\FinanceExtensionConfiguration.cs" />
     <Compile Include="ModelConfigurations\Finance\FinanceProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Flow\ProcessTempDataConfiguration.cs" />
     <Compile Include="ModelConfigurations\Product\FinancingProjectConfigration.cs" />
     <Compile Include="ModelConfigurations\Customer\FinancialAffairsConfiguration.cs" />
     <Compile Include="ModelConfigurations\Flow\FlowConfiguration.cs" />
@@ -324,6 +329,7 @@
     <Compile Include="Repositories\LoanRepository.cs" />
     <Compile Include="Repositories\OrganizationRepository.cs" />
     <Compile Include="Repositories\PaymentHistoryRepository.cs" />
+    <Compile Include="Repositories\ProcessTempDataRepository.cs" />
     <Compile Include="Repositories\TraceRepository.cs" />
     <Compile Include="Repositories\ProduceRepository.cs" />
     <Compile Include="Repositories\FinanceRepository.cs" />
@@ -386,6 +392,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702150743307_AddTraceFileName.resx">
       <DependentUpon>201702150743307_AddTraceFileName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702170143573_ProcessTempData.resx">
+      <DependentUpon>201702170143573_ProcessTempData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

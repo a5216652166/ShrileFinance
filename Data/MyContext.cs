@@ -38,7 +38,8 @@
                 .Add(new LogConfiguration())
                 .Add(new FormConfiguration())
                 .Add(new FormNodeConfiguration())
-                .Add(new FormRoleConfiguration());
+                .Add(new FormRoleConfiguration())
+                .Add(new ProcessTempDataConfiguration());
 
             // Produce Configurations
             modelBuilder.Configurations

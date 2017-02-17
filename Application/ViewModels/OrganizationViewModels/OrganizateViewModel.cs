@@ -1,9 +1,14 @@
 ﻿namespace Application.ViewModels.OrganizationViewModels
 {
+    using System;
     using System.Collections.Generic;
 
     public class OrganizationViewModel
     {
+        public Guid? Id { get; set; }
+
+        public string Name { get; set; }
+
         public OrganizationViewModel()
         {
             Managers = new HashSet<ManagerViewModel>();

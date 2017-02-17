@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
+    <Compile Include="Entities\Flow\ProcessTempData.cs" />
     <Compile Include="Entities\Flow\ProcessTypeEnum.cs" />
     <Compile Include="Entities\HiddenEnum.cs" />
     <Compile Include="Entities\IO\FileSystem.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Interfaces\Repositories\IDatagramFileRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFileSystemRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPaymentHistoryRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IProcessTempDataRepository.cs" />
     <Compile Include="Services\CreditInvestigation\DatagramFactoryService.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\UnusedDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\BigEventRecord.cs" />
