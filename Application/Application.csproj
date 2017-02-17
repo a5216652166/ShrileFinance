@@ -107,6 +107,7 @@
     <Compile Include="OrganizationAppService.cs" />
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />
+    <Compile Include="ProcessTempDataAppService.cs" />
     <Compile Include="ProduceAppService.cs" />
     <Compile Include="Startup\Startup.Autofac.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -138,7 +139,9 @@
     <Compile Include="ViewModels\Loan\LoanViewModels\PaymentViewModel.cs" />
     <Compile Include="ViewModels\CreditInvesitigation\TraceViewModels\TraceViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\CreditOraganizateViewModel.cs" />
+    <Compile Include="ViewModels\OrganizationViewModels\OrganizateChangeViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\OriganizateOptions.cs" />
+    <Compile Include="ViewModels\ProcessViewModels\ProcessTempDataViewModel.cs" />
     <Compile Include="ViewModels\TreeGridViewModel\CreditCountViewModel.cs" />
     <Compile Include="ViewModels\Loan\CreditViewModels\CreditContractViewModel.cs" />
     <Compile Include="ViewModels\Loan\CreditViewModels\GuarantyContractViewModel.cs" />

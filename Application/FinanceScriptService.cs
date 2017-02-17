@@ -12,6 +12,7 @@
     using ViewModels.FinanceViewModels;
     using ViewModels.Loan.CreditViewModel;
     using ViewModels.OrganizationViewModels;
+    using ViewModels.ProcessViewModels;
 
     public class FinanceScriptAppService
     {
@@ -20,6 +21,7 @@
         private readonly OrganizationAppService organizationAppService;
         private readonly CreditContractAppService creditContractAppService;
         private readonly DatagramAppService datagramAppService;
+        private readonly ProcessTempDataAppService processTempDataService;
         private readonly IFinanceRepository financeRepository;
         private readonly ICreditContractRepository creditContractRepository;
         private readonly ILoanRepository loanRepository;
@@ -31,6 +33,7 @@
             LoanAppService loanAppService,
             CreditContractAppService creditContractAppService,
             DatagramAppService datagramAppService,
+            ProcessTempDataAppService processTempDataService,
             IFinanceRepository financeRepository,
             ICreditContractRepository creditContractRepository,
             ILoanRepository loanRepository,
@@ -41,6 +44,7 @@
             this.loanAppService = loanAppService;
             this.creditContractAppService = creditContractAppService;
             this.datagramAppService = datagramAppService;
+            this.processTempDataService = processTempDataService;
             this.financeRepository = financeRepository;
             this.creditContractRepository = creditContractRepository;
             this.loanRepository = loanRepository;
@@ -315,12 +319,18 @@
         /// </summary>
         public void OrganizateChange()
         {
-            var origanizate = GetData<OrganizationViewModel>("63DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var OrganizationChangeViewModel = GetData<OrganizationChangeViewModel>("63DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            organizationAppService.Modify(origanizate);
+            var processTempDataViewModel = new ProcessTempDataViewModel()
+            {
+                InstanceId = Instance.Id,
+                ObjData= OrganizationChangeViewModel
+            };
 
-            Instance.RootKey = origanizate.Id;
-            Instance.Title = $"{origanizate.Name} 机构信息变更";
+            processTempDataService.Create(processTempDataViewModel);
+
+            Instance.RootKey = OrganizationChangeViewModel.Id;
+            Instance.Title = $"{OrganizationChangeViewModel.Name} 机构信息变更";
         }
 
         /// <summary>
@@ -328,7 +338,12 @@
         /// </summary>
         public void OrganizateChangeFinish()
         {
+            var processTempDataViewModel = processTempDataService.GetByInstanceId<OrganizationChangeViewModel>(Instance.Id);
 
+            // 从流程临时数据中提取数据
+            var organizationChangeViewModel = (OrganizationChangeViewModel)processTempDataViewModel.ObjData;
+
+            organizationAppService.ModifyPeriods(organizationChangeViewModel);
         }
 
         private T GetData<T>(string formId) where T : class, new()

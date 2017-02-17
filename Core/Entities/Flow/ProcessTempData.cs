@@ -9,7 +9,7 @@
     {
         public Guid InstanceId { get; set; }
 
-        public string JsonData { get; set; }
+        public string JsonData { get; set; } = string.Empty;
 
         public virtual Instance Instance { get; set; }
 

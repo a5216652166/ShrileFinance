@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Generic;
 
-    public class OrganizationViewModel
+    public class OrganizationChangeViewModel
     {
-        public OrganizationViewModel()
+        
+
+        public OrganizationChangeViewModel()
         {
             Managers = new HashSet<ManagerViewModel>();
             Shareholders = new HashSet<StockholderViewModel>();
@@ -16,6 +18,10 @@
         }
 
         public Guid? Id { get; set; }
+
+        public string Name { get; set; }
+
+        public IEnumerable<string> Periods { get; set; }
 
         /// <summary>
         /// 机构基础
