@@ -11,7 +11,7 @@ namespace Data.Migrations
                 "dbo.Process_ProcessTempData",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
+                        Id = c.Guid(nullable: false, identity: true),
                         InstanceId = c.Guid(nullable: false),
                         JsonData = c.String(nullable: false, maxLength: 400),
                     })
