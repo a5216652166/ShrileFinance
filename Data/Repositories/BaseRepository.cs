@@ -62,7 +62,7 @@
             {
                 entitieList.Add(item);
 
-                if (item is IProcessable && ((IProcessable)item).Hidden)
+                if (item is IProcessable && ((IProcessable)item).Hidden==HiddenEnum.审核中)
                 {
                     entitieList.Remove(item);
                 }

@@ -16,16 +16,27 @@
 
         IPagedList<Instance> IInstanceRepository.DoingPagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime)
         {
-            // 筛选 1.状态为正常
-            //      2.当前用户的角色可处理的节点
-            //      3.该实例限定于角色而非用户
-            //      4.该实例RootKey存在
-            var instances = GetAll(m =>
-                m.Status == InstanceStatusEnum.正常
-                && m.CurrentNode.RoleId == currentUser.RoleId
-                && (m.CurrentUserId == null || m.CurrentUserId == currentUser.Id)
-                && (m.RootKey != null && m.RootKey != Guid.Empty));
+            var instances = GetAll();
 
+            if(currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
+            {
+                instances = instances.Where(m =>m.RootKey != null && m.RootKey != Guid.Empty&&m.Status== InstanceStatusEnum.完成);
+            }
+            else
+            {
+                // 筛选 1.状态为正常
+                //      2.当前用户的角色可处理的节点
+                //      3.该实例限定于角色而非用户
+                //      4.该实例RootKey存在
+                instances = instances.Where(
+                    m =>
+                m.Status == InstanceStatusEnum.正常
+                && (m.CurrentNode.RoleId == currentUser.RoleId)
+                && (m.CurrentUserId == null || m.CurrentUserId == currentUser.Id)
+                && (m.RootKey != null && m.RootKey != Guid.Empty)
+                    );
+            }
+          
             // 标题模糊搜索
             instances = FiterForTitle(instances, searchString);
 

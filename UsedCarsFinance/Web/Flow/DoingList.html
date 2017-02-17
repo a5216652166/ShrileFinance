@@ -25,6 +25,10 @@
 
                 $("select#FlowType").next("span").hide();
                 $("select#FlowType").next().next("a#StartFlow").hide();
+                $("#abolish").hide();
+            }
+            else if (top.$("#role_name").text() == "管理员") {
+                $("#abolish").show();
             }
         });
          
@@ -224,6 +228,7 @@
 
             </template>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Process,iconCls:'icon-edit',plain:true">处理流程</a>
+            <a id="abolish" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-edit',plain:true">作废</a>
         </div>
     </div>
 </body>

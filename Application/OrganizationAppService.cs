@@ -67,7 +67,7 @@
         public void Modify(OrganizationViewModel model)
         {
             var customer = repository.Get(model.Base.Id.Value);
-            customer.Hidden = true;
+            customer.Hidden = Core.Entities.HiddenEnum.审核中;
 
             Mapper.Map(model.Base, customer);
             customer.CustomerNumber = model.Base.CustomerNumber;

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Core.Entities;
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Flow;
     using Core.Entities.Loan;
@@ -294,7 +295,7 @@
             // 获取借据实体
             var loan = loanRepository.Get(Instance.RootKey.Value);
 
-            if (loan.Payments.Where(m => m.Hidden).Count() == 0)
+            if (loan.Payments.Where(m => m.Hidden== HiddenEnum.审核中).Count() == 0)
             {
                 throw new ArgumentNullException(nameof(loan.Payments), "错误流程，未新增还款记录");
             }
@@ -303,7 +304,7 @@
             Trace(loan.Payments);
 
             // 设置Hidden为false
-            loan.Payments.Where(m => m.Hidden).ToList().ForEach(payment =>
+            loan.Payments.Where(m => m.Hidden== HiddenEnum.审核中).ToList().ForEach(payment =>
             {
                 SetHidden(payment);
             });
@@ -389,7 +390,7 @@
             else if (entity is IEnumerable<PaymentHistory>)
             {
                 // 还款
-                var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden).ToList();
+                var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden== HiddenEnum.审核中).ToList();
 
                 var loan = loanRepository.Get(payments.First().LoanId);
                 var credit = creditContractRepository.Get(loan.CreditId);
@@ -452,7 +453,7 @@
         {
             if (entity is Core.Interfaces.IProcessable)
             {
-                (entity as Core.Interfaces.IProcessable).Hidden = false;
+                (entity as Core.Interfaces.IProcessable).Hidden = HiddenEnum.完成;
             }
         }
 

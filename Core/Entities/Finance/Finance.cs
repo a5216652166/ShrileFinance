@@ -34,7 +34,7 @@
             一次性付息 = 3
         }
 
-        public bool Hidden { get; set; } = true;
+        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         /// <summary>
         /// 产品ID
