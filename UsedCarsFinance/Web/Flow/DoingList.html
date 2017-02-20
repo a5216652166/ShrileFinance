@@ -78,6 +78,23 @@
                 uc.ShowWindow("详情页", url);
             }
         }
+        function ProcessAbolish() {
+            var row = uc.grid.GetSelected();
+            if (row) {
+                $.ajax({
+                    method: "GET",
+                    data: { instanceId: row.Id },
+                    url: "../api/Instance/ProcessAbolish",
+                    statusCode: {
+                        200: function (data) {
+                            $.messager.show({ msg: "处理成功." });
+                            uc.grid.Reload();
+                        },
+                        400: uc.E400
+                    }
+                });
+            }
+        }
     </script>
 </head>
 
@@ -228,7 +245,7 @@
 
             </template>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Process,iconCls:'icon-edit',plain:true">处理流程</a>
-            <a id="abolish" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-edit',plain:true">作废</a>
+            <a id="abolish" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ProcessAbolish,iconCls:'icon-edit',plain:true">作废</a>
         </div>
     </div>
 </body>

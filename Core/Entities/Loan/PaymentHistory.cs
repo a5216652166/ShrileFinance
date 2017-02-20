@@ -77,5 +77,10 @@
         /// 还款方式
         /// </summary>
         public string PaymentTypes { get; set; }
+
+        /// <summary>
+        /// 该还款信息所属流程ID
+        /// </summary>
+        public Guid InstanceId { get; set; }
     }
 }

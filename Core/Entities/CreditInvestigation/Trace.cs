@@ -73,7 +73,7 @@
         /// <summary>
         /// 报文状态
         /// </summary>
-        public TraceStatusEmum Status { get; private set; }
+        public TraceStatusEmum Status { get;set; }
 
         /////// <summary>
         /////// 报文顺序号

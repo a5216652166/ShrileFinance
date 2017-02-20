@@ -20,6 +20,7 @@
             Property(m => m.ScheduledDatePayment);
             Property(m => m.PaymentTypes).HasMaxLength(2);
             Property(m => m.Hidden).IsRequired();
+            Property(m => m.InstanceId).IsRequired();
 
             ToTable("LOAN_PaymentHistory");
         }
