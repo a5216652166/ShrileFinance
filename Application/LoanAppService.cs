@@ -124,7 +124,8 @@
         /// <summary>
         /// 还款
         /// </summary>
-        /// <param name="model">还款记录视图模型</param>
+        /// <param name="model">还款实体</param>
+        /// <param name="instanceId">所属流程ID</param>
         public void Payment(PaymentViewModel model)
         {
             if (model.Payments.Count() == 0)
@@ -156,10 +157,12 @@
             {
                 if (payment.Id != null)
                 {
-                    var payments = loan.Payments.Where(m => m.Hidden== HiddenEnum.审核中).Single(m => m.Id == payment.Id.Value);
-
-                    // 修改
-                    Mapper.Map(payment, payments);
+                    var payments = loan.Payments.Where(m => m.Hidden== HiddenEnum.审核中&& m.Id == payment.Id.Value);
+                    if (payments.Count() > 0)
+                    {
+                        // 修改
+                        Mapper.Map(payment, payments);
+                    }
                 }
                 else
                 {

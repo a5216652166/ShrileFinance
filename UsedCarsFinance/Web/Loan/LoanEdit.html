@@ -153,6 +153,7 @@
                 var rows = $("#payment_dg").datagrid("getRows");
                 var addedRows = $(rows).map(function (i, e) {
                     if (e.Hidden != false) {
+                        e.instanceId = parent.flow.InstanceId;
                         return e;
                     }
                 });
@@ -237,12 +238,11 @@
                         200: function (data) {
                             var options = $(data).map(function (i, e) {
                                 for (var j in e.Loans) {
-                                    if (e.Loans[j].Hidden == false) {
+                                    if (e.Loans[j].Hidden == 2) {
                                         return e;
                                     }
                                 }
                             });
-
                             $("select[comboname='CreditId']").combobox("loadData", options);
                         },
                         400: uc.E400
@@ -263,6 +263,7 @@
                     var rows = $("#payment_dg").datagrid("getRows");
                     var addedRows = $(rows).map(function (i, e) {
                         if (e.Hidden != false) {
+                            debugger
                             return e;
                         }
                     });
@@ -421,7 +422,7 @@
                     var LoanNumberCombobox = $('fieldset#loan_info>div.row>div>select[comboname=ContractNumber]');
                     if (LoanNumberCombobox.length == 1) {
                         var options = $(record.Loans).map(function (i, e) {
-                            if (e.Hidden == false) {
+                            if (e.Hidden == 2) {
                                 return e;
                             }
                         });

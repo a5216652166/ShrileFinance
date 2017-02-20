@@ -2,15 +2,16 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using Core.Entities;
 
-    public class PaymentHistoryViewModel 
+    public class PaymentHistoryViewModel
     {
         /// <summary>
         /// 还款记录标识
         /// </summary>
         public Guid? Id { get; set; }
 
-        public bool Hidden { get; set; } = true;
+        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         /// <summary>
         /// 应还本金
@@ -70,5 +71,10 @@
                 }
             }
         }
+
+        /// <summary>
+        /// 所属流程Id
+        /// </summary>
+        public Guid InstanceId { get; set; }
     }
 }

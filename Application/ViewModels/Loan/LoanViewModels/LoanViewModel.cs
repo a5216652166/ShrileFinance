@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Core.Entities;
     using Core.Entities.Loan;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
@@ -11,7 +12,7 @@
     {
         public Guid? Id { get; set; }
 
-        public bool Hidden { get; set; } = true;
+        public HiddenEnum Hidden { get; set; } =HiddenEnum.审核中;
 
         [Required]
         [Display(Name = "授信合同")]
