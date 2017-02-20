@@ -118,6 +118,15 @@
             if (EffectiveStatus != CreditContractStatusEnum.失效)
             {
                 CreditLimit = limit;
+
+                // 设置担保合同的担保金额
+                if (GuarantyContract.Count() > 0)
+                {
+                    foreach (var item in GuarantyContract)
+                    {
+                        item.Margin = CreditLimit;
+                    }
+                }
             }
             else
             {

@@ -49,6 +49,16 @@
             }
 
             credit.ValidateEffective(credit);
+
+            // 设置担保合同的担保金额
+            if (credit.GuarantyContract.Count() > 0)
+            {
+                foreach (var item in credit.GuarantyContract)
+                {
+                    item.Margin = credit.CreditLimit;
+                }
+            }
+
             repository.Create(credit);
             repository.Commit();
             model.Id = credit.Id;
@@ -92,6 +102,15 @@
             else
             {
                 new UpdateBind().Bind(credit.GuarantyContract, model.GuarantyContract);
+            }
+
+            // 设置担保合同的担保金额
+            if (credit.GuarantyContract.Count() > 0)
+            {
+                foreach (var item in credit.GuarantyContract)
+                {
+                    item.Margin = credit.CreditLimit;
+                }
             }
 
             repository.Modify(credit);
