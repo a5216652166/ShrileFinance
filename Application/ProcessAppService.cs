@@ -29,7 +29,6 @@
         private readonly ICreditContractRepository creditContractRepository;
         private readonly IOrganizationRepository organizationRepository;
 
-
         public ProcessAppService(
             IFlowRepository flowRepository,
             IInstanceRepository instanceReopsitory,
@@ -104,8 +103,8 @@
                     throw new ArgumentNullAppException(nameof(model.Data));
                 }
 
-                // 是否为新发起的正式流程
-                var isNewInstance = instance.RootKey == null;
+                ////// 是否为新发起的正式流程
+                ////var isNewInstance = instance.RootKey == null;
 
                 scriptService.Instance = instance;
                 scriptService.Data = Newtonsoft.Json.Linq.JObject.Parse(model.Data);
@@ -114,8 +113,8 @@
 
                 method.Invoke(scriptService, null);
 
-                // 单流程校验
-                SingleProcessValid(instance, isNewInstance);
+                ////// 单流程校验
+                ////SingleProcessValid(instance, isNewInstance);
             }
 
             // 流转
@@ -460,61 +459,61 @@
             }
         }
 
-        /// <summary>
-        /// 单流程校验
-        /// </summary>
-        /// <param name="instance">流程实例</param>
-        /// <param name="isNewInstance">是否为新流程</param>
-        private void SingleProcessValid(Instance instance, bool isNewInstance = false)
-        {
-            if (!isNewInstance)
-            {
-                return;
-            }
+        /////// <summary>
+        /////// 单流程校验
+        /////// </summary>
+        /////// <param name="instance">流程实例</param>
+        /////// <param name="isNewInstance">是否为新流程</param>
+        ////private void SingleProcessValid(Instance instance, bool isNewInstance = false)
+        ////{
+        ////    if (!isNewInstance)
+        ////    {
+        ////        return;
+        ////    }
 
-            // 验证还款流程
-            var validResult = true;
+        ////    // 验证还款流程
+        ////    var validResult = true;
 
-            switch (instance.ProcessType)
-            {
-                case ProcessTypeEnum.融资:
-                    break;
-                case ProcessTypeEnum.添加机构:
-                    break;
-                case ProcessTypeEnum.授信:
-                    break;
-                case ProcessTypeEnum.借据:
-                    validResult &= ValidLoanProcess(instance);
-                    break;
-                case ProcessTypeEnum.还款:
-                    validResult &= ValidPaymentProcess(instance);
-                    break;
-                default:
-                    break;
-            }
+        ////    switch (instance.ProcessType)
+        ////    {
+        ////        case ProcessTypeEnum.融资:
+        ////            break;
+        ////        case ProcessTypeEnum.添加机构:
+        ////            break;
+        ////        case ProcessTypeEnum.授信:
+        ////            break;
+        ////        case ProcessTypeEnum.借据:
+        ////            validResult &= ValidLoanProcess(instance);
+        ////            break;
+        ////        case ProcessTypeEnum.还款:
+        ////            validResult &= ValidPaymentProcess(instance);
+        ////            break;
+        ////        default:
+        ////            break;
+        ////    }
 
-            if (validResult == false)
-            {
-                throw new InvalidOperationAppException("已存在未审批的流程，请处理完成之后在发起");
-            }
-        }
+        ////    if (validResult == false)
+        ////    {
+        ////        throw new InvalidOperationAppException("已存在未审批的流程，请处理完成之后在发起");
+        ////    }
+        ////}
 
-        /// <summary>
-        /// 验证还款新流程实例是否合法
-        /// </summary>
-        /// <param name="instance">新还款流程实例</param>
-        /// <returns>结果</returns>
-        private bool ValidPaymentProcess(Instance instance)
-        {
-            // 查找与流程实例对应的审核中的还款流程实例
-            var query = instanceReopsitory.GetAll(
-                m =>
-                m.FlowId == instance.FlowId &&
-                m.Status == InstanceStatusEnum.正常 &&
-                m.RootKey == instance.RootKey.Value);
+        /////// <summary>
+        /////// 验证还款新流程实例是否合法
+        /////// </summary>
+        /////// <param name="instance">新还款流程实例</param>
+        /////// <returns>结果</returns>
+        ////private bool ValidPaymentProcess(Instance instance)
+        ////{
+        ////    // 查找与流程实例对应的审核中的还款流程实例
+        ////    var query = instanceReopsitory.GetAll(
+        ////        m =>
+        ////        m.FlowId == instance.FlowId &&
+        ////        m.Status == InstanceStatusEnum.正常 &&
+        ////        m.RootKey == instance.RootKey.Value);
 
-            return query.Count() == 1;
-        }
+        ////    return query.Count() == 1;
+        ////}
 
         ///// <summary>
         ///// 流程作废处理
@@ -552,35 +551,35 @@
         //    }
         //}
 
-        /// <summary>
-        /// 验证借据新流程实例是否合法
-        /// </summary>
-        /// <param name="instance">新还款流程实例</param>
-        /// <returns>结果</returns>
-        private bool ValidLoanProcess(Instance instance)
-        {
-            var loan = loanRepository.Get(instance.RootKey.Value);
-            var loanIds = from item
-                          in creditContractRepository.Get(loan.CreditId).Loans.Where(m => m.Hidden== HiddenEnum.审核中)
-                          select item.Id;
+        /////// <summary>
+        /////// 验证借据新流程实例是否合法
+        /////// </summary>
+        /////// <param name="instance">新还款流程实例</param>
+        /////// <returns>结果</returns>
+        ////private bool ValidLoanProcess(Instance instance)
+        ////{
+        ////    var loan = loanRepository.Get(instance.RootKey.Value);
+        ////    var loanIds = from item
+        ////                  in creditContractRepository.Get(loan.CreditId).Loans.Where(m => m.Hidden== HiddenEnum.审核中)
+        ////                  select item.Id;
 
-            if (loanIds.Count() > 1)
-            {
-                // 移除错误借据
-                loanRepository.Remove(loan);
+        ////    if (loanIds.Count() > 1)
+        ////    {
+        ////        // 移除错误借据
+        ////        loanRepository.Remove(loan);
 
-                // 流程实例还原为临时流程
-                instance.RootKey = null;
-                instance.Title = null;
-                instanceReopsitory.Modify(instance);
+        ////        // 流程实例还原为临时流程
+        ////        instance.RootKey = null;
+        ////        instance.Title = null;
+        ////        instanceReopsitory.Modify(instance);
 
-                // 提交修改
-                loanRepository.Commit();
+        ////        // 提交修改
+        ////        loanRepository.Commit();
 
-                return false;
-            }
+        ////        return false;
+        ////    }
 
-            return true;
-        }
+        ////    return true;
+        ////}
     }
 }

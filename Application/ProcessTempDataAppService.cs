@@ -15,9 +15,9 @@
             this.processTempDataRepository = processTempDataRepository;
         }
 
-        public ProcessTempDataViewModel GetByInstanceId<T>(Guid instanceId) where T : class
+        public ProcessTempDataViewModel<T> GetByInstanceId<T>(Guid instanceId) where T : class
         {
-            var processTempDataViewModel = default(ProcessTempDataViewModel);
+            var processTempDataViewModel = default(ProcessTempDataViewModel<T>);
 
             var processTempDatas = processTempDataRepository.GetAll(m => m.InstanceId == instanceId);
 
@@ -25,7 +25,7 @@
             {
                 var processTempData = processTempDatas.Single();
 
-                processTempDataViewModel = new ProcessTempDataViewModel()
+                processTempDataViewModel = new ProcessTempDataViewModel<T>()
                 {
                     Id = processTempData.Id,
                     InstanceId = processTempData.InstanceId,
@@ -38,7 +38,7 @@
             return processTempDataViewModel;
         }
 
-        public void Create(ProcessTempDataViewModel processTempDataViewModel)
+        public void Create<T>(ProcessTempDataViewModel<T> processTempDataViewModel) where T : class
         {
             if (processTempDataViewModel.InstanceId == Guid.Empty || processTempDataViewModel.ObjData == null)
             {
@@ -47,22 +47,22 @@
 
             var processTempData = new ProcessTempData()
             {
-                InstanceId = processTempDataViewModel.InstanceId,
-                Instance = processTempDataViewModel.Instance
+                InstanceId = processTempDataViewModel.InstanceId
             };
 
             processTempData.ConvertToJsonData(processTempDataViewModel.ObjData);
 
-            var obj = processTempDataRepository.GetAll(m => m.InstanceId == processTempDataViewModel.InstanceId);
-            if (obj.Count() > 0)
+            var oldEntity = processTempDataRepository.GetAll(m => m.InstanceId == processTempData.InstanceId);
+
+            if (oldEntity.Count() > 0)
             {
-                processTempDataRepository.Remove(obj.Single());
+                processTempDataRepository.Remove(oldEntity.First());
             }
 
             processTempDataRepository.Create(processTempData);
         }
 
-        public void Modify(ProcessTempDataViewModel processTempDataViewModel)
+        public void Modify<T>(ProcessTempDataViewModel<T> processTempDataViewModel) where T : class
         {
             var processTempData = processTempDataRepository.GetAll(m => m.InstanceId == processTempDataViewModel.InstanceId).Single();
 

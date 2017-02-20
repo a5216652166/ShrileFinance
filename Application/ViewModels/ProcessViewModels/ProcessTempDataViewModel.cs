@@ -3,7 +3,7 @@
     using System;
     using Core.Entities.Flow;
 
-    public class ProcessTempDataViewModel
+    public class ProcessTempDataViewModel<T> where T : class
     {
         public Guid Id { get; set; } = Guid.Empty;
 
@@ -13,6 +13,6 @@
 
         public virtual Instance Instance { get; set; }
 
-        public virtual object ObjData { get; set; }
+        public virtual T ObjData { get; set; }
     }
 }

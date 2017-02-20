@@ -45,8 +45,29 @@
         public virtual void Remove(TEntity entity) =>
             Context.Entry(entity).State = EntityState.Deleted;
 
-        public virtual int Commit() =>
-            Context.SaveChanges();
+        public virtual int Commit()
+        {
+            var errorEntitys = Context.GetValidationErrors().Where(m => m.IsValid == false);
+
+            if (errorEntitys.Count() == 0)
+            {
+                return Context.SaveChanges();
+            }
+            else
+            {
+                var errorBuild = new System.Text.StringBuilder();
+
+                foreach (var errorEntity in errorEntitys)
+                {
+                    foreach (var error in errorEntity.ValidationErrors)
+                    {
+                        errorBuild.Append(error.PropertyName + "\t" + error.ErrorMessage + "\r\n");
+                    }
+                }
+
+                throw new ArgumentOutOfRangeException(errorBuild.ToString());
+            }
+        }
 
         private IQueryable<TEntity> Filter(DbSet<TEntity> entities)
         {
@@ -62,7 +83,7 @@
             {
                 entitieList.Add(item);
 
-                if (item is IProcessable && ((IProcessable)item).Hidden==HiddenEnum.审核中)
+                if (item is IProcessable && ((IProcessable)item).Hidden == HiddenEnum.审核中)
                 {
                     entitieList.Remove(item);
                 }
