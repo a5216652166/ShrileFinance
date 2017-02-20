@@ -21,7 +21,7 @@
         IEnumerable<Trace> ITraceRepostitory.GetByIds(IEnumerable<Guid> traceIds) =>
             GetAll(m => traceIds.Contains(m.Id));
 
-        IEnumerable<Trace> ITraceRepostitory.GetPageList(string search, int page, int size, TraceStatusEmum? status = null, DateTime? beginTime = null, DateTime? endTime = null)
+        IEnumerable<Trace> ITraceRepostitory.GetPageList(string search, int page, int size, TraceStatusEmum? status, DateTime? beginTime, DateTime? endTime)
         {
             var messageTrack = GetAll();
 

@@ -36,16 +36,15 @@
         /// <param name="referenceId">引用标识</param>
         /// <param name="traceType">操作类型</param>
         /// <param name="specialDate">业务发生日期</param>
+        /// <param name="organizateName">机构</param>
         /// <param name="defaultName">默认名称</param>
-        public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime specialDate,string organizateName,string defaultName = null)
+        public void Trace(Guid referenceId, TraceTypeEnum traceType, DateTime specialDate, string organizateName, string defaultName = null)
         {
             var dateCreated = DateTime.Now.Date;
             var count = traceRepository.CountByDateCreatedAndReference(dateCreated, referenceId, traceType);
 
             if (count == 0)
             {
-                ////// 生成序列号
-                ////var serialNumber = traceRepository.MaxSerialNumberByDateCreated(dateCreated) + 1;
                 var trace = new Trace(referenceId, traceType, specialDate, organizateName, defaultName);
 
                 traceRepository.Create(trace);
@@ -78,7 +77,7 @@
                 {
                     var filename = datagramFile.GenerateFilename();
                     var buffer = datagramFile.GetBuffer();
-                   
+
                     files.Add(filename, buffer);
                     trace.FileName = filename;
                     traceRepository.Modify(trace);

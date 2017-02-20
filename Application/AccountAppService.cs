@@ -230,7 +230,6 @@
                 throw new ArgumentNullAppException(message: "账户已停用.");
             }
 
-
             return await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
         }
 
