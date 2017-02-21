@@ -628,36 +628,5 @@
             }
             return trace;
         }
-
-        /// <summary>
-        /// 验证借据新流程实例是否合法
-        /// </summary>
-        /// <param name="instance">新还款流程实例</param>
-        /// <returns>结果</returns>
-        private bool ValidLoanProcess(Instance instance)
-        {
-            var loan = loanRepository.Get(instance.RootKey.Value);
-            var loanIds = from item
-                          in creditContractRepository.Get(loan.CreditId).Loans.Where(m => m.Hidden== HiddenEnum.审核中)
-                          select item.Id;
-
-        ////    if (loanIds.Count() > 1)
-        ////    {
-        ////        // 移除错误借据
-        ////        loanRepository.Remove(loan);
-
-        ////        // 流程实例还原为临时流程
-        ////        instance.RootKey = null;
-        ////        instance.Title = null;
-        ////        instanceReopsitory.Modify(instance);
-
-        ////        // 提交修改
-        ////        loanRepository.Commit();
-
-        ////        return false;
-        ////    }
-
-        ////    return true;
-        ////}
     }
 }
