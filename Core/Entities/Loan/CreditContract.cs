@@ -11,7 +11,8 @@
     {
         生效 = 0,
         失效 = 1,
-        未结清 = 2
+        未结清 = 2,
+        作废 = 3
     }
 
     public class CreditContract : Entity, IAggregateRoot, IProcessable
