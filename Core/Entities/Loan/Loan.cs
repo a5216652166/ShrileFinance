@@ -13,7 +13,8 @@
     {
         正常 = 1,
         已还清 = 2,
-        逾期 = 3
+        逾期 = 3,
+        作废 = 4
     }
 
     /// <summary>
@@ -127,7 +128,7 @@
         /// <summary>
         /// 借据状态
         /// </summary>
-        public LoanStatusEnum Status { get; private set; }
+        public LoanStatusEnum Status { get; set; }
 
         /// <summary>
         /// 贷款业务种类

@@ -8,6 +8,7 @@
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Flow;
     using Core.Entities.Identity;
+    using Core.Entities.Loan;
     using Core.Exceptions;
     using Core.Interfaces.Repositories;
     using ViewModels.ProcessViewModels;
@@ -530,20 +531,8 @@
         public void ProcessAbolish(Guid instanceId)
         {
             var instance = instanceReopsitory.Get(instanceId);
-            var trace = traceRepository.GetAll().Where(m => m.ReferenceId == instance.RootKey.Value).FirstOrDefault();
-            if (trace.Status == TraceStatusEmum.待生成)
-            {
-                trace.Status = TraceStatusEmum.作废;
-                traceRepository.Modify(trace);
-            }
-            else if (trace.Status == TraceStatusEmum.待发送)
-            {
-                throw new InvalidOperationAppException("该信息已经生成报文提交给人行，暂时无法作废");
-            }
-            else if (trace.Status == TraceStatusEmum.作废)
-            {
-                throw new InvalidOperationAppException("该信息已作废，暂时无法作废");
-            }
+
+        
             if (instance.Status == InstanceStatusEnum.完成)
             {
                 instance.Status = InstanceStatusEnum.作废;
@@ -559,6 +548,7 @@
                     break;
                 case ProcessTypeEnum.添加机构:
                     var organizate = organizationRepository.Get(instance.RootKey.Value);
+                    ChangeStatus(instance.RootKey.Value);
                     var creditContractcount = creditContractRepository.GetAll().Where(m => m.OrganizationId == organizate.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
                     if (creditContractcount > 0)
                     {
@@ -572,6 +562,7 @@
                     break;
                 case ProcessTypeEnum.授信:
                     var creditContract = creditContractRepository.Get(instance.RootKey.Value);
+                    ChangeStatus(instance.RootKey.Value);
                     var loanCount = loanRepository.GetAll().Where(m => m.CreditId == creditContract.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
                     if (loanCount > 0)
                     {
@@ -580,11 +571,13 @@
                     else
                     {
                         creditContract.Hidden = HiddenEnum.作废;
+                        creditContract.EffectiveStatus = CreditContractStatusEnum.作废;
                         creditContractRepository.Modify(creditContract);
                     }
                     break;
                 case ProcessTypeEnum.借据:
                     var loan = loanRepository.Get(instance.RootKey.Value);
+                    ChangeStatus(instance.RootKey.Value);
                     var repaymentCount = paymentRepository.GetAll().Where(m => m.LoanId == loan.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
                     if (repaymentCount > 0)
                     {
@@ -593,57 +586,47 @@
                     else
                     {
                         loan.Hidden = HiddenEnum.作废;
+                        loan.Status = LoanStatusEnum.作废;
                         loanRepository.Modify(loan);
                     }
                     break;
                 case ProcessTypeEnum.还款:
-                    if (trace.Type == TraceTypeEnum.还款|| trace.Type == TraceTypeEnum.欠息)
+                    var payments = paymentRepository.GetAll(m => m.InstanceId == instance.Id);
+
+                    foreach (var payment in payments)
                     {
-                        var payment = paymentRepository.Get(instance.RootKey.Value);
+                        ChangeStatus(payment.Id);
                         payment.Hidden = HiddenEnum.作废;
                         paymentRepository.Modify(payment);
                     }
-                    else if(trace.Type == TraceTypeEnum.逾期)
-                    {
-                        var loanpayment = loanRepository.Get(instance.RootKey.Value);
-                    }
+                   
                     break;
                 default:
                     break;
             }
-
+           
             instanceReopsitory.Commit();
         }
 
-        /////// <summary>
-        /////// 验证借据新流程实例是否合法
-        /////// </summary>
-        /////// <param name="instance">新还款流程实例</param>
-        /////// <returns>结果</returns>
-        ////private bool ValidLoanProcess(Instance instance)
-        ////{
-        ////    var loan = loanRepository.Get(instance.RootKey.Value);
-        ////    var loanIds = from item
-        ////                  in creditContractRepository.Get(loan.CreditId).Loans.Where(m => m.Hidden== HiddenEnum.审核中)
-        ////                  select item.Id;
 
-        ////    if (loanIds.Count() > 1)
-        ////    {
-        ////        // 移除错误借据
-        ////        loanRepository.Remove(loan);
+        private Trace ChangeStatus(Guid referenceId)
+        {
+            var trace = traceRepository.GetAll().Where(m => m.ReferenceId == referenceId).FirstOrDefault();
 
-        ////        // 流程实例还原为临时流程
-        ////        instance.RootKey = null;
-        ////        instance.Title = null;
-        ////        instanceReopsitory.Modify(instance);
-
-        ////        // 提交修改
-        ////        loanRepository.Commit();
-
-        ////        return false;
-        ////    }
-
-        ////    return true;
-        ////}
+            if (trace.Status == TraceStatusEmum.待生成)
+            {
+                trace.Status = TraceStatusEmum.作废;
+                traceRepository.Modify(trace);
+            }
+            else if (trace.Status == TraceStatusEmum.待发送)
+            {
+                throw new InvalidOperationAppException("该信息已经生成报文提交给人行，暂时无法作废");
+            }
+            else if (trace.Status == TraceStatusEmum.作废)
+            {
+                throw new InvalidOperationAppException("该信息已作废，暂时无法作废");
+            }
+            return trace;
+        }
     }
 }

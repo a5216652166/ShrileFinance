@@ -25,10 +25,12 @@
 
                 $("select#FlowType").next("span").hide();
                 $("select#FlowType").next().next("a#StartFlow").hide();
-                $("#abolish").hide();
             }
             else if (top.$("#role_name").text() == "管理员") {
                 $("#abolish").show();
+            }
+            else {
+                $("#abolish").hide();
             }
         });
          

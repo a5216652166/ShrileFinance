@@ -702,11 +702,14 @@
 
             <script>
                 function StatusFormatter(value, row) {
-                    if (row.Hidden == false) {
+                    if (row.Hidden == 2) {
                         return "审核完成";
                     }
-                    else if (row.Hidden == true) {
+                    else if (row.Hidden == 1) {
                         return "审核中";
+                    }
+                    else if (row.Hidden == 3) {
+                        return "作废";
                     }
                     else {
                         return "待审核";
