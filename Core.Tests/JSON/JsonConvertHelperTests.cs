@@ -2,16 +2,16 @@
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestClass()]
+    [TestClass]
     public class JsonConvertHelperTests
     {
-        [TestMethod()]
+        [TestMethod]
         public void Convert2ObjectTest()
         {
             Assert.IsTrue(true);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void Convert2JsonStrTest()
         {
             Assert.IsTrue(true);

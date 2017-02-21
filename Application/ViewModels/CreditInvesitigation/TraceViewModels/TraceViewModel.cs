@@ -58,7 +58,7 @@
         [Display(Name = "报文状态")]
         public MessageStatusEmum Status { get; set; }
 
-        public string StatusDesc=> Status.ToString();
+        public string StatusDesc => Status.ToString();
 
         /// <summary>
         /// 跟踪日期

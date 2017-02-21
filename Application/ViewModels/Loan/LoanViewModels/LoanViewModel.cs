@@ -12,7 +12,7 @@
     {
         public Guid? Id { get; set; }
 
-        public HiddenEnum Hidden { get; set; } =HiddenEnum.审核中;
+        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         [Required]
         [Display(Name = "授信合同")]

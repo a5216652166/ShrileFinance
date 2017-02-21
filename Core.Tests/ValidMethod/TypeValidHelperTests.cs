@@ -1,12 +1,12 @@
 ﻿namespace Infrastructure.ValidMethod.Tests
 {
-    using ValidMethod;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using ValidMethod;
 
-    [TestClass()]
+    [TestClass]
     public class TypeValidHelperTests
     {
-        [TestMethod()]
+        [TestMethod]
         public void IsOrganizationCodeTest()
         {
             var organizationCode = "76521929-0";
@@ -16,7 +16,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IsFinanceInstituteCodeTest()
         {
             var value = "33207991216";
@@ -26,7 +26,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IsCreditCardCodeTest()
         {
             var value = "3405010000049227";
@@ -36,7 +36,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IsMoneyTest()
         {
             var value = "12.1";
@@ -46,7 +46,7 @@
             Assert.IsTrue(result);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IsIdCardTest()
         {
             var value = "45112319710825646X";

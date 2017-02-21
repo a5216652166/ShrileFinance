@@ -1,16 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Infrastructure.ValidMethod;
-
-namespace Infrastructure.ValidMethod.Tests
+﻿namespace Infrastructure.ValidMethod.Tests
 {
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using ValidMethod;
 
-    [TestClass()]
+    [TestClass]
     public class AlgorithmHelperTests
     {
-        [TestMethod()]
+        [TestMethod]
         public void LulnMethodTest()
         {
             var luln = "79927398713";
@@ -20,7 +16,7 @@ namespace Infrastructure.ValidMethod.Tests
             Assert.IsTrue(result.Key);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void MD5Encrypt_16bitTest()
         {
             var value = "BB42BEE105A4E61180C5507B9DE4A488";
@@ -30,7 +26,7 @@ namespace Infrastructure.ValidMethod.Tests
             Assert.IsTrue(result);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void MD5Encrypt_32bitTest()
         {
             var value = "BB42BEE105A4E61180C5507B9DE4A488";

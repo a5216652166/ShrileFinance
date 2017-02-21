@@ -125,7 +125,6 @@
         /// 还款
         /// </summary>
         /// <param name="model">还款实体</param>
-        /// <param name="instanceId">所属流程ID</param>
         public void Payment(PaymentViewModel model)
         {
             if (model.Payments.Count() == 0)
@@ -138,7 +137,7 @@
             var loan = repository.Get(model.LoanId);
             var modelPaymentIds = from item in model.Payments.Where(m => m.Id != null) select item.Id.Value;
             var removeItem = new List<PaymentHistory>();
-            foreach (var item in loan.Payments.Where(m=>m.Hidden== HiddenEnum.审核中))
+            foreach (var item in loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中))
             {
                 if (modelPaymentIds.Contains(item.Id) == false)
                 {
@@ -146,18 +145,17 @@
                 }
             }
 
-            removeItem.ForEach(m=> {
+            removeItem.ForEach(m =>
+            {
                 loan.Payments.Remove(m);
                 paymentRepository.Remove(m);
             });
 
-           // var removeItem = loan.Payments.Where(m => !modelPaymentIds.Contains(m.Id));
-            
             foreach (var payment in model.Payments)
             {
                 if (payment.Id != null)
                 {
-                    var payments = loan.Payments.Where(m => m.Hidden== HiddenEnum.审核中&& m.Id == payment.Id.Value);
+                    var payments = loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.Id == payment.Id.Value);
                     if (payments.Count() > 0)
                     {
                         // 修改

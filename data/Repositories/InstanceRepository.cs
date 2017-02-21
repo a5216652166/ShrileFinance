@@ -18,9 +18,9 @@
         {
             var instances = GetAll();
 
-            if(currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
+            if (currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
             {
-                instances = instances.Where(m =>m.RootKey != null && m.RootKey != Guid.Empty&&m.Status== InstanceStatusEnum.完成);
+                instances = instances.Where(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.完成);
             }
             else
             {
@@ -33,10 +33,9 @@
                 m.Status == InstanceStatusEnum.正常
                 && (m.CurrentNode.RoleId == currentUser.RoleId)
                 && (m.CurrentUserId == null || m.CurrentUserId == currentUser.Id)
-                && (m.RootKey != null && m.RootKey != Guid.Empty)
-                    );
+                && (m.RootKey != null && m.RootKey != Guid.Empty));
             }
-          
+
             // 标题模糊搜索
             instances = FiterForTitle(instances, searchString);
 
@@ -106,7 +105,7 @@
             dictionary.Add(Guid.Parse("04824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.添加机构);
             dictionary.Add(Guid.Parse("05824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.授信);
             dictionary.Add(Guid.Parse("06824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.借据);
-            dictionary.Add(Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.还款); 
+            dictionary.Add(Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.还款);
             dictionary.Add(Guid.Parse("08824FE1-78D1-E611-80CA-507B9DE4A488"), ProcessTypeEnum.机构变更);
 
             return dictionary[processId];

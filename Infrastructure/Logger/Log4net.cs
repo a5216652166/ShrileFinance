@@ -3,11 +3,10 @@
     using System;
     using System.IO;
     using System.Threading.Tasks;
-    using Core.Interfaces;
     using log4net;
     using log4net.Config;
 
-    public class Log4net : ILogger
+    public class Log4net : ILogger.ILogger
     {
         private readonly ILog log;
 
@@ -21,7 +20,7 @@
             log = LogManager.GetLogger("Logger");
         }
 
-        public void Debug(object message, Exception exception = null)
+        void ILogger.ILogger.Debug(object message, Exception exception)
         {
             Task.Factory.StartNew(() =>
             {
@@ -36,7 +35,7 @@
             });
         }
 
-        public void Info(object message, Exception exception = null)
+        void ILogger.ILogger.Info(object message, Exception exception)
         {
             Task.Factory.StartNew(() =>
             {
@@ -51,7 +50,7 @@
             });
         }
 
-        public void Warn(object message, Exception exception = null)
+        void ILogger.ILogger.Warn(object message, Exception exception)
         {
             Task.Factory.StartNew(() =>
             {
@@ -66,7 +65,7 @@
             });
         }
 
-        public void Error(object message, Exception exception = null)
+        void ILogger.ILogger.Error(object message, Exception exception)
         {
             Task.Factory.StartNew(() =>
             {
@@ -81,7 +80,7 @@
             });
         }
 
-        public void Fatal(object message, Exception exception = null)
+        void ILogger.ILogger.Fatal(object message, Exception exception)
         {
             Task.Factory.StartNew(() =>
             {

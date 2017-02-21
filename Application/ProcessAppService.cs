@@ -364,6 +364,93 @@
         }
 
         /// <summary>
+        /// 流程作废处理
+        /// </summary>
+        /// <param name="instanceId">实例标识</param>
+        public void ProcessAbolish(Guid instanceId)
+        {
+            var instance = instanceReopsitory.Get(instanceId);
+
+            if (instance.Status == InstanceStatusEnum.完成)
+            {
+                instance.Status = InstanceStatusEnum.作废;
+                instanceReopsitory.Modify(instance);
+            }
+            else
+            {
+                throw new InvalidOperationAppException("该流程暂未审批完成，暂时无法作废");
+            }
+
+            switch (instance.ProcessType)
+            {
+                case ProcessTypeEnum.融资:
+                    break;
+                case ProcessTypeEnum.添加机构:
+                    var organizate = organizationRepository.Get(instance.RootKey.Value);
+                    ChangeStatus(instance.RootKey.Value);
+                    var creditContractcount = creditContractRepository.GetAll().Where(m => m.OrganizationId == organizate.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
+                    if (creditContractcount > 0)
+                    {
+                        throw new InvalidOperationAppException("该机构下存在有效贷款合同，暂时无法作废");
+                    }
+                    else
+                    {
+                        organizate.Hidden = HiddenEnum.作废;
+                        organizationRepository.Modify(organizate);
+                    }
+
+                    break;
+                case ProcessTypeEnum.授信:
+                    var creditContract = creditContractRepository.Get(instance.RootKey.Value);
+                    ChangeStatus(instance.RootKey.Value);
+                    var loanCount = loanRepository.GetAll().Where(m => m.CreditId == creditContract.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
+                    if (loanCount > 0)
+                    {
+                        throw new InvalidOperationAppException("该贷款合同下存在有效的借据合同，暂时无法作废");
+                    }
+                    else
+                    {
+                        creditContract.Hidden = HiddenEnum.作废;
+                        creditContract.EffectiveStatus = CreditContractStatusEnum.作废;
+                        creditContractRepository.Modify(creditContract);
+                    }
+
+                    break;
+                case ProcessTypeEnum.借据:
+                    var loan = loanRepository.Get(instance.RootKey.Value);
+                    ChangeStatus(instance.RootKey.Value);
+                    var repaymentCount = paymentRepository.GetAll().Where(m => m.LoanId == loan.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
+                    if (repaymentCount > 0)
+                    {
+                        throw new InvalidOperationAppException("该借据合同下存在有效的还款记录，暂时无法作废");
+                    }
+                    else
+                    {
+                        loan.Hidden = HiddenEnum.作废;
+                        loan.Status = LoanStatusEnum.作废;
+                        loanRepository.Modify(loan);
+                    }
+
+                    break;
+                case ProcessTypeEnum.还款:
+                    var payments = paymentRepository.GetAll(m => m.InstanceId == instance.Id);
+
+                    foreach (var payment in payments)
+                    {
+                        ChangeStatus(payment.Id);
+                        payment.Hidden = HiddenEnum.作废;
+                        paymentRepository.Modify(payment);
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+            instanceReopsitory.Commit();
+        }
+
+        /// <summary>
         /// 由流程类型得到流程标识
         /// </summary>
         /// <param name="processType">流程类型</param>
@@ -523,92 +610,6 @@
         ////    return query.Count() == 1;
         ////}
 
-        /// <summary>
-        /// 流程作废处理
-        /// </summary>
-        /// <param name="instanceId"></param>
-        /// <returns></returns>
-        public void ProcessAbolish(Guid instanceId)
-        {
-            var instance = instanceReopsitory.Get(instanceId);
-
-        
-            if (instance.Status == InstanceStatusEnum.完成)
-            {
-                instance.Status = InstanceStatusEnum.作废;
-                instanceReopsitory.Modify(instance);
-            }
-            else
-            {
-                throw new InvalidOperationAppException("该流程暂未审批完成，暂时无法作废");
-            }
-            switch (instance.ProcessType)
-            {
-                case ProcessTypeEnum.融资:
-                    break;
-                case ProcessTypeEnum.添加机构:
-                    var organizate = organizationRepository.Get(instance.RootKey.Value);
-                    ChangeStatus(instance.RootKey.Value);
-                    var creditContractcount = creditContractRepository.GetAll().Where(m => m.OrganizationId == organizate.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
-                    if (creditContractcount > 0)
-                    {
-                        throw new InvalidOperationAppException("该机构下存在有效贷款合同，暂时无法作废");
-                    }
-                    else
-                    {
-                        organizate.Hidden = HiddenEnum.作废;
-                        organizationRepository.Modify(organizate);
-                    }
-                    break;
-                case ProcessTypeEnum.授信:
-                    var creditContract = creditContractRepository.Get(instance.RootKey.Value);
-                    ChangeStatus(instance.RootKey.Value);
-                    var loanCount = loanRepository.GetAll().Where(m => m.CreditId == creditContract.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
-                    if (loanCount > 0)
-                    {
-                        throw new InvalidOperationAppException("该贷款合同下存在有效的借据合同，暂时无法作废");
-                    }
-                    else
-                    {
-                        creditContract.Hidden = HiddenEnum.作废;
-                        creditContract.EffectiveStatus = CreditContractStatusEnum.作废;
-                        creditContractRepository.Modify(creditContract);
-                    }
-                    break;
-                case ProcessTypeEnum.借据:
-                    var loan = loanRepository.Get(instance.RootKey.Value);
-                    ChangeStatus(instance.RootKey.Value);
-                    var repaymentCount = paymentRepository.GetAll().Where(m => m.LoanId == loan.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
-                    if (repaymentCount > 0)
-                    {
-                        throw new InvalidOperationAppException("该借据合同下存在有效的还款记录，暂时无法作废");
-                    }
-                    else
-                    {
-                        loan.Hidden = HiddenEnum.作废;
-                        loan.Status = LoanStatusEnum.作废;
-                        loanRepository.Modify(loan);
-                    }
-                    break;
-                case ProcessTypeEnum.还款:
-                    var payments = paymentRepository.GetAll(m => m.InstanceId == instance.Id);
-
-                    foreach (var payment in payments)
-                    {
-                        ChangeStatus(payment.Id);
-                        payment.Hidden = HiddenEnum.作废;
-                        paymentRepository.Modify(payment);
-                    }
-                   
-                    break;
-                default:
-                    break;
-            }
-           
-            instanceReopsitory.Commit();
-        }
-
-
         private Trace ChangeStatus(Guid referenceId)
         {
             var trace = traceRepository.GetAll().Where(m => m.ReferenceId == referenceId).FirstOrDefault();
@@ -626,6 +627,7 @@
             {
                 throw new InvalidOperationAppException("该信息已作废，暂时无法作废");
             }
+
             return trace;
         }
     }

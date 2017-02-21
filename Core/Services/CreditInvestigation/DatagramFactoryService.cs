@@ -8,13 +8,11 @@
     using Entities.CreditInvestigation.DatagramFile;
     using Entities.CreditInvestigation.Record.LoanRecords;
     using Entities.CreditInvestigation.Record.OrganizationRecords;
-    using Entities.Customers.Enterprise;
     using Entities.Loan;
     using Exceptions;
-    using Interfaces.Repositories;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using Infrastructure.JSON;
+    using Interfaces.Repositories;
+    using Newtonsoft.Json.Linq;
 
     public class DatagramFactoryService
     {
@@ -128,7 +126,6 @@
 
             return datagramFile;
         }
-
 
         /// <summary>
         /// 创建借款人
@@ -372,14 +369,10 @@
             var processTempData = processTempDataRepository.GetByInstanceId(trace.ReferenceId);
 
             // 获取机构实体（克隆版）
-            var aaaaa= EntityCloneHelper.
-
-            var organizationJson = JsonConvert.SerializeObject(organizationRepository.Get(processTempData.Instance.RootKey.Value));
-            var organization = JsonConvert.DeserializeObject<Organization>(organizationJson);
+            var organization = EntityCloneHelper.Clone(organizationRepository.Get(processTempData.Instance.RootKey.Value));
 
             // 从JSON字符串中获取段集合
-            var periodsJProperty = JObject.Parse(processTempData.JsonData).Property("Periods");
-            var periods = periodsJProperty.Children().Children().Select(m => m.Value<string>());
+            var periods = JsonParseHelper.GetJProperty(processTempData.JsonData, "Periods", 2).Select(m => m.Value<string>());
 
             if (periods.Contains("Property") == false)
             {

@@ -309,7 +309,7 @@
         /// 信用状况
         /// </summary>
         [Required(ErrorMessage = "信用状况 不可为空")]
-        [CreditConditionRang(ErrorMessage = "信用状况 值错误")]
+        [FinanceValid.CreditConditionRang(ErrorMessage = "信用状况 值错误")]
         public string CreditCondition { get; set; }
 
         /// <summary>
@@ -337,7 +337,7 @@
         /// 年龄区间
         /// </summary>
         [Required(ErrorMessage = "年龄 不可为空")]
-        [AgeRange(ErrorMessage = "年龄 值错误")]
+        [FinanceValid.AgeRange(ErrorMessage = "年龄 值错误")]
         public string AgeRange { get; set; }
 
         /// <summary>
@@ -359,7 +359,7 @@
         /// 房产
         /// </summary>
         [Required(ErrorMessage = "房产 不可为空")]
-        [RealEstate(ErrorMessage = "房产 值错误")]
+        [FinanceValid.RealEstate(ErrorMessage = "房产 值错误")]
         public string RealEstate { get; set; }
 
         /// <summary>

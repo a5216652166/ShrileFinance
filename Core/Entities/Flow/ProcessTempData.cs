@@ -19,7 +19,7 @@
 
             if (string.IsNullOrEmpty(JsonData) == false)
             {
-                obj= (T)JsonConvert.DeserializeObject(JsonData, typeof(T));
+                obj = (T)JsonConvert.DeserializeObject(JsonData, typeof(T));
             }
 
             return obj;

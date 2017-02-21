@@ -15,7 +15,8 @@
 
             // Logger
             builder.RegisterType<Infrastructure.Logger.Log4net>()
-                .As<Core.Interfaces.ILogger>()
+                ////.As<Core.Interfaces.ILogger>()
+                .As<Infrastructure.Logger.ILogger.ILogger>()
                 .SingleInstance();
 
             builder.RegisterModule<Infrastructure.Logger.LoggingModule>();

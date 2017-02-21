@@ -1,5 +1,6 @@
 ﻿namespace Infrastructure.JSON
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Newtonsoft.Json.Linq;
@@ -13,41 +14,66 @@
         /// <returns>JObject对象</returns>
         public static JObject GetJObject(string jsonStr)
         {
-            if (jsonStr == default(string))
+            if (jsonStr == default(string) || JsonCheck(jsonStr) == false)
             {
                 return default(JObject);
             }
 
-            var jObject = string.IsNullOrEmpty(jsonStr) ? default(JObject) : JObject.Parse(jsonStr);
+            var jsonObj = JObject.Parse(jsonStr);
 
-            return jObject;
+            return jsonObj;
         }
 
-        /// <summary>
-        /// 将Json字符串解析为JObject对象
-        /// </summary>
-        /// <param name="jsonStr">json字符串</param>
-        /// <param name="name">属性名</param>
-        /// <returns></returns>
-        public static List<JProperty> GetJPropertites(string jsonStr, string name = null)
+        public static IEnumerable<JProperty> GetJProperties(string jsonStr)
         {
-            if (jsonStr == default(string))
+            if (jsonStr == default(string) || JsonCheck(jsonStr) == false)
             {
                 return null;
             }
 
-            var jObject = default(JObject);
+            var jsonProperties = JObject.Parse(jsonStr).Properties();
 
-            jObject = JObject.Parse(jsonStr);
+            return jsonProperties;
+        }
 
-            var jProperty = jObject.Properties();
-
-            if (name == null)
+        /// <summary>
+        /// 解析Json字符串中的指定属性
+        /// </summary>
+        /// <param name="jsonStr">json字符串</param>
+        /// <param name="name">属性名</param>
+        /// <param name="layerNumber">子节点层数</param>
+        /// <returns></returns>
+        public static IEnumerable<JToken> GetJProperty(string jsonStr, string name, int layerNumber = 1)
+        {
+            if (jsonStr == default(string) || JsonCheck(jsonStr) == false)
             {
-                jProperty = jProperty.Where(m => m.Name == name);
+                return null;
             }
 
-            return jProperty.ToList();
+            var jsonTokenList = JObject.Parse(jsonStr).Property(name).AsEnumerable();
+
+            for (var i = 1; i < layerNumber; i++)
+            {
+                jsonTokenList = jsonTokenList.Children().AsEnumerable();
+            }
+
+            return jsonTokenList;
+        }
+
+        private static bool JsonCheck(string jsonStr)
+        {
+            var isJson = true;
+
+            try
+            {
+                JObject.Parse(jsonStr);
+            }
+            catch
+            {
+                isJson = false;
+            }
+
+            return isJson;
         }
     }
 }

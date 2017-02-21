@@ -46,6 +46,7 @@
         protected Trace()
         {
         }
+
         /// <summary>
         /// 机构名称
         /// </summary>

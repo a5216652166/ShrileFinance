@@ -90,7 +90,7 @@
             catch
             {
                 return null;
-                throw new Core.Exceptions.InvalidOperationAppException("合同生成失败.");
+                //throw new Core.Exceptions.InvalidOperationAppException("合同生成失败.");
             }
 
             return physicNewFile;

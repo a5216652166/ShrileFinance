@@ -1,6 +1,4 @@
-﻿
-
-namespace Infrastructure.JSON
+﻿namespace Infrastructure.JSON
 {
     using Newtonsoft.Json;
 

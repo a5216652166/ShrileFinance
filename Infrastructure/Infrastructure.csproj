@@ -63,6 +63,7 @@
     <Compile Include="JSON\EntityCloneHelper.cs" />
     <Compile Include="JSON\JsonConvertHelper.cs" />
     <Compile Include="JSON\JsonParseHelper.cs" />
+    <Compile Include="Logger\ILogger\ILogger.cs" />
     <Compile Include="ValidMethod\AlgorithmHelper.cs" />
     <Compile Include="File\FileHelper.cs" />
     <Compile Include="Helper.cs" />
@@ -85,12 +86,6 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="ValidMethod\TypeValidHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{9efa088c-87ef-4270-85fc-10418c4529ce}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Logger\log4net.config">

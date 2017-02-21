@@ -28,7 +28,7 @@
 
             var list = processTempData.ConvertToObject<List<int>>();
 
-            Assert.IsTrue(list.Count==2 && list[0] == 9 && list[1] == 99);
+            Assert.IsTrue(list.Count == 2 && list[0] == 9 && list[1] == 99);
         }
     }
 }

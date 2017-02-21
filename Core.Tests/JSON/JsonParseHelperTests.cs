@@ -1,23 +1,40 @@
 ﻿namespace Infrastructure.JSON.Tests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Linq;
     using JSON;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [TestClass()]
+    [TestClass]
     public class JsonParseHelperTests
     {
-        [TestMethod()]
+        [TestMethod]
         public void GetJObjectTest()
         {
-            var aa = JsonParseHelper.GetJObject(null);
+            var json = "{\"h\":\"Hello world!!!\",\"Array\":[\"A\",\"B\",\"C\"]}";
 
-            Assert.IsTrue(true);
+            var jsonObject = JsonParseHelper.GetJObject(json);
+
+            Assert.IsTrue(jsonObject.Count == 2);
         }
 
-        [TestMethod()]
-        public void GetJPropertitesTest()
+        [TestMethod]
+        public void GetJPropertiesTest()
         {
-            Assert.IsTrue(true);
+            var json = "{\"h\":\"Hello world!!!\",\"Array\":[\"A\",\"B\",\"C\"]}";
+
+            var jsonProperties = JsonParseHelper.GetJProperties(json);
+
+            Assert.IsTrue(jsonProperties.Count() == 2);
+        }
+
+        [TestMethod]
+        public void GetJPropertyTest()
+        {
+            var json = "{\"h\":\"Hello world!!!\",\"Array\":[\"A\",\"B\",\"C\"]}";
+
+            var jsonTokens = JsonParseHelper.GetJProperty(json, "Array", 2);
+
+            Assert.IsTrue(jsonTokens.Count() == 3);
         }
     }
 }

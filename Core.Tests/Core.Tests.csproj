@@ -67,6 +67,7 @@
     <Compile Include="Entities\Flow\ProcessTempDataTests.cs" />
     <Compile Include="Entities\Loan\CreditContractTests.cs" />
     <Compile Include="Entities\Loan\LoanTests.cs" />
+    <Compile Include="JSON\EntityCloneHelperTests.cs" />
     <Compile Include="JSON\JsonConvertHelperTests.cs" />
     <Compile Include="JSON\JsonParseHelperTests.cs" />
     <Compile Include="PackingTest.cs" />
