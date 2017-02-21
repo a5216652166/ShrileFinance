@@ -15,6 +15,7 @@
             逾期 = 5,
             合同变更 = 6,
             欠息 = 7,
+            机构变更 = 8
         }
 
         public enum MessageStatusEmum : byte
@@ -49,11 +50,7 @@
         [Display(Name = "操作类型")]
         public MessageOperationTypeEnum Type { get; set; }
 
-        public string TypeDesc
-        {
-            get
-            { return Type.ToString(); }
-        }
+        public string TypeDesc => Type.ToString();
 
         /// <summary>
         /// 报文状态
@@ -61,11 +58,7 @@
         [Display(Name = "报文状态")]
         public MessageStatusEmum Status { get; set; }
 
-        public string StatusDesc
-        {
-            get
-            { return Status.ToString(); }
-        }
+        public string StatusDesc=> Status.ToString();
 
         /// <summary>
         /// 跟踪日期

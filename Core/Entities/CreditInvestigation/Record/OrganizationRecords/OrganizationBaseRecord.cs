@@ -16,16 +16,25 @@
             {
                 // 基础段
                 new BaseSegment(organization),
-
-                // 基础属性段
-                new PropertySegment(organization.Property),
-
-                // 机构状态段
-                new OrganizationStateSegment(organization.State),
-
-                // 联络信息段
-                new OrganizationContactSegment(organization.Contact),
             };
+
+            if (organization.Property != null)
+            {
+                // 基础属性段
+                Segments.Add(new PropertySegment(organization.Property));
+            }
+
+            if (organization.State != null)
+            {
+                // 机构状态段
+                Segments.Add(new OrganizationStateSegment(organization.State));
+            }
+
+            if (organization.Contact != null)
+            {
+                // 联络信息段
+                Segments.Add(new OrganizationContactSegment(organization.Contact));
+            }
 
             if (organization.Parent != null)
             {
@@ -56,12 +65,6 @@
         {
         }
 
-        public override RecordTypeEnum Type
-        {
-            get
-            {
-                return RecordTypeEnum.机构基本信息记录;
-            }
-        }
+        public override RecordTypeEnum Type => RecordTypeEnum.机构基本信息记录;
     }
 }

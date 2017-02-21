@@ -344,12 +344,12 @@
             var organizationChangeViewModel = processTempDataViewModel.ObjData;
 
             organizationAppService.ModifyPeriods(organizationChangeViewModel);
+
+            // 报文追踪
+            Trace(organizationChangeViewModel);
         }
 
-        private T GetData<T>(string formId) where T : class, new()
-        {
-            return Data[formId.ToLower()].ToObject<T>();
-        }
+        private T GetData<T>(string formId) where T : class, new() => Data[formId.ToLower()].ToObject<T>();
 
         /// <summary>
         /// 报文追踪
@@ -458,6 +458,13 @@
                         }
                     }
                 }
+            }
+            else if (entity is OrganizationChangeViewModel)
+            {
+                var item = entity as OrganizationChangeViewModel;
+
+                // 机构信息变更 —> 报文追踪
+                datagramAppService.Trace(referenceId: Instance.Id, traceType: TraceTypeEnum.机构变更, defaultName: $"机构变更：{item.Name}", specialDate: DateTime.Now, organizateName: item.Name);
             }
         }
 
