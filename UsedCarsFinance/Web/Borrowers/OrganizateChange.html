@@ -93,50 +93,41 @@
             function DataInit() {
                 var query = {};
 
-                ////if (GetQueryString("method") == "view") {
-                ////    
-                ////    query.InstanceId = GetQueryString("Id");
-                ////}
-                ////else {
-                ////    
-                ////    query.InstanceId = parent.flow.InstanceId;
-                ////}
-
                 query.InstanceId = parent.flow.InstanceId;
-                debugger
+                
                 if (query.InstanceId) {
-                    query.data = LoadDateForId(query.InstanceId);
-                    debugger
-                    if (query.data.json != '""')
-                    {
-                        origanizationData = JSON.parse(query.data);
-                    }
-                    debugger
-                    if (origanizationData == null)
-                    {
-                        return;
-                    }
+                    origanizationData = LoadDateForId(query.InstanceId);
 
-                    $("select[textboxname=OrganizateOptions]").combobox("select", origanizationData.Id);
-
+                    $("select[textboxname=OrganizateOptions]").combobox("setValue", origanizationData.Id).combobox("setText", origanizationData.Name);
+                    
                     LoadData(origanizationData);
-
+                    
                     $("form section#B div#showSecton input[type=checkbox]").each(function (i, e) {
+                        var id = getFieldsetName($(e).attr("id").substr(3, 1));
+                        var isContain = $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods);
+                        
                         if (e.checked == false && $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods) > -1) {
                             $(e).click();
                         }
                     });
-
+                    
                     if (GetQueryString("method") == "view" || GetQueryString("state") == 0) {
                         PageDisable();
                     }
                 }
 
                 function PageDisable() {
+                    // 禁用 机构名称下拉框
+                    $("select[textboxname=OrganizateOptions]").combobox("disable");
+
+                    // 禁用checkbox
+                    $("form section#B div#showSecton input[type=checkbox]").each(function (i, e) {
+                        $(e).attr("disabled","disabled");
+                    });
+                    ////$("div#showSecton").remove();
+
                     // 禁用fieldset
                     Disabled("fieldset");
-
-                    $("div#showSecton").remove();
 
                     // 禁用table
                     $("div[id*=_tb]>a").addClass("Remove").hide();
@@ -151,7 +142,7 @@
             if (Id == null) {
                 return;
             }
-            debugger
+            
             // 通过Id获取数据
             var resultDate;
             $.ajax({

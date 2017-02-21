@@ -49,6 +49,16 @@
             }
 
             credit.ValidateEffective(credit);
+
+            // 设置担保合同的担保金额
+            if (credit.GuarantyContract.Count() > 0)
+            {
+                foreach (var item in credit.GuarantyContract)
+                {
+                    item.Margin = credit.CreditLimit;
+                }
+            }
+
             repository.Create(credit);
             repository.Commit();
             model.Id = credit.Id;
@@ -92,6 +102,15 @@
             else
             {
                 new UpdateBind().Bind(credit.GuarantyContract, model.GuarantyContract);
+            }
+
+            // 设置担保合同的担保金额
+            if (credit.GuarantyContract.Count() > 0)
+            {
+                foreach (var item in credit.GuarantyContract)
+                {
+                    item.Margin = credit.CreditLimit;
+                }
             }
 
             repository.Modify(credit);
@@ -169,7 +188,7 @@
             repository.Commit();
 
             // 报文追踪(合同关键数据项有效日期发生变化)
-            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"授信合同：{model.CreditContractCode}有效日期变更", specialDate: model.EffectiveDate,organizateName: model.Organization.Property.InstitutionChName);
+            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"授信合同：{model.CreditContractCode}有效日期变更", specialDate: model.EffectiveDate, organizateName: model.Organization.Property.InstitutionChName);
         }
 
         /// <summary>
@@ -195,7 +214,7 @@
             repository.Commit();
 
             // 报文追踪
-            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate,organizateName:credit.Organization.Property.InstitutionChName);
+            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
         }
 
         /// <summary>
@@ -368,7 +387,7 @@
             repository.Commit();
 
             // 报文追踪(合同关键数据项金额发生变化)
-            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更", specialDate: model.EffectiveDate,organizateName:model.Organization.Property.InstitutionChName);
+            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更", specialDate: model.EffectiveDate, organizateName: model.Organization.Property.InstitutionChName);
         }
     }
 }

@@ -70,10 +70,7 @@
         /// <summary>
         /// 是否有上级机构
         /// </summary>
-        public bool HasParent
-        {
-            get { return Parent != null; }
-        }
+        public bool HasParent=> Parent != null;
 
         /// <summary>
         /// 创建日期

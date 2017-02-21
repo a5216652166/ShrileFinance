@@ -24,6 +24,8 @@
         {
             var list = messageAppService.GetPageList(search, page, rows, status, beginTime, endTime);
 
+            var result = new PagedListViewModel<TraceViewModel>(list);
+
             return Ok(new PagedListViewModel<TraceViewModel>(list));
         }
 

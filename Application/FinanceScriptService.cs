@@ -299,7 +299,7 @@
             // 获取借据实体
             var loan = loanRepository.Get(Instance.RootKey.Value);
 
-            if (loan.Payments.Where(m => m.Hidden== HiddenEnum.审核中).Count() == 0)
+            if (loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中).Count() == 0)
             {
                 throw new ArgumentNullException(nameof(loan.Payments), "错误流程，未新增还款记录");
             }
@@ -308,10 +308,10 @@
             Trace(loan.Payments);
 
             // 设置Hidden为false
-            loan.Payments.Where(m => m.Hidden== HiddenEnum.审核中).ToList().ForEach(payment =>
-            {
-                SetHidden(payment);
-            });
+            loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中).ToList().ForEach(payment =>
+             {
+                 SetHidden(payment);
+             });
         }
 
         /// <summary>
@@ -319,19 +319,18 @@
         /// </summary>
         public void OrganizateChange()
         {
-            var OrganizationChangeViewModel = GetData<OrganizationChangeViewModel>("63DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var organizationChangeViewModel = GetData<OrganizationChangeViewModel>("63DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            var processTempDataViewModel = new ProcessTempDataViewModel()
+            var processTempDataViewModel = new ProcessTempDataViewModel<OrganizationChangeViewModel>()
             {
                 InstanceId = Instance.Id,
-                Instance=Instance,
-                ObjData= OrganizationChangeViewModel
+                ObjData = organizationChangeViewModel
             };
 
             processTempDataService.Create(processTempDataViewModel);
 
-            Instance.RootKey = OrganizationChangeViewModel.Id;
-            Instance.Title = $"{OrganizationChangeViewModel.Name} 机构信息变更";
+            Instance.RootKey = organizationChangeViewModel.Id;
+            Instance.Title = $"{organizationChangeViewModel.Name} 机构信息变更";
         }
 
         /// <summary>
@@ -342,15 +341,15 @@
             var processTempDataViewModel = processTempDataService.GetByInstanceId<OrganizationChangeViewModel>(Instance.Id);
 
             // 从流程临时数据中提取数据
-            var organizationChangeViewModel = (OrganizationChangeViewModel)processTempDataViewModel.ObjData;
+            var organizationChangeViewModel = processTempDataViewModel.ObjData;
 
             organizationAppService.ModifyPeriods(organizationChangeViewModel);
+
+            // 报文追踪
+            Trace(organizationChangeViewModel);
         }
 
-        private T GetData<T>(string formId) where T : class, new()
-        {
-            return Data[formId.ToLower()].ToObject<T>();
-        }
+        private T GetData<T>(string formId) where T : class, new() => Data[formId.ToLower()].ToObject<T>();
 
         /// <summary>
         /// 报文追踪
@@ -365,7 +364,7 @@
                 var customer = entity as Core.Entities.Customers.Enterprise.Organization;
 
                 // 添加机构 —> 报文追踪
-                datagramAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate,organizateName:customer.Property.InstitutionChName);
+                datagramAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate, organizateName: customer.Property.InstitutionChName);
             }
             else if (entity is CreditContract && describe != null)
             {
@@ -378,7 +377,7 @@
 
                     case CreditContractChangeEnum.签订合同:
                         // 授信合同 - 签订 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订贷款合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate,organizateName:credit.Organization.Property.InstitutionChName);
+                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订贷款合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
                         break;
 
                     case CreditContractChangeEnum.有效期变更:
@@ -401,14 +400,14 @@
             {
                 var loan = entity as Loan;
                 var credit = creditContractRepository.Get(loan.CreditId);
-                
+
                 // 借据 放款 —> 报文追踪
-                datagramAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据：{loan.ContractNumber}，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate,organizateName:credit.Organization.Property.InstitutionChName);
+                datagramAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据：{loan.ContractNumber}，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate, organizateName: credit.Organization.Property.InstitutionChName);
             }
             else if (entity is IEnumerable<PaymentHistory>)
             {
                 // 还款
-                var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden== HiddenEnum.审核中).ToList();
+                var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden == HiddenEnum.审核中).ToList();
 
                 var loan = loanRepository.Get(payments.First().LoanId);
                 var credit = creditContractRepository.Get(loan.CreditId);
@@ -446,7 +445,7 @@
                                 break;
                             case TraceTypeEnum.还款:
                                 // 还款 —> 报文追踪
-                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{trace.Key.ActualPaymentPrincipal}", specialDate: trace.Key.ActualDatePayment,organizateName:credit.Organization.Property.InstitutionChName);
+                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{trace.Key.ActualPaymentPrincipal}", specialDate: trace.Key.ActualDatePayment, organizateName: credit.Organization.Property.InstitutionChName);
                                 break;
                             case TraceTypeEnum.逾期:
                                 // 逾期 —> 报文追踪
@@ -459,6 +458,13 @@
                         }
                     }
                 }
+            }
+            else if (entity is OrganizationChangeViewModel)
+            {
+                var item = entity as OrganizationChangeViewModel;
+
+                // 机构信息变更 —> 报文追踪
+                datagramAppService.Trace(referenceId: Instance.Id, traceType: TraceTypeEnum.机构变更, defaultName: $"机构变更：{item.Name}", specialDate: DateTime.Now, organizateName: item.Name);
             }
         }
 

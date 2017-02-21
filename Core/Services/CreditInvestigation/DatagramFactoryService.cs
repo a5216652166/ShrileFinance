@@ -8,12 +8,16 @@
     using Entities.CreditInvestigation.DatagramFile;
     using Entities.CreditInvestigation.Record.LoanRecords;
     using Entities.CreditInvestigation.Record.OrganizationRecords;
+    using Entities.Customers.Enterprise;
     using Entities.Loan;
     using Exceptions;
     using Interfaces.Repositories;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     public class DatagramFactoryService
     {
+        private readonly IProcessTempDataRepository processTempDataRepository;
         private readonly IDatagramFileRepository datagramFileRepository;
         private readonly IOrganizationRepository organizationRepository;
         private readonly ICreditContractRepository creditRepository;
@@ -21,12 +25,14 @@
         private readonly IPaymentHistoryRepository paymentRepository;
 
         public DatagramFactoryService(
+            IProcessTempDataRepository processTempDataRepository,
             IDatagramFileRepository datagramFileRepository,
             IOrganizationRepository organizationRepository,
             ICreditContractRepository creditRepository,
             ILoanRepository loanRepository,
             IPaymentHistoryRepository paymentRepository)
         {
+            this.processTempDataRepository = processTempDataRepository;
             this.datagramFileRepository = datagramFileRepository;
             this.organizationRepository = organizationRepository;
             this.creditRepository = creditRepository;
@@ -79,6 +85,12 @@
                     datagramFiles.Add(
                         DebitInterest(trace));
                     break;
+                case TraceTypeEnum.机构变更:
+                    datagramFiles.Add(
+                        ModifyOrganization(trace));
+                    datagramFiles.Add(
+                        CreateBorrower(trace));
+                    break;
                 default:
                     throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
             }
@@ -116,6 +128,7 @@
             return datagramFile;
         }
 
+
         /// <summary>
         /// 创建借款人
         /// </summary>
@@ -124,6 +137,12 @@
         private DatagramFile CreateBorrower(Trace trace)
         {
             var organization = organizationRepository.Get(trace.ReferenceId);
+
+            if (organization == null)
+            {
+                var processTempData = processTempDataRepository.GetByInstanceId(trace.ReferenceId);
+                organization = organizationRepository.Get(processTempData.Instance.RootKey.Value);
+            }
 
             ////var datagramFile = new BorrowerDatagramFile(trace.SerialNumber);
             var datagramFile = BorrowerDatagramFile.Create();
@@ -338,6 +357,87 @@
 
             datagramFile.GetDatagram(DatagramTypeEnum.欠息信息采集报文)
                 .AddRecord(new DebitInterestInfoRecord(credit, payment));
+
+            return datagramFile;
+        }
+
+        /// <summary>
+        /// 机构变更
+        /// </summary>
+        /// <param name="trace">跟踪记录</param>
+        /// <returns></returns>
+        private DatagramFile ModifyOrganization(Trace trace)
+        {
+            var processTempData = processTempDataRepository.GetByInstanceId(trace.ReferenceId);
+
+            // 获取机构实体（克隆版）
+            var organizationJson = JsonConvert.SerializeObject(organizationRepository.Get(processTempData.Instance.RootKey.Value));
+            var organization = JsonConvert.DeserializeObject<Organization>(organizationJson);
+
+            // 从JSON字符串中获取段集合
+            var periodsJProperty = JObject.Parse(processTempData.JsonData).Property("Periods");
+            var periods = periodsJProperty.Children().Children().Select(m => m.Value<string>());
+
+            if (periods.Contains("Property") == false)
+            {
+                organization.Property = null;
+            }
+
+            if (periods.Contains("State") == false)
+            {
+                organization.State = null;
+            }
+
+            if (periods.Contains("Contact") == false)
+            {
+                organization.Contact = null;
+            }
+
+            if (periods.Contains("Managers") == false)
+            {
+                organization.Managers.Clear();
+            }
+
+            if (periods.Contains("Shareholders") == false)
+            {
+                organization.Shareholders.Clear();
+            }
+
+            if (periods.Contains("AssociatedEnterprises") == false)
+            {
+                organization.AssociatedEnterprises.Clear();
+            }
+
+            if (periods.Contains("Parent") == false)
+            {
+                organization.Parent = null;
+            }
+
+            if (periods.Contains("FinancialAffairs") == false)
+            {
+                organization.FinancialAffairs = null;
+            }
+
+            if (periods.Contains("Litigation") == false)
+            {
+                organization.Property = null;
+            }
+
+            if (periods.Contains("Litigation") == false)
+            {
+                organization.Property = null;
+            }
+
+            var datagramFile = OrganizationDatagramFile.Create();
+
+            datagramFile.GetDatagram(DatagramTypeEnum.机构基本信息报文)
+                .AddRecord(new OrganizationBaseRecord(organization));
+
+            var familyDatagram = datagramFile.GetDatagram(DatagramTypeEnum.家族成员信息报文);
+            organization.Managers.ToList().ForEach(m => m.FamilyMembers
+                .ForEach(n => familyDatagram.AddRecord(new FamilyMemberRecord(m, n))));
+            organization.Shareholders.ToList().ForEach(m => m.FamilyMembers
+                .ForEach(n => familyDatagram.AddRecord(new FamilyMemberRecord(m, n))));
 
             return datagramFile;
         }

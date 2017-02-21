@@ -9,7 +9,7 @@
     {
         public Guid InstanceId { get; set; }
 
-        public string JsonData { get; set; } = string.Empty;
+        public string JsonData { get; set; }
 
         public virtual Instance Instance { get; set; }
 
@@ -31,6 +31,8 @@
             {
                 JsonData = JsonConvert.SerializeObject(obj);
             }
+
+            JsonData = string.IsNullOrEmpty(JsonData) ? null : JsonData;
         }
     }
 }

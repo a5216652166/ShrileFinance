@@ -96,7 +96,7 @@
         {
             var model = processTempDataAppService.GetByInstanceId<OrganizationChangeViewModel>(instanceId);
 
-            return Ok(new { json= model == null ? null : model.JsonData });
+            return Ok(model?.ObjData);
         }
 
         /// <summary>

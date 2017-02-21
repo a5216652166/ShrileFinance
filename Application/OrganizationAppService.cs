@@ -16,7 +16,8 @@
         private readonly IProcessTempDataRepository processTempDataRepository;
         private readonly DatagramAppService datagramAppService;
 
-        public OrganizationAppService(IOrganizationRepository organizationRepository,
+        public OrganizationAppService(
+            IOrganizationRepository organizationRepository,
             IProcessTempDataRepository processTempDataRepository,
             DatagramAppService datagramAppService)
         {
@@ -120,9 +121,13 @@
 
             // 映射基础信息
             Mapper.Map(model.Base, organizate);
+
             organizate.CustomerNumber = model.Base.CustomerNumber;
-
-
+            organizate.ManagementerCode = model.Base.ManagementerCode;
+            organizate.CustomerType = model.Base.CustomerType;
+            organizate.InstitutionCreditCode = model.Base.InstitutionCreditCode;
+            organizate.OrganizateCode = model.Base.OrganizateCode;
+            organizate.LoanCardCode = model.Base.LoanCardCode;
 
             if (model.Periods.Contains("Property"))
             {
@@ -195,6 +200,8 @@
             {
                 new UpdateBind().Bind(organizate.BigEvent, model.BigEvent);
             }
+
+            organizationRepository.Modify(organizate);
         }
 
         public OrganizationViewModel Get(Guid id)
@@ -246,7 +253,7 @@
         public List<OriganizateOptions> GetOptions()
         {
             var list = from item in organizationRepository.GetAll(m => m.Hidden == Core.Entities.HiddenEnum.完成)
-                       select new OriganizateOptions() { Value=item.Id,Text=item.Property.InstitutionChName };
+                       select new OriganizateOptions() { Value = item.Id, Text = item.Property.InstitutionChName };
 
             return list.ToListAsync().Result;
         }

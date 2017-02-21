@@ -17,6 +17,7 @@
         逾期 = 5,
         合同变更 = 6,
         欠息 = 7,
+        机构变更 = 8
     }
 
     public enum TraceStatusEmum : byte
@@ -73,7 +74,7 @@
         /// <summary>
         /// 报文状态
         /// </summary>
-        public TraceStatusEmum Status { get;set; }
+        public TraceStatusEmum Status { get; set; }
 
         /////// <summary>
         /////// 报文顺序号
