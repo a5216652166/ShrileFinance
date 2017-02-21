@@ -198,8 +198,8 @@
 
             var models = Mapper.Map<IPagedList<LoanViewModel>>(loans);
 
-            var creditIds = from item in models select item.CreditId;
-            var credits = creditRepository.GetAll(m => creditIds.Contains(m.Id));
+            var creditIds = (from item in models select item.CreditId).ToListAsync().Result;
+            var credits = creditRepository.GetAll(m => creditIds.Contains(m.Id)).ToListAsync().Result;
 
             models.ToList().ForEach(model =>
             {
