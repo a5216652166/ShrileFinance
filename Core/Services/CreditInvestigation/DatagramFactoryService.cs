@@ -14,6 +14,7 @@
     using Interfaces.Repositories;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using Infrastructure.JSON;
 
     public class DatagramFactoryService
     {
@@ -371,6 +372,8 @@
             var processTempData = processTempDataRepository.GetByInstanceId(trace.ReferenceId);
 
             // 获取机构实体（克隆版）
+            var aaaaa= EntityCloneHelper.
+
             var organizationJson = JsonConvert.SerializeObject(organizationRepository.Get(processTempData.Instance.RootKey.Value));
             var organization = JsonConvert.DeserializeObject<Organization>(organizationJson);
 
