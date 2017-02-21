@@ -110,6 +110,9 @@
         [Display(Name = "授信合同编号")]
         public string CreditContractCode { get; set; }
 
+        [Display(Name = "机构名称")]
+        public string OrganizateName { get; set; }
+
         /// <summary>
         /// 还款记录
         /// </summary>

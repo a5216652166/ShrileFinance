@@ -198,11 +198,15 @@
 
             var models = Mapper.Map<IPagedList<LoanViewModel>>(loans);
 
+            var creditIds = from item in models select item.CreditId;
+            var credits = creditRepository.GetAll(m => creditIds.Contains(m.Id));
+
             models.ToList().ForEach(model =>
             {
-                var credit = creditRepository.Get(model.CreditId);
+                var credit = credits.Single(m => m.Id == model.CreditId);
 
                 model.CreditContractCode = credit.CreditContractCode;
+                model.OrganizateName = credit.Organization.Property.InstitutionChName;
             });
 
             return models;
