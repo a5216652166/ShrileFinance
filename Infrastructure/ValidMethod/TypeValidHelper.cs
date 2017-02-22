@@ -141,7 +141,7 @@
 
                 lastValue = 1 + (lastValue % 97);
 
-                var lastValueStr = lastValue > 10 ? lastValue.ToString() : "0" + lastValue;
+                var lastValueStr = lastValue >= 10 ? lastValue.ToString() : "0" + lastValue;
 
                 regResult = lastValueStr.Equals(value.Substring(14, 2));
             }

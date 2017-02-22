@@ -154,7 +154,7 @@
 
                 lastValue = 1 + lastValue % 97;
 
-                lastValue = lastValue > 10 ? lastValue : '0' + lastValue;
+                lastValue = lastValue >= 10 ? lastValue : '0' + lastValue;
                 regResult = lastValue == value.substr(14, 2);
             }
 

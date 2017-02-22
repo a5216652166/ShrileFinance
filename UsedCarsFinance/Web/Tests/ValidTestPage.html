@@ -53,16 +53,12 @@
                 });
 
                 lastValue = 1 + lastValue % 97;
-
-                lastValue = lastValue > 10 ? lastValue : '0' + lastValue;
+                debugger
+                lastValue = lastValue >= 10 ? lastValue : '0' + lastValue;
                 regResult = lastValue == value.substr(14, 2);
             }
 
-            if (regResult) {
-                return true;
-            }
-
-            return false;
+            return regResult;
         }
 
         // 组织机构代码校验
