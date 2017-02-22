@@ -14,6 +14,13 @@
             未结清 = 2
         }
 
+        public enum HiddenEnum : byte
+        {
+            审核中 = 1,
+            完成 = 2,
+            作废 = 3,
+        }
+
         public Guid? Id { get; set; }
 
         public Guid OrganizationId { get; set; }
@@ -22,6 +29,8 @@
         /// 合同编码
         /// </summary>
         public string CreditContractCode { get; set; }
+
+        public HiddenEnum Hidden { get; set; }
 
         /// <summary>
         /// 授信合同生效日期
