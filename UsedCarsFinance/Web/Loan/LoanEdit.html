@@ -76,7 +76,7 @@
         });
 
         function LoadData(data) {
-            // 授信编号
+            // 贷款编号
             $("fieldset#credit_contract select[textboxname=CreditId]")//.combobox("select", data.CreditId)
                 .combobox("unselect", data.CreditId)
                 .combobox("select", data.CreditId);
@@ -351,11 +351,11 @@
 <body>
     <form id="ff" class="container">
         <fieldset id="credit_contract">
-            <legend>授信合同</legend>
+            <legend>贷款合同</legend>
 
             <div class="row">
                 <div class="col-6">
-                    <label>授信编号:</label>
+                    <label>贷款编号:</label>
                     <select name="CreditId" class="easyui-combobox" data-options="required:true,editable:false,
                             valueField:'Id',textField:'CreditContractCode',onSelect:onSelectCreditContractNumber"></select>
                 </div>
@@ -381,13 +381,13 @@
 
             <div class="row">
                 <div class="col-6">
-                    <label>授信额度:</label>
+                    <label>贷款额度:</label>
                     <input name="CreditLimit" id="CreditLimit" class="easyui-textbox" data-options="readonly:true" />
                     <span class="unit">元</span>
                 </div>
 
                 <div class="col-6">
-                    <label>授信余额:</label>
+                    <label>贷款余额:</label>
                     <input name="CreditBalance" id="CreditBalance" class="easyui-textbox" data-options="readonly:true" />
                     <span class="unit">元</span>
                 </div>
@@ -401,7 +401,16 @@
                         url: "../api/CreditContract/Option",
                         statusCode: {
                             200: function (data) {
-                                $("select[comboname='CreditId']").combobox("loadData", data);
+                                debugger
+                                var options = $(data).map(function (i, e) {
+                                    for (var j in e.Loans) {
+                                        if (e.Loans[j].Hidden == 2) {
+                                            return e;
+                                        }
+                                    }
+                                });
+
+                                $("select[comboname='CreditId']").combobox("loadData", options);
                                 ded.resolve();
                             },
                             400: uc.E400
