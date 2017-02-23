@@ -17,7 +17,7 @@
             var serialNumber = string.Empty;
 
             // 获取指定时间、指定类型的所有报文文件集合
-            var files = GetAll(m => m.DateCreated.Date == datagramFile.DateCreated.Date && m.Type == datagramFile.Type);
+            var files = GetAll().Where(m => m.DateCreated.Date == datagramFile.DateCreated.Date && m.Type == datagramFile.Type);
 
             // 从files查找指定TraceId的报文文件集合
             var file = files.Where(m => m.TraceId == datagramFile.TraceId);
