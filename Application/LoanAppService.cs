@@ -76,7 +76,7 @@
 
             if (!string.IsNullOrEmpty(loanNumber))
             {
-                return loanRepository.GetAll(m => m.ContractNumber == loanNumber).Count() > 0;
+                return loanRepository.GetAll(m => m.ContractNumber == loanNumber).Count() == 0;
             }
 
             throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
