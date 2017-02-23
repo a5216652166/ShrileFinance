@@ -56,24 +56,6 @@
 
         public bool CheckLoanNumber(string loanNumber)
         {
-            ////var result = true;
-
-            ////var list = repository.GetAll();
-            ////if (!string.IsNullOrEmpty(loanNumber))
-            ////{
-            ////    var loan = list.Where(m => m.ContractNumber == loanNumber).FirstOrDefault();
-            ////    if (loan != null)
-            ////    {
-            ////        result = false;
-            ////    }
-            ////}
-            ////else
-            ////{
-            ////    throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
-            ////}
-
-            ////return result;
-
             if (!string.IsNullOrEmpty(loanNumber))
             {
                 return loanRepository.GetAll(m => m.ContractNumber == loanNumber).Count() == 0;

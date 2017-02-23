@@ -15,7 +15,6 @@
         {
             // 序列号
             var serialNumber = string.Empty;
-
             // 获取指定时间、指定类型的所有报文文件集合
             var files = GetAll(m => m.DateCreated.Date == datagramFile.DateCreated.Date && m.Type == datagramFile.Type);
 

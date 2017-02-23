@@ -32,7 +32,6 @@
         /// </summary>
         private void ContractEnd()
         {
-            var aaa = contractRepository.GetAll();
             var contract = contractRepository.GetAll(m => m.EffectiveStatus == CreditContractStatusEnum.生效);
 
             if (contract.Count() > 0)
@@ -54,6 +53,21 @@
             }
 
             contractRepository.Commit();
+        }
+
+        /// <summary>
+        /// 借据失效功能（根据借据余额进行判断，当到期之后借据余额为已还清，则设置为作废，否则不作废，只改变业务数据状态不发送报文）
+        /// </summary>
+        private void LoanCancel()
+        {
+            var loans = loanRepostiory.GetAll(m => m.Status == LoanStatusEnum.正常 || m.Status == LoanStatusEnum.逾期);
+            if (loans.Count() > 0)
+            {
+                foreach (var item in loans)
+                {
+                   // if(item.Balance)
+                }
+            }
         }
     }
 }
