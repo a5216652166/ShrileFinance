@@ -116,6 +116,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="AccountAppService.cs" />
     <Compile Include="StatisticsAppService.cs" />
+    <Compile Include="TimeAppService.cs" />
     <Compile Include="UpdateBind.cs" />
     <Compile Include="ViewModels\AccountViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
