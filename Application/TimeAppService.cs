@@ -17,7 +17,7 @@
         public TimeAppService()
         {
             MyContext context = new MyContext();
-            this.contractRepository = new CreditContractRepository(context); ;
+            this.contractRepository = new CreditContractRepository(context);
             loanRepostiory = new LoanRepository(context);
             traceRepostitory = new TraceRepository(context);
         }
@@ -52,6 +52,7 @@
                     }
                 }
             }
+
             contractRepository.Commit();
         }
     }

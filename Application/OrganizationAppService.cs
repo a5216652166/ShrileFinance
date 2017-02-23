@@ -61,7 +61,7 @@
             }
 
             // 移除已存在的机构
-            var oldEntity = organizationRepository.Get(model.Id.HasValue?model.Id.Value:Guid.Empty);
+            var oldEntity = organizationRepository.Get(model.Id.HasValue ? model.Id.Value : Guid.Empty);
             if (oldEntity != default(Organization))
             {
                 organizationRepository.Remove(oldEntity);
