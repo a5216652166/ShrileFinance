@@ -80,7 +80,7 @@
         {
             var entitieList = new List<TEntity>();
 
-            if (entities != null && entities.Count() == 0)
+            if (entities != null && entities.Count() > 0)
             {
                 // 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
                 foreach (var item in entities)
