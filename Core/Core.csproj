@@ -230,7 +230,7 @@
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\Repositories\IContractRepository.cs" />
     <Compile Include="Interfaces\Repositories\IDraftRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IFlowRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IProcessRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFormRepository.cs" />
     <Compile Include="Interfaces\Repositories\IInstanceRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFinanceRepository.cs" />

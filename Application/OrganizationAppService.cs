@@ -60,6 +60,13 @@
                 customer.FinancialAffairs.CashFlow = Mapper.Map<ICollection<CashFlow>>(model.FinancialAffairs.CashFlow);
             }
 
+            // 移除已存在的机构
+            var oldEntity = organizationRepository.Get(model.Id.HasValue?model.Id.Value:Guid.Empty);
+            if (oldEntity != default(Organization))
+            {
+                organizationRepository.Remove(oldEntity);
+            }
+
             organizationRepository.Create(customer);
 
             organizationRepository.Commit();

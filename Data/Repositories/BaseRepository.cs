@@ -27,14 +27,21 @@
         void IRepository<TEntity>.Modify(TEntity entity) =>
            Context.Entry(entity).State = EntityState.Modified;
 
-        public virtual TEntity Get(Guid key) =>
-            Entities?.FindAsync(key).Result;
+        public virtual TEntity Get(Guid key)
+        {
+            if (key == Guid.Empty)
+            {
+                return default(TEntity);
+            }
+
+            return Entities?.FindAsync(key).Result;
+        }
 
         public virtual IQueryable<TEntity> GetAll() =>
             Filter(Entities);
 
         public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate) =>
-            GetAll().Where(predicate);
+            Filter(Entities.Where(predicate));
 
         public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize) =>
             GetAll(predicate).OrderByDescending(m => m.Id).ToPagedList(pageNumber, pageSize);
@@ -69,23 +76,21 @@
             }
         }
 
-        private IQueryable<TEntity> Filter(DbSet<TEntity> entities)
+        private IQueryable<TEntity> Filter(IQueryable<TEntity> entities)
         {
             var entitieList = new List<TEntity>();
 
-            if (entities == null || entities.Count() == 0)
+            if (entities != null && entities.Count() == 0)
             {
-                return entitieList.AsQueryable();
-            }
-
-            // 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
-            foreach (var item in entities)
-            {
-                entitieList.Add(item);
-
-                if (item is IProcessable && ((IProcessable)item).Hidden == HiddenEnum.审核中)
+                // 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
+                foreach (var item in entities)
                 {
-                    entitieList.Remove(item);
+                    entitieList.Add(item);
+
+                    if (item is IProcessable && ((IProcessable)item).Hidden == HiddenEnum.审核中)
+                    {
+                        entitieList.Remove(item);
+                    }
                 }
             }
 

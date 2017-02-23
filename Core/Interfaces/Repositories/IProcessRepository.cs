@@ -2,7 +2,7 @@
 {
     using Entities.Flow;
 
-    public interface IFlowRepository : IRepository<Flow>
+    public interface IProcessRepository : IRepository<Flow>
     {
     }
 }
