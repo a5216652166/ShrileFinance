@@ -401,15 +401,12 @@
                         url: "../api/CreditContract/Option",
                         statusCode: {
                             200: function (data) {
-                                debugger
                                 var options = $(data).map(function (i, e) {
-                                    for (var j in e.Loans) {
-                                        if (e.Loans[j].Hidden == 2) {
-                                            return e;
-                                        }
+                                    if (e.Hidden == 2) {
+                                        return e;
                                     }
                                 });
-
+                                debugger
                                 $("select[comboname='CreditId']").combobox("loadData", options);
                                 ded.resolve();
                             },
