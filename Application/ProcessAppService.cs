@@ -19,7 +19,7 @@
     /// </summary>
     public class ProcessAppService
     {
-        private readonly IFlowRepository flowRepository;
+        private readonly IProcessRepository flowRepository;
         private readonly IInstanceRepository instanceReopsitory;
         private readonly IFormRepository formRepository;
         private readonly IPartnerRepository partnerRepository;
@@ -34,7 +34,7 @@
         private readonly ITraceRepostitory traceRepository;
 
         public ProcessAppService(
-            IFlowRepository flowRepository,
+            IProcessRepository flowRepository,
             IInstanceRepository instanceReopsitory,
             IFormRepository formRepository,
             IPartnerRepository partnerRepository,

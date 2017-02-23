@@ -17,21 +17,21 @@
         private readonly ICreditContractRepository creditRepository;
         private readonly LoanService loanService;
         private readonly PaymentService paymentService;
-        private readonly ILoanRepository repository;
+        private readonly ILoanRepository loanRepository;
         private readonly DatagramAppService messageAppService;
         private readonly IPaymentHistoryRepository paymentRepository;
 
         public LoanAppService(
             LoanService loanService,
             PaymentService paymentService,
-            ILoanRepository repository,
+            ILoanRepository loanRepository,
             ICreditContractRepository creditRepository,
             DatagramAppService messageAppService,
             IPaymentHistoryRepository paymentRepository)
         {
             this.loanService = loanService;
             this.paymentService = paymentService;
-            this.repository = repository;
+            this.loanRepository = loanRepository;
             this.creditRepository = creditRepository;
             this.messageAppService = messageAppService;
             this.paymentRepository = paymentRepository;
@@ -44,32 +44,42 @@
         /// <returns></returns>
         public LoanViewModel Get(Guid id)
         {
-            var loan = repository.Get(id);
+            var loan = loanRepository.Get(id);
 
-            var model = Mapper.Map<LoanViewModel>(loan);
+            if (loan != null)
+            {
+                return Mapper.Map<LoanViewModel>(loan);
+            }
 
-            return model;
+            throw new ArgumentAppException("借据标识错误！");
         }
 
         public bool CheckLoanNumber(string loanNumber)
         {
-            var result = true;
+            ////var result = true;
 
-            var list = repository.GetAll();
+            ////var list = repository.GetAll();
+            ////if (!string.IsNullOrEmpty(loanNumber))
+            ////{
+            ////    var loan = list.Where(m => m.ContractNumber == loanNumber).FirstOrDefault();
+            ////    if (loan != null)
+            ////    {
+            ////        result = false;
+            ////    }
+            ////}
+            ////else
+            ////{
+            ////    throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
+            ////}
+
+            ////return result;
+
             if (!string.IsNullOrEmpty(loanNumber))
             {
-                var loan = list.Where(m => m.ContractNumber == loanNumber).FirstOrDefault();
-                if (loan != null)
-                {
-                    result = false;
-                }
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
+                return loanRepository.GetAll(m => m.ContractNumber == loanNumber).Count() > 0;
             }
 
-            return result;
+            throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
         }
 
         /// <summary>
@@ -83,9 +93,9 @@
 
             loanService.Loan(loan, credit);
 
-            repository.Create(loan);
+            loanRepository.Create(loan);
 
-            repository.Commit();
+            loanRepository.Commit();
             model.Id = loan.Id;
             ////// 报文追踪（放款）
             ////messageAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
@@ -93,7 +103,8 @@
 
         public decimal GetBalance(Guid id, decimal principle)
         {
-            var loan = repository.Get(id);
+            var loan = loanRepository.Get(id);
+
             return loan.Balance + (principle - loan.Principle);
         }
 
@@ -108,7 +119,7 @@
                 throw new ArgumentNullAppException(nameof(model.Id), "借据标识不可为空.");
             }
 
-            var loan = repository.Get(model.Id.Value);
+            var loan = loanRepository.Get(model.Id.Value);
             loan.InterestRate = model.InterestRate;
             loan.LoanBusinessTypes = model.LoanBusinessTypes;
             loan.LoanForm = model.LoanForm;
@@ -116,9 +127,9 @@
             loan.LoansTo = model.LoansTo;
             loan.LoanTypes = model.LoanTypes;
 
-            repository.Modify(loan);
+            loanRepository.Modify(loan);
 
-            repository.Commit();
+            loanRepository.Commit();
         }
 
         /// <summary>
@@ -134,7 +145,7 @@
 
             decimal paymentCount = 0;
 
-            var loan = repository.Get(model.LoanId);
+            var loan = loanRepository.Get(model.LoanId);
             var modelPaymentIds = from item in model.Payments.Where(m => m.Id != null) select item.Id.Value;
             var removeItem = new List<PaymentHistory>();
             foreach (var item in loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中))
@@ -181,7 +192,7 @@
                 throw new ArgumentAppException("该借据余额已不足.");
             }
 
-            repository.Modify(loan);
+            loanRepository.Modify(loan);
         }
 
         /// <summary>
@@ -194,20 +205,20 @@
         /// <returns></returns>
         public IPagedList<LoanViewModel> PagedList(string searchString, int page, int size, LoanStatusEnum? status)
         {
-            var loans = repository.PagedList(searchString, page, size, status);
+            var loans = loanRepository.PagedList(searchString, page, size, status);
 
             var models = Mapper.Map<IPagedList<LoanViewModel>>(loans);
 
             var creditIds = (from item in models select item.CreditId).ToListAsync().Result;
             var credits = creditRepository.GetAll(m => creditIds.Contains(m.Id)).ToListAsync().Result;
 
-            models.ToList().ForEach(model =>
+            foreach (var model in models)
             {
                 var credit = credits.Single(m => m.Id == model.CreditId);
 
                 model.CreditContractCode = credit.CreditContractCode;
                 model.OrganizateName = credit.Organization.Property.InstitutionChName;
-            });
+            }
 
             return models;
         }

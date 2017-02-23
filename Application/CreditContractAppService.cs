@@ -244,23 +244,34 @@
         /// <returns></returns>
         public IPagedList<CreditContractViewModel> GetPageList(string serach, int page, int size)
         {
-            var creditContract = repository.GetAll();
-            if (!string.IsNullOrEmpty(serach))
+            var creditContract = default(IQueryable<CreditContract>);
+
+            if (string.IsNullOrEmpty(serach))
             {
-                creditContract = creditContract.Where(m => m.CreditContractCode.Contains(serach) || m.Organization.Property.InstitutionChName.Contains(serach));
+                creditContract = repository.GetAll();
+            }
+            else
+            {
+                creditContract = repository.GetAll(m => m.CreditContractCode.Contains(serach) || m.Organization.Property.InstitutionChName.Contains(serach));
             }
 
-            creditContract = creditContract.OrderByDescending(m => m.Id);
-            var pageList = creditContract.ToPagedList(page, size);
+            var pageList = creditContract.OrderByDescending(m => m.Id).ToPagedList(page, size);
 
             var models = Mapper.Map<IPagedList<CreditContractViewModel>>(pageList);
 
-            models.ToList().ForEach(model =>
+            foreach (var model in models)
             {
                 var entity = pageList.Single(m => m.Id == model.Id.Value);
 
                 model.OrganizationName = entity.Organization.Property.InstitutionChName;
-            });
+            }
+
+            ////models.ToList().ForEach(model =>
+            ////{
+            ////    var entity = pageList.Single(m => m.Id == model.Id.Value);
+
+            ////    model.OrganizationName = entity.Organization.Property.InstitutionChName;
+            ////});
 
             return models;
         }
@@ -268,6 +279,7 @@
         public decimal GetCreditBalanc(Guid id, decimal limit)
         {
             var creditContract = repository.Get(id);
+
             return creditContract.CalculateCreditBalance() + (limit - creditContract.CreditLimit);
         }
 
