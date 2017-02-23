@@ -170,7 +170,7 @@
                     if (payments.Count() > 0)
                     {
                         // 修改
-                        Mapper.Map(payment, payments);
+                        Mapper.Map(payment, payments.Single());
                     }
                 }
                 else
