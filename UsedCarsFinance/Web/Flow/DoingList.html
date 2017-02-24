@@ -29,12 +29,15 @@
             }
             else if (top.$("#role_name").text() == "管理员") {
                 $("#abolish").show();
+
+                // 隐藏“处理流程”
+                $("a#mod").hide();
             }
             else {
                 $("#abolish").hide();
             }
         });
-         
+
         function Search() {
             var isValid = $("#search_form").form("validate");
 
@@ -81,22 +84,29 @@
                 uc.ShowWindow("详情页", url);
             }
         }
+
         function ProcessAbolish() {
             var row = uc.grid.GetSelected();
-            if (row) {
-                $.ajax({
-                    method: "GET",
-                    data: { instanceId: row.Id },
-                    url: "../api/Instance/ProcessAbolish",
-                    statusCode: {
-                        200: function (data) {
-                            $.messager.show({ msg: "处理成功." });
-                            uc.grid.Reload();
-                        },
-                        400: uc.E400
+            
+            $.messager.confirm("操作提示", "您确定要作废该流程吗？", function (data) {
+                if (data) {
+                    if (row.Id) {
+                        $.ajax({
+                            method: "GET",
+                            data: { instanceId: row.Id },
+                            url: "../api/Instance/ProcessAbolish",
+                            statusCode: {
+                                200: function (data) {
+                                    $.messager.show({ msg: "处理成功." });
+                                    uc.grid.Reload();
+                                },
+                                400: uc.E400
+                            }
+                        });
                     }
-                });
-            }
+                }
+            });
+            alert("aaa");
         }
     </script>
 </head>
@@ -239,11 +249,10 @@
                 <a id="Payment-还款" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">还款流程</a>
                 <a id="OrganizateChange-机构变更" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:SProcess,iconCls:'icon-edit',plain:true">机构变更</a>
                 <script type="text/javascript">
-                function SProcess()
-                {
-                    $("select#FlowType").combobox("select", $(this).attr("id"));
-                    $("a#StartFlow").click();
-                }
+                    function SProcess() {
+                        $("select#FlowType").combobox("select", $(this).attr("id"));
+                        $("a#StartFlow").click();
+                    }
                 </script>
 
             </template>
