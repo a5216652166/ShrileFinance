@@ -109,13 +109,13 @@
             var rows = $("#payment_dg").datagrid("getRows");
             var specialDate = $("#SpecialDate").textbox("getValue");
             if (rows.length > 0) {
-                for (var i in rows) {
+                for (var i=0;i<rows.length;i++) {
                     if (rows[i].ScheduledDatePayment < specialDate) {
                         $.messager.show({ msg: "应还款日期不得在放款日期之前" });
 
                         return false;
                     }
-                    if (rows[i].Hidden != false) {
+                    if (rows[i].Hidden != 2) {
                         hiddenCount++;
                     }
                     if (rows[i].ActualDatePayment < specialDate) {
@@ -262,8 +262,7 @@
                 page.setSubmit("../api/Loan/PaymentPut", "PUT", function () {
                     var rows = $("#payment_dg").datagrid("getRows");
                     var addedRows = $(rows).map(function (i, e) {
-                        if (e.Hidden != false) {
-                            debugger
+                        if (e.Hidden != 2) {
                             return e;
                         }
                     });
@@ -406,7 +405,7 @@
                                         return e;
                                     }
                                 });
-                                debugger
+                                
                                 $("select[comboname='CreditId']").combobox("loadData", options);
                                 ded.resolve();
                             },
@@ -474,7 +473,13 @@
                         // 加载还款信息（审核完成 + 审核中）
                         if (record.Payments.length > 0)
                         {
-                            $('fieldset#payment_history table#payment_dg').datagrid('loadData', record.Payments);
+                            var options = $(record.Payments).map(function (i, e) {
+                                if (e.Hidden == 2 || e.InstanceId == parent.flow.InstanceId) {
+                                    return e;
+                                }
+                            });
+                            
+                            $('fieldset#payment_history table#payment_dg').datagrid('loadData', options);
                         }
                     }
                 </script>
