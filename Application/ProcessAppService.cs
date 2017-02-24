@@ -388,7 +388,7 @@
                 case ProcessTypeEnum.添加机构:
                     var organizate = organizationRepository.Get(instance.RootKey.Value);
                     ChangeStatus(instance.RootKey.Value);
-                    var creditContractcount = creditContractRepository.GetAll().Where(m => m.OrganizationId == organizate.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
+                    var creditContractcount = creditContractRepository.GetAll().Where(m => m.OrganizationId == organizate.Id && m.Hidden != HiddenEnum.作废).Count();
                     if (creditContractcount > 0)
                     {
                         throw new InvalidOperationAppException("该机构下存在有效贷款合同，暂时无法作废");

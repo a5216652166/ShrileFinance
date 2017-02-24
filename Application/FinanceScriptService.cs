@@ -283,6 +283,13 @@
         {
             var payment = GetData<ViewModels.Loan.LoanViewModels.PaymentViewModel>("62DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
+            payment.Payments = payment.Payments.Where(m => m.Hidden == HiddenEnum.审核中);
+
+            foreach (var item in payment.Payments)
+            {
+                item.InstanceId = Instance.Id;
+            }
+
             loanAppService.Payment(payment);
 
             // 设置流程实例关联的业务标识
@@ -299,7 +306,7 @@
             // 获取借据实体
             var loan = loanRepository.Get(Instance.RootKey.Value);
 
-            if (loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中).Count() == 0)
+            if (loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.InstanceId == Instance.Id).Count() == 0)
             {
                 throw new ArgumentNullException(nameof(loan.Payments), "错误流程，未新增还款记录");
             }
@@ -308,10 +315,10 @@
             Trace(loan.Payments);
 
             // 设置Hidden为false
-            loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中).ToList().ForEach(payment =>
-             {
-                 SetHidden(payment);
-             });
+            loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.InstanceId == Instance.Id).ToList().ForEach(payment =>
+               {
+                   SetHidden(payment);
+               });
         }
 
         /// <summary>

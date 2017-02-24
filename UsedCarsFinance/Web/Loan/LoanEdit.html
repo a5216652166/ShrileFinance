@@ -290,7 +290,19 @@
                     url: "../api/Loan/Get",
                     onLoadSuccess: function (data) {
                         $("select[comboname='CreditId']").combobox("select", data.CreditId);
-                        $("#payment_dg").datagrid("loadData", data.Payments);
+
+                        var options = $(data.Payments).map(function (i, e) {
+                            debugger
+                            //if (e.Hidden == 2 || e.InstanceId == parent.flow.RootKey)
+                            //{
+                            //    return e;
+                            //}
+                            if (e.InstanceId == parent.flow.RootKey)
+                            {
+                                return e;
+                            }
+                        });
+                        $("#payment_dg").datagrid("loadData", options);
                         if (data.Payments.length > 0) {
                             $("#payment_history").show();
                         }

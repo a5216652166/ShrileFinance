@@ -126,11 +126,10 @@
             }
 
             decimal paymentCount = 0;
-
             var loan = loanRepository.Get(model.LoanId);
             var modelPaymentIds = from item in model.Payments.Where(m => m.Id != null) select item.Id.Value;
             var removeItem = new List<PaymentHistory>();
-            foreach (var item in loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中))
+            foreach (var item in loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.InstanceId == model.Payments.First().InstanceId))
             {
                 if (modelPaymentIds.Contains(item.Id) == false)
                 {
