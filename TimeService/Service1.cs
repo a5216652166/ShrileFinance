@@ -20,7 +20,8 @@ namespace TimeService
 
         protected override void OnStart(string[] args)
         {
-            timer = new Timer(50000);
+            //测试暂时定一分钟检测一次，正式上线后改为每天检测一次（每天晚上十二点）
+            timer = new Timer(60000);
             timer.Elapsed += new ElapsedEventHandler(Time_StartElapsed);
             timer.Start();
         }

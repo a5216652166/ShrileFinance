@@ -65,9 +65,14 @@
             {
                 foreach (var item in loans)
                 {
-                   // if(item.Balance)
+                    if (item.Balance == item.Principle && item.MatureDate < DateTime.Now.Date)
+                    {
+                        item.Status = LoanStatusEnum.已还清;
+                        loanRepostiory.Modify(item);
+                    }
                 }
             }
+            loanRepostiory.Commit();
         }
     }
 }
