@@ -61,8 +61,17 @@
         IPagedList<Instance> IInstanceRepository.DonePagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime, InstanceStatusEnum? status)
         {
             // 筛选 1.获取当前用户处理过的流程
-            var instances = GetAll(m =>
-                m.Logs.Any(n => n.ProcessUserId == currentUser.Id));
+            var instances = GetAll();
+
+            // 管理员
+            if (currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
+            {
+                instances = instances.Where(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.作废);
+            }
+            else
+            {
+                instances = instances.Where(m => m.Logs.Any(n => n.ProcessUserId == currentUser.Id));
+            }
 
             // 标题模糊搜索
             instances = FiterForTitle(instances, searchString);
