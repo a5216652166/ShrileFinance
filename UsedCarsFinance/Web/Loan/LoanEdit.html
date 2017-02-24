@@ -293,11 +293,7 @@
 
                         var options = $(data.Payments).map(function (i, e) {
                             debugger
-                            //if (e.Hidden == 2 || e.InstanceId == parent.flow.RootKey)
-                            //{
-                            //    return e;
-                            //}
-                            if (e.InstanceId == parent.flow.RootKey)
+                            if (e.Hidden == 2 || e.InstanceId == parent.flow.InstanceId)
                             {
                                 return e;
                             }
