@@ -295,7 +295,7 @@
             // 设置流程实例关联的业务标识
             Instance.RootKey = payment.LoanId;
             var loan = loanAppService.Get(payment.LoanId);
-            Instance.Title = $"{"借据编号：" + loan.ContractNumber + " 还款时间:" + DateTime.Now.ToString("yyyy-MM-dd")}";
+            Instance.Title = $"{"借据编号：" + loan.ContractNumber + " 还款时间:" + payment.Payments.Last().ActualDatePayment.ToString("yyyy-MM-dd")}";
         }
 
         /// <summary>
