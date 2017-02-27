@@ -213,6 +213,29 @@
             instanceReopsitory.Commit();
         }
 
+        public int DingCount()
+        {
+            var instances = default(IQueryable<Instance>);
+
+            if (CurrentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
+            {
+                instances = instanceReopsitory.GetAll(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.完成);
+            }
+            else
+            {
+                instances = instanceReopsitory.GetAll(
+                    m =>
+                m.Status == InstanceStatusEnum.正常
+                && (m.CurrentNode.RoleId == CurrentUser.RoleId)
+                && (m.CurrentUserId == null || m.CurrentUserId == CurrentUser.Id)
+                && (m.RootKey != null && m.RootKey != Guid.Empty));
+            }
+
+            var count = instances.Count();
+
+            return count;
+        }
+
         /// <summary>
         /// 撤回
         /// </summary>

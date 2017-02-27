@@ -156,6 +156,7 @@
     <Content Include="Borrowers\OrganizateChange.html" />
     <Content Include="CreditInvestigation\CreditMessageManage1.html" />
     <Content Include="CreditInvestigation\CreditMessageManage.html" />
+    <Content Include="Flow\Img\信封1.png" />
     <Content Include="Statistics\LoanCount.html" />
     <Content Include="Finance\FinanceApproval.html" />
     <Content Include="Finance\Unused\FinanceCustomer.html" />

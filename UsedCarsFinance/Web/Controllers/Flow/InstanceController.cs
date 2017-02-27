@@ -143,5 +143,13 @@
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult DingCount()
+        {
+            var count = service.DingCount();
+
+            return Ok(count);
+        }
     }
 }

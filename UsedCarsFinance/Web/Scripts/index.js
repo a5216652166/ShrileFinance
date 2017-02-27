@@ -1,7 +1,7 @@
 ﻿$(function () {
     GetUserInfo();
     //Timeer();
-    //MessageCount();
+    MessageCount();
     RanderMenus();
 });
 function GetUserInfo() {
@@ -22,14 +22,15 @@ function GetUserInfo() {
 function Timeer() {
     setTimeout(function () { Timeer(); MessageCount() },500000)
 }
+
 function MessageCount() {
     $.ajax({
         async: true,
         type: "GET",
-        url: "api/Notice/GetByUserId",
+        url: "api/Instance/DingCount",
         statusCode: {
             200: function (data) {
-                $("#message").text(data.length).css({ "color": "red", "text-align": "center" })
+                $("span#message").text(data);//.css({ "color": "red", "text-align": "center" })
             }
         }
     });
