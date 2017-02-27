@@ -5,6 +5,7 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Text;
     using Core.Entities;
     using Core.Interfaces;
     using Core.Interfaces.Repositories;
@@ -54,26 +55,9 @@
 
         public virtual int Commit()
         {
-            var errorEntitys = Context.GetValidationErrors().Where(m => m.IsValid == false);
+            ValidCommit();
 
-            if (errorEntitys.Count() == 0)
-            {
-                return Context.SaveChanges();
-            }
-            else
-            {
-                var errorBuild = new System.Text.StringBuilder();
-
-                foreach (var errorEntity in errorEntitys)
-                {
-                    foreach (var error in errorEntity.ValidationErrors)
-                    {
-                        errorBuild.Append(error.PropertyName + "\t" + error.ErrorMessage + "\r\n");
-                    }
-                }
-
-                throw new ArgumentOutOfRangeException(errorBuild.ToString());
-            }
+            return Context.SaveChanges();
         }
 
         private IQueryable<TEntity> Filter(IQueryable<TEntity> entities)
@@ -95,6 +79,26 @@
             }
 
             return entitieList.AsQueryable();
+        }
+
+        private void ValidCommit()
+        {
+            var errorEntitys = Context.GetValidationErrors().Where(m => m.IsValid == false);
+
+            if (errorEntitys.Count() > 0)
+            {
+                var errorBuild = new StringBuilder();
+
+                foreach (var errorEntity in errorEntitys)
+                {
+                    foreach (var error in errorEntity.ValidationErrors)
+                    {
+                        errorBuild.Append(error.PropertyName + "\t" + error.ErrorMessage + "\r\n");
+                    }
+                }
+
+                throw new ArgumentOutOfRangeException(errorBuild.ToString());
+            }
         }
     }
 }

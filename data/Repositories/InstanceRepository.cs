@@ -16,11 +16,12 @@
 
         IPagedList<Instance> IInstanceRepository.DoingPagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime)
         {
-            var instances = GetAll();
+            var instances =default(IQueryable<Instance>);
 
+            // 管理员
             if (currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
             {
-                instances = instances.Where(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.完成);
+                instances = GetAll(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.完成);
             }
             else
             {
@@ -28,7 +29,7 @@
                 //      2.当前用户的角色可处理的节点
                 //      3.该实例限定于角色而非用户
                 //      4.该实例RootKey存在
-                instances = instances.Where(
+                instances = GetAll(
                     m =>
                 m.Status == InstanceStatusEnum.正常
                 && (m.CurrentNode.RoleId == currentUser.RoleId)
@@ -61,16 +62,16 @@
         IPagedList<Instance> IInstanceRepository.DonePagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime, InstanceStatusEnum? status)
         {
             // 筛选 1.获取当前用户处理过的流程
-            var instances = GetAll();
+            var instances = default(IQueryable<Instance>);
 
             // 管理员
             if (currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
             {
-                instances = instances.Where(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.作废);
+                instances = GetAll(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.作废);
             }
             else
             {
-                instances = instances.Where(m => m.Logs.Any(n => n.ProcessUserId == currentUser.Id));
+                instances = GetAll(m => m.Logs.Any(n => n.ProcessUserId == currentUser.Id));
             }
 
             // 标题模糊搜索

@@ -411,7 +411,7 @@
                 case ProcessTypeEnum.添加机构:
                     var organizate = organizationRepository.Get(instance.RootKey.Value);
                     ChangeStatus(instance.RootKey.Value);
-                    var creditContractcount = creditContractRepository.GetAll().Where(m => m.OrganizationId == organizate.Id && m.Hidden != HiddenEnum.作废).Count();
+                    var creditContractcount = creditContractRepository.GetAll(m=> m.OrganizationId == organizate.Id && m.Hidden != HiddenEnum.作废).Count();
                     if (creditContractcount > 0)
                     {
                         throw new InvalidOperationAppException("该机构下存在有效贷款合同，暂时无法作废");
@@ -426,7 +426,7 @@
                 case ProcessTypeEnum.授信:
                     var creditContract = creditContractRepository.Get(instance.RootKey.Value);
                     ChangeStatus(instance.RootKey.Value);
-                    var loanCount = loanRepository.GetAll().Where(m => m.CreditId == creditContract.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
+                    var loanCount = loanRepository.GetAll(m => m.CreditId == creditContract.Id && m.Hidden != HiddenEnum.作废).Count();
                     if (loanCount > 0)
                     {
                         throw new InvalidOperationAppException("该贷款合同下存在有效的借据合同，暂时无法作废");
@@ -442,7 +442,7 @@
                 case ProcessTypeEnum.借据:
                     var loan = loanRepository.Get(instance.RootKey.Value);
                     ChangeStatus(instance.RootKey.Value);
-                    var repaymentCount = paymentRepository.GetAll().Where(m => m.LoanId == loan.Id && m.Hidden != HiddenEnum.作废).ToList().Count();
+                    var repaymentCount = paymentRepository.GetAll(m => m.LoanId == loan.Id && m.Hidden != HiddenEnum.作废).Count();
                     if (repaymentCount > 0)
                     {
                         throw new InvalidOperationAppException("该借据合同下存在有效的还款记录，暂时无法作废");
@@ -465,6 +465,9 @@
                         paymentRepository.Modify(payment);
                     }
 
+                    break;
+                case ProcessTypeEnum.机构变更:
+                    //TODO
                     break;
                 default:
                     break;
@@ -635,7 +638,7 @@
 
         private Trace ChangeStatus(Guid referenceId)
         {
-            var trace = traceRepository.GetAll().Where(m => m.ReferenceId == referenceId).FirstOrDefault();
+            var trace = traceRepository.GetAll(m => m.ReferenceId == referenceId).FirstOrDefault();
 
             if (trace.Status == TraceStatusEmum.待生成)
             {
