@@ -39,7 +39,7 @@
         function Init() {
             // 页面初始化
             PageInit();
-            
+
             setTimeout(function () {
                 // 数据初始化
                 DataInit();
@@ -77,7 +77,7 @@
                         return false;
                     }
 
-                    $('div[id=showSecton]').find("input[id*=TF_]").each(function (index, Obj) {
+                    $('div[id=showSection]').find("input[id*=TF_]").each(function (index, Obj) {
                         if ($.inArray($(Obj).attr('id').substr(3, 1), array) != -1) {
                             $(Obj).click();
                         }
@@ -94,23 +94,23 @@
                 var query = {};
 
                 query.InstanceId = parent.flow.InstanceId;
-                
+
                 if (query.InstanceId) {
                     origanizationData = LoadDateForId(query.InstanceId);
 
                     $("select[textboxname=OrganizateOptions]").combobox("setValue", origanizationData.Id).combobox("setText", origanizationData.Name);
-                    
+
                     LoadData(origanizationData);
-                    
-                    $("form section#B div#showSecton input[type=checkbox]").each(function (i, e) {
+
+                    $("form section#B div#showSection input[type=checkbox]").each(function (i, e) {
                         var id = getFieldsetName($(e).attr("id").substr(3, 1));
                         var isContain = $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods);
-                        
+
                         if (e.checked == false && $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods) > -1) {
                             $(e).click();
                         }
                     });
-                    
+
                     if (GetQueryString("method") == "view" || GetQueryString("state") == 0) {
                         PageDisable();
                     }
@@ -121,10 +121,10 @@
                     $("select[textboxname=OrganizateOptions]").combobox("disable");
 
                     // 禁用checkbox
-                    $("form section#B div#showSecton input[type=checkbox]").each(function (i, e) {
-                        $(e).attr("disabled","disabled");
+                    $("form section#B div#showSection input[type=checkbox]").each(function (i, e) {
+                        $(e).attr("disabled", "disabled");
                     });
-                    ////$("div#showSecton").remove();
+                    ////$("div#showSection").remove();
 
                     // 禁用fieldset
                     Disabled("fieldset");
@@ -142,7 +142,7 @@
             if (Id == null) {
                 return;
             }
-            
+
             // 通过Id获取数据
             var resultDate;
             $.ajax({
@@ -367,7 +367,7 @@
                 }
             });
 
-            if ($("div#showSecton").find("input[id=TF_I]")[0].checked == true) {
+            if ($("div#showSection").find("input[id=TF_I]")[0].checked == true) {
                 data["Parent"] = FieldsetSerializeFactory('Parent', 'text');
             }
 
@@ -376,7 +376,7 @@
             }
 
             // 序列化财务信息
-            if ($("div#showSecton").find("input[id=TF_J]")[0].checked == true) {
+            if ($("div#showSection").find("input[id=TF_J]")[0].checked == true) {
                 // 序列化财务基本信息
                 data.FinancialAffairs = FieldsetSerializeFactory("FinancialAffairsBase", "text");
 
@@ -390,12 +390,12 @@
             }
 
             // 序列化诉讼事件
-            if ($("div#showSecton").find("input[id=TF_K]")[0].checked == true) {
+            if ($("div#showSection").find("input[id=TF_K]")[0].checked == true) {
                 data.Litigation = FieldsetSerializeFactory("Litigation", "table");
             }
 
             // 序列化大事件
-            if ($("div#showSecton").find("input[id=TF_L]")[0].checked == true) {
+            if ($("div#showSection").find("input[id=TF_L]")[0].checked == true) {
                 data.BigEvent = FieldsetSerializeFactory("BigEvent", "table");
             }
             return data;
@@ -482,7 +482,7 @@
                 }
 
                 // 财务判断
-                if ($("div#showSecton").find("input[id=TF_J]")[0].checked == true) {
+                if ($("div#showSection").find("input[id=TF_J]")[0].checked == true) {
                     // 序列化财务基本信息
                     if (data.FinancialAffairs == undefined) {
                         ShowError("请填写财务信息！");
@@ -516,7 +516,7 @@
                 }
 
                 // 诉讼事件判断
-                if ($("div#showSecton").find("input[id=TF_K]")[0].checked == true) {
+                if ($("div#showSection").find("input[id=TF_K]")[0].checked == true) {
                     if (data.Litigation == undefined || data.Litigation.length == 0) {
                         ShowError("请填写诉讼事件！");
 
@@ -525,14 +525,14 @@
                 }
 
                 // 大事件判断
-                if ($("div#showSecton").find("input[id=TF_L]")[0].checked == true) {
+                if ($("div#showSection").find("input[id=TF_L]")[0].checked == true) {
                     if (data.BigEvent == undefined || data.BigEvent.length == 0) {
                         ShowError("请填写大事件！");
 
                         return false;
                     }
                 }
-                
+
                 return true;
             }
         }
@@ -554,9 +554,8 @@
                 "></select>
         <script type="text/javascript">
             function ChangeOriganizate(record) {
-                $("div#showSecton input[type=checkbox]").each(function (i, e) {
-                    if (e.checked == true)
-                    {
+                $("div#showSection input[type=checkbox]").each(function (i, e) {
+                    if (e.checked == true) {
                         $(e).click();
                     }
                 });
@@ -578,6 +577,20 @@
                         400: function (data) {
                             $.messager.alert('错误', data.responseJSON.Message, "info");
                         }
+                    }
+                });
+
+                // 显示已存在信息的机构段
+                $("form div#showSection input[type=checkbox]").each(function (i, e) {
+                    var name = getFieldsetName($(e).attr("id").substr(3, 1));
+                    var hasValue = origanizationData[name] != undefined && origanizationData[name] != null;
+
+                    if (hasValue == true && Object.prototype.toString.call(origanizationData[name]) === '[object Array]') {
+                        hasValue = origanizationData[name].length > 0;
+                    }
+
+                    if (e.checked == false && hasValue == true) {
+                        $(e).click();
                     }
                 });
 
@@ -678,7 +691,7 @@
                             </div>
                         </div>
 
-                        <div class="row" style="display:block" id="showSecton">
+                        <div class="row" style="display:block" id="showSection">
                             <div class="col-12">
                                 <span style="display:none"><input type="checkbox" id="TF_C" onclick="checkboxOnclick(this, 'C')" /><span onclick="$(this).parent().find('input[id=TF_C]').click()">机构属性</span>&nbsp;&nbsp;&nbsp;</span>
                                 <span style="display:none"><input type="checkbox" id="TF_D" onclick="checkboxOnclick(this, 'D')" /><span onclick="$(this).parent().find('input[id=TF_D]').click()">机构状态</span>&nbsp;&nbsp;&nbsp;</span>
@@ -2031,7 +2044,7 @@
     <script type="text/javascript">
         function TestSubmit() {
             var data = BuildData();
-            
+
         }
     </script>-->
 </body>
