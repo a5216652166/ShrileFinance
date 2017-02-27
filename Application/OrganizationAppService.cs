@@ -131,10 +131,6 @@
 
             organizate.CustomerNumber = model.Base.CustomerNumber;
             organizate.ManagementerCode = model.Base.ManagementerCode;
-            organizate.CustomerType = model.Base.CustomerType;
-            organizate.InstitutionCreditCode = model.Base.InstitutionCreditCode;
-            organizate.OrganizateCode = model.Base.OrganizateCode;
-            organizate.LoanCardCode = model.Base.LoanCardCode;
 
             if (model.Periods.Contains("Property"))
             {
