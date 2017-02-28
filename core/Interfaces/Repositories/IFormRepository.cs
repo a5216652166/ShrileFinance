@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Entities.Process;
+    using Entities.Flow;
 
     public interface IFormRepository : IRepository<Form>
     {

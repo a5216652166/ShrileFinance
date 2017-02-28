@@ -6,7 +6,7 @@
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.CreditInvestigation;
-    using Core.Entities.Process;
+    using Core.Entities.Flow;
     using Core.Entities.Identity;
     using Core.Entities.Loan;
     using Core.Exceptions;
@@ -550,7 +550,7 @@
 
                 instance = new Instance
                 {
-                    Process = process,
+                    Flow = process,
                     CurrentNode = startNode,
                     CurrentUser = CurrentUser,
                     StartUser = CurrentUser,

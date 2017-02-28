@@ -5,7 +5,7 @@
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Finance;
-    using Core.Entities.Process;
+    using Core.Entities.Flow;
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;
@@ -31,7 +31,7 @@
                 {
                     Id = s.Id,
                     Title = s.Title,
-                    Flow = s.Process.Name,
+                    Flow = s.Flow.Name,
                     CurrentNode = s.CurrentNode?.Name,
                     CurrentUser = s.CurrentUser?.Name,
                     ProcessUser = s.ProcessUser?.Name,

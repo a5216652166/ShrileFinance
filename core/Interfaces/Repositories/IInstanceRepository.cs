@@ -2,7 +2,7 @@
 {
     using System;
     using Entities;
-    using Entities.Process;
+    using Entities.Flow;
     using X.PagedList;
 
     public interface IInstanceRepository : IRepository<Instance>

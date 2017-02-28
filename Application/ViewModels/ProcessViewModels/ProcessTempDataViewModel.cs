@@ -1,7 +1,7 @@
 ﻿namespace Application.ViewModels.ProcessViewModels
 {
     using System;
-    using Core.Entities.Process;
+    using Core.Entities.Flow;
 
     public class ProcessTempDataViewModel<T> where T : class
     {

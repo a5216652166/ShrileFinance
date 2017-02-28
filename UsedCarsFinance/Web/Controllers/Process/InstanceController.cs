@@ -38,7 +38,7 @@
         /// <param name="rows">行数</param>
         /// <returns></returns>
         [HttpGet]
-        public IHttpActionResult DoneList(int page, int rows, string searchString = null, Guid? currentNode = null, DateTime? beginTime = null, DateTime? endTime = null, Core.Entities.Process.InstanceStatusEnum? status = null)
+        public IHttpActionResult DoneList(int page, int rows, string searchString = null, Guid? currentNode = null, DateTime? beginTime = null, DateTime? endTime = null, Core.Entities.Flow.InstanceStatusEnum? status = null)
         {
             var list = service.DonePagedList(searchString, page, rows, currentNode, beginTime, endTime, status);
 

@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Process
+﻿namespace Core.Entities.Flow
 {
     using System;
     using System.Collections.Generic;
@@ -34,7 +34,7 @@
 
         public Guid? RootKey { get; set; }
 
-        public virtual Process Process { get; set; }
+        public virtual Flow Flow { get; set; }
 
         public virtual Node CurrentNode { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿namespace Core.Entities
 {
     using System;
-    using Process;
+    using Flow;
     using Interfaces;
     using Newtonsoft.Json;
 
