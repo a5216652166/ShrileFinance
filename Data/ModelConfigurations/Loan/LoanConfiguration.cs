@@ -1,6 +1,5 @@
 ﻿namespace Data.ModelConfigurations.Loan
 {
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Loan;
 
@@ -9,7 +8,6 @@
         public LoanConfiguration()
         {
             HasKey(m => m.Id);
-            Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(m => m.Principle);
             Property(m => m.SpecialDate);

@@ -135,6 +135,10 @@
     <Compile Include="Migrations\201702200549222_AddInstanceIdInPaymentHository.Designer.cs">
       <DependentUpon>201702200549222_AddInstanceIdInPaymentHository.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702280709216_CancelAutoGeneratePrimaryKey.cs" />
+    <Compile Include="Migrations\201702280709216_CancelAutoGeneratePrimaryKey.Designer.cs">
+      <DependentUpon>201702280709216_CancelAutoGeneratePrimaryKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -416,6 +420,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702200549222_AddInstanceIdInPaymentHository.resx">
       <DependentUpon>201702200549222_AddInstanceIdInPaymentHository.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702280709216_CancelAutoGeneratePrimaryKey.resx">
+      <DependentUpon>201702280709216_CancelAutoGeneratePrimaryKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
