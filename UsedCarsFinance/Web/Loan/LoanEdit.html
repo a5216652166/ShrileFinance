@@ -249,8 +249,6 @@
                     }
                 });
 
-
-
                 ContractNumberView();
 
                 uc.form.DisableForm("fieldset#credit_contract");
@@ -310,6 +308,9 @@
                         }
                         if (code == "view" || query.state == "0") {
                             $("#payment_tb").hide();
+
+                            $("fieldset#credit_contract select[textboxname=CreditId]").combobox({ disabled: true });
+                            $("fieldset#loan_info select[textboxname=ContractNumber]").combobox({ disabled: true });
                         }
                     }
                 });
@@ -516,12 +517,12 @@
             <div class="row">
                 <div class="col-6">
                     <label>放款日期:</label>
-                    <input name="SpecialDate" id="SpecialDate" class="easyui-datebox" data-options="required:true,validType:'Date'" />
+                    <input name="SpecialDate" id="SpecialDate" class="easyui-datebox" data-options="required:true,validType:'Date',editable:false" />
                 </div>
 
                 <div class="col-6">
                     <label>到期日期:</label>
-                    <input name="MatureDate" class="easyui-datebox" data-options="required:true,validType:'Date'" />
+                    <input name="MatureDate" class="easyui-datebox" data-options="required:true,validType:'Date',editable:false" />
                 </div>
             </div>
 
@@ -815,11 +816,6 @@
                 }
             </script>
         </fieldset>
-
-        <!--<div id="btn">
-            <a href="javascript:void(0)" id="save" class="easyui-linkbutton" data-options="iconCls:'icon-save',onClick:page.Submit">保存</a>
-            <a href="javascript:void(0)" id="back" class="easyui-linkbutton" data-options="iconCls:'icon-redo',onClick:uc.form.Cancel">返回</a>
-        </div>-->
     </form>
 </body>
 </html>

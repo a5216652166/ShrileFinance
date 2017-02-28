@@ -70,7 +70,7 @@
         }
 
         function Process() {
-            var url = "Flow/Frame.html";
+            var url = "Process/Frame.html";
             var statusCode = "";
             var row = uc.grid.GetSelected();
             if (row) {
@@ -226,7 +226,7 @@
                                 url: "../api/Instance/StartProcess",
                                 statusCode: {
                                     200: function (data) {
-                                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&statusCode=" + statusCode);
+                                        uc.ShowWindow("详情页", "Process/Frame.html?instanceId=" + data + "&statusCode=" + statusCode);
                                     }
                                 }
                             });
