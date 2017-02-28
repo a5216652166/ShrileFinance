@@ -1,8 +1,8 @@
 ﻿namespace Core.Interfaces.Repositories
 {
-    using Entities.Flow;
+    using Entities.Process;
 
-    public interface IProcessRepository : IRepository<Flow>
+    public interface IProcessRepository : IRepository<Process>
     {
     }
 }

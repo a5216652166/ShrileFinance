@@ -6,11 +6,12 @@
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.CreditInvestigation;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
     using Core.Entities.Identity;
     using Core.Entities.Loan;
     using Core.Exceptions;
     using Core.Interfaces.Repositories;
+    using Newtonsoft.Json.Linq;
     using ViewModels.ProcessViewModels;
     using X.PagedList;
 
@@ -26,7 +27,7 @@
         private readonly IFinanceRepository financeRepository;
         private readonly AppUserManager userManager;
         private readonly AppRoleManager roleManager;
-        private readonly FinanceScriptAppService scriptService;
+        private readonly ProcessScriptAppService processScriptAppService;
         private readonly ILoanRepository loanRepository;
         private readonly IPaymentHistoryRepository paymentRepository;
         private readonly ICreditContractRepository creditContractRepository;
@@ -39,7 +40,7 @@
             IFormRepository formRepository,
             IPartnerRepository partnerRepository,
             IFinanceRepository financeRepository,
-            FinanceScriptAppService scriptService,
+            ProcessScriptAppService processScriptAppService,
             AppUserManager userManager,
             ILoanRepository loanRepository,
             IPaymentHistoryRepository paymentRepository,
@@ -53,7 +54,7 @@
             this.formRepository = formRepository;
             this.partnerRepository = partnerRepository;
             this.financeRepository = financeRepository;
-            this.scriptService = scriptService;
+            this.processScriptAppService = processScriptAppService;
             this.userManager = userManager;
             this.loanRepository = loanRepository;
             this.creditContractRepository = creditContractRepository;
@@ -114,19 +115,19 @@
                 ////// 是否为新发起的正式流程
                 ////var isNewInstance = instance.RootKey == null;
 
-                scriptService.Instance = instance;
-                scriptService.Data = Newtonsoft.Json.Linq.JObject.Parse(model.Data);
+                processScriptAppService.Instance = instance;
+                processScriptAppService.Data = JObject.Parse(model.Data);
 
-                var method = scriptService.GetType().GetMethod(action.Method);
+                var method = processScriptAppService.GetType().GetMethod(action.Method);
 
-                method.Invoke(scriptService, null);
+                method.Invoke(processScriptAppService, null);
 
                 ////// 单流程校验
                 ////SingleProcessValid(instance, isNewInstance);
             }
 
             // 流转
-            AppUser user = null;
+            var user = default(AppUser);
 
             switch (action.AllocationType)
             {
@@ -549,7 +550,7 @@
 
                 instance = new Instance
                 {
-                    Flow = process,
+                    Process = process,
                     CurrentNode = startNode,
                     CurrentUser = CurrentUser,
                     StartUser = CurrentUser,

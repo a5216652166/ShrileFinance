@@ -94,7 +94,7 @@
     <Compile Include="CreditContractAppService.cs" />
     <Compile Include="DraftAppService.cs" />
     <Compile Include="FinanceAppService.cs" />
-    <Compile Include="FinanceScriptService.cs" />
+    <Compile Include="ProcessScriptService.cs" />
     <Compile Include="FinancingProjectAppService.cs" />
     <Compile Include="LoanAppService.cs" />
     <Compile Include="Mappings\DomainToCreditInvestigationProfile.cs" />

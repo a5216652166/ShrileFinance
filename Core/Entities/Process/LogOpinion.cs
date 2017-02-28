@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Flow
+﻿namespace Core.Entities.Process
 {
     public class AuditOpinion
     {

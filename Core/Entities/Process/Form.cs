@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Flow
+﻿namespace Core.Entities.Process
 {
     using System;
     using System.Collections.Generic;
@@ -20,7 +20,7 @@
 
         public byte Sort { get; set; }
 
-        public virtual Flow Flow { get; set; }
+        public virtual Process Process { get; set; }
 
         public virtual ICollection<FormNode> Nodes { get; set; }
 

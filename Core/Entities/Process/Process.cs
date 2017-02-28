@@ -1,11 +1,11 @@
-﻿namespace Core.Entities.Flow
+﻿namespace Core.Entities.Process
 {
     using System.Collections.Generic;
     using Interfaces;
 
-    public class Flow : Entity, IAggregateRoot
+    public class Process : Entity, IAggregateRoot
     {
-        public Flow()
+        public Process()
         {
             Nodes = new HashSet<Node>();
         }

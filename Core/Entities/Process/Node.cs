@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Flow
+﻿namespace Core.Entities.Process
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,7 @@
 
         public string RoleId { get; set; }
 
-        public virtual Flow Flow { get; set; }
+        public virtual Process Process { get; set; }
 
         public virtual AppRole Role { get; set; }
 

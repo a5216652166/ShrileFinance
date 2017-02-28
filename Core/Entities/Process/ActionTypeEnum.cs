@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Flow
+﻿namespace Core.Entities.Process
 {
     public enum ActionTypeEnum : byte
     {

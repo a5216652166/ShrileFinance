@@ -12,6 +12,13 @@
     <script>
         uc.grid = new UCGrid("#dg");
 
+        $(function () {
+            if (top.$("#role_name").text() == "管理员") {
+                // 隐藏“撤回”
+                $("a#revoke").hide();
+            }
+        });
+
         function SetFilters(params) {
             params.searchString = $("#SearchString").textbox("getValue");
             params.currentNode = $("#CurrentNode").combobox("getValue");

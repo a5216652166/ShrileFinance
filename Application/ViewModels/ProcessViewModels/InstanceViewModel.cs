@@ -1,7 +1,7 @@
 ﻿namespace Application.ViewModels.ProcessViewModels
 {
     using System;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
