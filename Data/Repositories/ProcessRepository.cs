@@ -3,20 +3,20 @@
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
     using Core.Interfaces.Repositories;
     using X.PagedList;
 
-    public class ProcessRepository : BaseRepository<Flow>, IProcessRepository
+    public class ProcessRepository : BaseRepository<Process>, IProcessRepository
     {
         public ProcessRepository(MyContext context) : base(context)
         {
         }
 
-        public override IQueryable<Flow> GetAll() =>
-            Context.Set<Flow>();
+        public override IQueryable<Process> GetAll() =>
+            Context.Set<Process>();
 
-        public override IQueryable<Flow> GetAll(Expression<Func<Flow, bool>> predicate) =>
-            Context.Set<Flow>().Where(predicate);
+        public override IQueryable<Process> GetAll(Expression<Func<Process, bool>> predicate) =>
+            Context.Set<Process>().Where(predicate);
     }
 }

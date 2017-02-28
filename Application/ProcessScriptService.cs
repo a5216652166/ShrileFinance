@@ -5,7 +5,7 @@
     using System.Linq;
     using Core.Entities;
     using Core.Entities.CreditInvestigation;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
     using Core.Entities.Loan;
     using Core.Interfaces.Repositories;
     using Newtonsoft.Json.Linq;
@@ -14,7 +14,7 @@
     using ViewModels.OrganizationViewModels;
     using ViewModels.ProcessViewModels;
 
-    public class FinanceScriptAppService
+    public class ProcessScriptAppService
     {
         private readonly FinanceAppService financeAppService;
         private readonly LoanAppService loanAppService;
@@ -27,7 +27,7 @@
         private readonly ILoanRepository loanRepository;
         private readonly IOrganizationRepository organizationRepository;
 
-        public FinanceScriptAppService(
+        public ProcessScriptAppService(
             FinanceAppService financeAppService,
             OrganizationAppService organizationAppService,
             LoanAppService loanAppService,

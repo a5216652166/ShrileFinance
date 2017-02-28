@@ -1259,9 +1259,9 @@
     <Compile Include="Controllers\Finance\ImageUploadController.cs" />
     <Compile Include="Controllers\Finance\CreditExamineController.cs" />
     <Compile Include="Controllers\Finance\OperationController.cs" />
-    <Compile Include="Controllers\Flow\FlowController.cs" />
-    <Compile Include="Controllers\Flow\FinanceScriptController.cs" />
-    <Compile Include="Controllers\Flow\InstanceController.cs" />
+    <Compile Include="Controllers\Process\FlowController.cs" />
+    <Compile Include="Controllers\Process\FinanceScriptController.cs" />
+    <Compile Include="Controllers\Process\InstanceController.cs" />
     <Compile Include="Controllers\Finance\PdfContractController.cs" />
     <Compile Include="Controllers\Notice\NoticeController.cs" />
     <Compile Include="Controllers\Produce\FinancingProjectController.cs" />
