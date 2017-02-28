@@ -64,6 +64,11 @@
             }
         }
 
+        function LoadSuccess(data) {
+            // 刷新消息数目
+            parent.frames.MessageCount();
+        }
+
         function Process() {
             var url = "Flow/Frame.html";
             var statusCode = "";
@@ -121,6 +126,7 @@
         method: 'GET',
         url: '../api/Instance/DoingList',
         onBeforeLoad: SetFilters,
+        onLoadSuccess:LoadSuccess,
         loadMsg: '正在加载，请稍候...'
         ">
         <thead>

@@ -36,6 +36,18 @@ function MessageCount() {
     });
 }
 
+function PromptClick() {
+    $("div#menus>div").each(function (i, e) {
+        if ($(e).find("div>div").text() == "业务流程") {
+            // 点击“业务流程”
+            $("#menus").accordion("select", i);
+
+            // 点击“代办列表”
+            $(e).find("ul>li>a").eq(0).click();
+        }
+    });
+}
+
 function RanderMenus() {
     $.ajax({
         async: true,
