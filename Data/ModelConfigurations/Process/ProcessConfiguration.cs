@@ -3,9 +3,9 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Flow;
 
-    public class FlowConfiguration : EntityTypeConfiguration<Flow>
+    public class ProcessConfiguration : EntityTypeConfiguration<Flow>
     {
-        public FlowConfiguration()
+        public ProcessConfiguration()
         {
             HasKey(m => m.Id);
 

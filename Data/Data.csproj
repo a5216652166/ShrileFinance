@@ -138,7 +138,7 @@
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="ModelConfigurations\Flow\ActionConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\ActionConfiguration.cs" />
     <Compile Include="ModelConfigurations\Finance\ApplicantConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBaseSegmentConfiguration.cs" />
@@ -185,30 +185,30 @@
     <Compile Include="ModelConfigurations\Finance\FinanceConfigration.cs" />
     <Compile Include="ModelConfigurations\Finance\FinanceExtensionConfiguration.cs" />
     <Compile Include="ModelConfigurations\Finance\FinanceProduceConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Flow\ProcessTempDataConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\ProcessTempDataConfiguration.cs" />
     <Compile Include="ModelConfigurations\Product\FinancingProjectConfigration.cs" />
     <Compile Include="ModelConfigurations\Customer\FinancialAffairsConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Flow\FlowConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Flow\FormConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Flow\FormNodeConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Flow\FormRoleConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\ProcessConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\FormConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\FormNodeConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\FormRoleConfiguration.cs" />
     <Compile Include="ModelConfigurations\IO\FileSystemConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantorConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantyContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantyOrganizationConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\GuarantyPersonConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Flow\InstanceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\InstanceConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\LiabilitiesConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\LitigationConfigruation.cs" />
     <Compile Include="ModelConfigurations\Loan\CreditContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\LoanConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\PaymentHistoryConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Flow\LogConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\LogConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\ManagerConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\FamilyMemberConfiguration.cs" />
     <Compile Include="ModelConfigurations\Loan\MortgageGuarantyContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\TraceConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Flow\NodeConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Process\NodeConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\OrganizationConfiguration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

@@ -47,8 +47,15 @@
         public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize) =>
             GetAll(predicate).OrderByDescending(m => m.Id).ToPagedList(pageNumber, pageSize);
 
-        public virtual Guid Create(TEntity entity) =>
-            Entities.Add(entity).Id;
+        public virtual Guid Create(TEntity entity)
+        {
+            if (entity.Id == Guid.Empty)
+            {
+                entity.Id = Guid.NewGuid();
+            }
+
+            return Entities.Add(entity).Id;
+        }
 
         public virtual void Remove(TEntity entity) =>
             Context.Entry(entity).State = EntityState.Deleted;

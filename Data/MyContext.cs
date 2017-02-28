@@ -31,7 +31,7 @@
 
             // Process Configurations
             modelBuilder.Configurations
-                .Add(new FlowConfiguration())
+                .Add(new ProcessConfiguration())
                 .Add(new NodeConfiguration())
                 .Add(new ActionConfiguration())
                 .Add(new InstanceConfiguration())
