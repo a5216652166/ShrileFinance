@@ -1,21 +1,22 @@
-﻿using System.ServiceProcess;
-using Application;
-
-namespace TimeService
+﻿namespace TimeService
 {
-    static class Program
+    using System.ServiceProcess;
+
+    public static class Program
     {
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
-        static void Main()
+        public static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            var servicesToRun = default(ServiceBase[]);
+
+            servicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new Service()
             };
-            ServiceBase.Run(ServicesToRun);
+
+            ServiceBase.Run(servicesToRun);
         }
     }
 }

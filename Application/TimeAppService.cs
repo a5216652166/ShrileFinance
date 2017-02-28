@@ -10,21 +10,26 @@
 
     public class TimeAppService
     {
-        private readonly ICreditContractRepository contractRepository;
+        private readonly ICreditContractRepository creditContractRepository;
         private readonly ILoanRepository loanRepostiory;
         private readonly ITraceRepostitory traceRepostitory;
 
         public TimeAppService()
         {
-            MyContext context = new MyContext();
-            this.contractRepository = new CreditContractRepository(context);
+            var context = new MyContext();
+
+            creditContractRepository = new CreditContractRepository(context);
             loanRepostiory = new LoanRepository(context);
             traceRepostitory = new TraceRepository(context);
         }
 
         public void TimeService()
         {
+            // 合同到期定时终止
             ContractEnd();
+
+            // 借据到期失效
+            LoanEnd();
         }
 
         /// <summary>
@@ -32,16 +37,17 @@
         /// </summary>
         private void ContractEnd()
         {
-            var contract = contractRepository.GetAll(m => m.EffectiveStatus == CreditContractStatusEnum.生效);
+            var creditContracts = creditContractRepository.GetAll(m => m.EffectiveStatus == CreditContractStatusEnum.生效);
 
-            if (contract.Count() > 0)
+            if (creditContracts.Count() > 0)
             {
-                foreach (var item in contract)
+                foreach (var item in creditContracts)
                 {
                     if (item.ExpirationDate <= DateTime.Now)
                     {
                         item.EffectiveStatus = CreditContractStatusEnum.失效;
-                        contractRepository.Modify(item);
+                        creditContractRepository.Modify(item);
+
                         var count = traceRepostitory.CountByDateCreatedAndReference(DateTime.Now.Date, item.Id, TraceTypeEnum.签订授信合同);
                         if (count == 0)
                         {
@@ -50,15 +56,15 @@
                         }
                     }
                 }
-            }
 
-            contractRepository.Commit();
+                creditContractRepository.Commit();
+            }
         }
 
         /// <summary>
-        /// 借据失效功能（根据借据余额进行判断，当到期之后借据余额为已还清，则设置为作废，否则不作废，只改变业务数据状态不发送报文）
+        /// 借据到期失效（根据借据余额进行判断，当到期之后借据余额为已还清，则设置为作废，否则不作废，只改变业务数据状态不发送报文）
         /// </summary>
-        private void LoanCancel()
+        private void LoanEnd()
         {
             var loans = loanRepostiory.GetAll(m => m.Status == LoanStatusEnum.正常 || m.Status == LoanStatusEnum.逾期);
             if (loans.Count() > 0)
@@ -71,8 +77,9 @@
                         loanRepostiory.Modify(item);
                     }
                 }
+
+                loanRepostiory.Commit();
             }
-            loanRepostiory.Commit();
         }
     }
 }
