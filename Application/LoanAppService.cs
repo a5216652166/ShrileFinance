@@ -75,9 +75,11 @@
 
             loanService.Loan(loan, credit);
 
+            // 从数据库中删除旧实体
+            loanRepository.RemoveOldEntity(loan.Id);
+
             loanRepository.Create(loan);
 
-            loanRepository.Commit();
             model.Id = loan.Id;
             ////// 报文追踪（放款）
             ////messageAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);

@@ -177,48 +177,48 @@
 
             $.parser.parse($("div[name=ContractInfo]>div[id!=base]"));
 
-            // 序号校验
-            $.extend($.fn.validatebox.defaults.rules, {
-                NumberLimit: {
-                    validator: function (value, param) {
-                        var pleNumArray = [];
-                        var morNumArray = [];
+            ////// 序号校验
+            ////$.extend($.fn.validatebox.defaults.rules, {
+            ////    NumberLimit: {
+            ////        validator: function (value, param) {
+            ////            var pleNumArray = [];
+            ////            var morNumArray = [];
 
-                        $(self.parent.$("form table#GuarantorContract_dg").datagrid('getRows')).each(function (i, e) {
-                            if (e.ContractType == 1) {
-                                pleNumArray.push(e.ContractNumber);
+            ////            $(self.parent.$("form table#GuarantorContract_dg").datagrid('getRows')).each(function (i, e) {
+            ////                if (e.ContractType == 1) {
+            ////                    pleNumArray.push(e.ContractNumber);
 
-                                if (param[1] == 2 && value == e.ContractNumber) {
-                                    pleNumArray.pop();
-                                }
-                            }
-                            else if (e.ContractType == 2) {
-                                morNumArray.push(e.ContractNumber);
-                                if (param[1] == 2 && value == e.ContractNumber) {
-                                    morNumArray.pop();
-                                }
-                            }
-                        });
+            ////                    if (param[1] == 2 && value == e.ContractNumber) {
+            ////                        pleNumArray.pop();
+            ////                    }
+            ////                }
+            ////                else if (e.ContractType == 2) {
+            ////                    morNumArray.push(e.ContractNumber);
+            ////                    if (param[1] == 2 && value == e.ContractNumber) {
+            ////                        morNumArray.pop();
+            ////                    }
+            ////                }
+            ////            });
 
-                        if (param[0] == 1) {
-                            return $.inArray(value, pleNumArray) == -1;
-                        }
-                        else if (param[0] == 2) {
-                            return $.inArray(value, morNumArray) == -1;
-                        }
-                    },
-                    message: '该序号已存在'
-                }
-            });
+            ////            if (param[0] == 1) {
+            ////                return $.inArray(value, pleNumArray) == -1;
+            ////            }
+            ////            else if (param[0] == 2) {
+            ////                return $.inArray(value, morNumArray) == -1;
+            ////            }
+            ////        },
+            ////        message: '该序号已存在'
+            ////    }
+            ////});
 
-            if (GetQueryString("method") == "GuarantorContract_add") {
-                $("form input[textboxname=PledgeNumber]").textbox({ validType: ["NumberLimit[" + [1, 1] + "]", "N", "length[2,2]"] });
-                $("form input[textboxname=MortgageNumber]").textbox({ validType: ["NumberLimit[" + [2, 1] + "]", "N", "length[2,2]"] });
-            }
-            else if (GetQueryString("method") == "GuarantorContract_mod") {
-                $("form input[textboxname=PledgeNumber]").textbox({ validType: ["NumberLimit[" + [1, 2] + "]", "N", "length[2,2]"] });
-                $("form input[textboxname=MortgageNumber]").textbox({ validType: ["NumberLimit[" + [2, 2] + "]", "N", "length[2,2]"] });
-            }
+            ////if (GetQueryString("method") == "GuarantorContract_add") {
+            ////    $("form input[textboxname=PledgeNumber]").textbox({ validType: ["NumberLimit[" + [1, 1] + "]", "N", "length[2,2]"] });
+            ////    $("form input[textboxname=MortgageNumber]").textbox({ validType: ["NumberLimit[" + [2, 1] + "]", "N", "length[2,2]"] });
+            ////}
+            ////else if (GetQueryString("method") == "GuarantorContract_mod") {
+            ////    $("form input[textboxname=PledgeNumber]").textbox({ validType: ["NumberLimit[" + [1, 2] + "]", "N", "length[2,2]"] });
+            ////    $("form input[textboxname=MortgageNumber]").textbox({ validType: ["NumberLimit[" + [2, 2] + "]", "N", "length[2,2]"] });
+            ////}
         }
 
         // 选择保证人类型
@@ -342,12 +342,11 @@
                     <label>合同签订日期：</label>
                     <input name="SigningDate" class="easyui-datebox" data-options="required:true,value:'',editable:false,width:410" />
                 </div>
-
+                <div class="col-6" id="base">
+                    <label>合同编号：</label>
+                    <input name="ContractNumber" class="easyui-textbox" data-options="required:false,value:''" />
+                </div>
                 <template id="ContractInfo_Pledge">
-                    <div class="col-6">
-                        <label>质押序号：</label>
-                        <input name="PledgeNumber" class="easyui-textbox" data-options="required:true,value:'',validType:['length[2,2]'],prompt:'两位数字组成，默认从01开始'" />
-                    </div>
                     <div class="col-6">
                         <label>质押物种类</label>
                         <select name="PledgeType" class="easyui-combobox" data-options="required:true,value:'',editable:false">
@@ -367,10 +366,6 @@
                     </div>
                 </template>
                 <template id="ContractInfo_Mortgage">
-                    <div class="col-6">
-                        <label>抵押序号：</label>
-                        <input name="MortgageNumber" class="easyui-textbox" data-options="required:true,value:'',validType:['length[2,2]'],prompt:'两位数字组成，默认从01开始'" />
-                    </div>
                     <div class="col-6">
                         <label>抵押物种类：</label>
                         <select name="CollateralType" class="easyui-combobox" data-options="required:true,value:'',editable:false">

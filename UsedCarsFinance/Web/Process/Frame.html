@@ -34,7 +34,16 @@
             }
           
             // 开启草稿保存
-            draft.AutoSave(3 * 60 * 1000);
+            ////draft.AutoSave(1 * 6 * 1000);
+
+            var timer = setInterval(draftSava, 10000);
+
+            function draftSava()
+            {
+                if ($("a#saveTempData:hidden").length >0 || $("a#saveTempData").click() == 'error') {
+                    clearInterval(timer);
+                }
+            }
         });
 
         function LoadFrame(instanceId) {
@@ -107,7 +116,7 @@
                     var draft = tab.data("draft");
                     if (draft) {
                         var frame = frames[formId];
-                        debugger
+                        
                         if (frame.LoadData) {
                             frame.LoadData(draft);
                         }

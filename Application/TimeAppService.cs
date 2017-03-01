@@ -29,7 +29,7 @@
             ContractEnd();
 
             // 借据到期失效
-            LoanEnd();
+            ////LoanEnd();
         }
 
         /// <summary>
@@ -39,21 +39,18 @@
         {
             var creditContracts = creditContractRepository.GetAll(m => m.EffectiveStatus == CreditContractStatusEnum.生效);
 
-            if (creditContracts.Count() > 0)
+            foreach (var item in creditContracts)
             {
-                foreach (var item in creditContracts)
+                if (item.ExpirationDate <= DateTime.Now)
                 {
-                    if (item.ExpirationDate <= DateTime.Now)
-                    {
-                        item.EffectiveStatus = CreditContractStatusEnum.失效;
-                        creditContractRepository.Modify(item);
+                    item.EffectiveStatus = CreditContractStatusEnum.失效;
+                    creditContractRepository.Modify(item);
 
-                        var count = traceRepostitory.CountByDateCreatedAndReference(DateTime.Now.Date, item.Id, TraceTypeEnum.签订授信合同);
-                        if (count == 0)
-                        {
-                            var trace = new Trace(item.Id, TraceTypeEnum.签订授信合同, item.EffectiveDate, item.Organization.Property.InstitutionChName, "贷款合同：" + item.CreditContractCode + "终止");
-                            traceRepostitory.Create(trace);
-                        }
+                    var count = traceRepostitory.CountByDateCreatedAndReference(DateTime.Now.Date, item.Id, TraceTypeEnum.签订授信合同);
+                    if (count == 0)
+                    {
+                        var trace = new Trace(item.Id, TraceTypeEnum.签订授信合同, item.EffectiveDate, item.Organization.Property.InstitutionChName, "贷款合同：" + item.CreditContractCode + "终止");
+                        traceRepostitory.Create(trace);
                     }
                 }
 

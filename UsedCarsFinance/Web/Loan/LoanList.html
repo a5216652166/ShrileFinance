@@ -43,38 +43,6 @@
             uc.ShowWindow("借据详情", url);
         }
 
-        //function Start() {
-        //    var flowId = "";
-        //    var loanId = "";
-        //    var statusCode = "";
-        //    var view = $(this).data("view");
-        //    if (view == "loan") {
-        //        flowId = "06824FE1-78D1-E611-80CA-507B9DE4A488";
-        //        statusCode = view;
-        //    }
-        //    else if (view == "payment" || view == "view") {
-        //        var row = uc.grid.GetSelected();
-        //        if (row) {
-        //            flowId = "07824FE1-78D1-E611-80CA-507B9DE4A488";
-        //            loanId = row.Id;
-        //            statusCode = view;
-        //        }
-        //        else {
-        //            return false;
-        //        }
-        //    }
-        //    $.ajax({
-        //        method: "GET",
-        //        data: { flowId: flowId },
-        //        url: "../api/Instance/StartProcess",
-        //        statusCode: {
-        //            200: function (data) {
-        //                uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&LoanId=" + loanId + "&statusCode=" + statusCode);
-        //            }
-        //        }
-        //    });
-        //}
-
         function Start() {
             var row = uc.grid.GetSelected();
             if (!row) {
@@ -87,7 +55,7 @@
                 url: "../api/Instance/StartProcess",
                 statusCode: {
                     200: function (data) {
-                        uc.ShowWindow("详情页", "Flow/Frame.html?instanceId=" + data + "&LoanId=" + row.Id + "&statusCode=view");
+                        uc.ShowWindow("详情页", "Process/Frame.html?instanceId=" + data + "&LoanId=" + row.Id + "&statusCode=view");
                     }
                 }
             });
@@ -144,6 +112,7 @@
                 <th data-options="field:'Principle',width:140,align:'right'">借据金额</th>
                 <th data-options="field:'Balance',width:140,align:'right'">借据余额</th>
                 <th data-options="field:'Status',width:140,align:'center'">借据状态</th>
+                <th data-options="field:'FourCategoryAssetsClassification',width:160,align:'center'">四级分类</th>
             </tr>
         </thead>
     </table>

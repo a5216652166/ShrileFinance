@@ -1245,11 +1245,11 @@
     <Compile Include="Controllers\BankCredit\ReportFilesController.cs" />
     <Compile Include="Controllers\BankCredit\SegmentRuleController.cs" />
     <Compile Include="Controllers\BankCredit\TempRecordController.cs" />
-    <Compile Include="Controllers\Credit\CreditController.cs" />
+    <Compile Include="Controllers\Loan\CreditController.cs" />
     <Compile Include="Controllers\Customer\CustomerController.cs" />
     <Compile Include="Controllers\Finance\ApplicantController.cs" />
     <Compile Include="Controllers\Finance\BorrowController.cs" />
-    <Compile Include="Controllers\Credit\CreditContractController.cs" />
+    <Compile Include="Controllers\Loan\CreditContractController.cs" />
     <Compile Include="Controllers\Loan\LoanController.cs" />
     <Compile Include="Controllers\CreditInvestigation\DatagramController.cs" />
     <Compile Include="Controllers\Statistics\StatisticsController.cs" />

@@ -288,7 +288,7 @@
                     url: "../api/Loan/Get",
                     onLoadSuccess: function (data) {
                         $("select[comboname='CreditId']").combobox("select", data.CreditId);
-
+                        debugger
                         var options = $(data.Payments).map(function (i, e) {
                             debugger
                             if (e.Hidden == 2 || e.InstanceId == parent.flow.InstanceId)
@@ -599,6 +599,19 @@
                         <option value="1">正常</option>
                         <option value="3">逾期</option>
                         <option value="2">已还清</option>
+                    </select>
+                </div>
+
+                <div class="col-6">
+                    <label>四级分类:</label>
+                    <select name="FourCategoryAssetsClassification" class="easyui-combobox" data-options="readonly:true">
+                        <option value="10">正常</option>
+                        <option value="20">逾期</option>
+                        <option value="21">逾期天数在30天及以下</option>
+                        <option value="22">逾期天数在90天及以下</option>
+                        <option value="23">逾期天数在180天及以下</option>
+                        <option value="30">呆滞</option>
+                        <option value="40">呆帐</option>
                     </select>
                 </div>
             </div>

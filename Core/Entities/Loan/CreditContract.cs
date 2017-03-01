@@ -121,13 +121,7 @@
                 CreditLimit = limit;
 
                 // 设置担保合同的担保金额
-                if (GuarantyContract.Count() > 0)
-                {
-                    foreach (var item in GuarantyContract)
-                    {
-                        item.Margin = CreditLimit;
-                    }
-                }
+                SetGuarantyContractMargin();
             }
             else
             {
@@ -168,6 +162,32 @@
         /// <returns>授信余额</returns>
         public decimal CalculateCreditBalance() =>
             CreditLimit - Loans.Where(m => m.Hidden == HiddenEnum.完成).Sum(m => m.Balance);
+
+        public void SetGuarantyContractNumber()
+        {
+            var mortgageNumber = 1;
+            var pledgeNumber = 1;
+
+            foreach (var item in GuarantyContract)
+            {
+                if (item is GuarantyContractMortgage)
+                {
+                    ((GuarantyContractMortgage)item).MortgageNumber = (mortgageNumber++).ToString("D2");
+                }
+                else if (item is GuarantyContractPledge)
+                {
+                    ((GuarantyContractPledge)item).PledgeNumber = (pledgeNumber++).ToString("D2");
+                }
+            }
+        }
+
+        public void SetGuarantyContractMargin()
+        {
+            foreach (var item in GuarantyContract)
+            {
+                item.Margin = CreditLimit;
+            }
+        }
 
         /// <summary>
         ///  融资额度是否充足

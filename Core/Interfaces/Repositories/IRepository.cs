@@ -22,5 +22,7 @@
         void Modify(TEntity entity);
 
         void Remove(TEntity entity);
+
+        TEntity RemoveOldEntity(Guid id);
     }
 }

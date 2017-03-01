@@ -69,6 +69,9 @@
         [JsonConverter(typeof(StringEnumConverter))]
         public LoanStatusEnum Status { get; private set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
+        public FourCategoryAssetsClassificationEnum? FourCategoryAssetsClassification { get; set; }
+
         /// <summary>
         /// 贷款业务种类
         /// </summary>

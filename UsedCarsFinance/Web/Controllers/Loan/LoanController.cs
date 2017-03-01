@@ -1,4 +1,4 @@
-﻿namespace Web.Controllers.Loan
+﻿namespace Web.Controllers
 {
     using System;
     using System.Web.Http;
@@ -9,17 +9,17 @@
 
     public class LoanController : ApiController
     {
-        private readonly LoanAppService service;
+        private readonly LoanAppService loanAppService;
 
-        public LoanController(LoanAppService service)
+        public LoanController(LoanAppService loanAppService)
         {
-            this.service = service;
+            this.loanAppService = loanAppService;
         }
 
         [HttpGet]
         public IHttpActionResult Get(Guid id)
         {
-            var model = service.Get(id);
+            var model = loanAppService.Get(id);
 
             if (model == null)
             {
@@ -37,7 +37,7 @@
                 return BadRequest(ModelState);
             }
 
-            service.ApplyLoan(model);
+            loanAppService.ApplyLoan(model);
 
             return Ok();
         }
@@ -50,7 +50,7 @@
                 return BadRequest(ModelState);
             }
 
-            service.ModifyLoan(model);
+            loanAppService.ModifyLoan(model);
 
             return Ok();
         }
@@ -58,7 +58,7 @@
         [HttpPut]
         public IHttpActionResult PaymentPut(PaymentViewModel model)
         {
-            service.Payment(model);
+            loanAppService.Payment(model);
 
             return Ok();
         }
@@ -66,7 +66,7 @@
         [HttpGet]
         public IHttpActionResult SearchList(string searchString, int page, int rows, LoanStatusEnum? status = null)
         {
-            var models = service.PagedList(searchString, page, rows, status);
+            var models = loanAppService.PagedList(searchString, page, rows, status);
 
             return Ok(new PagedListViewModel<LoanViewModel>(models));
         }
@@ -74,7 +74,7 @@
         [HttpGet]
         public IHttpActionResult CheckLoanNumber(string loanNumber)
         {
-            var result = service.CheckLoanNumber(loanNumber);
+            var result = loanAppService.CheckLoanNumber(loanNumber);
 
             return Ok(result);
         }
@@ -82,7 +82,7 @@
         [HttpGet]
         public IHttpActionResult GetBalance(Guid id, decimal principle)
         {
-            var result = service.GetBalance(id, principle);
+            var result = loanAppService.GetBalance(id, principle);
 
             return Ok(result);
         }

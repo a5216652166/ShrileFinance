@@ -214,7 +214,7 @@
             // 设置流程实例关联的业务标识
             Instance.RootKey = creditContract.Id;
             var organization = organizationRepository.Get(creditContract.OrganizationId);
-            Instance.Title = $"{"机构名：" + organization.Property.InstitutionChName + " 授信合同编号：" + creditContract.CreditContractCode}";
+            Instance.Title = $"{"机构名：" + organization.Property.InstitutionChName + " 贷款合同编号：" + creditContract.CreditContractCode}";
         }
 
         /// <summary>
@@ -256,16 +256,17 @@
         {
             var loan = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            loanAppService.ApplyLoan(loan);
+                loanAppService.ApplyLoan(loan);
 
-            // 设置流程实例关联的业务标识
-            Instance.RootKey = loan.Id;
+                // 设置流程实例关联的业务标识
+                Instance.RootKey = loan.Id;
+            
             var credit = creditContractAppService.Get(loan.CreditId);
             Instance.Title = $"{"授信合同编号：" + credit.CreditContractCode + " 借据编号：" + loan.ContractNumber}";
         }
 
         /// <summary>
-        /// 借据 - 放款
+        /// 借据 - 完成
         /// </summary>
         public void LoanFinish()
         {
@@ -299,7 +300,7 @@
         }
 
         /// <summary>
-        /// 还款记录 - 还款
+        /// 还款 - 完成
         /// </summary>
         public void PaymentFinish()
         {

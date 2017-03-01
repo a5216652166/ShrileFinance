@@ -9,11 +9,14 @@ function Draft(onSave, onLoad) {
 	this.Save = function (data) {
 		var data = data || onSave();
 		var jsonData = JSON.stringify(data);
-
+        
 		var postedData = {
 			PageLink: pageLink,
 			PageData: jsonData
 		};
+
+		var result = 'success';
+
 		$.ajax({
 			async: true,
 			data: postedData,
@@ -28,11 +31,15 @@ function Draft(onSave, onLoad) {
 				},
 				401: function () {
 					clearInterval(interval);
-
+                    
 					top.$.messager.show({ msg: "登录失效, 草稿自动保存已关闭！" });
+
+					result = 'error';
 				}
 			}
 		});
+
+		return result;
 	}
 
 	// 加载草稿
@@ -84,7 +91,7 @@ function Draft(onSave, onLoad) {
 		var millisec = millisec || (3 * 60 * 1000);
 
 		setTimeout(function () {
-			interval = setInterval(this.Save, millisec);
+		    interval = setInterval(this.Save, millisec); setInterval()
 		}, millisec);
 
 		top.$.messager.show({ msg: "自动保存草稿已开启（" + (millisec / 60 / 1000) + "分钟）！" });

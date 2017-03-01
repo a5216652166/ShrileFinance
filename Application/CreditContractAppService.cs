@@ -13,12 +13,14 @@
 
     public class CreditContractAppService
     {
-        private readonly ICreditContractRepository repository;
+        private readonly ICreditContractRepository creditContractRepository;
         private readonly DatagramAppService messageAppService;
 
-        public CreditContractAppService(ICreditContractRepository repository, DatagramAppService messageAppService)
+        public CreditContractAppService(
+            ICreditContractRepository creditContractRepository,
+             DatagramAppService messageAppService)
         {
-            this.repository = repository;
+            this.creditContractRepository = creditContractRepository;
             this.messageAppService = messageAppService;
         }
 
@@ -50,17 +52,12 @@
 
             credit.ValidateEffective(credit);
 
-            // 设置担保合同的担保金额
-            if (credit.GuarantyContract.Count() > 0)
-            {
-                foreach (var item in credit.GuarantyContract)
-                {
-                    item.Margin = credit.CreditLimit;
-                }
-            }
+            // 设置担保合同的担保金额和编号
+            credit.SetGuarantyContractMargin();
+            credit.SetGuarantyContractNumber();
 
-            repository.Create(credit);
-            repository.Commit();
+            creditContractRepository.Create(credit);
+
             model.Id = credit.Id;
 
             //// 报文追踪转移至流程处理
@@ -73,7 +70,7 @@
                 return;
             }
 
-            var credit = repository.Get(model.Id.Value);
+            var credit = creditContractRepository.Get(model.Id.Value);
 
             if (credit == null)
             {
@@ -113,13 +110,13 @@
                 }
             }
 
-            repository.Modify(credit);
-            repository.Commit();
+            creditContractRepository.Modify(credit);
+            ////repository.Commit();
         }
 
         public CreditContractViewModel Get(Guid id)
         {
-            var credit = repository.Get(id);
+            var credit = creditContractRepository.Get(id);
 
             var creditViewModel = Mapper.Map<CreditContractViewModel>(credit);
 
@@ -168,7 +165,7 @@
                 throw new ArgumentOutOfRangeAppException(string.Empty, "授信合同编号不能为空.");
             }
 
-            var creditContracts = repository.GetAll(m => m.CreditContractCode == creditContractNumber);
+            var creditContracts = creditContractRepository.GetAll(m => m.CreditContractCode == creditContractNumber);
 
             return creditContracts.Count() == 0;
         }
@@ -180,7 +177,7 @@
         /// <param name="id">标识</param>
         public void ChangeLimit(decimal limit, Guid id)
         {
-            var credit = repository.Get(id);
+            var credit = creditContractRepository.Get(id);
 
             credit.CreditLimit = limit;
             ChangeEffective(credit);
@@ -193,8 +190,8 @@
         public void ChangeExpirationDate(CreditContract model)
         {
             model.ChangeExpirationDate(model.ExpirationDate);
-            repository.Modify(model);
-            repository.Commit();
+            creditContractRepository.Modify(model);
+            creditContractRepository.Commit();
 
             // 报文追踪(合同关键数据项有效日期发生变化)
             messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"授信合同：{model.CreditContractCode}有效日期变更", specialDate: model.EffectiveDate, organizateName: model.Organization.Property.InstitutionChName);
@@ -217,10 +214,10 @@
         /// <param name="id">标识</param>
         public void StopStatus(Guid id)
         {
-            var credit = repository.Get(id);
+            var credit = creditContractRepository.Get(id);
             credit.ChangeStutus();
-            repository.Modify(credit);
-            repository.Commit();
+            creditContractRepository.Modify(credit);
+            creditContractRepository.Commit();
 
             // 报文追踪
             messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
@@ -232,7 +229,7 @@
         /// <returns></returns>
         public IEnumerable<CreditContractViewModel> Option()
         {
-            var credits = repository.GetAll().Where(m => m.EffectiveStatus != CreditContractStatusEnum.失效).AsEnumerable();
+            var credits = creditContractRepository.GetAll().AsEnumerable();
 
             var creditViewModels = Mapper.Map<IEnumerable<CreditContractViewModel>>(credits);
 
@@ -257,11 +254,11 @@
 
             if (string.IsNullOrEmpty(serach))
             {
-                creditContract = repository.GetAll();
+                creditContract = creditContractRepository.GetAll();
             }
             else
             {
-                creditContract = repository.GetAll(m => m.CreditContractCode.Contains(serach) || m.Organization.Property.InstitutionChName.Contains(serach));
+                creditContract = creditContractRepository.GetAll(m => m.CreditContractCode.Contains(serach) || m.Organization.Property.InstitutionChName.Contains(serach));
             }
 
             var pageList = creditContract.OrderByDescending(m => m.Id).ToPagedList(page, size);
@@ -275,19 +272,19 @@
                 model.OrganizationName = entity.Organization.Property.InstitutionChName;
             }
 
-            ////models.ToList().ForEach(model =>
-            ////{
-            ////    var entity = pageList.Single(m => m.Id == model.Id.Value);
+            models.ToList().ForEach(model =>
+            {
+                var entity = pageList.Single(m => m.Id == model.Id.Value);
 
-            ////    model.OrganizationName = entity.Organization.Property.InstitutionChName;
-            ////});
+                model.OrganizationName = entity.Organization.Property.InstitutionChName;
+            });
 
             return models;
         }
 
         public decimal GetCreditBalanc(Guid id, decimal limit)
         {
-            var creditContract = repository.Get(id);
+            var creditContract = creditContractRepository.Get(id);
 
             return creditContract.CalculateCreditBalance() + (limit - creditContract.CreditLimit);
         }
@@ -404,8 +401,8 @@
         private void ChangeEffective(CreditContract model)
         {
             model.ChangeLimit(model.CreditLimit);
-            repository.Modify(model);
-            repository.Commit();
+            creditContractRepository.Modify(model);
+            creditContractRepository.Commit();
 
             // 报文追踪(合同关键数据项金额发生变化)
             messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更", specialDate: model.EffectiveDate, organizateName: model.Organization.Property.InstitutionChName);

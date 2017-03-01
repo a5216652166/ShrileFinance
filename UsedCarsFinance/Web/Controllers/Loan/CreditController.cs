@@ -1,4 +1,4 @@
-﻿namespace Web.Controllers.Credit
+﻿namespace Web.Controllers
 {
     using System;
     using System.Threading.Tasks;

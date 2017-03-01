@@ -12,7 +12,7 @@
 	<script>
         var Status = {};
 
-		var process = {
+		var flow = {
 		    InstanceId: "",
 		    RootKey: "",
 		    InnerOpinions: [],
@@ -20,10 +20,10 @@
 		};
 
 		$(function () {
-		    process.InstanceId = uc.GetParams().instanceId;
+		    flow.InstanceId = uc.GetParams().instanceId;
 
-		    if (process.InstanceId) {
-		        LoadFrame(process.InstanceId);
+		    if (flow.InstanceId) {
+		        LoadFrame(flow.InstanceId);
 		    }
 		});
 
@@ -35,12 +35,12 @@
 				url: "../api/Instance/GetFrameView",
 				statusCode: {
 					200: function (data) {
-					    process.RootKey = data.RootKey;
+					    flow.RootKey = data.RootKey;
 
 					    RanderTabs(data.Forms);
 
-					    process.InnerOpinions = data.InnerOpinions;
-					    process.ExnerOpinions = data.ExnerOpinions;
+					    flow.InnerOpinions = data.InnerOpinions;
+					    flow.ExnerOpinions = data.ExnerOpinions;
 					}
 				}
 			});

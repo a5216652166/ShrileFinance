@@ -54,7 +54,7 @@
 
                             return result;
                         },
-                        message: '授信编号已使用!'
+                        message: '贷款编号已使用!'
                     }
                 });
             }
@@ -97,6 +97,7 @@
             }
 
             if (HasGuarantee == 1 && data.GuranteeContract != null) {
+                debugger
                 // 担保合同数据扩展
                 $(data.GuranteeContract).each(function (i, e) {
                     if (e.ContractType == 0) {
@@ -105,7 +106,7 @@
                         e.MarginTxt = e.GuarantyContractViewModel.Margin;
                         e.EffectiveStateTxt = e.GuarantyContractViewModel.EffectiveState == 1 ? "是" : "否";
                         e.SigningDateTxt = e.GuarantyContractViewModel.SigningDate;
-                        e.ContractNumber = e.GuarantyContractViewModel.MortgageNumber;
+                        e.ContractNumber = e.GuarantyContractViewModel.ContractNumber;
                     }
                     else if (e.ContractType == 1) {
                         e.ContractTypeTxt = "质押合同";
@@ -113,7 +114,7 @@
                         e.MarginTxt = e.PledgeGuarantyContractViewModel.Margin;
                         e.EffectiveStateTxt = e.PledgeGuarantyContractViewModel.EffectiveState == 1 ? "是" : "否";
                         e.SigningDateTxt = e.PledgeGuarantyContractViewModel.SigningDate;
-                        e.ContractNumber = e.PledgeGuarantyContractViewModel.PledgeNumber;
+                        e.ContractNumber = e.PledgeGuarantyContractViewModel.ContractNumber;
                     }
                     else if (e.ContractType == 2) {
                         e.ContractTypeTxt = "抵押合同";
@@ -121,7 +122,7 @@
                         e.MarginTxt = e.MortgageGuarantyContractViewModel.Margin;
                         e.EffectiveStateTxt = e.MortgageGuarantyContractViewModel.EffectiveState == 1 ? "是" : "否";
                         e.SigningDateTxt = e.MortgageGuarantyContractViewModel.SigningDate;
-                        e.ContractNumber = e.MortgageGuarantyContractViewModel.MortgageNumber;
+                        e.ContractNumber = e.MortgageGuarantyContractViewModel.ContractNumber;
                     }
 
 
@@ -148,7 +149,7 @@
 
             if (value.HasGuarantee == 1) {
                 value.GuranteeContract = $("fieldset#GuarantorContract table#GuarantorContract_dg").datagrid('getRows');
-                // 修正担保合同保证金额（贷款授信额度）
+                // 修正担保合同保证金额（贷款贷款额度）
                 $(value.GuranteeContract).each(function (i, e) {
                     e.Margin = $('fieldset#CreditContract input[textboxname=CreditLimit]').textbox('getValue');
                 });
@@ -169,7 +170,7 @@
                 return false;
             }
             if (data.EffectiveDate > data.ExpirationDate) {
-                $.messager.show({ msg: '授信合同终止日期不得在生效日期之前！' });
+                $.messager.show({ msg: '贷款合同终止日期不得在生效日期之前！' });
 
                 return false;
             }
@@ -184,14 +185,14 @@
                     var expirationDate = $("form input[textboxname=ExpirationDate]").datebox("getValue");
 
                     $($("fieldset#GuarantorContract table#GuarantorContract_dg").datagrid('getRows')).each(function (i, e) {
-                        if (e.SigningDateTxt > expirationDate) {
-                            // $.messager.show({ msg: '担保合同签订日期均不得晚于授信合同终止日期！' });
+                        if (e.SigningDateTxt >= expirationDate) {
+                            // $.messager.show({ msg: '担保合同签订日期均不得晚于贷款合同终止日期！' });
                             expirationDate = "";
                         }
                     });
 
                     if (expirationDate.toString().length == 0) {
-                        $.messager.show({ msg: '担保合同签订日期均不得晚于授信合同终止日期！' });
+                        $.messager.show({ msg: '担保合同签订日期均不得晚于贷款合同终止日期！' });
 
                         return false;
                     }
@@ -415,13 +416,13 @@
 
             <div class="row">
                 <div class="col-6">
-                    <label>授信额度:</label>
+                    <label>贷款额度:</label>
                     <input name="CreditLimit" id="CreditLimit" class="easyui-textbox" data-options="required:true,onChange:GetCreditBalance,validType:'Money'" />
                     <span class="unit">元</span>
                 </div>
 
                 <div class="col-6">
-                    <label>授信余额:</label>
+                    <label>贷款余额:</label>
                     <input name="CreditBalance" id="CreditBalance" class="easyui-textbox" readonly />
                     <span class="unit">元</span>
                 </div>
@@ -429,12 +430,12 @@
 
             <div class="row">
                 <div class="col-6">
-                    <label>授信合同生效日期:</label>
+                    <label>贷款合同生效日期:</label>
                     <input name="EffectiveDate" id="EffectiveDate" class="easyui-datebox" data-options="required:true,width:410,editable:false" />
                 </div>
 
                 <div class="col-6">
-                    <label>授信合同终止日期:</label>
+                    <label>贷款合同终止日期:</label>
                     <input name="ExpirationDate" id="ExpirationDate" class="easyui-datebox" data-options="required:true,width:410,editable:false" />
                 </div>
             </div>
@@ -460,7 +461,7 @@
                    ">
                 <thead>
                     <tr>
-                        <th data-options="field:'ContractNumber',width:120,align:'center'">合同序号</th>
+                        <th data-options="field:'ContractNumber',width:120,align:'center'">合同编号</th>
                         <th data-options="field:'ContractTypeTxt',width:120,align:'center'">合同类型</th>
                         <th data-options="field:'GuarantorTypeTxt',width:120,align:'center'">保证人类型</th>
                         <th data-options="field:'GuaranteeFormTxt',width:120,align:'center'">担保形式</th>
@@ -524,11 +525,6 @@
                 <iframe id="GuarantorContract_frame" name="family_frame" src="about:blank" style="width:100%;height:99%; border:0;"></iframe>
             </div>
         </fieldset>
-
-        <!--<div id="btn">
-            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',onClick:Submit">保存</a>
-            <a id="cancel" class="easyui-linkbutton" data-options="iconCls: 'icon-redo',onClick:uc.form.Cancel" style="margin:0 auto">取消</a>
-        </div>-->
     </form>
 </body>
 </html>

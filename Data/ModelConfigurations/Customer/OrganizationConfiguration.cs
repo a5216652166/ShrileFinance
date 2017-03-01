@@ -1,6 +1,5 @@
 ﻿namespace Data.ModelConfigurations
 {
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Customers.Enterprise;
 
@@ -9,7 +8,6 @@
         public OrganizationConfiguration()
         {
             HasKey(m => m.Id);
-            Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             // 机构
             Property(m => m.CustomerNumber).IsRequired().HasMaxLength(40);

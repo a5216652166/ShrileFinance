@@ -14,6 +14,11 @@
         public Guid? Id { get; set; }
 
         /// <summary>
+        /// 合同编号
+        /// </summary>
+        public string ContractNumber { get; set; }
+
+        /// <summary>
         /// 签订日期
         /// </summary>
         public DateTime? SigningDate { get; set; }

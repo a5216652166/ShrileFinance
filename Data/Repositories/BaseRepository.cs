@@ -49,10 +49,7 @@
 
         public virtual Guid Create(TEntity entity)
         {
-            if (entity.Id == Guid.Empty)
-            {
-                entity.Id = Guid.NewGuid();
-            }
+            entity.Id = Guid.NewGuid();
 
             return Entities.Add(entity).Id;
         }
@@ -65,6 +62,23 @@
             ValidCommit();
 
             return Context.SaveChanges();
+        }
+
+        TEntity IRepository<TEntity>.RemoveOldEntity(Guid id)
+        {
+            var oldEntity = default(TEntity);
+
+            if (id != Guid.Empty)
+            {
+                oldEntity = Entities.FindAsync(id).Result;
+
+                if (oldEntity != null)
+                {
+                    Context.Entry(oldEntity).State = EntityState.Deleted;
+                }
+            }
+
+            return oldEntity;
         }
 
         private IQueryable<TEntity> Filter(IQueryable<TEntity> entities)

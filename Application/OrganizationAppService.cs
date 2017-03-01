@@ -69,7 +69,7 @@
 
             organizationRepository.Create(customer);
 
-            organizationRepository.Commit();
+            ////organizationRepository.Commit();
             model.Base.Id = customer.Id;
 
             //// 报文追踪转移至流程处理
