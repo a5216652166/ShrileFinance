@@ -14,18 +14,15 @@
 
     public class UserController : ApiController
     {
-        private readonly AccountAppService service;
+        private readonly AccountAppService accountAppService;
 
         public UserController(AccountAppService userService)
         {
-            this.service = userService;
-            this.service.User = User;
+            accountAppService = userService;
+            accountAppService.User = User;
         }
 
-        private IAuthenticationManager AuthManager
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
+        private IAuthenticationManager AuthManager => Request.GetOwinContext().Authentication;
 
         /// <summary>
         /// 分页查询
@@ -36,9 +33,10 @@
         /// <returns></returns>
         public IHttpActionResult GetAll(string searchString, int page, int rows)
         {
-            var list = service.List(searchString, page, rows);
+            var list = accountAppService.List(searchString, page, rows);
 
-            return Ok(new {
+            return Ok(new
+            {
                 rows = list,
                 total = list.TotalItemCount
             });
@@ -51,7 +49,7 @@
         /// <returns></returns>
         public IHttpActionResult Get(string id)
         {
-            var user = service.GetUser(id);
+            var user = accountAppService.GetUser(id);
 
             return user != null ? (IHttpActionResult)Ok(user) : NotFound();
         }
@@ -63,9 +61,7 @@
         /// <returns></returns>
         [HttpGet]
         public IEnumerable<ComboInfo> Option(string roleId)
-        {
-            return service.GetByRole(roleId).Select(m => new ComboInfo(m.Id, m.Name));
-        }
+            => accountAppService.GetByRole(roleId).Select(m => new ComboInfo(m.Id, m.Name));
 
         /// <summary>
         /// 注册帐号
@@ -82,7 +78,7 @@
 
             try
             {
-                var result = await service.CreateUserAsync(model);
+                var result = await accountAppService.CreateUserAsync(model);
 
                 if (!result.Succeeded)
                 {
@@ -110,7 +106,7 @@
                 return BadRequest(ModelState);
             }
 
-            var result = await service.ModifyUserAsync(model);
+            var result = await accountAppService.ModifyUserAsync(model);
 
             if (!result.Succeeded)
             {
@@ -133,7 +129,7 @@
                 return BadRequest(ModelState);
             }
 
-            var result = await service.ModifyMyInfoAsync(model);
+            var result = await accountAppService.ModifyMyInfoAsync(model);
 
             if (!result.Succeeded)
             {
@@ -159,12 +155,17 @@
 
             try
             {
-                var ident = await service.Login(model);
-
                 AuthManager.SignOut();
+
                 AuthManager.SignIn(
-                    new AuthenticationProperties { IsPersistent = false },
-                    ident);
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = false,
+
+                        // 设置登陆有效时长 6h
+                        ExpiresUtc = new DateTimeOffset(DateTime.UtcNow.AddHours(6))
+                    },
+                    await accountAppService.Login(model));
 
                 return Ok();
             }
@@ -193,7 +194,7 @@
         [HttpGet]
         public IHttpActionResult CurrentUser()
         {
-            var user = service.CurrentUser();
+            var user = accountAppService.CurrentUser();
 
             return Ok(user);
         }
@@ -206,7 +207,9 @@
         [HttpGet]
         public IHttpActionResult CheckUsername(string username)
         {
-            return !service.CheckUsername(username) ? (IHttpActionResult)Ok() : BadRequest();
+            var userIsExists = accountAppService.CheckUsername(username);
+
+            return userIsExists ? (IHttpActionResult)Ok(userIsExists) : BadRequest(userIsExists.ToString());
         }
 
         /// <summary>
@@ -222,7 +225,7 @@
                 return BadRequest($"{nameof(id)} 不可为空.");
             }
 
-            var result = await service.EnableAsync(id);
+            var result = await accountAppService.EnableAsync(id);
 
             if (!result.Succeeded)
             {
@@ -245,7 +248,7 @@
                 return BadRequest($"{nameof(id)} 不可为空.");
             }
 
-            var result = await service.DisableAsync(id);
+            var result = await accountAppService.DisableAsync(id);
 
             if (!result.Succeeded)
             {
@@ -268,7 +271,7 @@
                 return BadRequest($"{nameof(id)} 不可为空.");
             }
 
-            var result = await service.ResetPasswordAsync(id);
+            var result = await accountAppService.ResetPasswordAsync(id);
 
             if (!result.Succeeded)
             {
@@ -293,7 +296,7 @@
 
             model.Id = User.Identity.GetUserId();
 
-            var result = await service.ChangePasswordAsync(model);
+            var result = await accountAppService.ChangePasswordAsync(model);
 
             if (!result.Succeeded)
             {
