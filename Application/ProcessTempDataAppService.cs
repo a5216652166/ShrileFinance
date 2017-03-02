@@ -52,19 +52,21 @@
 
             processTempData.ConvertToJsonData(processTempDataViewModel.ObjData);
 
-            var oldEntity = processTempDataRepository.GetAll(m => m.InstanceId == processTempData.InstanceId);
-
-            if (oldEntity.Count() > 0)
-            {
-                processTempDataRepository.Remove(oldEntity.First());
-            }
+            processTempDataRepository.RemoveOldEntity(processTempData.Id);
 
             processTempDataRepository.Create(processTempData);
         }
 
         public void Modify<T>(ProcessTempDataViewModel<T> processTempDataViewModel) where T : class
         {
-            var processTempData = processTempDataRepository.GetAll(m => m.InstanceId == processTempDataViewModel.InstanceId).Single();
+            var processTempData = processTempDataRepository.Get(processTempDataViewModel.Id);
+
+            if (processTempData == null)
+            {
+                throw new ArgumentException("流程临时数据实例不存在");
+            }
+
+            processTempData.InstanceId = processTempDataViewModel.InstanceId;
 
             processTempData.ConvertToJsonData(processTempDataViewModel.ObjData);
 

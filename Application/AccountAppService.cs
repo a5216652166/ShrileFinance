@@ -166,9 +166,7 @@
         /// <param name="username">用户名</param>
         /// <returns></returns>
         public bool CheckUsername(string username)
-        {
-            return userManager.CheckUsername(username);
-        }
+            => userManager.CheckUsername(username);
 
         /// <summary>
         /// 重置密码
@@ -188,9 +186,7 @@
         /// <param name="model">修改密码模型</param>
         /// <returns></returns>
         public Task<IdentityResult> ChangePasswordAsync(ChangePasswordViewModel model)
-        {
-            return userManager.ChangePasswordAsync(model.Id, model.CurrentPassword, model.NewPassword);
-        }
+            => userManager.ChangePasswordAsync(model.Id, model.CurrentPassword, model.NewPassword);
 
         /// <summary>
         /// 启用
@@ -198,9 +194,7 @@
         /// <param name="userId">用户标识</param>
         /// <returns></returns>
         public Task<IdentityResult> EnableAsync(string userId)
-        {
-            return userManager.SetLockoutEnabledAsync(userId, false);
-        }
+            => userManager.SetLockoutEnabledAsync(userId, false);
 
         /// <summary>
         /// 停用
@@ -208,9 +202,7 @@
         /// <param name="userId">用户标识</param>
         /// <returns></returns>
         public Task<IdentityResult> DisableAsync(string userId)
-        {
-            return userManager.SetLockoutEnabledAsync(userId, true);
-        }
+            => userManager.SetLockoutEnabledAsync(userId, true);
 
         /// <summary>
         /// 登录
@@ -253,9 +245,7 @@
         /// </summary>
         /// <returns></returns>
         public IEnumerable<AppRole> GetRoles()
-        {
-            return roleManager.Roles;
-        }
+            => roleManager.Roles;
 
         /// <summary>
         /// 将用户添加到角色
@@ -264,8 +254,6 @@
         /// <param name="role">角色</param>
         /// <returns></returns>
         public Task<IdentityResult> AddToRoleAsync(string userId, AppRole role)
-        {
-            return userManager.AddToRoleAsync(userId, role.Id);
-        }
+            => userManager.AddToRoleAsync(userId, role.Id);
     }
 }

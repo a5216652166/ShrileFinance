@@ -29,9 +29,6 @@
 
         public bool LockoutEnabled { get; set; }
 
-        public string LockoutEnabledDesc
-        {
-            get { return LockoutEnabled ? "停用" : "启用"; }
-        }
+        public string LockoutEnabledDesc => LockoutEnabled ? "停用" : "启用";
     }
 }

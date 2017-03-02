@@ -272,12 +272,12 @@
                 model.OrganizationName = entity.Organization.Property.InstitutionChName;
             }
 
-            models.ToList().ForEach(model =>
-            {
-                var entity = pageList.Single(m => m.Id == model.Id.Value);
+            ////models.ToList().ForEach(model =>
+            ////{
+            ////    var entity = pageList.Single(m => m.Id == model.Id.Value);
 
-                model.OrganizationName = entity.Organization.Property.InstitutionChName;
-            });
+            ////    model.OrganizationName = entity.Organization.Property.InstitutionChName;
+            ////});
 
             return models;
         }
@@ -360,19 +360,19 @@
                 {
                     guranteeContractViewModel.ContractType = GuranteeContractViewModel.ContractTypeEnum.质押;
 
-                    guranteeContractViewModel.PledgeGuarantyContractViewModel = item as GuarantyContractPledgeViewModel;
+                    guranteeContractViewModel.PledgeGuarantyContractViewModel = (GuarantyContractPledgeViewModel)item;
                 }
                 else if (item is GuarantyContractMortgageViewModel)
                 {
                     guranteeContractViewModel.ContractType = GuranteeContractViewModel.ContractTypeEnum.抵押;
 
-                    guranteeContractViewModel.MortgageGuarantyContractViewModel = item as GuarantyContractMortgageViewModel;
+                    guranteeContractViewModel.MortgageGuarantyContractViewModel = (GuarantyContractMortgageViewModel)item;
                 }
                 else if (item is GuarantyContractViewModel)
                 {
                     guranteeContractViewModel.ContractType = GuranteeContractViewModel.ContractTypeEnum.保证;
 
-                    guranteeContractViewModel.GuarantyContractViewModel = item as GuarantyContractViewModel;
+                    guranteeContractViewModel.GuarantyContractViewModel = item;
                 }
 
                 // 区分 机构/自然人
@@ -380,13 +380,13 @@
                 {
                     guranteeContractViewModel.GuarantorType = GuranteeContractViewModel.GuarantorTypeEnum.机构;
 
-                    guranteeContractViewModel.GuarantyOrganizationViewModel = item.Guarantor as GuarantyOrganizationViewModel;
+                    guranteeContractViewModel.GuarantyOrganizationViewModel = (GuarantyOrganizationViewModel)item.Guarantor;
                 }
                 else if (item.Guarantor is GuarantyPersonViewModel)
                 {
                     guranteeContractViewModel.GuarantorType = GuranteeContractViewModel.GuarantorTypeEnum.自然人;
 
-                    guranteeContractViewModel.GuarantyPersonViewModel = item.Guarantor as GuarantyPersonViewModel;
+                    guranteeContractViewModel.GuarantyPersonViewModel = (GuarantyPersonViewModel)item.Guarantor;
                 }
 
                 // 担保合同（服务页面）集合 接收数据
