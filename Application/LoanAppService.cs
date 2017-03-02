@@ -20,6 +20,7 @@
         private readonly ILoanRepository loanRepository;
         private readonly DatagramAppService messageAppService;
         private readonly IPaymentHistoryRepository paymentRepository;
+        private readonly IProcessTempDataRepository processTempDataRepository;
 
         public LoanAppService(
             LoanService loanService,
@@ -27,7 +28,8 @@
             ILoanRepository loanRepository,
             ICreditContractRepository creditRepository,
             DatagramAppService messageAppService,
-            IPaymentHistoryRepository paymentRepository)
+            IPaymentHistoryRepository paymentRepository,
+            IProcessTempDataRepository processTempDataRepository)
         {
             this.loanService = loanService;
             this.paymentService = paymentService;
@@ -35,6 +37,7 @@
             this.creditRepository = creditRepository;
             this.messageAppService = messageAppService;
             this.paymentRepository = paymentRepository;
+            this.processTempDataRepository = processTempDataRepository;
         }
 
         /// <summary>
@@ -204,6 +207,15 @@
             }
 
             return models;
+        }
+
+        public void Create(LoanViewModel model)
+        {
+            var entity = default(Loan);
+
+            Mapper.Map(model,entity);
+
+            loanRepository.Create(entity);
         }
     }
 }

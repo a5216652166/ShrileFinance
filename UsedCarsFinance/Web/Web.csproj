@@ -1252,6 +1252,7 @@
     <Compile Include="Controllers\Loan\CreditContractController.cs" />
     <Compile Include="Controllers\Loan\LoanController.cs" />
     <Compile Include="Controllers\CreditInvestigation\DatagramController.cs" />
+    <Compile Include="Controllers\Process\ProcessController.cs" />
     <Compile Include="Controllers\Statistics\StatisticsController.cs" />
     <Compile Include="Controllers\Unused\CreditExamineReportController.cs" />
     <Compile Include="Controllers\Finance\FinanceAuidtController.cs" />

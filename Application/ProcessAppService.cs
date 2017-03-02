@@ -82,8 +82,8 @@
             // 流程标识
             var processId = GetProcessIdByType(processType);
 
-            // 流程实例
-            var instance = GetInstance(processId);
+            // 分配流程实例
+            var instance = AllotInstance(processId);
 
             return instance.Id;
         }
@@ -320,7 +320,7 @@
         }
 
         /// <summary>
-        /// 获取当前实例的所以表单和行为
+        /// 获取当前实例的所有表单和行为
         /// </summary>
         /// <param name="instanceId">实例标识</param>
         /// <param name="forView">表单信息是否为查看视图的</param>
@@ -478,6 +478,23 @@
         }
 
         /// <summary>
+        /// 获取流程实例的类型
+        /// </summary>
+        /// <param name="instanceId">标识</param>
+        /// <returns></returns>
+        public ProcessTypeEnum GetProcessType(Guid instanceId)
+        {
+            var instance = instanceReopsitory.Get(instanceId);
+
+            if (instance == null || instance.RootKey == null)
+            {
+                throw new ArgumentAppException("该流程实例不存在！");
+            }
+
+            return instance.ProcessType;
+        }
+
+        /// <summary>
         /// 由流程类型得到流程标识
         /// </summary>
         /// <param name="processType">流程类型</param>
@@ -516,11 +533,11 @@
         }
 
         /// <summary>
-        /// 获取流程实例
+        /// 分配流程实例
         /// </summary>
         /// <param name="processId">流程类型</param>
         /// <returns>流程实例</returns>
-        private Instance GetInstance(Guid processId)
+        private Instance AllotInstance(Guid processId)
         {
             // 流程实例
             Instance instance = null;

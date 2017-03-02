@@ -254,15 +254,23 @@
         /// </summary>
         public void Loan()
         {
-            var loan = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var loanViewModel = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-                loanAppService.ApplyLoan(loan);
+            loanAppService.ApplyLoan(loanViewModel);
 
-                // 设置流程实例关联的业务标识
-                Instance.RootKey = loan.Id;
-            
-            var credit = creditContractAppService.Get(loan.CreditId);
-            Instance.Title = $"{"授信合同编号：" + credit.CreditContractCode + " 借据编号：" + loan.ContractNumber}";
+            var processTempDataViewModel = new ProcessTempDataViewModel<ViewModels.Loan.LoanViewModels.LoanViewModel>()
+            {
+                InstanceId = Instance.Id,
+                ObjData = loanViewModel
+            };
+
+            processTempDataService.Create(processTempDataViewModel);
+
+            // 设置流程实例关联的业务标识
+            Instance.RootKey = loanViewModel.Id;
+
+            var credit = creditContractAppService.Get(loanViewModel.CreditId);
+            Instance.Title = $"{"授信合同编号：" + credit.CreditContractCode + " 借据编号：" + loanViewModel.ContractNumber}";
         }
 
         /// <summary>
