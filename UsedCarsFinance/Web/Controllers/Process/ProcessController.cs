@@ -4,6 +4,7 @@
     using System.Web.Http;
     using Application;
     using Application.ViewModels.OrganizationViewModels;
+    using Application.ViewModels.ProcessViewModels;
     using Core.Entities.Process;
 
     public class ProcessController : ApiController
@@ -24,70 +25,20 @@
         {
             var httpActionResult = default(IHttpActionResult);
 
-            var processType = processAppService.GetProcessType(instanceId);
+            var processData = default(ProcessDataViewModel);
 
-            switch (processType)
+            try
             {
-                default:
-                    throw new ArgumentException("该流程实例的类型不存在");
-                case ProcessTypeEnum.融资:
-                    httpActionResult = GetProcessDataForFinance(instanceId);
-                    break;
-                case ProcessTypeEnum.添加机构:
-                    httpActionResult = GetProcessDataForOrganization(instanceId);
-                    break;
-                case ProcessTypeEnum.授信:
-                    httpActionResult = GetProcessDataForCredit(instanceId);
-                    break;
-                case ProcessTypeEnum.借据:
-                    httpActionResult = GetProcessDataForLoan(instanceId);
-                    break;
-                case ProcessTypeEnum.还款:
-                    httpActionResult = GetProcessDataForPayment(instanceId);
-                    break;
-                case ProcessTypeEnum.机构变更:
-                    httpActionResult = GetProcessDataForOrganizationModify(instanceId);
-                    break;
+                processData = processAppService.GetProcessData(instanceId);
+
+                httpActionResult = Ok(processData);
+            }
+            catch (Exception ex)
+            {
+                httpActionResult = BadRequest(ex.Message);
             }
 
             return httpActionResult;
-        }
-
-        private IHttpActionResult GetProcessDataForFinance(Guid instanceId)
-        {
-            return null;
-        }
-
-        private IHttpActionResult GetProcessDataForOrganization(Guid instanceId)
-        {
-            return null;
-        }
-
-        private IHttpActionResult GetProcessDataForCredit(Guid instanceId)
-        {
-            return null;
-        }
-
-        private IHttpActionResult GetProcessDataForLoan(Guid instanceId)
-        {
-            return null;
-        }
-
-        private IHttpActionResult GetProcessDataForPayment(Guid instanceId)
-        {
-            return null;
-        }
-
-        private IHttpActionResult GetProcessDataForOrganizationModify(Guid instanceId)
-        {
-            var organizationChangeViewModel = processTempDataAppService.GetByInstanceId<OrganizationChangeViewModel>(instanceId);
-
-            if (organizationChangeViewModel == null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(organizationChangeViewModel.ObjData);
         }
     }
 }

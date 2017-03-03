@@ -142,6 +142,7 @@
     <Compile Include="ViewModels\OrganizationViewModels\CreditOraganizateViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\OrganizateChangeViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\OriganizateOptions.cs" />
+    <Compile Include="ViewModels\ProcessViewModels\ProcessDataViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModels\ProcessTempDataViewModel.cs" />
     <Compile Include="ViewModels\TreeGridViewModel\CreditCountViewModel.cs" />
     <Compile Include="ViewModels\Loan\CreditViewModels\CreditContractViewModel.cs" />
@@ -161,7 +162,7 @@
     <Compile Include="ViewModels\OrganizationViewModels\LitigationViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\OragnizateListView.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\OrganizateComboViewModel.cs" />
-    <Compile Include="ViewModels\OrganizationViewModels\OrganizateViewModel.cs" />
+    <Compile Include="ViewModels\OrganizationViewModels\OrganizationViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\ProfitViewModel.cs" />
     <Compile Include="ViewModels\OrganizationViewModels\PropertiesViewModel.cs" />

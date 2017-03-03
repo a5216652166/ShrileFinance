@@ -53,7 +53,12 @@
         [HttpGet]
         public IHttpActionResult StartProcess(ProcessPostedViewModel.ProcessTypeEnum? processType)
         {
-            var instanceId = service.StartNew(processType);
+            if (processType == null)
+            {
+                BadRequest();
+            }
+
+            var instanceId = service.StartNew(processType.Value);
 
             return Ok(instanceId);
         }
