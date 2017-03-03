@@ -73,6 +73,11 @@
         }
 
         /// <summary>
+        /// 所属借据标识
+        /// </summary>
+        public Guid LoanId { get; set; }
+
+        /// <summary>
         /// 所属流程Id
         /// </summary>
         public Guid InstanceId { get; set; }

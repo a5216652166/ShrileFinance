@@ -6,15 +6,17 @@
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.CreditInvestigation;
-    using Core.Entities.Process;
     using Core.Entities.Identity;
     using Core.Entities.Loan;
+    using Core.Entities.Process;
     using Core.Exceptions;
     using Core.Interfaces.Repositories;
     using Newtonsoft.Json.Linq;
+    using ViewModels.Loan.CreditViewModel;
+    using ViewModels.Loan.LoanViewModels;
+    using ViewModels.OrganizationViewModels;
     using ViewModels.ProcessViewModels;
     using X.PagedList;
-    using ViewModels.OrganizationViewModels;
 
     /// <summary>
     /// 流程应用服务
@@ -212,7 +214,11 @@
             instanceReopsitory.Commit();
         }
 
-        public int DingCount()
+        /// <summary>
+        /// 当前用户的代办列表总数
+        /// </summary>
+        /// <returns></returns>
+        public int DoingListCount()
         {
             var instances = default(IQueryable<Instance>);
 
@@ -466,7 +472,6 @@
 
                     break;
                 case ProcessTypeEnum.机构变更:
-                    //TODO
                     break;
                 default:
                     break;
@@ -475,6 +480,11 @@
             instanceReopsitory.Commit();
         }
 
+        /// <summary>
+        /// 获取流程数据
+        /// </summary>
+        /// <param name="instanceId">实例标识</param>
+        /// <returns></returns>
         public ProcessDataViewModel GetProcessData(Guid instanceId)
         {
             var processData = new ProcessDataViewModel() { InstanceId = instanceId };
@@ -492,13 +502,13 @@
                     GetProcessDataForOrganization(instanceId, processData);
                     break;
                 case ProcessTypeEnum.授信:
-                    GetProcessDataForCredit(instanceId, processData);
+                    GetProcessDataForCreditContract(instanceId, processData);
                     break;
                 case ProcessTypeEnum.借据:
                     GetProcessDataForLoan(instanceId, processData);
                     break;
                 case ProcessTypeEnum.还款:
-                    GetProcessDataForPayment(instanceId, processData);
+                    GetProcessDataForPaymentHistory(instanceId, processData);
                     break;
                 case ProcessTypeEnum.机构变更:
                     GetProcessDataForOrganizationModify(instanceId, processData);
@@ -521,20 +531,53 @@
         private void GetProcessDataForOrganization(Guid instanceId, ProcessDataViewModel processData)
             => processData.Organization = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<OrganizationViewModel>();
 
-        private void GetProcessDataForCredit(Guid instanceId, ProcessDataViewModel processData)
+        /// <summary>
+        /// 获取贷款合同的流程数据
+        /// </summary>
+        /// <param name="instanceId">实例标识</param>
+        /// <param name="processData">流程数据</param>
+        private void GetProcessDataForCreditContract(Guid instanceId, ProcessDataViewModel processData)
         {
-            return;
+            processData.CreditContract = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<CreditContractViewModel>();
+
+            // 修正机构名称
+            processData.CreditContract.OrganizationName = organizationRepository.Get(processData.CreditContract.OrganizationId).Property.InstitutionChName;
+
+            //// 担保处理
         }
 
+        /// <summary>
+        /// 获取借据的流程数据
+        /// </summary>
+        /// <param name="instanceId">实例标识</param>
+        /// <param name="processData">流程数据</param>
         private void GetProcessDataForLoan(Guid instanceId, ProcessDataViewModel processData)
         {
+            processData.Loan = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<LoanViewModel>();
 
-            return;
+            // 修正贷款合同编码和机构名称
+            var creditContract = creditContractRepository.Get(processData.Loan.CreditId);
+
+            processData.Loan.CreditContractCode = creditContract.CreditContractCode;
+
+            processData.Loan.OrganizateName = organizationRepository.Get(creditContract.OrganizationId).Property.InstitutionChName;
         }
 
-        private void GetProcessDataForPayment(Guid instanceId, ProcessDataViewModel processData)
+        /// <summary>
+        /// 获取还款的流程数据
+        /// </summary>
+        /// <param name="instanceId">实例标识</param>
+        /// <param name="processData">流程数据</param>
+        private void GetProcessDataForPaymentHistory(Guid instanceId, ProcessDataViewModel processData)
         {
-            return;
+            processData.Payments = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<ICollection<PaymentHistoryViewModel>>();
+
+            var loan = loanRepository.Get(processData.Payments.First().LoanId);
+
+            foreach (var item in loan.Payments)
+            {
+                processData.Payments.Add(Mapper.Map<PaymentHistoryViewModel>(item));
+            }
         }
 
         /// <summary>
@@ -544,44 +587,6 @@
         /// <param name="processData">流程数据</param>
         private void GetProcessDataForOrganizationModify(Guid instanceId, ProcessDataViewModel processData)
             => processData.OrganizationChange = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<OrganizationChangeViewModel>();
-        
-        /////// <summary>
-        /////// 由流程类型得到流程标识
-        /////// </summary>
-        /////// <param name="processType">流程类型</param>
-        /////// <returns>流程标识</returns>
-        ////private Guid GetProcessIdByType(ProcessPostedViewModel.ProcessTypeEnum? processType)
-        ////{
-        ////    // 流程标识
-        ////    var flowId = Guid.Empty;
-
-        ////    // 由实例类型解析实例标识
-        ////    switch (processType)
-        ////    {
-        ////        default:
-        ////            throw new ArgumentNullAppException(message: $"不存在该流程类型{nameof(processType)}");
-        ////        case ProcessPostedViewModel.ProcessTypeEnum.融资:
-        ////            flowId = Guid.Parse("228C8C80-06A4-E611-80C5-507B9DE4A488");
-        ////            break;
-        ////        case ProcessPostedViewModel.ProcessTypeEnum.机构:
-        ////            flowId = Guid.Parse("04824FE1-78D1-E611-80CA-507B9DE4A488");
-        ////            break;
-        ////        case ProcessPostedViewModel.ProcessTypeEnum.授信:
-        ////            flowId = Guid.Parse("05824FE1-78D1-E611-80CA-507B9DE4A488");
-        ////            break;
-        ////        case ProcessPostedViewModel.ProcessTypeEnum.借据:
-        ////            flowId = Guid.Parse("06824FE1-78D1-E611-80CA-507B9DE4A488");
-        ////            break;
-        ////        case ProcessPostedViewModel.ProcessTypeEnum.还款:
-        ////            flowId = Guid.Parse("07824FE1-78D1-E611-80CA-507B9DE4A488");
-        ////            break;
-        ////        case ProcessPostedViewModel.ProcessTypeEnum.机构变更:
-        ////            flowId = Guid.Parse("08824FE1-78D1-E611-80CA-507B9DE4A488");
-        ////            break;
-        ////    }
-
-        ////    return flowId;
-        ////}
 
         /// <summary>
         /// 分配流程实例

@@ -27,7 +27,7 @@ function MessageCount() {
     $.ajax({
         async: true,
         type: "GET",
-        url: "api/Instance/DingCount",
+        url: "api/Instance/DoingListCount",
         statusCode: {
             200: function (data) {
                 $("span#message").text(data);//.css({ "color": "red", "text-align": "center" })

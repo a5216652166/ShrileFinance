@@ -150,9 +150,9 @@
         }
 
         [HttpGet]
-        public IHttpActionResult DingCount()
+        public IHttpActionResult DoingListCount()
         {
-            var count = service.DingCount();
+            var count = service.DoingListCount();
 
             return Ok(count);
         }
