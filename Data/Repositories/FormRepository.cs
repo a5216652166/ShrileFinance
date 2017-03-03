@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
     using Core.Interfaces.Repositories;
 
     public class FormRepository : BaseRepository<Form>, IFormRepository

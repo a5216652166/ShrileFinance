@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Flow
+﻿namespace Core.Entities.Process
 {
     using System;
     using Interfaces;

@@ -1,7 +1,7 @@
 ﻿namespace Data.ModelConfigurations
 {
     using System.Data.Entity.ModelConfiguration;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
 
     public class FormRoleConfiguration : EntityTypeConfiguration<FormRole>
     {

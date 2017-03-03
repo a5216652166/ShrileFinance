@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     using Core.Entities;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
     using Core.Entities.Identity;
     using Core.Entities.Produce;
     using Microsoft.AspNet.Identity.EntityFramework;

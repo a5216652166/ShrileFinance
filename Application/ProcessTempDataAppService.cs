@@ -3,16 +3,21 @@
     using System;
     using System.Linq;
     using Core.Entities;
+    using Core.Entities.Process;
     using Core.Interfaces.Repositories;
     using ViewModels.ProcessViewModels;
 
     public class ProcessTempDataAppService
     {
         private readonly IProcessTempDataRepository processTempDataRepository;
+        private readonly IInstanceRepository instanceRepository;
 
-        public ProcessTempDataAppService(IProcessTempDataRepository processTempDataRepository)
+        public ProcessTempDataAppService(
+            IProcessTempDataRepository processTempDataRepository,
+            IInstanceRepository instanceRepository)
         {
             this.processTempDataRepository = processTempDataRepository;
+            this.instanceRepository = instanceRepository;
         }
 
         public ProcessTempDataViewModel<T> GetByInstanceId<T>(Guid instanceId) where T : class
@@ -80,6 +85,29 @@
             if (processTempData != null)
             {
                 processTempDataRepository.Remove(processTempData);
+            }
+        }
+
+        public void GetProcessData(Guid instanceId)
+        {
+            var instance = instanceRepository.Get(instanceId);
+
+            switch (instance.ProcessType)
+            {
+                case ProcessTypeEnum.融资:
+                    break;
+                case ProcessTypeEnum.添加机构:
+                    break;
+                case ProcessTypeEnum.授信:
+                    break;
+                case ProcessTypeEnum.借据:
+                    break;
+                case ProcessTypeEnum.还款:
+                    break;
+                case ProcessTypeEnum.机构变更:
+                    break;
+                default:
+                    throw new ArgumentException("不存在该流程类型");
             }
         }
     }

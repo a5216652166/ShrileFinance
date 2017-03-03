@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
 
     public class InstanceConfiguration : EntityTypeConfiguration<Instance>
     {

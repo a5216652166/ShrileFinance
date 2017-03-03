@@ -5,7 +5,7 @@
     using System.Linq;
     using Core.Entities;
     using Core.Entities.CreditInvestigation;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
     using Core.Entities.Loan;
     using Core.Interfaces.Repositories;
     using Newtonsoft.Json.Linq;

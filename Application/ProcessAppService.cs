@@ -6,7 +6,7 @@
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.CreditInvestigation;
-    using Core.Entities.Flow;
+    using Core.Entities.Process;
     using Core.Entities.Identity;
     using Core.Entities.Loan;
     using Core.Exceptions;
