@@ -7,14 +7,10 @@
     public class ProcessController : ApiController
     {
         private readonly ProcessAppService processAppService;
-        private readonly ProcessTempDataAppService processTempDataAppService;
 
-        public ProcessController(
-            ProcessAppService processAppService,
-            ProcessTempDataAppService processTempDataAppService)
+        public ProcessController(ProcessAppService processAppService)
         {
             this.processAppService = processAppService;
-            this.processTempDataAppService = processTempDataAppService;
         }
 
         [HttpGet]

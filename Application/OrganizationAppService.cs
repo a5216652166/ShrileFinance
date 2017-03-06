@@ -67,12 +67,7 @@
                 organizationRepository.Remove(oldEntity);
             }
 
-            //organizationRepository.Create(customer);
-            ////organizationRepository.Commit();
-
             organization.Id = Guid.NewGuid();
-
-            model.Base.Id = organization.Id;
 
             return organization;
 

@@ -17,15 +17,16 @@
             LoadAllOrgainzate();
             if (query.method == "creditview") {
                 query.creditId = query.id;
-                uc.form.DisableForm();
+                PageDisable();
             }
             else {
                 query.creditId = parent.flow.RootKey;
+                query.InstanceId = parent.flow.InstanceId;
             }
             if (query.creditId != null) {
                 if (query.state == "0") {
                     $("#save").hide();
-                    uc.form.DisableForm();
+                    PageDisable();
                 }
                 else if (query.state == "1") {
                     $("#EffectiveStatus").combobox({ "readonly": true })
@@ -34,7 +35,7 @@
                 }
                 Init();
             }
-            if (query.creditId ==undefined) {
+            if (query.creditId == undefined) {
                 $.extend($.fn.validatebox.defaults.rules, {
                     //重复验证
                     checkCreditContractNumberRepeat: {
@@ -58,19 +59,35 @@
                     }
                 });
             }
+
+            function PageDisable() {
+                uc.form.DisableForm();
+            }
         });
 
         function Init() {
-            $.ajax({
-                async: false,
-                method: "GET",
-                data: { id: query.creditId },
-                url: "../api/CreditContract/Get",
-                success: function (data) {
-                    OrganizateInfo(data.OrganizationId)
-                    LoadData(data);
-                }
-            });
+            var data;
+
+            if (parent.flow.InstanceId) {
+                data = parent.GetProcessData(query.InstanceId).CreditContract;
+            }
+            else {
+                $.ajax({
+                    async: false,
+                    method: "GET",
+                    data: { id: query.creditId },
+                    url: "../api/CreditContract/Get",
+                    success: function (data) {
+                        data = data;
+                    }
+                });
+            }
+
+            if (data != undefined && data != null) {
+                OrganizateInfo(data.OrganizationId)
+                LoadData(data);
+            }
+
         }
 
         function LoadData(data) {
@@ -97,7 +114,6 @@
             }
 
             if (HasGuarantee == 1 && data.GuranteeContract != null) {
-                debugger
                 // 担保合同数据扩展
                 $(data.GuranteeContract).each(function (i, e) {
                     if (e.ContractType == 0) {
@@ -138,7 +154,7 @@
                 $("fieldset#GuarantorContract table#GuarantorContract_dg").datagrid('loadData', data.GuranteeContract);
             }
 
-            if (query.status == "0") {
+            if (query.state == "0" || query.method == "creditview") {
                 // 禁用table 除“查看”外的按钮
                 $("div#GuarantorContract_tb a[id!=GuarantorContract_view]").remove();
             }
@@ -204,7 +220,7 @@
 
         function ValidData() {
             var model = BuildData();
-            return  ValidDate(model);
+            return ValidDate(model);
         }
 
         function Submit() {
@@ -264,18 +280,18 @@
                 $("#CreditBalance").textbox("setValue", $("#CreditLimit").textbox("getValue"))
             }
             else {
-                $.ajax({
-                    async: false,
-                    method: "GET",
-                    data: { id: query.creditId, limit: $("#CreditLimit").textbox("getValue") },
-                    url: "../api/CreditContract/GetCreditBalance",
-                    statusCode: {
-                        200: function (data) {
-                            $("#CreditBalance").textbox("setValue", data)
-                            UpdateCreditLimit();
-                        },
-                    }
-                });
+                ////$.ajax({
+                ////    async: false,
+                ////    method: "GET",
+                ////    data: { id: query.creditId, limit: $("#CreditLimit").textbox("getValue") },
+                ////    url: "../api/CreditContract/GetCreditBalance",
+                ////    statusCode: {
+                ////        200: function (data) {
+                ////            $("#CreditBalance").textbox("setValue", data)
+                ////            UpdateCreditLimit();
+                ////        },
+                ////    }
+                ////});
             }
         }
 
@@ -296,7 +312,7 @@
         function LoadAllOrgainzate() {
             $('#InstitutionChName').combobox({
                 method: "GET",
-                async:false,
+                async: false,
                 url: '../api/Customer/GetAll',
                 valueField: 'Id',
                 textField: 'InstitutionChName'

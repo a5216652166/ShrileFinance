@@ -87,28 +87,5 @@
                 processTempDataRepository.Remove(processTempData);
             }
         }
-
-        public void GetProcessData(Guid instanceId)
-        {
-            var instance = instanceRepository.Get(instanceId);
-
-            switch (instance.ProcessType)
-            {
-                case ProcessTypeEnum.融资:
-                    break;
-                case ProcessTypeEnum.添加机构:
-                    break;
-                case ProcessTypeEnum.授信:
-                    break;
-                case ProcessTypeEnum.借据:
-                    break;
-                case ProcessTypeEnum.还款:
-                    break;
-                case ProcessTypeEnum.机构变更:
-                    break;
-                default:
-                    throw new ArgumentException("不存在该流程类型");
-            }
-        }
     }
 }

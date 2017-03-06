@@ -28,40 +28,43 @@
         /// 创建授信合同
         /// </summary>
         /// <param name="model">授信合同Model</param>
-        public void Create(CreditContractViewModel model)
+        public CreditContract Create(CreditContractViewModel model)
         {
             if (model == null)
             {
                 throw new ArgumentOutOfRangeAppException(string.Empty, "贷款合同数据为空！");
             }
 
-            var credit = Mapper.Map<CreditContract>(model);
+            var creditContract = Mapper.Map<CreditContract>(model);
 
             // 贷款合同ViewModel数据对接
             DataConvert_CreditContractVM(model);
 
             if (model.GuarantyContract != null && model.GuarantyContract.Count > 0)
             {
-                new UpdateBind().Bind(credit.GuarantyContract, model.GuarantyContract);
+                new UpdateBind().Bind(creditContract.GuarantyContract, model.GuarantyContract);
             }
 
-            if (credit.CreditBalance != credit.CalculateCreditBalance())
+            if (creditContract.CreditBalance != creditContract.CalculateCreditBalance())
             {
                 throw new ArgumentOutOfRangeAppException(string.Empty, "授信余额不正确.");
             }
 
-            credit.ValidateEffective(credit);
+            creditContract.ValidateEffective(creditContract);
 
             // 设置担保合同的担保金额和编号
-            credit.SetGuarantyContractMargin();
-            credit.SetGuarantyContractNumber();
+            creditContract.SetGuarantyContractMargin();
+            creditContract.SetGuarantyContractNumber();
 
-            creditContractRepository.Create(credit);
+            creditContract.Id = Guid.NewGuid();
 
-            model.Id = credit.Id;
+            return creditContract;
 
             //// 报文追踪转移至流程处理
         }
+
+        public void Create(CreditContract entity)
+            => creditContractRepository.Create(entity);
 
         public void Modify(CreditContractViewModel model)
         {
@@ -127,7 +130,7 @@
             }
 
             // 贷款合同Entity数据对接
-            DataConvert_CreditContractET(creditViewModel);
+            creditViewModel.DataConvert_CreditContractET();
             creditViewModel.GuarantyContract.Clear();
 
             return creditViewModel;

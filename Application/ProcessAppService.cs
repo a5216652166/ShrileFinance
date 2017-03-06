@@ -5,6 +5,7 @@
     using System.Linq;
     using AutoMapper;
     using Core.Entities.Customers.Enterprise;
+    using Core.Entities.Loan;
     using Core.Entities.Process;
     using Core.Interfaces.Repositories;
     using ViewModels.Loan.CreditViewModel;
@@ -97,7 +98,21 @@
         /// <param name="processData">流程数据</param>
         private void GetProcessDataForCreditContract(Guid instanceId, ProcessDataViewModel processData)
         {
-            processData.CreditContract = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<CreditContractViewModel>();
+            var creditContract = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<CreditContract>();
+
+            var creditViewModel = Mapper.Map<CreditContractViewModel>(creditContract);
+
+            creditViewModel.GuarantyContract = new List<GuarantyContractViewModel>();
+            foreach (var item in creditContract.GuarantyContract)
+            {
+                creditViewModel.GuarantyContract.Add(Mapper.Map<GuarantyContractViewModel>(item));
+            }
+
+            // 贷款合同Entity数据对接
+            creditViewModel.DataConvert_CreditContractET();
+            creditViewModel.GuarantyContract.Clear();
+
+            processData.CreditContract = creditViewModel;
 
             // 修正机构名称
             processData.CreditContract.OrganizationName = organizationRepository.Get(processData.CreditContract.OrganizationId).Property.InstitutionChName;

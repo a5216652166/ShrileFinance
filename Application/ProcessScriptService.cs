@@ -191,13 +191,13 @@
             processTempDataService.Create(processTempDataViewModel);
 
             // 设置流程实例关联的业务标识
-            Instance.RootKey = organizationViewModel.Base.Id;
+            Instance.RootKey = organization.Id;
 
-            Instance.Title = $"{organizationViewModel.Property.InstitutionChName}";
+            Instance.Title = $"{organization.Property.InstitutionChName}";
         }
 
         /// <summary>
-        /// 添加机构 - 审批通过
+        /// 添加机构 - 完成
         /// </summary>
         public void OrganizationFinish()
         {
@@ -214,26 +214,46 @@
         }
 
         /// <summary>
-        /// 授信合同
+        /// 贷款合同
         /// </summary>
         public void CreditContract()
         {
-            var creditContract = GetData<CreditContractViewModel>("60DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var creditContractViewModel = GetData<CreditContractViewModel>("60DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            creditContractAppService.Create(creditContract);
+            var creditContract=creditContractAppService.Create(creditContractViewModel);
+
+            var processTempDataViewModel = new ProcessTempDataViewModel<CreditContract>()
+            {
+                InstanceId = Instance.Id,
+                ObjData = creditContract
+            };
+
+            processTempDataService.Create(processTempDataViewModel);
 
             // 设置流程实例关联的业务标识
             Instance.RootKey = creditContract.Id;
+
             var organization = organizationRepository.Get(creditContract.OrganizationId);
             Instance.Title = $"{"机构名：" + organization.Property.InstitutionChName + " 贷款合同编号：" + creditContract.CreditContractCode}";
         }
 
         /// <summary>
-        /// 授信合同 - 签订
+        /// 贷款合同 - 签订
         /// </summary>
         public void CreditContractSigned()
         {
-            CreditContractFinish(describe: CreditContractChangeEnum.签订合同);
+            // 获取机构实体
+            var processTempDataViewModel = processTempDataService.GetByInstanceId<CreditContract>(Instance.Id);
+
+            var ssss = processTempDataViewModel.JsonData;
+
+            // 从流程临时数据中提取数据
+            var creditContract = processTempDataViewModel.ObjData;
+
+            creditContractRepository.Create(creditContract);
+
+            // 报文追踪
+            Trace(creditContract, describe: CreditContractChangeEnum.签订合同);
         }
 
         /// <summary>
@@ -395,7 +415,9 @@
             }
             else if (entity is CreditContract && describe != null)
             {
-                var credit = entity as CreditContract;
+                var creditContract = entity as CreditContract;
+
+                creditContract.Organization = organizationRepository.Get(creditContract.OrganizationId);
 
                 switch (describe)
                 {
@@ -404,22 +426,22 @@
 
                     case CreditContractChangeEnum.签订合同:
                         // 授信合同 - 签订 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订贷款合同：{credit.CreditContractCode}", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
+                        datagramAppService.Trace(referenceId: creditContract.Id, traceType: TraceTypeEnum.签订授信合同, defaultName: $"签订贷款合同：{creditContract.CreditContractCode}", specialDate: creditContract.EffectiveDate, organizateName: creditContract.Organization.Property.InstitutionChName);
                         break;
 
                     case CreditContractChangeEnum.有效期变更:
                         // 授信合同 - 合同有效期变更 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"贷款合同：{credit.CreditContractCode}有效日期变更", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
+                        datagramAppService.Trace(referenceId: creditContract.Id, traceType: TraceTypeEnum.合同变更, defaultName: $"贷款合同：{creditContract.CreditContractCode}有效日期变更", specialDate: creditContract.EffectiveDate, organizateName: creditContract.Organization.Property.InstitutionChName);
                         break;
 
                     case CreditContractChangeEnum.金额发生变化:
                         // 授信合同 - 合同金额发生变化 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.合同变更, defaultName: "贷款合同：" + credit.CreditContractCode + "授信额度变更", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
+                        datagramAppService.Trace(referenceId: creditContract.Id, traceType: TraceTypeEnum.合同变更, defaultName: "贷款合同：" + creditContract.CreditContractCode + "授信额度变更", specialDate: creditContract.EffectiveDate, organizateName: creditContract.Organization.Property.InstitutionChName);
                         break;
 
                     case CreditContractChangeEnum.合同终止:
                         // 授信合同 - 终止 —> 报文追踪
-                        datagramAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "贷款合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
+                        datagramAppService.Trace(referenceId: creditContract.Id, traceType: TraceTypeEnum.终止合同, defaultName: "贷款合同：" + creditContract.CreditContractCode + "终止", specialDate: creditContract.EffectiveDate, organizateName: creditContract.Organization.Property.InstitutionChName);
                         break;
                 }
             }
