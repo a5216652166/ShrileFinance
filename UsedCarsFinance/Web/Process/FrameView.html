@@ -84,6 +84,24 @@
 				tab.removeData("url");
 			}
 		}
+
+		function GetProcessData(instanceId) {
+		    var processData = null;
+
+		    $.ajax({
+		        async: false,
+		        data: { instanceId: instanceId },
+		        method: "GET",
+		        url: "../api/Process/GetProcessData",
+		        statusCode: {
+		            200: function (data) {
+		                processData = data;
+		            }
+		        }
+		    });
+
+		    return processData;
+		}
 	</script>
 </head>
 

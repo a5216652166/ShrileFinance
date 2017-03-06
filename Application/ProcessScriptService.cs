@@ -13,6 +13,7 @@
     using ViewModels.Loan.CreditViewModel;
     using ViewModels.OrganizationViewModels;
     using ViewModels.ProcessViewModels;
+    using Core.Entities.Customers.Enterprise;
 
     public class ProcessScriptAppService
     {
@@ -177,14 +178,22 @@
         /// </summary>
         public void Organization()
         {
-            var org = GetData<OrganizationViewModel>("5FDC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var organizationViewModel = GetData<OrganizationViewModel>("5FDC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            organizationAppService.Create(org);
+            var organization = organizationAppService.Create(organizationViewModel);
+
+            var processTempDataViewModel = new ProcessTempDataViewModel<Organization>()
+            {
+                InstanceId = Instance.Id,
+                ObjData = organization
+            };
+
+            processTempDataService.Create(processTempDataViewModel);
 
             // 设置流程实例关联的业务标识
-            Instance.RootKey = org.Base.Id;
+            Instance.RootKey = organizationViewModel.Base.Id;
 
-            Instance.Title = $"{org.Property.InstitutionChName}";
+            Instance.Title = $"{organizationViewModel.Property.InstitutionChName}";
         }
 
         /// <summary>
@@ -193,13 +202,15 @@
         public void OrganizationFinish()
         {
             // 获取机构实体
-            var organization = organizationRepository.Get(Instance.RootKey.Value);
+            var processTempDataViewModel = processTempDataService.GetByInstanceId<Organization>(Instance.Id);
+
+            // 从流程临时数据中提取数据
+            var organization = processTempDataViewModel.ObjData;
+
+            organizationAppService.Create(organization);
 
             // 报文追踪
             Trace(organization);
-
-            // 设置Hidden为false
-            SetHidden(organization);
         }
 
         /// <summary>
@@ -375,9 +386,9 @@
         /// <param name="describe">描述</param>
         private void Trace<T>(T entity, CreditContractChangeEnum? describe = null)
         {
-            if (entity is Core.Entities.Customers.Enterprise.Organization)
+            if (entity is Organization)
             {
-                var customer = entity as Core.Entities.Customers.Enterprise.Organization;
+                var customer = entity as Organization;
 
                 // 添加机构 —> 报文追踪
                 datagramAppService.Trace(referenceId: customer.Id, traceType: TraceTypeEnum.添加机构, defaultName: "添加机构：" + customer.Property.InstitutionChName, specialDate: customer.CreatedDate, organizateName: customer.Property.InstitutionChName);

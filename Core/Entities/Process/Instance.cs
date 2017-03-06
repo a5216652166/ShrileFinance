@@ -48,16 +48,7 @@
 
         public static Guid GetProcessIdByType(ProcessTypeEnum processType)
         {
-            var processId = default(Guid);
-
-            foreach (var item in ProcessDic())
-            {
-                if (item.Value == processType)
-                {
-                    processId = item.Key;
-                    break;
-                }
-            }
+            var processId = ProcessDic().Single(m => m.Value == processType).Key;
 
             return processId;
         }

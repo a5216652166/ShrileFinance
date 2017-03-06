@@ -11,15 +11,25 @@
     <script src="../Scripts/usedcars.js"></script>
     <script src="../Scripts/draft.js"></script>
     <style>
-        #opinion, #buttons { text-align: center; margin: 7px auto; }
-        #buttons .l-btn { width: 80px; margin: 0 15px; }
-        #buttons .l-btn .l-btn-text { line-height: 30px; }
+        #opinion, #buttons {
+            text-align: center;
+            margin: 7px auto;
+        }
+
+            #buttons .l-btn {
+                width: 80px;
+                margin: 0 15px;
+            }
+
+                #buttons .l-btn .l-btn-text {
+                    line-height: 30px;
+                }
     </style>
     <script>
         var flow = {
             InstanceId: "",
             RootKey: "",
-            statusCode:"",
+            statusCode: "",
             Forms: [],
             InnerOpinions: [],
             ExnerOpinions: []
@@ -32,15 +42,14 @@
             if (flow.InstanceId) {
                 LoadFrame(flow.InstanceId);
             }
-          
+
             // 开启草稿保存
             ////draft.AutoSave(3 * 60 * 1000);
 
             var timer = setInterval(draftSava, 3 * 60 * 1000);
 
-            function draftSava()
-            {
-                if ($("a#saveTempData:hidden").length >0 || $("a#saveTempData").click() == 'error') {
+            function draftSava() {
+                if ($("a#saveTempData:hidden").length > 0 || $("a#saveTempData").click() == 'error') {
                     clearInterval(timer);
                 }
             }
@@ -116,7 +125,7 @@
                     var draft = tab.data("draft");
                     if (draft) {
                         var frame = frames[formId];
-                        
+
                         if (frame.LoadData) {
                             frame.LoadData(draft);
                         }
@@ -212,6 +221,24 @@
                     $("#" + form.Id).data("draft", data[form.Id]);
                 }
             });
+        }
+
+        function GetProcessData(instanceId) {
+            var processData = null;
+
+            $.ajax({
+                async: false,
+                data: { instanceId: instanceId },
+                method: "GET",
+                url: "../api/Process/GetProcessData",
+                statusCode: {
+                    200: function (data) {
+                        processData = data;
+                    }
+                }
+            });
+            
+            return processData;
         }
     </script>
 </head>

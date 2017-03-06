@@ -139,6 +139,10 @@
     <Compile Include="Migrations\201702280709216_CancelAutoGeneratePrimaryKey.Designer.cs">
       <DependentUpon>201702280709216_CancelAutoGeneratePrimaryKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703060222384_UpdateInstanceTable.cs" />
+    <Compile Include="Migrations\201703060222384_UpdateInstanceTable.Designer.cs">
+      <DependentUpon>201703060222384_UpdateInstanceTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -423,6 +427,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702280709216_CancelAutoGeneratePrimaryKey.resx">
       <DependentUpon>201702280709216_CancelAutoGeneratePrimaryKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703060222384_UpdateInstanceTable.resx">
+      <DependentUpon>201703060222384_UpdateInstanceTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

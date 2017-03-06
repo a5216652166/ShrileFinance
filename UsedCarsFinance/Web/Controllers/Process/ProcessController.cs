@@ -3,9 +3,6 @@
     using System;
     using System.Web.Http;
     using Application;
-    using Application.ViewModels.OrganizationViewModels;
-    using Application.ViewModels.ProcessViewModels;
-    using Core.Entities.Process;
 
     public class ProcessController : ApiController
     {
@@ -25,11 +22,9 @@
         {
             var httpActionResult = default(IHttpActionResult);
 
-            var processData = default(ProcessDataViewModel);
-
             try
             {
-                processData = processAppService.GetProcessData(instanceId);
+                var processData = processAppService.GetProcessData(instanceId);
 
                 httpActionResult = Ok(processData);
             }

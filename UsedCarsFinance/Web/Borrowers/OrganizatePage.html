@@ -99,13 +99,23 @@
                 }
                 else {
                     query.orgid = parent.flow.RootKey;
+                    query.InstanceId = parent.flow.InstanceId;
                 }
 
-                ////draft.Load();
-
                 if (query.orgid) {
+                    var organization = null;
+
+                    if (query.InstanceId) {
+                        organization = parent.GetProcessData(query.InstanceId).Organization;
+                    }
+                    else {
+                        organization = LoadDateForId(query.orgid);
+                    }
+
                     // 加载数据
-                    LoadData(LoadDateForId(query.orgid));
+                    if (organization) {
+                        LoadData(organization);
+                    }
 
                     if (GetQueryString("method") == "view" || GetQueryString("state") == 0) {
                         PageDisable();
@@ -351,8 +361,8 @@
             if ($("div#showSecton").find("input[id=TF_I]")[0].checked == true) {
                 data["Parent"] = FieldsetSerializeFactory('Parent', 'text');
             }
-            
-            if (data.Base.HasParent=="true") {
+
+            if (data.Base.HasParent == "true") {
                 data["Parent"] = FieldsetSerializeFactory('Parent', 'text');
             }
 
@@ -403,11 +413,11 @@
                 return json;
             }
         }
-        
+
         // 数据校验
         function ValidData() {
             var data = BuildData();
-            
+
             return ValidDate(data);
 
             // 数据校验
@@ -1936,13 +1946,7 @@
                     </fieldset>
                 </section>
             </div>
-
-            <!--<div title="D" data-options="iconCls:'icon-ok'" style="overflow:auto;padding:10px;">
-                <div>D</div>
-            </div>-->
         </div>
-
-        
     </form>
 </body>
 </html>

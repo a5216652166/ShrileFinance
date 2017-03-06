@@ -19,7 +19,7 @@
             Property(m => m.StartTime);
             Property(m => m.EndTime);
             Property(m => m.Status); 
-            Property(m => m.ProcessType);
+            Ignore(m => m.ProcessType);
             Property(m => m.RootKey);
 
             HasRequired(m => m.Flow).WithMany();

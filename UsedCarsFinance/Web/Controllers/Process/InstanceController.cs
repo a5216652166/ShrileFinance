@@ -10,9 +10,9 @@
     public class InstanceController : ApiController
     {
         private static readonly BLL.Flow.Instance Instance = new BLL.Flow.Instance();
-        private readonly ProcessAppService service;
+        private readonly InstanceAppService service;
 
-        public InstanceController(ProcessAppService service)
+        public InstanceController(InstanceAppService service)
         {
             this.service = service;
         }
@@ -73,7 +73,7 @@
         {
             try
             {
-                service.Process(model);
+                service.Transfer(model);
 
                 return Ok();
             }
@@ -93,7 +93,7 @@
         {
             try
             {
-                service.Withdraw(instanceId);
+                service.Revoke(instanceId);
 
                 return Ok();
             }

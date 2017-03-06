@@ -49,7 +49,10 @@
 
         public virtual Guid Create(TEntity entity)
         {
-            entity.Id = Guid.NewGuid();
+            if (entity.Id == Guid.Empty)
+            {
+                entity.Id = Guid.NewGuid();
+            }
 
             return Entities.Add(entity).Id;
         }
@@ -87,15 +90,15 @@
 
             if (entities != null && entities.Count() > 0)
             {
-                // 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
                 foreach (var item in entities)
                 {
                     entitieList.Add(item);
 
-                    if (item is IProcessable && ((IProcessable)item).Hidden == HiddenEnum.审核中)
-                    {
-                        entitieList.Remove(item);
-                    }
+                    ////// 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
+                    ////if (item is IProcessable && ((IProcessable)item).Hidden == HiddenEnum.审核中)
+                    ////{
+                    ////    entitieList.Remove(item);
+                    ////}
                 }
             }
 

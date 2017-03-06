@@ -13,13 +13,27 @@
 
         public virtual Instance Instance { get; set; }
 
-        public T ConvertToObject<T>() where T : class
+        ////public T ConvertToObject<T>() where T : class
+        ////{
+        ////    T obj = default(T);
+
+        ////    if (string.IsNullOrEmpty(JsonData) == false)
+        ////    {
+        ////        obj = (T)JsonConvert.DeserializeObject(JsonData, typeof(T));
+        ////    }
+
+        ////    return obj;
+        ////}
+
+        public T ConvertToObject<T>(T objType = null) where T : class
         {
             T obj = default(T);
 
             if (string.IsNullOrEmpty(JsonData) == false)
             {
-                obj = (T)JsonConvert.DeserializeObject(JsonData, typeof(T));
+                var type = objType != null ? objType.GetType() : typeof(T);
+
+                obj = (T)JsonConvert.DeserializeObject(JsonData, type);
             }
 
             return obj;

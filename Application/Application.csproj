@@ -94,6 +94,7 @@
     <Compile Include="CreditContractAppService.cs" />
     <Compile Include="DraftAppService.cs" />
     <Compile Include="FinanceAppService.cs" />
+    <Compile Include="ProcessAppService.cs" />
     <Compile Include="ProcessScriptService.cs" />
     <Compile Include="FinancingProjectAppService.cs" />
     <Compile Include="LoanAppService.cs" />
@@ -103,7 +104,7 @@
     <Compile Include="Mappings\PagedListTypeConverter.cs" />
     <Compile Include="DatagramAppService.cs" />
     <Compile Include="PartnerAppService.cs" />
-    <Compile Include="ProcessAppService.cs" />
+    <Compile Include="InstanceAppService.cs" />
     <Compile Include="OrganizationAppService.cs" />
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />

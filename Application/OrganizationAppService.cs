@@ -30,20 +30,20 @@
         /// 创建机构
         /// </summary>
         /// <param name="model">机构Model</param>
-        public void Create(OrganizationViewModel model)
+        public Organization Create(OrganizationViewModel model)
         {
-            var customer = Mapper.Map<Organization>(model.Base);
-            customer = Mapper.Map(model, customer);
+            var organization = Mapper.Map<Organization>(model.Base);
+            organization = Mapper.Map(model, organization);
 
-            customer.AssociatedEnterprises = Mapper.Map<ICollection<AssociatedEnterprise>>(model.AssociatedEnterprises);
-            customer.BigEvent = Mapper.Map<ICollection<BigEvent>>(model.BigEvent);
-            customer.Litigation = Mapper.Map<ICollection<Litigation>>(model.Litigation);
-            customer.Managers = Mapper.Map<ICollection<Manager>>(model.Managers);
-            customer.Shareholders = Mapper.Map<ICollection<Stockholder>>(model.Shareholders);
+            organization.AssociatedEnterprises = Mapper.Map<ICollection<AssociatedEnterprise>>(model.AssociatedEnterprises);
+            organization.BigEvent = Mapper.Map<ICollection<BigEvent>>(model.BigEvent);
+            organization.Litigation = Mapper.Map<ICollection<Litigation>>(model.Litigation);
+            organization.Managers = Mapper.Map<ICollection<Manager>>(model.Managers);
+            organization.Shareholders = Mapper.Map<ICollection<Stockholder>>(model.Shareholders);
 
             if (model.FinancialAffairs != null)
             {
-                customer.FinancialAffairs = new FinancialAffairs()
+                organization.FinancialAffairs = new FinancialAffairs()
                 {
                     Id = Guid.Empty,
                     Year = model.FinancialAffairs.Year,
@@ -53,11 +53,11 @@
                     AuditorName = model.FinancialAffairs.AuditorName
                 };
 
-                customer.FinancialAffairs.IncomeExpenditur = Mapper.Map<ICollection<InstitutionIncomeExpenditure>>(model.FinancialAffairs.IncomeExpenditur);
-                customer.FinancialAffairs.InstitutionLiabilities = Mapper.Map<ICollection<InstitutionLiabilities>>(model.FinancialAffairs.InstitutionLiabilities);
-                customer.FinancialAffairs.Liabilities = Mapper.Map<ICollection<Liabilities>>(model.FinancialAffairs.Liabilities);
-                customer.FinancialAffairs.Profit = Mapper.Map<ICollection<Profit>>(model.FinancialAffairs.Profit);
-                customer.FinancialAffairs.CashFlow = Mapper.Map<ICollection<CashFlow>>(model.FinancialAffairs.CashFlow);
+                organization.FinancialAffairs.IncomeExpenditur = Mapper.Map<ICollection<InstitutionIncomeExpenditure>>(model.FinancialAffairs.IncomeExpenditur);
+                organization.FinancialAffairs.InstitutionLiabilities = Mapper.Map<ICollection<InstitutionLiabilities>>(model.FinancialAffairs.InstitutionLiabilities);
+                organization.FinancialAffairs.Liabilities = Mapper.Map<ICollection<Liabilities>>(model.FinancialAffairs.Liabilities);
+                organization.FinancialAffairs.Profit = Mapper.Map<ICollection<Profit>>(model.FinancialAffairs.Profit);
+                organization.FinancialAffairs.CashFlow = Mapper.Map<ICollection<CashFlow>>(model.FinancialAffairs.CashFlow);
             }
 
             // 移除已存在的机构
@@ -67,13 +67,20 @@
                 organizationRepository.Remove(oldEntity);
             }
 
-            organizationRepository.Create(customer);
-
+            //organizationRepository.Create(customer);
             ////organizationRepository.Commit();
-            model.Base.Id = customer.Id;
+
+            organization.Id = Guid.NewGuid();
+
+            model.Base.Id = organization.Id;
+
+            return organization;
 
             //// 报文追踪转移至流程处理
         }
+
+        public void Create(Organization entity) 
+            => organizationRepository.Create(entity);
 
         public void Modify(OrganizationViewModel model)
         {

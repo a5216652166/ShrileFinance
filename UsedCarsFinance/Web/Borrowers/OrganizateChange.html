@@ -96,20 +96,24 @@
                 query.InstanceId = parent.flow.InstanceId;
 
                 if (query.InstanceId) {
-                    origanizationData = LoadDateForId(query.InstanceId);
+                    var orgChange = parent.GetProcessData(query.InstanceId).OrganizationChange;
+                    
+                    if (orgChange) {
+                        origanizationData = orgChange;
 
-                    $("select[textboxname=OrganizateOptions]").combobox("setValue", origanizationData.Id).combobox("setText", origanizationData.Name);
+                        $("select[textboxname=OrganizateOptions]").combobox("setValue", origanizationData.Id).combobox("setText", origanizationData.Name);
 
-                    LoadData(origanizationData);
+                        LoadData(origanizationData);
 
-                    $("form section#B div#showSection input[type=checkbox]").each(function (i, e) {
-                        var id = getFieldsetName($(e).attr("id").substr(3, 1));
-                        var isContain = $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods);
+                        $("form section#B div#showSection input[type=checkbox]").each(function (i, e) {
+                            var id = getFieldsetName($(e).attr("id").substr(3, 1));
+                            var isContain = $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods);
 
-                        if (e.checked == false && $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods) > -1) {
-                            $(e).click();
-                        }
-                    });
+                            if (e.checked == false && $.inArray(getFieldsetName($(e).attr("id").substr(3, 1)), origanizationData.Periods) > -1) {
+                                $(e).click();
+                            }
+                        });
+                    }
 
                     if (GetQueryString("method") == "view" || GetQueryString("state") == 0) {
                         PageDisable();
@@ -137,34 +141,34 @@
             }
         }
 
-        // 查询数据
-        function LoadDateForId(Id) {
-            if (Id == null) {
-                return;
-            }
+        ////// 查询数据
+        ////function LoadDateForId(Id) {
+        ////    if (Id == null) {
+        ////        return;
+        ////    }
 
-            // 通过Id获取数据
-            var resultDate;
-            $.ajax({
-                async: false,
-                data: { instanceId: Id },
-                type: "GET",
-                url: "../api/Customer/GetOrganizateChange",
-                statusCode: {
-                    200: function (data) {
-                        resultDate = data;
-                    },
-                    500: function (data) {
-                        $.messager.alert('错误', data.responseJSON.ExceptionMessage);
-                    },
-                    400: function (data) {
-                        $.messager.alert('错误', data.responseJSON.Message, "info");
-                    }
-                }
-            });
+        ////    // 通过Id获取数据
+        ////    var resultDate;
+        ////    $.ajax({
+        ////        async: false,
+        ////        data: { instanceId: Id },
+        ////        type: "GET",
+        ////        url: "../api/Customer/GetOrganizateChange",
+        ////        statusCode: {
+        ////            200: function (data) {
+        ////                resultDate = data;
+        ////            },
+        ////            500: function (data) {
+        ////                $.messager.alert('错误', data.responseJSON.ExceptionMessage);
+        ////            },
+        ////            400: function (data) {
+        ////                $.messager.alert('错误', data.responseJSON.Message, "info");
+        ////            }
+        ////        }
+        ////    });
 
-            return resultDate;
-        }
+        ////    return resultDate;
+        ////}
 
         // 加载数据
         function LoadData(data) {
@@ -174,6 +178,10 @@
 
             // 加载基础信息
             FieldsetLoadDateFactory("Base", "text", data.Base);
+
+            $(data.Periods).each(function (i, e) {
+                LoadDataForOther(e,data);
+            });
         }
 
         function LoadDataForOther(name, data) {
