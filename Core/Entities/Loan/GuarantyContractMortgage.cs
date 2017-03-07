@@ -20,7 +20,7 @@
         /// <summary>
         /// 抵押序号
         /// </summary>
-        public string MortgageNumber { get; set; }
+        public string MortgageNumber { get; set; } 
 
         /// <summary>
         /// 抵押物评估价值

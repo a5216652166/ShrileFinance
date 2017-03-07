@@ -37,30 +37,24 @@
 
             var creditContract = Mapper.Map<CreditContract>(model);
 
-            // 贷款合同ViewModel数据对接
-            DataConvert_CreditContractVM(model);
+            // 贷款合同ViewModel数据对接（协调后台）
+            model.DataConvertForGurantyContract();
 
             if (model.GuarantyContract != null && model.GuarantyContract.Count > 0)
             {
                 new UpdateBind().Bind(creditContract.GuarantyContract, model.GuarantyContract);
             }
 
-            if (creditContract.CreditBalance != creditContract.CalculateCreditBalance())
-            {
-                throw new ArgumentOutOfRangeAppException(string.Empty, "授信余额不正确.");
-            }
+            // 贷款合同校验
+            creditContract.ValidateEffective();
 
-            creditContract.ValidateEffective(creditContract);
-
-            // 设置担保合同的担保金额和编号
-            creditContract.SetGuarantyContractMargin();
-            creditContract.SetGuarantyContractNumber();
+            // 修正担保合同的担保金额和编号
+            creditContract.AmentGuarantyContractMargin();
+            creditContract.AmentGuarantyContractNumber();
 
             creditContract.Id = Guid.NewGuid();
 
             return creditContract;
-
-            //// 报文追踪转移至流程处理
         }
 
         public void Create(CreditContract entity)
@@ -68,52 +62,51 @@
 
         public void Modify(CreditContractViewModel model)
         {
-            if (model == null || model.Id == null)
+            if (model == null || model.Id.HasValue == false)
             {
                 return;
             }
 
-            var credit = creditContractRepository.Get(model.Id.Value);
+            var creditContract = creditContractRepository.Get(model.Id.Value);
 
-            if (credit == null)
+            if (creditContract == null)
             {
                 return;
             }
 
-            // 贷款合同ViewModel数据对接
-            DataConvert_CreditContractVM(model);
+            // 贷款合同ViewModel数据对接（协调后台）
+            model.DataConvertForGurantyContract();
 
             // 担保合同数量
-            var creditGuarantyContractCount = credit.GuarantyContract.Count;
+            var creditGuarantyContractCount = creditContract.GuarantyContract.Count;
 
             // 抵押合同集合
-            var mortgages = credit.GuarantyContract.Where(m => (m is GuarantyContractMortgage));
+            var mortgages = creditContract.GuarantyContract.Where(m => (m is GuarantyContractMortgage));
 
-            // 防止授信开始日期和结束日期呗修改
-            model.ExpirationDate = credit.ExpirationDate;
-            model.EffectiveDate = credit.EffectiveDate;
+            // 防止授信开始日期和结束日期被修改
+            model.ExpirationDate = creditContract.ExpirationDate;
+            model.EffectiveDate = creditContract.EffectiveDate;
 
-            Mapper.Map(model, credit);
+            Mapper.Map(model, creditContract);
 
             if (model.GuarantyContract == null || model.GuarantyContract.Count == 0)
             {
-                credit.GuarantyContract.Clear();
+                creditContract.GuarantyContract.Clear();
             }
             else
             {
-                new UpdateBind().Bind(credit.GuarantyContract, model.GuarantyContract);
+                new UpdateBind().Bind(creditContract.GuarantyContract, model.GuarantyContract);
             }
 
             // 设置担保合同的担保金额
-            if (credit.GuarantyContract.Count() > 0)
+            foreach (var item in creditContract.GuarantyContract)
             {
-                foreach (var item in credit.GuarantyContract)
-                {
-                    item.Margin = credit.CreditLimit;
-                }
+                item.Margin = creditContract.CreditLimit;
             }
 
-            creditContractRepository.Modify(credit);
+            creditContract.AmentGuarantyContractMargin();
+
+            creditContractRepository.Modify(creditContract);
             ////repository.Commit();
         }
 
@@ -129,8 +122,8 @@
                 creditViewModel.GuarantyContract.Add(Mapper.Map<GuarantyContractViewModel>(item));
             }
 
-            // 贷款合同Entity数据对接
-            creditViewModel.DataConvert_CreditContractET();
+            // 贷款合同ViewModel数据对接(服务页面)
+            creditViewModel.DataConvertForGuranteeContract();
             creditViewModel.GuarantyContract.Clear();
 
             return creditViewModel;
@@ -201,29 +194,20 @@
         }
 
         /// <summary>
-        /// 可否申请贷款
-        /// </summary>
-        /// <param name="limit">贷款金额</param>
-        /// <returns></returns>
-        ////public bool CanApplyLoan(decimal limit)
-        ////{
-        ////    CreditContract credit = new CreditContract();
-        ////    return credit.CanApplyLoan(limit);
-        ////}
-
-        /// <summary>
         /// 终止授信合同
         /// </summary>
         /// <param name="id">标识</param>
         public void StopStatus(Guid id)
         {
-            var credit = creditContractRepository.Get(id);
-            credit.ChangeStutus();
-            creditContractRepository.Modify(credit);
+            var creditContract = creditContractRepository.Get(id);
+
+            creditContract.ChangeStutus();
+
+            creditContractRepository.Modify(creditContract);
             creditContractRepository.Commit();
 
             // 报文追踪
-            messageAppService.Trace(referenceId: credit.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + credit.CreditContractCode + "终止", specialDate: credit.EffectiveDate, organizateName: credit.Organization.Property.InstitutionChName);
+            messageAppService.Trace(referenceId: creditContract.Id, traceType: TraceTypeEnum.终止合同, defaultName: "授信合同：" + creditContract.CreditContractCode + "终止", specialDate: creditContract.EffectiveDate, organizateName: creditContract.Organization.Property.InstitutionChName);
         }
 
         /// <summary>
@@ -232,16 +216,16 @@
         /// <returns></returns>
         public IEnumerable<CreditContractViewModel> Option()
         {
-            var credits = creditContractRepository.GetAll().AsEnumerable();
+            var creditContracts = creditContractRepository.GetAll().AsEnumerable();
 
-            var creditViewModels = Mapper.Map<IEnumerable<CreditContractViewModel>>(credits);
+            var creditContractViewModels = Mapper.Map<IEnumerable<CreditContractViewModel>>(creditContracts);
 
-            foreach (var item in creditViewModels)
+            foreach (var item in creditContractViewModels)
             {
-                item.OrganizationName = credits.Single(m => m.Id == item.Id.Value).Organization.Property.InstitutionChName;
+                item.OrganizationName = creditContracts.Single(m => m.Id == item.Id.Value).Organization.Property.InstitutionChName;
             }
 
-            return creditViewModels;
+            return creditContractViewModels;
         }
 
         /// <summary>
@@ -274,13 +258,6 @@
 
                 model.OrganizationName = entity.Organization.Property.InstitutionChName;
             }
-
-            ////models.ToList().ForEach(model =>
-            ////{
-            ////    var entity = pageList.Single(m => m.Id == model.Id.Value);
-
-            ////    model.OrganizationName = entity.Organization.Property.InstitutionChName;
-            ////});
 
             return models;
         }

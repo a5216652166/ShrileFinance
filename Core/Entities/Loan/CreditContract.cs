@@ -97,16 +97,33 @@
         /// </summary>
         public virtual Organization Organization { get; set; }
 
-        public void ValidateEffective(CreditContract creditContract)
+        /// <summary>
+        /// 贷款合同校验
+        /// </summary>
+        public void ValidateEffective()
         {
+            var creditContract = this;
+
+            var exception = default(Exception);
+
             if (creditContract.EffectiveDate > creditContract.ExpirationDate)
             {
-                throw new ArgumentOutOfRangeAppException(nameof(ExpirationDate), "合同终止日期必须小于等于生效日期.");
+                exception =new ArgumentOutOfRangeAppException(nameof(ExpirationDate), "合同终止日期必须小于等于生效日期.");
             }
 
             if (creditContract.CreditBalance > creditContract.CreditLimit)
             {
-                throw new ArgumentOutOfRangeAppException(nameof(CreditBalance), "授信余额不能大于授信额度.");
+                exception = new ArgumentOutOfRangeAppException(nameof(CreditBalance), "授信余额不能大于授信额度.");
+            }
+
+            if (creditContract.CreditBalance != creditContract.CalculateCreditBalance())
+            {
+                exception = new ArgumentOutOfRangeAppException(nameof(CreditBalance), "授信余额不正确.");
+            }
+
+            if (exception != default(Exception))
+            {
+                throw exception;
             }
         }
 
@@ -121,7 +138,7 @@
                 CreditLimit = limit;
 
                 // 设置担保合同的担保金额
-                SetGuarantyContractMargin();
+                AmentGuarantyContractMargin();
             }
             else
             {
@@ -163,25 +180,64 @@
         public decimal CalculateCreditBalance() =>
             CreditLimit - Loans.Where(m => m.Hidden == HiddenEnum.完成).Sum(m => m.Balance);
 
-        public void SetGuarantyContractNumber()
+        /// <summary>
+        /// 修正担保合同的序号
+        /// </summary>
+        public void AmentGuarantyContractNumber()
         {
-            var mortgageNumber = 1;
-            var pledgeNumber = 1;
+            // 抵押保证合同
+            var guarantyContractMortgage = from item in GuarantyContract.Where(m => m is GuarantyContractMortgage) select (GuarantyContractMortgage)item;
 
-            foreach (var item in GuarantyContract)
+            // 抵押序号列表
+            var mortgageNumbers = guarantyContractMortgage.Select(m => Convert.ToInt32(m.MortgageNumber)).Where(m => m > 0).ToList();
+            
+            // 设置序号
+            foreach (var item in guarantyContractMortgage)
             {
-                if (item is GuarantyContractMortgage)
+                if (mortgageNumbers.Contains(Convert.ToInt32(item.MortgageNumber)) == false)
                 {
-                    ((GuarantyContractMortgage)item).MortgageNumber = (mortgageNumber++).ToString("D2");
+                    var newMortgageNumber = 1;
+
+                    while (mortgageNumbers.Contains(newMortgageNumber))
+                    {
+                        newMortgageNumber++;
+                    }
+
+                    mortgageNumbers.Add(newMortgageNumber);
+
+                    item.MortgageNumber = newMortgageNumber.ToString("D2");
                 }
-                else if (item is GuarantyContractPledge)
+            }
+
+            // 质押保证合同
+            var guarantyContractPledge = from item in GuarantyContract.Where(m => m is GuarantyContractPledge) select (GuarantyContractPledge)item;
+
+            // 质押序号列表
+            var pledgeNumbers = guarantyContractPledge.Select(m => Convert.ToInt32(m.PledgeNumber)).Where(m => m > 0).ToList();
+
+            // 设置序号
+            foreach (var item in guarantyContractPledge)
+            {
+                if (pledgeNumbers.Contains(Convert.ToInt32(item.PledgeNumber)) == false)
                 {
-                    ((GuarantyContractPledge)item).PledgeNumber = (pledgeNumber++).ToString("D2");
+                    var newMortgageNumber = 1;
+
+                    while (pledgeNumbers.Contains(newMortgageNumber))
+                    {
+                        newMortgageNumber++;
+                    }
+
+                    pledgeNumbers.Add(newMortgageNumber);
+
+                    item.PledgeNumber = newMortgageNumber.ToString("D2");
                 }
             }
         }
 
-        public void SetGuarantyContractMargin()
+        /// <summary>
+        /// 修正担保合同的担保额度
+        /// </summary>
+        public void AmentGuarantyContractMargin()
         {
             foreach (var item in GuarantyContract)
             {

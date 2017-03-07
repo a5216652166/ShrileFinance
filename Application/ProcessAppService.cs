@@ -100,24 +100,22 @@
         {
             var creditContract = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<CreditContract>();
 
-            var creditViewModel = Mapper.Map<CreditContractViewModel>(creditContract);
+            var creditContractViewModel = Mapper.Map<CreditContractViewModel>(creditContract);
+            creditContractViewModel.GuarantyContract = new List<GuarantyContractViewModel>();
 
-            creditViewModel.GuarantyContract = new List<GuarantyContractViewModel>();
             foreach (var item in creditContract.GuarantyContract)
             {
-                creditViewModel.GuarantyContract.Add(Mapper.Map<GuarantyContractViewModel>(item));
+                creditContractViewModel.GuarantyContract.Add(Mapper.Map<GuarantyContractViewModel>(item));
             }
 
-            // 贷款合同Entity数据对接
-            creditViewModel.DataConvert_CreditContractET();
-            creditViewModel.GuarantyContract.Clear();
-
-            processData.CreditContract = creditViewModel;
+            // 贷款合同ViewModel数据对接(服务页面)
+            creditContractViewModel.DataConvertForGuranteeContract();
+            creditContractViewModel.GuarantyContract.Clear();
 
             // 修正机构名称
-            processData.CreditContract.OrganizationName = organizationRepository.Get(processData.CreditContract.OrganizationId).Property.InstitutionChName;
+            creditContractViewModel.OrganizationName = organizationRepository.Get(processData.CreditContract.OrganizationId).Property.InstitutionChName;
 
-            //// 担保处理
+            processData.CreditContract = creditContractViewModel;
         }
 
         /// <summary>
@@ -127,13 +125,14 @@
         /// <param name="processData">流程数据</param>
         private void GetProcessDataForLoan(Guid instanceId, ProcessDataViewModel processData)
         {
-            processData.Loan = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<LoanViewModel>();
+            var loan = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<Loan>();
+
+            processData.Loan = Mapper.Map<LoanViewModel>(loan);
 
             // 修正贷款合同编码和机构名称
-            var creditContract = creditContractRepository.Get(processData.Loan.CreditId);
+            var creditContract = creditContractRepository.Get(loan.CreditId);
 
             processData.Loan.CreditContractCode = creditContract.CreditContractCode;
-
             processData.Loan.OrganizateName = organizationRepository.Get(creditContract.OrganizationId).Property.InstitutionChName;
         }
 

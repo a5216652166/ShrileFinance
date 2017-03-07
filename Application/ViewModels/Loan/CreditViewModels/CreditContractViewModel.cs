@@ -80,23 +80,18 @@
         public virtual ICollection<GuarantyContractViewModel> GuarantyContract { get; set; }
 
         /// <summary>
-        /// 贷款合同Entity数据对接
+        /// 贷款合同ViewModel数据对接(服务页面)
         /// </summary>
         /// <param name="model">贷款合同ViewModel</param>
-        internal void DataConvert_CreditContractET()
+        internal void DataConvertForGuranteeContract()
         {
             var model = this;
-
-            if (model == null || model.GuarantyContract.Count == 0)
-            {
-                return;
-            }
 
             // 担保合同（服务页面）集合
             model.GuranteeContract = new List<GuranteeContractViewModel>();
 
             // 遍历 担保合同（协调后台）集合
-            model.GuarantyContract.ToList().ForEach(item =>
+            foreach (var item in model.GuarantyContract)
             {
                 // 担保合同(服务页面)  局部变量 
                 var guranteeContractViewModel = new GuranteeContractViewModel();
@@ -137,7 +132,74 @@
 
                 // 担保合同（服务页面）集合 接收数据
                 model.GuranteeContract.Add(guranteeContractViewModel);
-            });
+            }
+        }
+
+        /// <summary>
+        /// 贷款合同ViewModel数据对接（协调后台）
+        /// </summary>
+        /// <param name="model">贷款合同ViewModel</param>
+        internal void DataConvertForGurantyContract()
+        {
+            var model = this;
+
+            // 担保合同（协调合同）集合
+            model.GuarantyContract = new List<GuarantyContractViewModel>();
+
+            // 遍历 担保合同（服务页面）集合
+            foreach (var item in model.GuranteeContract)
+            {
+                // 区分 保证/质押/抵押
+                if (item.ContractType == GuranteeContractViewModel.ContractTypeEnum.保证)
+                {
+                    model.GuarantyContract.Add(item.GuarantyContractViewModel);
+                }
+                else if (item.ContractType == GuranteeContractViewModel.ContractTypeEnum.抵押)
+                {
+                    model.GuarantyContract.Add(item.MortgageGuarantyContractViewModel);
+                }
+                else if (item.ContractType == GuranteeContractViewModel.ContractTypeEnum.质押)
+                {
+                    model.GuarantyContract.Add(item.PledgeGuarantyContractViewModel);
+                }
+
+                // 区分 机构/自然人
+                if (item.GuarantorType == GuranteeContractViewModel.GuarantorTypeEnum.机构)
+                {
+                    model.GuarantyContract.Last().Guarantor = item.GuarantyOrganizationViewModel;
+                }
+                else if (item.GuarantorType == GuranteeContractViewModel.GuarantorTypeEnum.自然人)
+                {
+                    model.GuarantyContract.Last().Guarantor = item.GuarantyPersonViewModel;
+                }
+            }
+
+            ////// 遍历 担保合同（服务页面）集合
+            ////for (var i = 0; i < guranteeConList.Count(); i++)
+            ////{
+            ////    // 区分 保证/质押/抵押
+            ////    if (guranteeConList[i].ContractType == GuranteeContractViewModel.ContractTypeEnum.保证)
+            ////    {
+            ////        model.GuarantyContract.Add(guranteeConList[i].GuarantyContractViewModel);
+            ////    }
+            ////    else if (guranteeConList[i].ContractType == GuranteeContractViewModel.ContractTypeEnum.抵押)
+            ////    {
+            ////        model.GuarantyContract.Add(guranteeConList[i].MortgageGuarantyContractViewModel);
+            ////    }
+            ////    else if (guranteeConList[i].ContractType == GuranteeContractViewModel.ContractTypeEnum.质押)
+            ////    {
+            ////        model.GuarantyContract.Add(guranteeConList[i].PledgeGuarantyContractViewModel);
+            ////    }
+            ////    // 区分 机构/自然人
+            ////    if (guranteeConList[i].GuarantorType == GuranteeContractViewModel.GuarantorTypeEnum.机构)
+            ////    {
+            ////        model.GuarantyContract.ToList()[i].Guarantor = guranteeConList[i].GuarantyOrganizationViewModel;
+            ////    }
+            ////    else if (guranteeConList[i].GuarantorType == GuranteeContractViewModel.GuarantorTypeEnum.自然人)
+            ////    {
+            ////        model.GuarantyContract.ToList()[i].Guarantor = guranteeConList[i].GuarantyPersonViewModel;
+            ////    }
+            ////}
         }
     }
 }
