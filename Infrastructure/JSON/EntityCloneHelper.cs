@@ -17,9 +17,11 @@
                 return default(T);
             }
 
-            var jsonData = JsonConvert.SerializeObject(obj);
+            var jsonSerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto };
 
-            var newObj = JsonConvert.DeserializeObject<T>(jsonData);
+            var jsonData = JsonConvert.SerializeObject(obj, jsonSerializerSettings);
+
+            var newObj = JsonConvert.DeserializeObject<T>(jsonData, jsonSerializerSettings);
 
             return newObj;
         }

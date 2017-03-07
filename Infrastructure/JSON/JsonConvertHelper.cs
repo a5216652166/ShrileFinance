@@ -4,6 +4,8 @@
 
     public static class JsonConvertHelper
     {
+        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto };
+
         /// <summary>
         /// json字符串转引用对象
         /// </summary>
@@ -16,7 +18,7 @@
 
             if (string.IsNullOrEmpty(jsonStr) == false)
             {
-                obj = (T)JsonConvert.DeserializeObject(jsonStr, typeof(T));
+                obj = JsonConvert.DeserializeObject<T>(jsonStr, JsonSerializerSettings);
             }
 
             return obj;
@@ -34,7 +36,7 @@
 
             if (obj != default(T))
             {
-                jsonStr = JsonConvert.SerializeObject(obj);
+                jsonStr = JsonConvert.SerializeObject(obj, JsonSerializerSettings);
             }
 
             jsonStr = string.IsNullOrEmpty(jsonStr) ? null : jsonStr;
