@@ -1,7 +1,5 @@
 ﻿namespace Core.Services.Loan
 {
-    using System.Collections.Generic;
-    using Entities.CreditInvestigation;
     using Entities.Loan;
 
     /// <summary>

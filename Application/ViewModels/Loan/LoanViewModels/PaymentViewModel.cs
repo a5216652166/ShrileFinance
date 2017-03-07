@@ -10,6 +10,8 @@
         /// </summary>
         public Guid LoanId { get; set; }
 
+        public LoanViewModel Loan { get; set; }
+
         /// <summary>
         /// 还款记录
         /// </summary>

@@ -215,14 +215,14 @@
                     url: "../api/CreditContract/Option",
                     statusCode: {
                         200: function (data) {
-                            var options = $(data).map(function (i, e) {
-                                for (var j in e.Loans) {
-                                    if (e.Loans[j].Hidden == 2) {
-                                        return e;
-                                    }
-                                }
-                            });
-                            $("select[comboname='CreditId']").combobox("loadData", options);
+                            ////var options = $(data).map(function (i, e) {
+                            ////    for (var j in e.Loans) {
+                            ////        if (e.Loans[j].Hidden == 2) {
+                            ////            return e;
+                            ////        }
+                            ////    }
+                            ////});
+                            $("select[comboname='CreditId']").combobox("loadData",data);
                         },
                         400: uc.E400
                     }
@@ -233,8 +233,11 @@
                 uc.form.DisableForm("fieldset#credit_contract");
                 uc.form.DisableForm("fieldset#loan_info");
 
-                $("fieldset#credit_contract select[textboxname=CreditId]").combobox('readonly', true);
-                $("fieldset#loan_info select[textboxname=ContractNumber]").combobox('readonly', true);
+                //$("fieldset#credit_contract select[textboxname=CreditId]").combobox('readonly', true);
+                //$("fieldset#loan_info select[textboxname=ContractNumber]").combobox('readonly', true);
+
+                $("fieldset#credit_contract select[textboxname=CreditId]").combobox('enable');
+                $("fieldset#loan_info select[textboxname=ContractNumber]").combobox('enable');
 
                 page.setSubmit("../api/Loan/PaymentPut", "PUT", function () {
                     var rows = $("#payment_dg").datagrid("getRows");
@@ -256,6 +259,17 @@
 
                 $('fieldset#loan_info>div.row>div#ContractNumber').remove();
                 $('fieldset#loan_info>div.row>template#ContractNumber').remove();
+
+                debugger
+                if (query.Loans)
+                {
+                    $('fieldset#loan_info select[comboname=ContractNumber]').combobox("loadData", query.Loans);
+
+                    if (query.LoanId)
+                    {
+                        $('fieldset#loan_info select[comboname=ContractNumber]').combobox("unselect", query.LoanId).combobox("select", query.LoanId);
+                    }
+                }
             }
         }
 
@@ -264,19 +278,27 @@
                 var data;
 
                 if (parent.flow.InstanceId) {
-                    data = parent.GetProcessData(parent.flow.InstanceId).Loan;
+                    data = parent.GetProcessData(parent.flow.InstanceId);
                 }
                 debugger
-                $("select[comboname='CreditId']").combobox("unselect", data.CreditId).combobox("select", data.CreditId);
-                debugger
-                $("fieldset#loan_info").form('load', data);
+                if (query.view == "loan") {
+                    data = data.Loan;
 
-                var options = $(data.Payments).map(function (i, e) {
-                    if (e.Hidden == 2 || e.InstanceId == parent.flow.InstanceId) {
-                        return e;
-                    }
-                });
-                $("#payment_dg").datagrid("loadData", options);
+                    $("select[comboname='CreditId']").combobox("unselect", data.CreditId).combobox("select", data.CreditId);
+
+                    $("fieldset#loan_info").form('load', data);
+
+                } else if (query.view == "payment") {
+                    data = data.Payments;
+
+                    $("select[comboname='CreditId']").combobox("unselect", data.Loan.CreditId).combobox("select", data.Loan.CreditId);
+
+                    query.LoanId = data.LoanId;
+
+                    $("fieldset#loan_info").form('load', data.Loan);
+                }
+                debugger
+                $("#payment_dg").datagrid("loadData", data.Payments);
 
                 if (data.Payments.length > 0) {
                     $("#payment_history").show();
@@ -429,17 +451,13 @@
 
                     var LoanNumberCombobox = $('fieldset#loan_info>div.row>div>select[comboname=ContractNumber]');
                     if (LoanNumberCombobox.length == 1) {
-                        var options = $(record.Loans).map(function (i, e) {
-                            if (e.Hidden == 2) {
-                                return e;
-                            }
-                        });
-
-
                         $('fieldset#loan_info').form("clear");
 
-                        LoanNumberCombobox.combobox("loadData", options);
+                        LoanNumberCombobox.combobox("loadData", record.Loans);
+
                     }
+
+                    query.Loans = record.Loans;
                 }
             </script>
         </fieldset>
@@ -628,7 +646,6 @@
                         return false;
                     }
                 }
-
             </script>
         </fieldset>
 

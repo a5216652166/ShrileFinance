@@ -34,13 +34,15 @@
 
             var loan = loanRepository.Get(paymentViewModel.LoanId);
 
-            var paymentService = new PaymentService();
-
             foreach (var item in paymentViewModel.Payments)
             {
-                payments.Add(Mapper.Map<PaymentHistory>(item));
+                var paymentHistory = Mapper.Map<PaymentHistory>(item);
 
-                paymentService.Payment(loan, payments.Last());
+                paymentHistory.LoanId = paymentViewModel.LoanId;
+
+                paymentHistory.Id = Guid.NewGuid();
+
+                payments.Add(paymentHistory);
             }
 
             ValidPayments(payments,loan);
@@ -48,13 +50,42 @@
             return payments;
         }
 
+        /// <summary>
+        /// 新增还款
+        /// </summary>
+        /// <param name="entities">还款实体</param>
+        public void AddPayments(IEnumerable<PaymentHistory> entities)
+        {
+            var loan = loanRepository.Get(entities.First().LoanId);
+
+            ValidPayments(entities, loan);
+
+            var paymentService = new PaymentService();
+
+            foreach (var item in entities)
+            {
+                paymentService.Payment(loan, item);
+
+                paymentHistoryRepository.Create(item);
+
+                loan.Payments.Add(item);
+            }
+
+            loanRepository.Modify(loan);
+        }
+
+        /// <summary>
+        /// 验证还款
+        /// </summary>
+        /// <param name="payments">还款实体</param>
+        /// <param name="loan">借据实体</param>
         private void ValidPayments(IEnumerable<PaymentHistory> payments,Loan loan)
         {
             var exception = default(Exception);
 
             if (payments == null || payments.Count() == 0)
             {
-                exception = new ArgumentNullAppException(message: "还款为空");
+                exception = new ArgumentNullAppException(message: "新增还款为空");
             }
             else
             {

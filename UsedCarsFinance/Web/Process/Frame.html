@@ -86,7 +86,13 @@
             $(forms).each(function (i, form) {
                 var link = form.Link;
 
-                link += "?state=" + form.State;
+                if (link.indexOf('?') >= 0) {
+                    link += "&&state=" + form.State;
+                }
+                else {
+                    link += "?state=" + form.State;
+                }
+
                 if (form.IsHandler) {
                     flow.Forms.push(form);
                 }

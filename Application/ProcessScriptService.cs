@@ -23,6 +23,7 @@
         private readonly CreditContractAppService creditContractAppService;
         private readonly DatagramAppService datagramAppService;
         private readonly ProcessTempDataAppService processTempDataService;
+        private readonly PaymentHistoryAppService paymentHistoryAppService;
         private readonly IFinanceRepository financeRepository;
         private readonly ICreditContractRepository creditContractRepository;
         private readonly ILoanRepository loanRepository;
@@ -35,6 +36,7 @@
             CreditContractAppService creditContractAppService,
             DatagramAppService datagramAppService,
             ProcessTempDataAppService processTempDataService,
+            PaymentHistoryAppService paymentHistoryAppService,
             IFinanceRepository financeRepository,
             ICreditContractRepository creditContractRepository,
             ILoanRepository loanRepository,
@@ -46,6 +48,7 @@
             this.creditContractAppService = creditContractAppService;
             this.datagramAppService = datagramAppService;
             this.processTempDataService = processTempDataService;
+            this.paymentHistoryAppService = paymentHistoryAppService;
             this.financeRepository = financeRepository;
             this.creditContractRepository = creditContractRepository;
             this.loanRepository = loanRepository;
@@ -320,21 +323,24 @@
 
         public void Payment()
         {
-            var payment = GetData<ViewModels.Loan.LoanViewModels.PaymentViewModel>("62DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var paymentViewModel = GetData<ViewModels.Loan.LoanViewModels.PaymentViewModel>("62DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            payment.Payments = payment.Payments.Where(m => m.Hidden == HiddenEnum.审核中);
+            paymentViewModel.Payments = paymentViewModel.Payments.Where(m => m.Hidden == HiddenEnum.审核中);
 
-            foreach (var item in payment.Payments)
+            var payments= paymentHistoryAppService.AddPayments(paymentViewModel);
+
+            var processTempDataViewModel = new ProcessTempDataViewModel<IEnumerable<PaymentHistory>>()
             {
-                item.InstanceId = Instance.Id;
-            }
+                InstanceId = Instance.Id,
+                ObjData = payments
+            };
 
-            loanAppService.Payment(payment);
+            processTempDataService.Create(processTempDataViewModel);
 
             // 设置流程实例关联的业务标识
-            Instance.RootKey = payment.LoanId;
-            var loan = loanAppService.Get(payment.LoanId);
-            Instance.Title = $"{"借据编号：" + loan.ContractNumber + " 还款时间:" + payment.Payments.Last().ActualDatePayment.ToString("yyyy-MM-dd")}";
+            Instance.RootKey = paymentViewModel.LoanId;
+            var loan = loanAppService.Get(paymentViewModel.LoanId);
+            Instance.Title = $"{"借据编号：" + loan.ContractNumber + " 还款时间:" + paymentViewModel.Payments.Last().ActualDatePayment.ToString("yyyy-MM-dd")}";
         }
 
         /// <summary>
@@ -342,22 +348,15 @@
         /// </summary>
         public void PaymentFinish()
         {
-            // 获取借据实体
-            var loan = loanRepository.Get(Instance.RootKey.Value);
+            var processTempDataViewModel = processTempDataService.GetByInstanceId<IEnumerable<PaymentHistory>>(Instance.Id);
 
-            if (loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.InstanceId == Instance.Id).Count() == 0)
-            {
-                throw new ArgumentNullException(nameof(loan.Payments), "错误流程，未新增还款记录");
-            }
+            // 从流程临时数据中提取数据
+            var payments = processTempDataViewModel.ObjData;
+
+            paymentHistoryAppService.AddPayments(payments);
 
             // 报文追踪
-            Trace(loan.Payments);
-
-            // 设置Hidden为false
-            loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.InstanceId == Instance.Id).ToList().ForEach(payment =>
-               {
-                   SetHidden(payment);
-               });
+            Trace(payments);
         }
 
         /// <summary>
@@ -458,7 +457,9 @@
                 var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden == HiddenEnum.审核中).ToList();
 
                 var loan = loanRepository.Get(payments.First().LoanId);
-                var credit = creditContractRepository.Get(loan.CreditId);
+
+                var creditContract = creditContractRepository.Get(loan.CreditId);
+
                 var traces = new Dictionary<PaymentHistory, ICollection<TraceTypeEnum>>();
 
                 foreach (var payment in payments)
@@ -493,15 +494,15 @@
                                 break;
                             case TraceTypeEnum.还款:
                                 // 还款 —> 报文追踪
-                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{trace.Key.ActualPaymentPrincipal}", specialDate: trace.Key.ActualDatePayment, organizateName: credit.Organization.Property.InstitutionChName);
+                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}还款，还款金额：{trace.Key.ActualPaymentPrincipal}", specialDate: trace.Key.ActualDatePayment, organizateName: creditContract.Organization.Property.InstitutionChName);
                                 break;
                             case TraceTypeEnum.逾期:
                                 // 逾期 —> 报文追踪
-                                datagramAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: trace.Key.ActualDatePayment, organizateName: credit.Organization.Property.InstitutionChName);
+                                datagramAppService.Trace(referenceId: loan.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}五级分类调整", specialDate: trace.Key.ActualDatePayment, organizateName: creditContract.Organization.Property.InstitutionChName);
                                 break;
                             case TraceTypeEnum.欠息:
                                 // 欠息 —> 报文追踪
-                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: trace.Key.ActualDatePayment, organizateName: credit.Organization.Property.InstitutionChName);
+                                datagramAppService.Trace(referenceId: trace.Key.Id, traceType: type, defaultName: $"借据：{loan.ContractNumber}欠息", specialDate: trace.Key.ActualDatePayment, organizateName: creditContract.Organization.Property.InstitutionChName);
                                 break;
                         }
                     }

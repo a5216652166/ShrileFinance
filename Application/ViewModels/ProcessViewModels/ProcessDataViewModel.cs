@@ -18,6 +18,6 @@
 
         public LoanViewModel Loan { get; set; }
 
-        public ICollection<PaymentHistoryViewModel> Payments { get; set; }
+        public PaymentViewModel Payments { get; set; }
     }
 }

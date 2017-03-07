@@ -101,6 +101,7 @@
             var creditContract = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<CreditContract>();
 
             var creditContractViewModel = Mapper.Map<CreditContractViewModel>(creditContract);
+
             creditContractViewModel.GuarantyContract = new List<GuarantyContractViewModel>();
 
             foreach (var item in creditContract.GuarantyContract)
@@ -111,7 +112,6 @@
             // 贷款合同ViewModel数据对接(服务页面)
             creditContractViewModel.DataConvertForGuranteeContract();
             creditContractViewModel.GuarantyContract.Clear();
-
 
             // 修正机构名称
             creditContractViewModel.OrganizationName = organizationRepository.Get(creditContractViewModel.OrganizationId).Property.InstitutionChName;
@@ -144,14 +144,44 @@
         /// <param name="processData">流程数据</param>
         private void GetProcessDataForPaymentHistory(Guid instanceId, ProcessDataViewModel processData)
         {
-            processData.Payments = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<ICollection<PaymentHistoryViewModel>>();
+            var paymentHistoryViewModels = new List<PaymentHistoryViewModel>();
 
-            var loan = loanRepository.Get(processData.Payments.First().LoanId);
+            var payments = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<IEnumerable<PaymentHistory>>();
 
+            var loan = loanRepository.Get(payments.First().LoanId);
+
+            // 记录数据库中已有的还款记录
             foreach (var item in loan.Payments)
             {
-                processData.Payments.Add(Mapper.Map<PaymentHistoryViewModel>(item));
+                var paymentHistoryViewModel = Mapper.Map<PaymentHistoryViewModel>(item);
+
+                paymentHistoryViewModel.Hidden = Core.Entities.HiddenEnum.完成;
+
+                paymentHistoryViewModels.Add(paymentHistoryViewModel);
             }
+
+            // 记录当前流程中的还款记录
+            var paymentIds = loan.Payments.Select(m => m.Id);
+            foreach (var item in payments)
+            {
+                if (paymentIds.Contains(item.Id))
+                {
+                    continue;
+                }
+
+                var paymentHistoryViewModel = Mapper.Map<PaymentHistoryViewModel>(item);
+
+                paymentHistoryViewModel.Hidden = Core.Entities.HiddenEnum.审核中;
+
+                paymentHistoryViewModels.Add(paymentHistoryViewModel);
+            }
+
+            processData.Payments = new PaymentViewModel()
+            {
+                LoanId = loan.Id,
+                Loan = Mapper.Map<LoanViewModel>(loan),
+                Payments = paymentHistoryViewModels
+            };
         }
 
         /// <summary>
