@@ -1,6 +1,7 @@
 ﻿namespace Core.Interfaces.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Entities;
@@ -23,6 +24,6 @@
 
         void Remove(TEntity entity);
 
-        TEntity RemoveOldEntity(Guid id);
+        void RemoveOldEntity(IEnumerable<TEntity> entities);
     }
 }

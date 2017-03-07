@@ -90,6 +90,11 @@
             // 担保合同（服务页面）集合
             model.GuranteeContract = new List<GuranteeContractViewModel>();
 
+            if (model.GuarantyContract == null)
+            {
+                return;
+            }
+
             // 遍历 担保合同（协调后台）集合
             foreach (var item in model.GuarantyContract)
             {
@@ -145,6 +150,11 @@
 
             // 担保合同（协调合同）集合
             model.GuarantyContract = new List<GuarantyContractViewModel>();
+
+            if (model.GuranteeContract == null)
+            {
+                return;
+            }
 
             // 遍历 担保合同（服务页面）集合
             foreach (var item in model.GuranteeContract)

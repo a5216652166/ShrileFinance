@@ -46,7 +46,7 @@
             }
 
             // 贷款合同校验
-            creditContract.ValidateEffective();
+            ValidCreditContract(creditContract);
 
             // 修正担保合同的担保金额和编号
             creditContract.AmentGuarantyContractMargin();
@@ -377,15 +377,27 @@
         /// <summary>
         /// 额度变更
         /// </summary>
-        /// <param name="model">授信实体</param>
-        private void ChangeEffective(CreditContract model)
+        /// <param name="entity">授信实体</param>
+        private void ChangeEffective(CreditContract entity)
         {
-            model.ChangeLimit(model.CreditLimit);
-            creditContractRepository.Modify(model);
+            entity.ChangeLimit(entity.CreditLimit);
+            creditContractRepository.Modify(entity);
             creditContractRepository.Commit();
 
             // 报文追踪(合同关键数据项金额发生变化)
-            messageAppService.Trace(referenceId: model.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + model.CreditContractCode + "授信额度变更", specialDate: model.EffectiveDate, organizateName: model.Organization.Property.InstitutionChName);
+            messageAppService.Trace(referenceId: entity.Id, traceType: TraceTypeEnum.合同变更, defaultName: "授信合同：" + entity.CreditContractCode + "授信额度变更", specialDate: entity.EffectiveDate, organizateName: entity.Organization.Property.InstitutionChName);
+        }
+
+        private void ValidCreditContract(CreditContract entity)
+        {
+            var isExist = creditContractRepository.GetAll(m => m.CreditContractCode == entity.CreditContractCode).Count() > 0;
+
+            if (isExist)
+            {
+                throw new ArgumentOutOfRangeAppException(message: $"借据编号{entity.CreditContractCode}已存在");
+            }
+
+            entity.ValidateEffective();
         }
     }
 }

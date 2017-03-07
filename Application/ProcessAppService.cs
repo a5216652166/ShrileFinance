@@ -112,8 +112,9 @@
             creditContractViewModel.DataConvertForGuranteeContract();
             creditContractViewModel.GuarantyContract.Clear();
 
+
             // 修正机构名称
-            creditContractViewModel.OrganizationName = organizationRepository.Get(processData.CreditContract.OrganizationId).Property.InstitutionChName;
+            creditContractViewModel.OrganizationName = organizationRepository.Get(creditContractViewModel.OrganizationId).Property.InstitutionChName;
 
             processData.CreditContract = creditContractViewModel;
         }
@@ -129,9 +130,9 @@
 
             processData.Loan = Mapper.Map<LoanViewModel>(loan);
 
-            // 修正贷款合同编码和机构名称
             var creditContract = creditContractRepository.Get(loan.CreditId);
 
+            // 修正贷款合同编码和机构名称
             processData.Loan.CreditContractCode = creditContract.CreditContractCode;
             processData.Loan.OrganizateName = organizationRepository.Get(creditContract.OrganizationId).Property.InstitutionChName;
         }

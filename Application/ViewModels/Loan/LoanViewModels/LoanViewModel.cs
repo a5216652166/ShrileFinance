@@ -67,7 +67,7 @@
         /// </summary>
         [Display(Name = "借据状态")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public LoanStatusEnum Status { get; private set; }
+        public LoanStatusEnum Status { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public FourCategoryAssetsClassificationEnum? FourCategoryAssetsClassification { get; set; }

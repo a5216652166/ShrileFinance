@@ -23,7 +23,11 @@
             Loans = new HashSet<Loan>();
         }
 
-        public CreditContract(DateTime effectiveDate, DateTime expirationDate, decimal creditLimit, CreditContractStatusEnum status)
+        public CreditContract(
+            DateTime effectiveDate, 
+            DateTime expirationDate, 
+            decimal creditLimit, 
+            CreditContractStatusEnum status)
         {
             Loans = new HashSet<Loan>();
 
@@ -137,7 +141,7 @@
             {
                 CreditLimit = limit;
 
-                // 设置担保合同的担保金额
+                // 修正担保合同的担保金额
                 AmentGuarantyContractMargin();
             }
             else
@@ -165,6 +169,7 @@
             result &= CanCredit(limit);
             result &= IsEffectiveDate(loanDate);
             result &= IsEffective(loanDate);
+
             return result;
         }
 

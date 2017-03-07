@@ -242,15 +242,12 @@
         /// </summary>
         public void CreditContractSigned()
         {
-            // 获取机构实体
             var processTempDataViewModel = processTempDataService.GetByInstanceId<CreditContract>(Instance.Id);
-
-            var ssss = processTempDataViewModel.JsonData;
 
             // 从流程临时数据中提取数据
             var creditContract = processTempDataViewModel.ObjData;
 
-            creditContractRepository.Create(creditContract);
+            creditContractAppService.Create(creditContract);
 
             // 报文追踪
             Trace(creditContract, describe: CreditContractChangeEnum.签订合同);
@@ -287,21 +284,22 @@
         {
             var loanViewModel = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            loanAppService.ApplyLoan(loanViewModel);
+            var loan = loanAppService.ApplyLoan(loanViewModel);
 
-            var processTempDataViewModel = new ProcessTempDataViewModel<ViewModels.Loan.LoanViewModels.LoanViewModel>()
+            var processTempDataViewModel = new ProcessTempDataViewModel<Loan>()
             {
                 InstanceId = Instance.Id,
-                ObjData = loanViewModel
+                ObjData = loan
             };
 
             processTempDataService.Create(processTempDataViewModel);
 
             // 设置流程实例关联的业务标识
-            Instance.RootKey = loanViewModel.Id;
+            Instance.RootKey = loan.Id;
 
-            var credit = creditContractAppService.Get(loanViewModel.CreditId);
-            Instance.Title = $"{"授信合同编号：" + credit.CreditContractCode + " 借据编号：" + loanViewModel.ContractNumber}";
+            var creditContract = creditContractAppService.Get(loan.CreditId);
+
+            Instance.Title = $"{"授信合同编号：" + creditContract.CreditContractCode + " 借据编号：" + loan.ContractNumber}";
         }
 
         /// <summary>
@@ -309,14 +307,15 @@
         /// </summary>
         public void LoanFinish()
         {
-            // 获取借据实体
-            var loan = loanRepository.Get(Instance.RootKey.Value);
+            var processTempDataViewModel = processTempDataService.GetByInstanceId<Loan>(Instance.Id);
+
+            // 从流程临时数据中提取数据
+            var loan = processTempDataViewModel.ObjData;
+
+            loanAppService.Create(loan);
 
             // 报文追踪
             Trace(loan);
-
-            // 设置Hidden为false
-            SetHidden(loan);
         }
 
         public void Payment()

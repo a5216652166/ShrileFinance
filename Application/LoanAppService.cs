@@ -14,29 +14,29 @@
 
     public class LoanAppService
     {
-        private readonly ICreditContractRepository creditRepository;
+        private readonly ICreditContractRepository creditContractRepository;
+        private readonly ILoanRepository loanRepository;
+        private readonly IPaymentHistoryRepository paymentHistoryRepository;
+        private readonly IProcessTempDataRepository processTempDataRepository;
         private readonly LoanService loanService;
         private readonly PaymentService paymentService;
-        private readonly ILoanRepository loanRepository;
-        private readonly DatagramAppService messageAppService;
-        private readonly IPaymentHistoryRepository paymentRepository;
-        private readonly IProcessTempDataRepository processTempDataRepository;
+        private readonly DatagramAppService datagramAppService;
 
         public LoanAppService(
+            ICreditContractRepository creditContractRepository,
+            ILoanRepository loanRepository,
+            IPaymentHistoryRepository paymentHistoryRepository,
+            IProcessTempDataRepository processTempDataRepository,
             LoanService loanService,
             PaymentService paymentService,
-            ILoanRepository loanRepository,
-            ICreditContractRepository creditRepository,
-            DatagramAppService messageAppService,
-            IPaymentHistoryRepository paymentRepository,
-            IProcessTempDataRepository processTempDataRepository)
+            DatagramAppService datagramAppService)
         {
             this.loanService = loanService;
             this.paymentService = paymentService;
             this.loanRepository = loanRepository;
-            this.creditRepository = creditRepository;
-            this.messageAppService = messageAppService;
-            this.paymentRepository = paymentRepository;
+            this.creditContractRepository = creditContractRepository;
+            this.datagramAppService = datagramAppService;
+            this.paymentHistoryRepository = paymentHistoryRepository;
             this.processTempDataRepository = processTempDataRepository;
         }
 
@@ -57,35 +57,23 @@
             throw new ArgumentAppException("借据标识错误！");
         }
 
-        public bool CheckLoanNumber(string loanNumber)
-        {
-            if (!string.IsNullOrEmpty(loanNumber))
-            {
-                return loanRepository.GetAll(m => m.ContractNumber == loanNumber).Count() == 0;
-            }
-
-            throw new ArgumentOutOfRangeAppException(string.Empty, "借据编号不能为空.");
-        }
-
         /// <summary>
         /// 申请借据
         /// </summary>
         /// <param name="model">借据视图模型</param>
-        public void ApplyLoan(LoanViewModel model)
+        public Loan ApplyLoan(LoanViewModel model)
         {
-            var credit = creditRepository.Get(model.CreditId);
             var loan = Mapper.Map<Loan>(model);
 
-            loanService.Loan(loan, credit);
+            // 修正新借据的状态
+            loan.Status = loan.Status == 0 ? LoanStatusEnum.正常 : loan.Status;
 
-            // 从数据库中删除旧实体
-            loanRepository.RemoveOldEntity(loan.Id);
+            // 验证新借据
+            ValidLoan(loan);
 
-            loanRepository.Create(loan);
+            loan.Id = Guid.NewGuid();
 
-            model.Id = loan.Id;
-            ////// 报文追踪（放款）
-            ////messageAppService.Trace(referenceId: loan.Id, traceType: TraceTypeEnum.借款, defaultName: $"申请借据，贷款合同编号：{credit.CreditContractCode}", specialDate: loan.SpecialDate);
+            return loan;
         }
 
         public decimal GetBalance(Guid id, decimal principle)
@@ -145,7 +133,7 @@
             removeItem.ForEach(m =>
             {
                 loan.Payments.Remove(m);
-                paymentRepository.Remove(m);
+                paymentHistoryRepository.Remove(m);
             });
 
             foreach (var payment in model.Payments)
@@ -196,7 +184,7 @@
             var models = Mapper.Map<IPagedList<LoanViewModel>>(loans);
 
             var creditIds = (from item in models select item.CreditId).ToListAsync().Result;
-            var credits = creditRepository.GetAll(m => creditIds.Contains(m.Id)).ToListAsync().Result;
+            var credits = creditContractRepository.GetAll(m => creditIds.Contains(m.Id)).ToListAsync().Result;
 
             foreach (var model in models)
             {
@@ -209,13 +197,37 @@
             return models;
         }
 
-        public void Create(LoanViewModel model)
+        public void Create(Loan entity)
         {
-            var entity = default(Loan);
-
-            Mapper.Map(model,entity);
+            ValidLoan(entity);
 
             loanRepository.Create(entity);
+        }
+
+        /// <summary>
+        /// 验证借据
+        /// </summary>
+        /// <param name="loan">借据实体</param>
+        private void ValidLoan(Loan loan)
+        {
+            var exception = default(Exception);
+
+            var creditContract = creditContractRepository.Get(loan.CreditId);
+
+            if (creditContract.Loans.Select(m => m.ContractNumber).Contains(loan.ContractNumber))
+            {
+                exception= new ArgumentOutOfRangeAppException(message:$"借据编号{loan.ContractNumber}已存在");
+            }
+
+            if (!creditContract.CanApplyLoan(loan.Principle, loan.SpecialDate))
+            {
+                exception= new InvalidOperationAppException(message: "申请贷款失败, 请确认授信合同是否有效、授信余额是否充足借据放款时间是否在合同有效期内.");
+            }
+
+            if (exception != default(Exception))
+            {
+                throw exception;
+            }
         }
     }
 }

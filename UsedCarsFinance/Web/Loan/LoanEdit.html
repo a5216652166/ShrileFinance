@@ -49,30 +49,6 @@
                 // 3.调整页面
                 Render(query);
             })
-            if (query.loanId == undefined) {
-                $.extend($.fn.validatebox.defaults.rules, {
-                    //重复验证
-                    CheckLoanNumber: {
-                        validator: function (value, param) {
-                            var result = false;
-                            $.ajax({
-                                async: false,
-                                data: { loanNumber: value },
-                                type: "GET",
-                                url: "../api/Loan/CheckLoanNumber",
-                                statusCode: {
-                                    200: function (data) {
-                                        result = data;
-                                    }
-                                }
-                            });
-
-                            return result;
-                        },
-                        message: '借据编号已使用!'
-                    }
-                });
-            }
         });
 
         function LoadData(data) {
@@ -80,11 +56,11 @@
             $("fieldset#credit_contract select[textboxname=CreditId]")//.combobox("select", data.CreditId)
                 .combobox("unselect", data.CreditId)
                 .combobox("select", data.CreditId);
-            
+
             // 借据
             if (query.state != "3") {
                 // 借据信息
-                $("fieldset#loan_info").form('load', data.Loan);
+                $("fieldset#loan_info").form('load', data);
             }
             else {
                 // 还款
@@ -109,7 +85,7 @@
             var rows = $("#payment_dg").datagrid("getRows");
             var specialDate = $("#SpecialDate").textbox("getValue");
             if (rows.length > 0) {
-                for (var i=0;i<rows.length;i++) {
+                for (var i = 0; i < rows.length; i++) {
                     if (rows[i].ScheduledDatePayment < specialDate) {
                         $.messager.show({ msg: "应还款日期不得在放款日期之前" });
 
@@ -173,21 +149,23 @@
                 return true;
             }
 
+            $("#Balance").textbox("setValue", $("#Principle").textbox("getValue"))
+
             if ($("#Id").val() == "") {
                 $("#Balance").textbox("setValue", $("#Principle").textbox("getValue"))
             }
             else {
-                $.ajax({
-                    async: false,
-                    method: "GET",
-                    data: { id: query.loanId, principle: $("#Principle").textbox("getValue") },
-                    url: "../api/loan/GetBalance",
-                    statusCode: {
-                        200: function (data) {
-                            $("#Balance").textbox("setValue", data)
-                        },
-                    }
-                });
+                //$.ajax({
+                //    async: false,
+                //    method: "GET",
+                //    data: { id: query.loanId, principle: $("#Principle").textbox("getValue") },
+                //    url: "../api/loan/GetBalance",
+                //    statusCode: {
+                //        200: function (data) {
+                //            $("#Balance").textbox("setValue", data)
+                //        },
+                //    }
+                //});
             }
         }
 
@@ -204,6 +182,7 @@
                 uc.form.DisableForm("#credit_contract");
                 uc.form.DisableForm("#loan_info");
             }
+
             // 申请贷款
             function LoanView() {
                 var buildData = function () {
@@ -254,8 +233,8 @@
                 uc.form.DisableForm("fieldset#credit_contract");
                 uc.form.DisableForm("fieldset#loan_info");
 
-                $("fieldset#credit_contract select[textboxname=CreditId]").combobox({ disabled: false });
-                $("fieldset#loan_info select[textboxname=ContractNumber]").combobox({ disabled: false });
+                $("fieldset#credit_contract select[textboxname=CreditId]").combobox('readonly', true);
+                $("fieldset#loan_info select[textboxname=ContractNumber]").combobox('readonly', true);
 
                 page.setSubmit("../api/Loan/PaymentPut", "PUT", function () {
                     var rows = $("#payment_dg").datagrid("getRows");
@@ -282,38 +261,47 @@
 
         function Page() {
             this.Load = function (loanId) {
-                uc.form.LoadForm({
-                    async: true,
-                    params: { id: loanId },
-                    url: "../api/Loan/Get",
-                    onLoadSuccess: function (data) {
-                        $("select[comboname='CreditId']").combobox("select", data.CreditId);
-                        debugger
-                        var options = $(data.Payments).map(function (i, e) {
-                            debugger
-                            if (e.Hidden == 2 || e.InstanceId == parent.flow.InstanceId)
-                            {
-                                return e;
-                            }
-                        });
-                        $("#payment_dg").datagrid("loadData", options);
-                        if (data.Payments.length > 0) {
-                            $("#payment_history").show();
-                        }
-                        else if (code == "payment") {
-                            $("#payment_history").show();
-                        }
-                        else {
-                            $("#payment_history").hide();
-                        }
-                        if (code == "view" || query.state == "0") {
-                            $("#payment_tb").hide();
+                var data;
 
-                            $("fieldset#credit_contract select[textboxname=CreditId]").combobox({ disabled: true });
-                            $("fieldset#loan_info select[textboxname=ContractNumber]").combobox({ disabled: true });
-                        }
+                if (parent.flow.InstanceId) {
+                    data = parent.GetProcessData(parent.flow.InstanceId).Loan;
+                }
+                debugger
+                $("select[comboname='CreditId']").combobox("unselect", data.CreditId).combobox("select", data.CreditId);
+                debugger
+                $("fieldset#loan_info").form('load', data);
+
+                var options = $(data.Payments).map(function (i, e) {
+                    if (e.Hidden == 2 || e.InstanceId == parent.flow.InstanceId) {
+                        return e;
                     }
                 });
+                $("#payment_dg").datagrid("loadData", options);
+
+                if (data.Payments.length > 0) {
+                    $("#payment_history").show();
+                }
+                else if (code == "payment") {
+                    $("#payment_history").show();
+                }
+                else {
+                    $("#payment_history").hide();
+                }
+                if (code == "view" || query.state == "0") {
+                    $("#payment_tb").hide();
+
+                    $("fieldset#credit_contract select[textboxname=CreditId]").combobox('readonly', true);
+                    $("fieldset#loan_info select[textboxname=ContractNumber]").combobox('readonly', true);
+                }
+
+                ////uc.form.LoadForm({
+                ////    async: true,
+                ////    params: { id: loanId },
+                ////    url: "../api/Loan/Get",
+                ////    onLoadSuccess: function (data) {
+
+                ////    }
+                ////});
             }
 
             var submit = {
@@ -409,13 +397,15 @@
                         url: "../api/CreditContract/Option",
                         statusCode: {
                             200: function (data) {
-                                var options = $(data).map(function (i, e) {
-                                    if (e.Hidden == 2) {
-                                        return e;
-                                    }
-                                });
-                                
-                                $("select[comboname='CreditId']").combobox("loadData", options);
+                                ////var options = $(data).map(function (i, e) {
+                                ////    if (e.Hidden == 2) {
+                                ////        return e;
+                                ////    }
+                                ////});
+                                ////$("select[comboname='CreditId']").combobox("loadData", options);
+
+                                $("select[comboname='CreditId']").combobox("loadData", data);
+
                                 ded.resolve();
                             },
                             400: uc.E400
@@ -426,6 +416,10 @@
                 }
 
                 function onSelectCreditContractNumber(record) {
+                    if (record == undefined) {
+                        record = $(this).combobox("getData")[0];
+                    }
+
                     $("input[textboxname='OrganizationName'").textbox("setValue", record.OrganizationName);
                     $("input[textboxname='CreditLimit'").textbox("setValue", record.CreditLimit);
                     $("input[textboxname='CreditBalance'").textbox("setValue", record.CreditBalance);
@@ -460,7 +454,7 @@
             <div class="row">
                 <div class="col-6" id="ContractNumber">
                     <label>借据编号:</label>
-                    <input name="ContractNumber" class="easyui-textbox" data-options="required:true,validType:'CheckLoanNumber'" />
+                    <input name="ContractNumber" class="easyui-textbox" data-options="required:true" />
                 </div>
                 <template id="ContractNumber">
                     <div class="col-6">
@@ -475,10 +469,10 @@
                         if (record == undefined) {
                             record = $(this).combobox("getData")[0];
                         }
-                        
+
                         // 加载借据信息
                         $('fieldset#loan_info').form("load", record);
-                        
+
                         // 加载还款信息（审核完成 + 审核中）
                         if (record.Payments.length > 0)
                         {
@@ -487,7 +481,7 @@
                                     return e;
                                 }
                             });
-                            
+
                             $('fieldset#payment_history table#payment_dg').datagrid('loadData', options);
                         }
                     }

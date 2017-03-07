@@ -57,7 +57,7 @@
 
             processTempData.ConvertToJsonData(processTempDataViewModel.ObjData);
 
-            processTempDataRepository.RemoveOldEntity(processTempData.Id);
+            processTempDataRepository.RemoveOldEntity(processTempDataRepository.GetAll(m=>m.InstanceId == processTempData.InstanceId));
 
             processTempDataRepository.Create(processTempData);
         }

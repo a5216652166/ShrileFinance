@@ -94,6 +94,7 @@
     <Compile Include="CreditContractAppService.cs" />
     <Compile Include="DraftAppService.cs" />
     <Compile Include="FinanceAppService.cs" />
+    <Compile Include="PaymentHistoryAppService.cs" />
     <Compile Include="ProcessAppService.cs" />
     <Compile Include="ProcessScriptService.cs" />
     <Compile Include="FinancingProjectAppService.cs" />

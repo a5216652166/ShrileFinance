@@ -29,18 +29,18 @@
             return Ok(model);
         }
 
-        [HttpPost]
-        public IHttpActionResult Post(LoanViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        ////[HttpPost]
+        ////public IHttpActionResult Post(LoanViewModel model)
+        ////{
+        ////    if (!ModelState.IsValid)
+        ////    {
+        ////        return BadRequest(ModelState);
+        ////    }
 
-            loanAppService.ApplyLoan(model);
+        ////    loanAppService.ApplyLoan(model);
 
-            return Ok();
-        }
+        ////    return Ok();
+        ////}
 
         [HttpPut]
         public IHttpActionResult Put(LoanViewModel model)
@@ -69,14 +69,6 @@
             var models = loanAppService.PagedList(searchString, page, rows, status);
 
             return Ok(new PagedListViewModel<LoanViewModel>(models));
-        }
-
-        [HttpGet]
-        public IHttpActionResult CheckLoanNumber(string loanNumber)
-        {
-            var result = loanAppService.CheckLoanNumber(loanNumber);
-
-            return Ok(result);
         }
 
         [HttpGet]

@@ -67,21 +67,12 @@
             return Context.SaveChanges();
         }
 
-        TEntity IRepository<TEntity>.RemoveOldEntity(Guid id)
+        void IRepository<TEntity>.RemoveOldEntity(IEnumerable<TEntity> entities)
         {
-            var oldEntity = default(TEntity);
-
-            if (id != Guid.Empty)
+            foreach (var item in entities)
             {
-                oldEntity = Entities.FindAsync(id).Result;
-
-                if (oldEntity != null)
-                {
-                    Context.Entry(oldEntity).State = EntityState.Deleted;
-                }
+                context.Entry(item).State = EntityState.Deleted;
             }
-
-            return oldEntity;
         }
 
         private IQueryable<TEntity> Filter(IQueryable<TEntity> entities)
