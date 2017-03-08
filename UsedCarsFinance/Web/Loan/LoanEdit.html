@@ -29,13 +29,14 @@
         $(function () {
             if (query.method == "view") {
                 query.loanId = query.id;
-                code == "view";
+                code = "view";
                 uc.form.DisableForm();
                 $("#payment_tb").hide();
             }
             else {
                 query.loanId = parent.flow.RootKey;
                 code = parent.flow.statusCode
+                query.InstanceId = parent.flow.InstanceId;
             }
             // 1.加载选项.
             $.when(
@@ -155,17 +156,17 @@
                 $("#Balance").textbox("setValue", $("#Principle").textbox("getValue"))
             }
             else {
-                //$.ajax({
-                //    async: false,
-                //    method: "GET",
-                //    data: { id: query.loanId, principle: $("#Principle").textbox("getValue") },
-                //    url: "../api/loan/GetBalance",
-                //    statusCode: {
-                //        200: function (data) {
-                //            $("#Balance").textbox("setValue", data)
-                //        },
-                //    }
-                //});
+                ////$.ajax({
+                ////    async: false,
+                ////    method: "GET",
+                ////    data: { id: query.loanId, principle: $("#Principle").textbox("getValue") },
+                ////    url: "../api/loan/GetBalance",
+                ////    statusCode: {
+                ////        200: function (data) {
+                ////            $("#Balance").textbox("setValue", data)
+                ////        },
+                ////    }
+                ////});
             }
         }
 
@@ -268,6 +269,12 @@
                     if (query.LoanId)
                     {
                         $('fieldset#loan_info select[comboname=ContractNumber]').combobox("unselect", query.LoanId).combobox("select", query.LoanId);
+
+                        if (query.state == 0)
+                        {
+                            $("fieldset#credit_contract select[textboxname=CreditId]").combobox('readonly', true);
+                            $("fieldset#loan_info select[textboxname=ContractNumber]").combobox('readonly', true);
+                        }
                     }
                 }
             }
@@ -276,11 +283,31 @@
         function Page() {
             this.Load = function (loanId) {
                 var data;
-
-                if (parent.flow.InstanceId) {
-                    data = parent.GetProcessData(parent.flow.InstanceId);
+                
+                if (query.InstanceId) {
+                    data = parent.GetProcessData(query.InstanceId);
                 }
-                debugger
+                else if (code == "view") {
+                    debugger
+                    $.ajax({
+                        async: false,
+                        method: "GET",
+                        data: { id: query.loanId },
+                        url: "../api/Loan/Get",
+                        statusCode: {
+                            200: function (datas) {
+                                data = datas;
+                            }
+                        }
+                    });
+
+                    debugger
+                    $("select[comboname='CreditId']").combobox("unselect", data.CreditId).combobox("select", data.CreditId);
+
+                    $("fieldset#loan_info").form('load', data);
+                    debugger
+                }
+                
                 if (query.view == "loan") {
                     data = data.Loan;
 
@@ -297,9 +324,11 @@
 
                     $("fieldset#loan_info").form('load', data.Loan);
                 }
-                debugger
-                $("#payment_dg").datagrid("loadData", data.Payments);
 
+                debugger
+
+                $("#payment_dg").datagrid("loadData", data.Payments);
+                debugger
                 if (data.Payments.length > 0) {
                     $("#payment_history").show();
                 }
@@ -315,15 +344,6 @@
                     $("fieldset#credit_contract select[textboxname=CreditId]").combobox('readonly', true);
                     $("fieldset#loan_info select[textboxname=ContractNumber]").combobox('readonly', true);
                 }
-
-                ////uc.form.LoadForm({
-                ////    async: true,
-                ////    params: { id: loanId },
-                ////    url: "../api/Loan/Get",
-                ////    onLoadSuccess: function (data) {
-
-                ////    }
-                ////});
             }
 
             var submit = {
@@ -454,7 +474,6 @@
                         $('fieldset#loan_info').form("clear");
 
                         LoanNumberCombobox.combobox("loadData", record.Loans);
-
                     }
 
                     query.Loans = record.Loans;
@@ -492,15 +511,22 @@
                         $('fieldset#loan_info').form("load", record);
 
                         // 加载还款信息（审核完成 + 审核中）
-                        if (record.Payments.length > 0)
+                        if (record.Payments && record.Payments.length>0)
                         {
-                            var options = $(record.Payments).map(function (i, e) {
-                                if (e.Hidden == 2 || e.InstanceId == parent.flow.InstanceId) {
-                                    return e;
-                                }
-                            });
+                            var gridData = $('fieldset#payment_history table#payment_dg').datagrid("getData");
 
-                            $('fieldset#payment_history table#payment_dg').datagrid('loadData', options);
+                            if (query.state == 3)
+                            {
+                                $('fieldset#payment_history table#payment_dg').datagrid('loadData', record.Payments);
+                            }
+
+                            ////var options = $(record.Payments).map(function (i, e) {
+                            ////    if (e.Hidden == 2 || e.InstanceId == parent.flow.InstanceId) {
+                            ////        return e;
+                            ////    }
+                            ////});
+
+                            //$('fieldset#payment_history table#payment_dg').datagrid('loadData', record.Payments);
                         }
                     }
                 </script>
@@ -752,9 +778,9 @@
                     else if (row.Hidden == 1) {
                         return "审核中";
                     }
-                    else if (row.Hidden == 3) {
-                        return "作废";
-                    }
+                    ////else if (row.Hidden == 3) {
+                    ////    return "作废";
+                    ////}
                     else {
                         return "待审核";
                     }

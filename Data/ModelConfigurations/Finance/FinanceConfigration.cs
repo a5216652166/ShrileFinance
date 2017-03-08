@@ -29,7 +29,6 @@
             Property(m => m.ApprovalRatio);
             Property(m => m.Payment);
             Property(m => m.RepayRentDate);
-            Property(m => m.Hidden).IsRequired();
 
             // 信审报告
             HasOptional(m => m.CreditExamine).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();

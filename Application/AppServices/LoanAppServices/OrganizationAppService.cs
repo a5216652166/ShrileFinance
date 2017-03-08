@@ -257,7 +257,7 @@
 
         public List<OriganizateOptions> GetOptions()
         {
-            var list = from item in organizationRepository.GetAll(m => m.Hidden == Core.Entities.HiddenEnum.完成)
+            var list = from item in organizationRepository.GetAll()
                        select new OriganizateOptions() { Value = item.Id, Text = item.Property.InstitutionChName };
 
             return list.ToListAsync().Result;

@@ -36,7 +36,7 @@
         {
         }
 
-        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
+        ////public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         /// <summary>
         /// 借据标识
@@ -78,9 +78,9 @@
         /// </summary>
         public string PaymentTypes { get; set; }
 
-        /// <summary>
-        /// 该还款信息所属流程ID
-        /// </summary>
-        public Guid InstanceId { get; set; }
+        /////// <summary>
+        /////// 该还款信息所属流程ID
+        /////// </summary>
+        ////public Guid InstanceId { get; set; }
     }
 }

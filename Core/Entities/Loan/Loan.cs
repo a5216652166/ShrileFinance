@@ -13,8 +13,7 @@
     {
         正常 = 1,
         已还清 = 2,
-        逾期 = 3,
-        作废 = 4
+        逾期 = 3
     }
 
     /// <summary>
@@ -78,7 +77,7 @@
             Payments = new HashSet<PaymentHistory>();
         }
 
-        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
+        ////public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         /// <summary>
         /// 授信合同标识
@@ -239,7 +238,7 @@
         /// </summary>
         /// <returns></returns>
         private decimal CalculateBalance() =>
-            Principle - Payments.Where(m => m.Hidden == HiddenEnum.完成).Sum(m => m.ActualPaymentPrincipal);
+            Principle - Payments.Sum(m => m.ActualPaymentPrincipal);
 
         /// <summary>
         /// 变更借据状态

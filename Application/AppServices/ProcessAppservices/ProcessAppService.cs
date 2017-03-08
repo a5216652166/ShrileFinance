@@ -8,6 +8,7 @@
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Loan;
     using Core.Entities.Process;
+    using Core.Exceptions;
     using Core.Interfaces;
     using Core.Interfaces.Repositories;
     using ViewModels.Loan.CreditViewModel;
@@ -119,15 +120,7 @@
             else if (viewModel is CreditContractViewModel)
             {
                 var creditContract = creditContractAppService.Create(viewModel as CreditContractViewModel);
-
-                ////var processTempDataViewModel = new ProcessTempDataViewModel<CreditContract>()
-                ////{
-                ////    InstanceId = instanceId,
-                ////    ObjData = creditContract
-                ////};
-
-                ////processTempDataAppService.Create(processTempDataViewModel);
-
+                
                 CreateProcessTempData(creditContract, instanceId);
 
                 entity = creditContract as TEntity;
@@ -152,31 +145,19 @@
             {
                 var payments = paymentHistoryAppService.AddPayments(viewModel as PaymentViewModel);
 
-                ////var processTempDataViewModel = new ProcessTempDataViewModel<IEnumerable<PaymentHistory>>()
-                ////{
-                ////    InstanceId = instanceId,
-                ////    ObjData = payments
-                ////};
-
-                ////processTempDataAppService.Create(processTempDataViewModel);
-
                 CreateProcessTempData(payments, instanceId);
 
                 entity = payments as TEntity;
             }
             else if (viewModel is OrganizationChangeViewModel)
             {
-                ////var processTempDataViewModel = new ProcessTempDataViewModel<OrganizationChangeViewModel>()
-                ////{
-                ////    InstanceId = instanceId,
-                ////    ObjData = viewModel as OrganizationChangeViewModel
-                ////};
-
-                ////processTempDataAppService.Create(processTempDataViewModel);
-
                 var organizationChange = viewModel as OrganizationChangeViewModel;
 
                 CreateProcessTempData(organizationChange, instanceId);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeAppException(message: $"{typeof(TEntity).Name}类型错误或为Null");
             }
 
             return entity;
@@ -186,7 +167,9 @@
         {
             var entity = default(TEntity);
 
-            if (entity is Organization)
+            var entityType = typeof(TEntity);
+
+            if (entityType == typeof(Organization))
             {
                 // 获取机构实体
                 var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
@@ -196,7 +179,7 @@
 
                 organizationAppService.Create(entity as Organization);
             }
-            else if (entity is CreditContract)
+            else if (entityType == typeof(CreditContract))
             {
                 var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
 
@@ -205,7 +188,7 @@
 
                 creditContractAppService.Create(entity as CreditContract);
             }
-            else if (entity is Loan)
+            else if (entityType == typeof(Loan))
             {
                 var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
 
@@ -214,7 +197,7 @@
 
                 loanAppService.Create(entity as Loan);
             }
-            else if (entity is IEnumerable<PaymentHistory>)
+            else if (entityType == typeof(IEnumerable<PaymentHistory>))
             {
                 var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
 
@@ -223,7 +206,7 @@
 
                 paymentHistoryAppService.AddPayments(entity as IEnumerable<PaymentHistory>);
             }
-            else if (entity is OrganizationChangeViewModel)
+            else if (entityType == typeof(OrganizationChangeViewModel))
             {
                 var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
 
@@ -231,6 +214,10 @@
                 entity = processTempDataViewModel.ObjData;
 
                 organizationAppService.ModifyPeriods(entity as OrganizationChangeViewModel);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeAppException(message: $"{entityType.Name}类型错误");
             }
 
             return entity;
@@ -318,8 +305,6 @@
             {
                 var paymentHistoryViewModel = Mapper.Map<PaymentHistoryViewModel>(item);
 
-                paymentHistoryViewModel.Hidden = Core.Entities.HiddenEnum.完成;
-
                 paymentHistoryViewModels.Add(paymentHistoryViewModel);
             }
 
@@ -334,7 +319,7 @@
 
                 var paymentHistoryViewModel = Mapper.Map<PaymentHistoryViewModel>(item);
 
-                paymentHistoryViewModel.Hidden = Core.Entities.HiddenEnum.审核中;
+                paymentHistoryViewModel.Hidden = HiddenEnum.审核中;
 
                 paymentHistoryViewModels.Add(paymentHistoryViewModel);
             }

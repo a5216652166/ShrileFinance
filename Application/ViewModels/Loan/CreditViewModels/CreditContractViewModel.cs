@@ -12,15 +12,13 @@
         {
             生效 = 0,
             失效 = 1,
-            未结清 = 2,
-            作废 = 3
+            未结清 = 2
         }
 
         public enum HiddenEnum : byte
         {
             审核中 = 1,
-            完成 = 2,
-            作废 = 3,
+            完成 = 2
         }
 
         public Guid? Id { get; set; }

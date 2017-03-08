@@ -155,9 +155,7 @@
 
             var pageList = messageTrack.ToPagedList(page, size);
 
-            var models = Mapper.Map<IPagedList<TraceViewModel>>(pageList);
-
-            return models;
+            return Mapper.Map<IPagedList<TraceViewModel>>(pageList);
         }
 
         /// <summary>

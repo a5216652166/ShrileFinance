@@ -139,7 +139,7 @@
         {
             try
             {
-                service.ProcessAbolish(instanceId);
+                ////service.ProcessAbolish(instanceId);
 
                 return Ok();
             }

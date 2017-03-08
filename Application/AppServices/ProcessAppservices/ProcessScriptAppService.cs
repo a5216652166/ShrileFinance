@@ -158,9 +158,6 @@
         {
             // 获取融资实体
             var finance = financeRepository.Get(Instance.RootKey.Value);
-
-            // 设置Hidden为false
-            SetHidden(finance);
         }
 
         /// <summary>
@@ -193,14 +190,7 @@
         /// </summary>
         public void OrganizationFinish()
         {
-            ////// 获取机构实体
-            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<Organization>(Instance.Id);
-
-            ////// 从流程临时数据中提取数据
-            ////var organization = processTempDataViewModel.ObjData;
-
-            ////organizationAppService.Create(organization);
-
+            // 提交修改
             var organization = processAppService.SubmitProcessData<Organization>(Instance.Id);
 
             // 报文追踪
@@ -213,16 +203,6 @@
         public void CreditContract()
         {
             var creditContractViewModel = GetData<CreditContractViewModel>("60DC5FCF-18A4-E611-80C5-507B9DE4A488");
-
-            ////var creditContract=creditContractAppService.Create(creditContractViewModel);
-
-            ////var processTempDataViewModel = new ProcessTempDataViewModel<CreditContract>()
-            ////{
-            ////    InstanceId = Instance.Id,
-            ////    ObjData = creditContract
-            ////};
-
-            ////processTempDataService.Create(processTempDataViewModel);
 
             var creditContract = processAppService.CreateProcessData<CreditContractViewModel, CreditContract>(creditContractViewModel, Instance.Id);
 
@@ -238,13 +218,7 @@
         /// </summary>
         public void CreditContractSigned()
         {
-            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<CreditContract>(Instance.Id);
-
-            ////// 从流程临时数据中提取数据
-            ////var creditContract = processTempDataViewModel.ObjData;
-
-            ////creditContractAppService.Create(creditContract);
-
+            // 提交修改
             var creditContract = processAppService.SubmitProcessData<CreditContract>(Instance.Id);
 
             // 报文追踪
@@ -282,16 +256,6 @@
         {
             var loanViewModel = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            ////var loan = loanAppService.ApplyLoan(loanViewModel);
-
-            ////var processTempDataViewModel = new ProcessTempDataViewModel<Loan>()
-            ////{
-            ////    InstanceId = Instance.Id,
-            ////    ObjData = loan
-            ////};
-
-            ////processTempDataService.Create(processTempDataViewModel);
-
             var loan = processAppService.CreateProcessData<ViewModels.Loan.LoanViewModels.LoanViewModel, Loan>(loanViewModel, Instance.Id);
 
             // 设置流程实例关联的业务标识
@@ -307,39 +271,25 @@
         /// </summary>
         public void LoanFinish()
         {
-            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<Loan>(Instance.Id);
-
-            ////// 从流程临时数据中提取数据
-            ////var loan = processTempDataViewModel.ObjData;
-
-            ////loanAppService.Create(loan);
-
+            // 提交修改
             var loan = processAppService.SubmitProcessData<Loan>(Instance.Id);
 
             // 报文追踪
             Trace(loan);
         }
 
+        /// <summary>
+        /// 还款
+        /// </summary>
         public void Payment()
         {
             var paymentViewModel = GetData<ViewModels.Loan.LoanViewModels.PaymentViewModel>("62DC5FCF-18A4-E611-80C5-507B9DE4A488");
-
-            paymentViewModel.Payments = paymentViewModel.Payments.Where(m => m.Hidden == HiddenEnum.审核中);
-
-            ////var payments= paymentHistoryAppService.AddPayments(paymentViewModel);
-
-            ////var processTempDataViewModel = new ProcessTempDataViewModel<IEnumerable<PaymentHistory>>()
-            ////{
-            ////    InstanceId = Instance.Id,
-            ////    ObjData = payments
-            ////};
-
-            ////processTempDataService.Create(processTempDataViewModel);
 
             var payments = processAppService.CreateProcessData<ViewModels.Loan.LoanViewModels.PaymentViewModel, IEnumerable<PaymentHistory>>(paymentViewModel, Instance.Id);
 
             // 设置流程实例关联的业务标识
             Instance.RootKey = paymentViewModel.LoanId;
+
             var loan = loanRepository.Get(paymentViewModel.LoanId);
             Instance.Title = $"{"借据编号：" + loan.ContractNumber + " 还款时间:" + paymentViewModel.Payments.Last().ActualDatePayment.ToString("yyyy-MM-dd")}";
         }
@@ -349,13 +299,7 @@
         /// </summary>
         public void PaymentFinish()
         {
-            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<IEnumerable<PaymentHistory>>(Instance.Id);
-
-            ////// 从流程临时数据中提取数据
-            ////var payments = processTempDataViewModel.ObjData;
-
-            ////paymentHistoryAppService.AddPayments(payments);
-
+            // 提交修改
             var payments = processAppService.SubmitProcessData<IEnumerable<PaymentHistory>>(Instance.Id);
 
             // 报文追踪
@@ -369,14 +313,6 @@
         {
             var organizationChangeViewModel = GetData<OrganizationChangeViewModel>("63DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            ////var processTempDataViewModel = new ProcessTempDataViewModel<OrganizationChangeViewModel>()
-            ////{
-            ////    InstanceId = Instance.Id,
-            ////    ObjData = organizationChangeViewModel
-            ////};
-
-            ////processTempDataService.Create(processTempDataViewModel);
-
             processAppService.CreateProcessData<OrganizationChangeViewModel, object>(organizationChangeViewModel, Instance.Id);
 
             Instance.RootKey = organizationChangeViewModel.Id;
@@ -388,13 +324,7 @@
         /// </summary>
         public void OrganizateChangeFinish()
         {
-            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<OrganizationChangeViewModel>(Instance.Id);
-
-            ////// 从流程临时数据中提取数据
-            ////var organizationChangeViewModel = processTempDataViewModel.ObjData;
-
-            ////organizationAppService.ModifyPeriods(organizationChangeViewModel);
-
+            // 提交修改
             var organizationChange = processAppService.SubmitProcessData<OrganizationChangeViewModel>(Instance.Id);
 
             // 报文追踪
@@ -461,7 +391,7 @@
             else if (entity is IEnumerable<PaymentHistory>)
             {
                 // 还款
-                var payments = (entity as IEnumerable<PaymentHistory>).Where(m => m.Hidden == HiddenEnum.审核中).ToList();
+                var payments = (entity as IEnumerable<PaymentHistory>).ToList();
 
                 var loan = loanRepository.Get(payments.First().LoanId);
 
@@ -525,19 +455,6 @@
         }
 
         /// <summary>
-        /// 设置Hidden为false
-        /// </summary>
-        /// <typeparam name="T">类型</typeparam>
-        /// <param name="entity">实体</param>
-        private void SetHidden<T>(T entity)
-        {
-            if (entity is Core.Interfaces.IProcessable)
-            {
-                (entity as Core.Interfaces.IProcessable).Hidden = HiddenEnum.完成;
-            }
-        }
-
-        /// <summary>
         /// 授信合同 - 审批通过
         /// </summary>
         /// <param name="describe">描述</param>
@@ -548,9 +465,6 @@
 
             // 报文追踪
             Trace(creditContract, describe: describe);
-
-            // 设置Hidden为false
-            SetHidden(creditContract);
         }
     }
 }

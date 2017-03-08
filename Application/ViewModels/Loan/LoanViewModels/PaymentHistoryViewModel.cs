@@ -11,7 +11,7 @@
         /// </summary>
         public Guid? Id { get; set; }
 
-        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
+        public HiddenEnum Hidden { get; set; } = HiddenEnum.完成;
 
         /// <summary>
         /// 应还本金

@@ -1,6 +1,5 @@
 ﻿namespace Data.Repositories
 {
-    using System;
     using System.Linq;
     using Core.Entities.Produce;
     using Core.Interfaces.Repositories;

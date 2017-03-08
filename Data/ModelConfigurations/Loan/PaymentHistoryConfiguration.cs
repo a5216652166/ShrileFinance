@@ -1,6 +1,5 @@
 ﻿namespace Data.ModelConfigurations.Loan
 {
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Loan;
 
@@ -9,7 +8,7 @@
         public PaymentHistoryConfiguration()
         {
             HasKey(m => m.Id);
-            Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            ////Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(m => m.LoanId);
             Property(m => m.ScheduledPaymentPrincipal);
@@ -19,8 +18,6 @@
             Property(m => m.ActualDatePayment);
             Property(m => m.ScheduledDatePayment);
             Property(m => m.PaymentTypes).HasMaxLength(2);
-            Property(m => m.Hidden).IsRequired();
-            Property(m => m.InstanceId).IsRequired();
 
             ToTable("LOAN_PaymentHistory");
         }

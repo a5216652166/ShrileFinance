@@ -7,6 +7,6 @@
     {
         Guid Id { get; set; }
 
-        HiddenEnum Hidden { get; set; }
+        ////HiddenEnum Hidden { get; set; }
     }
 }

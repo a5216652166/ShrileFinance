@@ -112,7 +112,6 @@
         {
             var organization = organizationRepository.Get(trace.ReferenceId);
 
-            ////var datagramFile = new OrganizationDatagramFile(trace.SerialNumber);
             var datagramFile = OrganizationDatagramFile.Create();
 
             datagramFile.GetDatagram(DatagramTypeEnum.机构基本信息报文)
@@ -370,59 +369,6 @@
 
             // 获取机构实体
             var organization = organizationRepository.Get(processTempData.Instance.RootKey.Value);
-
-            ////// 从JSON字符串中获取段集合
-            ////var periods = JsonParseHelper.GetJProperty(processTempData.JsonData, "Periods", 2).Select(m => m.Value<string>());
-
-            ////if (periods.Contains("Property") == false)
-            ////{
-            ////    organization.Property = null;
-            ////}
-
-            ////if (periods.Contains("State") == false)
-            ////{
-            ////    organization.State = null;
-            ////}
-
-            ////if (periods.Contains("Contact") == false)
-            ////{
-            ////    organization.Contact = null;
-            ////}
-
-            ////if (periods.Contains("Managers") == false)
-            ////{
-            ////    organization.Managers.Clear();
-            ////}
-
-            ////if (periods.Contains("Shareholders") == false)
-            ////{
-            ////    organization.Shareholders.Clear();
-            ////}
-
-            ////if (periods.Contains("AssociatedEnterprises") == false)
-            ////{
-            ////    organization.AssociatedEnterprises.Clear();
-            ////}
-
-            ////if (periods.Contains("Parent") == false)
-            ////{
-            ////    organization.Parent = null;
-            ////}
-
-            ////if (periods.Contains("FinancialAffairs") == false)
-            ////{
-            ////    organization.FinancialAffairs = null;
-            ////}
-
-            ////if (periods.Contains("Litigation") == false)
-            ////{
-            ////    organization.Property = null;
-            ////}
-
-            ////if (periods.Contains("Litigation") == false)
-            ////{
-            ////    organization.Property = null;
-            ////}
 
             var datagramFile = OrganizationDatagramFile.Create();
 

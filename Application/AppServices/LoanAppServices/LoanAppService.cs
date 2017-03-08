@@ -107,67 +107,67 @@
             loanRepository.Commit();
         }
 
-        /// <summary>
-        /// 还款
-        /// </summary>
-        /// <param name="model">还款实体</param>
-        public void Payment(PaymentViewModel model)
-        {
-            if (model.Payments.Count() == 0)
-            {
-                throw new ArgumentAppException("还款记录不可为空.");
-            }
+        /////// <summary>
+        /////// 还款
+        /////// </summary>
+        /////// <param name="model">还款实体</param>
+        ////public void Payment(PaymentViewModel model)
+        ////{
+        ////    if (model.Payments.Count() == 0)
+        ////    {
+        ////        throw new ArgumentAppException("还款记录不可为空.");
+        ////    }
 
-            decimal paymentCount = 0;
-            var loan = loanRepository.Get(model.LoanId);
-            var modelPaymentIds = from item in model.Payments.Where(m => m.Id != null) select item.Id.Value;
-            var removeItem = new List<PaymentHistory>();
-            foreach (var item in loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.InstanceId == model.Payments.First().InstanceId))
-            {
-                if (modelPaymentIds.Contains(item.Id) == false)
-                {
-                    removeItem.Add(item);
-                }
-            }
+        ////    decimal paymentCount = 0;
+        ////    var loan = loanRepository.Get(model.LoanId);
+        ////    var modelPaymentIds = from item in model.Payments.Where(m => m.Id != null) select item.Id.Value;
+        ////    var removeItem = new List<PaymentHistory>();
+        ////    foreach (var item in loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.InstanceId == model.Payments.First().InstanceId))
+        ////    {
+        ////        if (modelPaymentIds.Contains(item.Id) == false)
+        ////        {
+        ////            removeItem.Add(item);
+        ////        }
+        ////    }
 
-            removeItem.ForEach(m =>
-            {
-                loan.Payments.Remove(m);
-                paymentHistoryRepository.Remove(m);
-            });
+        ////    removeItem.ForEach(m =>
+        ////    {
+        ////        loan.Payments.Remove(m);
+        ////        paymentHistoryRepository.Remove(m);
+        ////    });
 
-            foreach (var payment in model.Payments)
-            {
-                if (payment.Id != null)
-                {
-                    var payments = loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.Id == payment.Id.Value);
-                    if (payments.Count() > 0)
-                    {
-                        // 修改
-                        Mapper.Map(payment, payments.Single());
-                    }
-                }
-                else
-                {
-                    // 新增
-                    loan.AddPaymentHistory(Mapper.Map<PaymentHistory>(payment));
-                }
-            }
+        ////    foreach (var payment in model.Payments)
+        ////    {
+        ////        if (payment.Id != null)
+        ////        {
+        ////            var payments = loan.Payments.Where(m => m.Hidden == HiddenEnum.审核中 && m.Id == payment.Id.Value);
+        ////            if (payments.Count() > 0)
+        ////            {
+        ////                // 修改
+        ////                Mapper.Map(payment, payments.Single());
+        ////            }
+        ////        }
+        ////        else
+        ////        {
+        ////            // 新增
+        ////            loan.AddPaymentHistory(Mapper.Map<PaymentHistory>(payment));
+        ////        }
+        ////    }
 
-            foreach (var payment in loan.Payments)
-            {
-                paymentCount += payment.ActualPaymentPrincipal;
+        ////    foreach (var payment in loan.Payments)
+        ////    {
+        ////        paymentCount += payment.ActualPaymentPrincipal;
 
-                paymentService.Payment(loan, payment);
-            }
+        ////        paymentService.Payment(loan, payment);
+        ////    }
 
-            if (loan.Balance < paymentCount)
-            {
-                throw new ArgumentAppException("该借据余额已不足.");
-            }
+        ////    if (loan.Balance < paymentCount)
+        ////    {
+        ////        throw new ArgumentAppException("该借据余额已不足.");
+        ////    }
 
-            loanRepository.Modify(loan);
-        }
+        ////    loanRepository.Modify(loan);
+        ////}
 
         /// <summary>
         /// 分页查询

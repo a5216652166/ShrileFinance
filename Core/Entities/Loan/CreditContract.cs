@@ -11,8 +11,7 @@
     {
         生效 = 0,
         失效 = 1,
-        未结清 = 2,
-        作废 = 3
+        未结清 = 2
     }
 
     public class CreditContract : Entity, IAggregateRoot, IProcessable
@@ -47,7 +46,7 @@
             EffectiveStatus = status;
         }
 
-        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
+        ////public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         public Guid OrganizationId { get; set; }
 
@@ -183,7 +182,7 @@
         /// </summary>
         /// <returns>授信余额</returns>
         public decimal CalculateCreditBalance() =>
-            CreditLimit - Loans.Where(m => m.Hidden == HiddenEnum.完成).Sum(m => m.Balance);
+            CreditLimit - Loans.Sum(m => m.Balance);
 
         /// <summary>
         /// 修正担保合同的序号

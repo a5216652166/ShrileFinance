@@ -139,9 +139,9 @@
     <Compile Include="Migrations\201702280709216_CancelAutoGeneratePrimaryKey.Designer.cs">
       <DependentUpon>201702280709216_CancelAutoGeneratePrimaryKey.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703060222384_UpdateInstanceTable.cs" />
-    <Compile Include="Migrations\201703060222384_UpdateInstanceTable.Designer.cs">
-      <DependentUpon>201703060222384_UpdateInstanceTable.cs</DependentUpon>
+    <Compile Include="Migrations\201703080749440_ProcessDecouple.cs" />
+    <Compile Include="Migrations\201703080749440_ProcessDecouple.Designer.cs">
+      <DependentUpon>201703080749440_ProcessDecouple.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -337,23 +337,23 @@
     </Compile>
     <Compile Include="Repositories\AppUserStore.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
-    <Compile Include="Repositories\ContractRepository.cs" />
-    <Compile Include="Repositories\CreditContractRespostiory.cs" />
-    <Compile Include="Repositories\DatagramFileRepository.cs" />
-    <Compile Include="Repositories\DraftRepository.cs" />
+    <Compile Include="Repositories\LoanRepositories\ContractRepository.cs" />
+    <Compile Include="Repositories\LoanRepositories\CreditContractRespostiory.cs" />
+    <Compile Include="Repositories\DatagramRepositories\DatagramFileRepository.cs" />
+    <Compile Include="Repositories\ProcessRepositories\DraftRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
-    <Compile Include="Repositories\ProcessRepository.cs" />
-    <Compile Include="Repositories\FormRepository.cs" />
-    <Compile Include="Repositories\InstanceRepository.cs" />
-    <Compile Include="Repositories\FinancingProjectRepository.cs" />
-    <Compile Include="Repositories\LoanRepository.cs" />
-    <Compile Include="Repositories\OrganizationRepository.cs" />
-    <Compile Include="Repositories\PaymentHistoryRepository.cs" />
-    <Compile Include="Repositories\ProcessTempDataRepository.cs" />
-    <Compile Include="Repositories\TraceRepository.cs" />
-    <Compile Include="Repositories\ProduceRepository.cs" />
-    <Compile Include="Repositories\FinanceRepository.cs" />
-    <Compile Include="Repositories\PartnerRepository.cs" />
+    <Compile Include="Repositories\ProcessRepositories\ProcessRepository.cs" />
+    <Compile Include="Repositories\ProcessRepositories\FormRepository.cs" />
+    <Compile Include="Repositories\ProcessRepositories\InstanceRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\FinancingProjectRepository.cs" />
+    <Compile Include="Repositories\LoanRepositories\LoanRepository.cs" />
+    <Compile Include="Repositories\LoanRepositories\OrganizationRepository.cs" />
+    <Compile Include="Repositories\LoanRepositories\PaymentHistoryRepository.cs" />
+    <Compile Include="Repositories\ProcessRepositories\ProcessTempDataRepository.cs" />
+    <Compile Include="Repositories\DatagramRepositories\TraceRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\ProduceRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\FinanceRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\PartnerRepository.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -428,8 +428,8 @@
     <EmbeddedResource Include="Migrations\201702280709216_CancelAutoGeneratePrimaryKey.resx">
       <DependentUpon>201702280709216_CancelAutoGeneratePrimaryKey.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703060222384_UpdateInstanceTable.resx">
-      <DependentUpon>201703060222384_UpdateInstanceTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703080749440_ProcessDecouple.resx">
+      <DependentUpon>201703080749440_ProcessDecouple.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

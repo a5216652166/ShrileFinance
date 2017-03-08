@@ -386,95 +386,6 @@
         }
 
         /// <summary>
-        /// 流程作废处理
-        /// </summary>
-        /// <param name="instanceId">实例标识</param>
-        public void ProcessAbolish(Guid instanceId)
-        {
-            var instance = instanceReopsitory.Get(instanceId);
-
-            if (instance.Status == InstanceStatusEnum.完成)
-            {
-                instance.Status = InstanceStatusEnum.作废;
-                instanceReopsitory.Modify(instance);
-            }
-            else
-            {
-                throw new InvalidOperationAppException("该流程暂未审批完成，暂时无法作废");
-            }
-
-            switch (instance.ProcessType)
-            {
-                case ProcessTypeEnum.融资:
-                    break;
-                case ProcessTypeEnum.添加机构:
-                    var organizate = organizationRepository.Get(instance.RootKey.Value);
-                    ChangeStatus(instance.RootKey.Value);
-                    var creditContractcount = creditContractRepository.GetAll(m => m.OrganizationId == organizate.Id && m.Hidden != HiddenEnum.作废).Count();
-                    if (creditContractcount > 0)
-                    {
-                        throw new InvalidOperationAppException("该机构下存在有效贷款合同，暂时无法作废");
-                    }
-                    else
-                    {
-                        organizate.Hidden = HiddenEnum.作废;
-                        organizationRepository.Modify(organizate);
-                    }
-
-                    break;
-                case ProcessTypeEnum.授信:
-                    var creditContract = creditContractRepository.Get(instance.RootKey.Value);
-                    ChangeStatus(instance.RootKey.Value);
-                    var loanCount = loanRepository.GetAll(m => m.CreditId == creditContract.Id && m.Hidden != HiddenEnum.作废).Count();
-                    if (loanCount > 0)
-                    {
-                        throw new InvalidOperationAppException("该贷款合同下存在有效的借据合同，暂时无法作废");
-                    }
-                    else
-                    {
-                        creditContract.Hidden = HiddenEnum.作废;
-                        creditContract.EffectiveStatus = CreditContractStatusEnum.作废;
-                        creditContractRepository.Modify(creditContract);
-                    }
-
-                    break;
-                case ProcessTypeEnum.借据:
-                    var loan = loanRepository.Get(instance.RootKey.Value);
-                    ChangeStatus(instance.RootKey.Value);
-                    var repaymentCount = paymentRepository.GetAll(m => m.LoanId == loan.Id && m.Hidden != HiddenEnum.作废).Count();
-                    if (repaymentCount > 0)
-                    {
-                        throw new InvalidOperationAppException("该借据合同下存在有效的还款记录，暂时无法作废");
-                    }
-                    else
-                    {
-                        loan.Hidden = HiddenEnum.作废;
-                        loan.Status = LoanStatusEnum.作废;
-                        loanRepository.Modify(loan);
-                    }
-
-                    break;
-                case ProcessTypeEnum.还款:
-                    var payments = paymentRepository.GetAll(m => m.InstanceId == instance.Id);
-
-                    foreach (var payment in payments)
-                    {
-                        ChangeStatus(payment.Id);
-                        payment.Hidden = HiddenEnum.作废;
-                        paymentRepository.Modify(payment);
-                    }
-
-                    break;
-                case ProcessTypeEnum.机构变更:
-                    break;
-                default:
-                    break;
-            }
-
-            instanceReopsitory.Commit();
-        }
-
-        /// <summary>
         /// 分配流程实例
         /// </summary>
         /// <param name="processId">流程类型</param>
@@ -536,29 +447,8 @@
             // 若当前角色的标识与客户经理不同，则认为该请求非法
             if (!curentRole.Id.Equals("C342BEE1-05A4-E611-80C5-507B9DE4A488"))
             {
-                throw new ArgumentOutOfRangeAppException(message: $"亲爱的{curentRole.Name}，您没有权限发起流程！");
+                throw new ArgumentOutOfRangeAppException(message: $"亲爱的{curentRole.Name}宝宝，您没有权限发起流程！");
             }
-        }
-
-        private Trace ChangeStatus(Guid referenceId)
-        {
-            var trace = traceRepository.GetAll(m => m.ReferenceId == referenceId).FirstOrDefault();
-
-            if (trace.Status == TraceStatusEmum.待生成)
-            {
-                trace.Status = TraceStatusEmum.作废;
-                traceRepository.Modify(trace);
-            }
-            else if (trace.Status == TraceStatusEmum.待发送)
-            {
-                throw new InvalidOperationAppException("该信息已经生成报文提交给人行，暂时无法作废");
-            }
-            else if (trace.Status == TraceStatusEmum.作废)
-            {
-                throw new InvalidOperationAppException("该信息已作废，暂时无法作废");
-            }
-
-            return trace;
         }
     }
 }

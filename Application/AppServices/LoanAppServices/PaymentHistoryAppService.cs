@@ -34,8 +34,15 @@
 
             var loan = loanRepository.Get(paymentViewModel.LoanId);
 
+            var paymentIds = loan.Payments.Select(m => m.Id);
+
             foreach (var item in paymentViewModel.Payments)
             {
+                if (item.Id.HasValue && paymentIds.Contains(item.Id.Value))
+                {
+                    continue;
+                }
+
                 var paymentHistory = Mapper.Map<PaymentHistory>(item);
 
                 paymentHistory.LoanId = paymentViewModel.LoanId;
@@ -45,7 +52,7 @@
                 payments.Add(paymentHistory);
             }
 
-            ValidPayments(payments,loan);
+            ValidPayments(payments, loan);
 
             return payments;
         }
@@ -79,7 +86,7 @@
         /// </summary>
         /// <param name="payments">还款实体</param>
         /// <param name="loan">借据实体</param>
-        private void ValidPayments(IEnumerable<PaymentHistory> payments,Loan loan)
+        private void ValidPayments(IEnumerable<PaymentHistory> payments, Loan loan)
         {
             var exception = default(Exception);
 
@@ -89,7 +96,7 @@
             }
             else
             {
-                if (loan.Balance < payments.Sum(m=>m.ActualPaymentPrincipal))
+                if (loan.Balance < payments.Sum(m => m.ActualPaymentPrincipal))
                 {
                     exception = new ArgumentAppException("该借据余额已不足.");
                 }

@@ -7,13 +7,13 @@ namespace Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class UpdateInstanceTable : IMigrationMetadata
+    public sealed partial class ProcessDecouple : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateInstanceTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ProcessDecouple));
         
         string IMigrationMetadata.Id
         {
-            get { return "201703060222384_UpdateInstanceTable"; }
+            get { return "201703080749440_ProcessDecouple"; }
         }
         
         string IMigrationMetadata.Source

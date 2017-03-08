@@ -112,12 +112,12 @@
 
         public CreditContractViewModel Get(Guid id)
         {
-            var credit = creditContractRepository.Get(id);
+            var creditContract = creditContractRepository.Get(id);
 
-            var creditViewModel = Mapper.Map<CreditContractViewModel>(credit);
+            var creditViewModel = Mapper.Map<CreditContractViewModel>(creditContract);
 
             creditViewModel.GuarantyContract = new List<GuarantyContractViewModel>();
-            foreach (var item in credit.GuarantyContract)
+            foreach (var item in creditContract.GuarantyContract)
             {
                 creditViewModel.GuarantyContract.Add(Mapper.Map<GuarantyContractViewModel>(item));
             }

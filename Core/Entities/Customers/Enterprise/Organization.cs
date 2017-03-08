@@ -15,7 +15,7 @@
             CreatedDate = DateTime.Now;
         }
 
-        public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
+        ////public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
 
         /// <summary>
         /// 客户号

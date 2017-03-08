@@ -67,7 +67,7 @@
             // 管理员
             if (currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
             {
-                instances = GetAll(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.作废);
+                instances = GetAll(m => m.RootKey != null && m.RootKey != Guid.Empty);
             }
             else
             {

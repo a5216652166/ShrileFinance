@@ -21,7 +21,6 @@
             Property(m => m.TaxpayerIdentifyLandNumber).HasMaxLength(20);
             Property(m => m.LoanCardCode).IsRequired().HasMaxLength(16);
             Property(m => m.CreatedDate).IsRequired();
-            Property(m => m.Hidden).IsRequired();
 
             Ignore(m => m.HasParent);
 

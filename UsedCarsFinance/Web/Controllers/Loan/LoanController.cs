@@ -58,7 +58,7 @@
         [HttpPut]
         public IHttpActionResult PaymentPut(PaymentViewModel model)
         {
-            loanAppService.Payment(model);
+            ////loanAppService.Payment(model);
 
             return Ok();
         }

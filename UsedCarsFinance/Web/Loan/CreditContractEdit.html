@@ -15,6 +15,7 @@
         uc.form = new UCForm(".container");
         $(function () {
             LoadAllOrgainzate();
+            
             if (query.method == "creditview") {
                 query.creditId = query.id;
                 PageDisable();
@@ -68,7 +69,7 @@
         function Init() {
             var data;
 
-            if (parent.flow.InstanceId) {
+            if (query.InstanceId) {
                 data = parent.GetProcessData(query.InstanceId).CreditContract;
             }
             else {
@@ -77,12 +78,13 @@
                     method: "GET",
                     data: { id: query.creditId },
                     url: "../api/CreditContract/Get",
-                    success: function (data) {
-                        data = data;
+                    success: function (datas) {
+                        data = datas;
+                        debugger
                     }
                 });
             }
-
+            debugger
             if (data != undefined && data != null) {
                 OrganizateInfo(data.OrganizationId)
                 LoadData(data);

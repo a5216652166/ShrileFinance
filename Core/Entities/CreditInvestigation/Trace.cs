@@ -25,8 +25,7 @@
         待生成 = 0,
         待发送 = 1,
         已发送 = 2,
-        待反馈 = 3,
-        作废 = 4,
+        待反馈 = 3
     }
 
     public class Trace : Entity, IAggregateRoot
@@ -36,7 +35,6 @@
             Name = name;
             Type = type;
             ReferenceId = referenceId;
-            ////SerialNumber = serialNumber;
             SpecialDate = specialDate;
             OrganizateName = organizateName;
             DateCreated = DateTime.Now.Date;
