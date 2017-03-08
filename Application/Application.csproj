@@ -90,36 +90,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystemAppService.cs" />
-    <Compile Include="CreditContractAppService.cs" />
-    <Compile Include="DraftAppService.cs" />
-    <Compile Include="FinanceAppService.cs" />
-    <Compile Include="PaymentHistoryAppService.cs" />
-    <Compile Include="ProcessAppService.cs" />
-    <Compile Include="ProcessScriptService.cs" />
-    <Compile Include="FinancingProjectAppService.cs" />
-    <Compile Include="LoanAppService.cs" />
+    <Compile Include="AppServices\FileSystemAppServices\FileSystemAppService.cs" />
+    <Compile Include="AppServices\LoanAppServices\CreditContractAppService.cs" />
+    <Compile Include="AppServices\ProcessAppservices\DraftAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\FinanceAppService.cs" />
+    <Compile Include="AppServices\LoanAppServices\PaymentHistoryAppService.cs" />
+    <Compile Include="AppServices\ProcessAppservices\ProcessAppService.cs" />
+    <Compile Include="AppServices\ProcessAppservices\ProcessScriptAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\FinancingProjectAppService.cs" />
+    <Compile Include="AppServices\LoanAppServices\LoanAppService.cs" />
     <Compile Include="Mappings\DomainToCreditInvestigationProfile.cs" />
     <Compile Include="Mappings\LoanDomainToViewModelProfile.cs" />
     <Compile Include="Mappings\LoanViewModelToDomianProfile.cs" />
     <Compile Include="Mappings\PagedListTypeConverter.cs" />
-    <Compile Include="DatagramAppService.cs" />
-    <Compile Include="PartnerAppService.cs" />
-    <Compile Include="InstanceAppService.cs" />
-    <Compile Include="OrganizationAppService.cs" />
+    <Compile Include="AppServices\DatagramAppServices\DatagramAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\PartnerAppService.cs" />
+    <Compile Include="AppServices\ProcessAppservices\InstanceAppService.cs" />
+    <Compile Include="AppServices\LoanAppServices\OrganizationAppService.cs" />
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />
-    <Compile Include="ProcessTempDataAppService.cs" />
-    <Compile Include="ProduceAppService.cs" />
+    <Compile Include="AppServices\ProcessAppservices\ProcessTempDataAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\ProduceAppService.cs" />
     <Compile Include="Startup\Startup.Autofac.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Startup.cs" />
-    <Compile Include="AccountAppService.cs" />
-    <Compile Include="StatisticsAppService.cs" />
-    <Compile Include="TimeAppService.cs" />
-    <Compile Include="UpdateBind.cs" />
+    <Compile Include="AppServices\AccountAppServices\AccountAppService.cs" />
+    <Compile Include="AppServices\LoanAppServices\StatisticsAppService.cs" />
+    <Compile Include="AppServices\TimeAppService.cs" />
+    <Compile Include="AppServices\UpdateBind.cs" />
     <Compile Include="ViewModels\AccountViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\UserInfoViewModel.cs" />

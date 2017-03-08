@@ -368,8 +368,8 @@
         {
             var processTempData = processTempDataRepository.GetByInstanceId(trace.ReferenceId);
 
-            // 获取机构实体（克隆版）
-            var organization = EntityCloneHelper.Clone(organizationRepository.Get(processTempData.Instance.RootKey.Value));
+            // 获取机构实体
+            var organization = organizationRepository.Get(processTempData.Instance.RootKey.Value);
 
             ////// 从JSON字符串中获取段集合
             ////var periods = JsonParseHelper.GetJProperty(processTempData.JsonData, "Periods", 2).Select(m => m.Value<string>());

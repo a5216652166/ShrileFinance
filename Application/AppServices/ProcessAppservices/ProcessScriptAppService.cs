@@ -5,25 +5,20 @@
     using System.Linq;
     using Core.Entities;
     using Core.Entities.CreditInvestigation;
-    using Core.Entities.Process;
+    using Core.Entities.Customers.Enterprise;
     using Core.Entities.Loan;
+    using Core.Entities.Process;
     using Core.Interfaces.Repositories;
     using Newtonsoft.Json.Linq;
     using ViewModels.FinanceViewModels;
     using ViewModels.Loan.CreditViewModel;
     using ViewModels.OrganizationViewModels;
-    using ViewModels.ProcessViewModels;
-    using Core.Entities.Customers.Enterprise;
 
     public class ProcessScriptAppService
     {
         private readonly FinanceAppService financeAppService;
-        private readonly LoanAppService loanAppService;
-        private readonly OrganizationAppService organizationAppService;
-        private readonly CreditContractAppService creditContractAppService;
         private readonly DatagramAppService datagramAppService;
-        private readonly ProcessTempDataAppService processTempDataService;
-        private readonly PaymentHistoryAppService paymentHistoryAppService;
+        private readonly ProcessAppService processAppService;
         private readonly IFinanceRepository financeRepository;
         private readonly ICreditContractRepository creditContractRepository;
         private readonly ILoanRepository loanRepository;
@@ -31,24 +26,16 @@
 
         public ProcessScriptAppService(
             FinanceAppService financeAppService,
-            OrganizationAppService organizationAppService,
-            LoanAppService loanAppService,
-            CreditContractAppService creditContractAppService,
             DatagramAppService datagramAppService,
-            ProcessTempDataAppService processTempDataService,
-            PaymentHistoryAppService paymentHistoryAppService,
+            ProcessAppService processAppService,
             IFinanceRepository financeRepository,
             ICreditContractRepository creditContractRepository,
             ILoanRepository loanRepository,
             IOrganizationRepository organizationRepository)
         {
             this.financeAppService = financeAppService;
-            this.organizationAppService = organizationAppService;
-            this.loanAppService = loanAppService;
-            this.creditContractAppService = creditContractAppService;
             this.datagramAppService = datagramAppService;
-            this.processTempDataService = processTempDataService;
-            this.paymentHistoryAppService = paymentHistoryAppService;
+            this.processAppService = processAppService;
             this.financeRepository = financeRepository;
             this.creditContractRepository = creditContractRepository;
             this.loanRepository = loanRepository;
@@ -183,15 +170,17 @@
         {
             var organizationViewModel = GetData<OrganizationViewModel>("5FDC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            var organization = organizationAppService.Create(organizationViewModel);
+            ////var organization = organizationAppService.Create(organizationViewModel);
 
-            var processTempDataViewModel = new ProcessTempDataViewModel<Organization>()
-            {
-                InstanceId = Instance.Id,
-                ObjData = organization
-            };
+            ////var processTempDataViewModel = new ProcessTempDataViewModel<Organization>()
+            ////{
+            ////    InstanceId = Instance.Id,
+            ////    ObjData = organization
+            ////};
 
-            processTempDataService.Create(processTempDataViewModel);
+            ////processTempDataService.Create(processTempDataViewModel);
+
+            var organization = processAppService.CreateProcessData<OrganizationViewModel, Organization>(organizationViewModel, Instance.Id);
 
             // 设置流程实例关联的业务标识
             Instance.RootKey = organization.Id;
@@ -204,13 +193,15 @@
         /// </summary>
         public void OrganizationFinish()
         {
-            // 获取机构实体
-            var processTempDataViewModel = processTempDataService.GetByInstanceId<Organization>(Instance.Id);
+            ////// 获取机构实体
+            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<Organization>(Instance.Id);
 
-            // 从流程临时数据中提取数据
-            var organization = processTempDataViewModel.ObjData;
+            ////// 从流程临时数据中提取数据
+            ////var organization = processTempDataViewModel.ObjData;
 
-            organizationAppService.Create(organization);
+            ////organizationAppService.Create(organization);
+
+            var organization = processAppService.SubmitProcessData<Organization>(Instance.Id);
 
             // 报文追踪
             Trace(organization);
@@ -223,15 +214,17 @@
         {
             var creditContractViewModel = GetData<CreditContractViewModel>("60DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            var creditContract=creditContractAppService.Create(creditContractViewModel);
+            ////var creditContract=creditContractAppService.Create(creditContractViewModel);
 
-            var processTempDataViewModel = new ProcessTempDataViewModel<CreditContract>()
-            {
-                InstanceId = Instance.Id,
-                ObjData = creditContract
-            };
+            ////var processTempDataViewModel = new ProcessTempDataViewModel<CreditContract>()
+            ////{
+            ////    InstanceId = Instance.Id,
+            ////    ObjData = creditContract
+            ////};
 
-            processTempDataService.Create(processTempDataViewModel);
+            ////processTempDataService.Create(processTempDataViewModel);
+
+            var creditContract = processAppService.CreateProcessData<CreditContractViewModel, CreditContract>(creditContractViewModel, Instance.Id);
 
             // 设置流程实例关联的业务标识
             Instance.RootKey = creditContract.Id;
@@ -245,12 +238,14 @@
         /// </summary>
         public void CreditContractSigned()
         {
-            var processTempDataViewModel = processTempDataService.GetByInstanceId<CreditContract>(Instance.Id);
+            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<CreditContract>(Instance.Id);
 
-            // 从流程临时数据中提取数据
-            var creditContract = processTempDataViewModel.ObjData;
+            ////// 从流程临时数据中提取数据
+            ////var creditContract = processTempDataViewModel.ObjData;
 
-            creditContractAppService.Create(creditContract);
+            ////creditContractAppService.Create(creditContract);
+
+            var creditContract = processAppService.SubmitProcessData<CreditContract>(Instance.Id);
 
             // 报文追踪
             Trace(creditContract, describe: CreditContractChangeEnum.签订合同);
@@ -287,20 +282,22 @@
         {
             var loanViewModel = GetData<ViewModels.Loan.LoanViewModels.LoanViewModel>("61DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            var loan = loanAppService.ApplyLoan(loanViewModel);
+            ////var loan = loanAppService.ApplyLoan(loanViewModel);
 
-            var processTempDataViewModel = new ProcessTempDataViewModel<Loan>()
-            {
-                InstanceId = Instance.Id,
-                ObjData = loan
-            };
+            ////var processTempDataViewModel = new ProcessTempDataViewModel<Loan>()
+            ////{
+            ////    InstanceId = Instance.Id,
+            ////    ObjData = loan
+            ////};
 
-            processTempDataService.Create(processTempDataViewModel);
+            ////processTempDataService.Create(processTempDataViewModel);
+
+            var loan = processAppService.CreateProcessData<ViewModels.Loan.LoanViewModels.LoanViewModel, Loan>(loanViewModel, Instance.Id);
 
             // 设置流程实例关联的业务标识
             Instance.RootKey = loan.Id;
 
-            var creditContract = creditContractAppService.Get(loan.CreditId);
+            var creditContract = creditContractRepository.Get(loan.CreditId);
 
             Instance.Title = $"{"授信合同编号：" + creditContract.CreditContractCode + " 借据编号：" + loan.ContractNumber}";
         }
@@ -310,12 +307,14 @@
         /// </summary>
         public void LoanFinish()
         {
-            var processTempDataViewModel = processTempDataService.GetByInstanceId<Loan>(Instance.Id);
+            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<Loan>(Instance.Id);
 
-            // 从流程临时数据中提取数据
-            var loan = processTempDataViewModel.ObjData;
+            ////// 从流程临时数据中提取数据
+            ////var loan = processTempDataViewModel.ObjData;
 
-            loanAppService.Create(loan);
+            ////loanAppService.Create(loan);
+
+            var loan = processAppService.SubmitProcessData<Loan>(Instance.Id);
 
             // 报文追踪
             Trace(loan);
@@ -327,19 +326,21 @@
 
             paymentViewModel.Payments = paymentViewModel.Payments.Where(m => m.Hidden == HiddenEnum.审核中);
 
-            var payments= paymentHistoryAppService.AddPayments(paymentViewModel);
+            ////var payments= paymentHistoryAppService.AddPayments(paymentViewModel);
 
-            var processTempDataViewModel = new ProcessTempDataViewModel<IEnumerable<PaymentHistory>>()
-            {
-                InstanceId = Instance.Id,
-                ObjData = payments
-            };
+            ////var processTempDataViewModel = new ProcessTempDataViewModel<IEnumerable<PaymentHistory>>()
+            ////{
+            ////    InstanceId = Instance.Id,
+            ////    ObjData = payments
+            ////};
 
-            processTempDataService.Create(processTempDataViewModel);
+            ////processTempDataService.Create(processTempDataViewModel);
+
+            var payments = processAppService.CreateProcessData<ViewModels.Loan.LoanViewModels.PaymentViewModel, IEnumerable<PaymentHistory>>(paymentViewModel, Instance.Id);
 
             // 设置流程实例关联的业务标识
             Instance.RootKey = paymentViewModel.LoanId;
-            var loan = loanAppService.Get(paymentViewModel.LoanId);
+            var loan = loanRepository.Get(paymentViewModel.LoanId);
             Instance.Title = $"{"借据编号：" + loan.ContractNumber + " 还款时间:" + paymentViewModel.Payments.Last().ActualDatePayment.ToString("yyyy-MM-dd")}";
         }
 
@@ -348,12 +349,14 @@
         /// </summary>
         public void PaymentFinish()
         {
-            var processTempDataViewModel = processTempDataService.GetByInstanceId<IEnumerable<PaymentHistory>>(Instance.Id);
+            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<IEnumerable<PaymentHistory>>(Instance.Id);
 
-            // 从流程临时数据中提取数据
-            var payments = processTempDataViewModel.ObjData;
+            ////// 从流程临时数据中提取数据
+            ////var payments = processTempDataViewModel.ObjData;
 
-            paymentHistoryAppService.AddPayments(payments);
+            ////paymentHistoryAppService.AddPayments(payments);
+
+            var payments = processAppService.SubmitProcessData<IEnumerable<PaymentHistory>>(Instance.Id);
 
             // 报文追踪
             Trace(payments);
@@ -366,13 +369,15 @@
         {
             var organizationChangeViewModel = GetData<OrganizationChangeViewModel>("63DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            var processTempDataViewModel = new ProcessTempDataViewModel<OrganizationChangeViewModel>()
-            {
-                InstanceId = Instance.Id,
-                ObjData = organizationChangeViewModel
-            };
+            ////var processTempDataViewModel = new ProcessTempDataViewModel<OrganizationChangeViewModel>()
+            ////{
+            ////    InstanceId = Instance.Id,
+            ////    ObjData = organizationChangeViewModel
+            ////};
 
-            processTempDataService.Create(processTempDataViewModel);
+            ////processTempDataService.Create(processTempDataViewModel);
+
+            processAppService.CreateProcessData<OrganizationChangeViewModel, object>(organizationChangeViewModel, Instance.Id);
 
             Instance.RootKey = organizationChangeViewModel.Id;
             Instance.Title = $"{organizationChangeViewModel.Name} 机构信息变更";
@@ -383,15 +388,17 @@
         /// </summary>
         public void OrganizateChangeFinish()
         {
-            var processTempDataViewModel = processTempDataService.GetByInstanceId<OrganizationChangeViewModel>(Instance.Id);
+            ////var processTempDataViewModel = processTempDataService.GetByInstanceId<OrganizationChangeViewModel>(Instance.Id);
 
-            // 从流程临时数据中提取数据
-            var organizationChangeViewModel = processTempDataViewModel.ObjData;
+            ////// 从流程临时数据中提取数据
+            ////var organizationChangeViewModel = processTempDataViewModel.ObjData;
 
-            organizationAppService.ModifyPeriods(organizationChangeViewModel);
+            ////organizationAppService.ModifyPeriods(organizationChangeViewModel);
+
+            var organizationChange = processAppService.SubmitProcessData<OrganizationChangeViewModel>(Instance.Id);
 
             // 报文追踪
-            Trace(organizationChangeViewModel);
+            Trace(organizationChange);
         }
 
         private T GetData<T>(string formId) where T : class, new() => Data[formId.ToLower()].ToObject<T>();

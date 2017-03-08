@@ -3,10 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Application.ViewModels.TreeGrid;
+    using ViewModels.TreeGrid;
     using Core.Entities.Loan;
     using Core.Interfaces.Repositories;
-    using ViewModels;
     using X.PagedList;
 
     public class StatisticsAppService

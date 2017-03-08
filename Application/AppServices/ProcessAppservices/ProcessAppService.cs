@@ -4,9 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
+    using Core.Entities;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Loan;
     using Core.Entities.Process;
+    using Core.Interfaces;
     using Core.Interfaces.Repositories;
     using ViewModels.Loan.CreditViewModel;
     using ViewModels.Loan.LoanViewModels;
@@ -20,19 +22,34 @@
         private readonly IOrganizationRepository organizationRepository;
         private readonly ICreditContractRepository creditContractRepository;
         private readonly ILoanRepository loanRepository;
+        private readonly ProcessTempDataAppService processTempDataAppService;
+        private readonly OrganizationAppService organizationAppService;
+        private readonly CreditContractAppService creditContractAppService;
+        private readonly LoanAppService loanAppService;
+        private readonly PaymentHistoryAppService paymentHistoryAppService;
 
         public ProcessAppService(
             IInstanceRepository instanceReopsitory,
             IProcessTempDataRepository processTempDataRepository,
             IOrganizationRepository organizationRepository,
             ICreditContractRepository creditContractRepository,
-            ILoanRepository loanRepository)
+            ILoanRepository loanRepository,
+            ProcessTempDataAppService processTempDataAppService,
+            OrganizationAppService organizationAppService,
+            CreditContractAppService creditContractAppService,
+            LoanAppService loanAppService,
+            PaymentHistoryAppService paymentHistoryAppService)
         {
             this.instanceReopsitory = instanceReopsitory;
             this.processTempDataRepository = processTempDataRepository;
             this.organizationRepository = organizationRepository;
             this.creditContractRepository = creditContractRepository;
             this.loanRepository = loanRepository;
+            this.processTempDataAppService = processTempDataAppService;
+            this.organizationAppService = organizationAppService;
+            this.creditContractAppService = creditContractAppService;
+            this.loanAppService = loanAppService;
+            this.paymentHistoryAppService = paymentHistoryAppService;
         }
 
         /// <summary>
@@ -71,6 +88,152 @@
             }
 
             return processData;
+        }
+
+        /// <summary>
+        /// 创建临时数据
+        /// </summary>
+        /// <typeparam name="TViewModel">视图类型</typeparam>
+        /// <typeparam name="TEntity">实体类型</typeparam>
+        /// <param name="viewModel">视图</param>
+        /// <param name="instanceId">流程实例标识</param>
+        /// <returns>实体</returns>
+        public TEntity CreateProcessData<TViewModel, TEntity>(TViewModel viewModel, Guid instanceId) where TViewModel : class where TEntity : class
+        {
+            var entity = default(TEntity);
+
+            if (viewModel is OrganizationViewModel)
+            {
+                var organization = organizationAppService.Create(viewModel as OrganizationViewModel);
+
+                var processTempDataViewModel = new ProcessTempDataViewModel<Organization>()
+                {
+                    InstanceId = instanceId,
+                    ObjData = organization
+                };
+
+                processTempDataAppService.Create(processTempDataViewModel);
+
+                entity = organization as TEntity;
+            }
+            else if (viewModel is CreditContractViewModel)
+            {
+                var creditContract = creditContractAppService.Create(viewModel as CreditContractViewModel);
+
+                ////var processTempDataViewModel = new ProcessTempDataViewModel<CreditContract>()
+                ////{
+                ////    InstanceId = instanceId,
+                ////    ObjData = creditContract
+                ////};
+
+                ////processTempDataAppService.Create(processTempDataViewModel);
+
+                CreateProcessTempData(creditContract, instanceId);
+
+                entity = creditContract as TEntity;
+            }
+            else if (viewModel is LoanViewModel)
+            {
+                var loan = loanAppService.ApplyLoan(viewModel as LoanViewModel);
+
+                ////var processTempDataViewModel = new ProcessTempDataViewModel<Loan>()
+                ////{
+                ////    InstanceId = instanceId,
+                ////    ObjData = loan
+                ////};
+
+                ////processTempDataAppService.Create(processTempDataViewModel);
+
+                CreateProcessTempData(loan, instanceId);
+
+                entity = loan as TEntity;
+            }
+            else if (viewModel is PaymentViewModel)
+            {
+                var payments = paymentHistoryAppService.AddPayments(viewModel as PaymentViewModel);
+
+                ////var processTempDataViewModel = new ProcessTempDataViewModel<IEnumerable<PaymentHistory>>()
+                ////{
+                ////    InstanceId = instanceId,
+                ////    ObjData = payments
+                ////};
+
+                ////processTempDataAppService.Create(processTempDataViewModel);
+
+                CreateProcessTempData(payments, instanceId);
+
+                entity = payments as TEntity;
+            }
+            else if (viewModel is OrganizationChangeViewModel)
+            {
+                ////var processTempDataViewModel = new ProcessTempDataViewModel<OrganizationChangeViewModel>()
+                ////{
+                ////    InstanceId = instanceId,
+                ////    ObjData = viewModel as OrganizationChangeViewModel
+                ////};
+
+                ////processTempDataAppService.Create(processTempDataViewModel);
+
+                var organizationChange = viewModel as OrganizationChangeViewModel;
+
+                CreateProcessTempData(organizationChange, instanceId);
+            }
+
+            return entity;
+        }
+
+        public TEntity SubmitProcessData<TEntity>(Guid instanceId) where TEntity : class
+        {
+            var entity = default(TEntity);
+
+            if (entity is Organization)
+            {
+                // 获取机构实体
+                var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
+
+                // 从流程临时数据中提取数据
+                entity = processTempDataViewModel.ObjData;
+
+                organizationAppService.Create(entity as Organization);
+            }
+            else if (entity is CreditContract)
+            {
+                var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
+
+                // 从流程临时数据中提取数据
+                entity = processTempDataViewModel.ObjData;
+
+                creditContractAppService.Create(entity as CreditContract);
+            }
+            else if (entity is Loan)
+            {
+                var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
+
+                // 从流程临时数据中提取数据
+                entity = processTempDataViewModel.ObjData;
+
+                loanAppService.Create(entity as Loan);
+            }
+            else if (entity is IEnumerable<PaymentHistory>)
+            {
+                var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
+
+                // 从流程临时数据中提取数据
+                entity = processTempDataViewModel.ObjData;
+
+                paymentHistoryAppService.AddPayments(entity as IEnumerable<PaymentHistory>);
+            }
+            else if (entity is OrganizationChangeViewModel)
+            {
+                var processTempDataViewModel = processTempDataAppService.GetByInstanceId<TEntity>(instanceId);
+
+                // 从流程临时数据中提取数据
+                entity = processTempDataViewModel.ObjData;
+
+                organizationAppService.ModifyPeriods(entity as OrganizationChangeViewModel);
+            }
+
+            return entity;
         }
 
         private void GetProcessDataForFinance(Guid instanceId, ProcessDataViewModel processData)
@@ -191,5 +354,22 @@
         /// <param name="processData">流程数据</param>
         private void GetProcessDataForOrganizationModify(Guid instanceId, ProcessDataViewModel processData)
             => processData.OrganizationChange = processTempDataRepository.GetByInstanceId(instanceId)?.ConvertToObject<OrganizationChangeViewModel>();
+
+        /// <summary>
+        /// 创建临时数据
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="obj">对象</param>
+        /// <param name="instanceId">流程实例标识</param>
+        private void CreateProcessTempData<T>(T obj, Guid instanceId) where T : class
+        {
+            var processTempDataViewModel = new ProcessTempDataViewModel<T>()
+            {
+                InstanceId = instanceId,
+                ObjData = obj
+            };
+
+            processTempDataAppService.Create(processTempDataViewModel);
+        }
     }
 }
