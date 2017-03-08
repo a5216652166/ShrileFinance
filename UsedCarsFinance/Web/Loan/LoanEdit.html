@@ -261,7 +261,6 @@
                 $('fieldset#loan_info>div.row>div#ContractNumber').remove();
                 $('fieldset#loan_info>div.row>template#ContractNumber').remove();
 
-                debugger
                 if (query.Loans)
                 {
                     $('fieldset#loan_info select[comboname=ContractNumber]').combobox("loadData", query.Loans);
@@ -288,7 +287,6 @@
                     data = parent.GetProcessData(query.InstanceId);
                 }
                 else if (code == "view") {
-                    debugger
                     $.ajax({
                         async: false,
                         method: "GET",
@@ -301,11 +299,9 @@
                         }
                     });
 
-                    debugger
                     $("select[comboname='CreditId']").combobox("unselect", data.CreditId).combobox("select", data.CreditId);
 
                     $("fieldset#loan_info").form('load', data);
-                    debugger
                 }
                 
                 if (query.view == "loan") {
@@ -325,10 +321,7 @@
                     $("fieldset#loan_info").form('load', data.Loan);
                 }
 
-                debugger
-
                 $("#payment_dg").datagrid("loadData", data.Payments);
-                debugger
                 if (data.Payments.length > 0) {
                     $("#payment_history").show();
                 }

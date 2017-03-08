@@ -80,11 +80,10 @@
                     url: "../api/CreditContract/Get",
                     success: function (datas) {
                         data = datas;
-                        debugger
                     }
                 });
             }
-            debugger
+            
             if (data != undefined && data != null) {
                 OrganizateInfo(data.OrganizationId)
                 LoadData(data);
