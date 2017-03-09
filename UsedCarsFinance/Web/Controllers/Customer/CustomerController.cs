@@ -92,13 +92,6 @@
             return Ok(options);
         }
 
-        public IHttpActionResult GetOrganizateChange(Guid instanceId)
-        {
-            var model = processTempDataAppService.GetByInstanceId<OrganizationChangeViewModel>(instanceId);
-
-            return Ok(model?.ObjData);
-        }
-
         /// <summary>
         /// 授信页面机构信息
         /// </summary>

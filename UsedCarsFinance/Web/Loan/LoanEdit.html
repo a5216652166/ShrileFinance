@@ -432,13 +432,6 @@
                         url: "../api/CreditContract/Option",
                         statusCode: {
                             200: function (data) {
-                                ////var options = $(data).map(function (i, e) {
-                                ////    if (e.Hidden == 2) {
-                                ////        return e;
-                                ////    }
-                                ////});
-                                ////$("select[comboname='CreditId']").combobox("loadData", options);
-
                                 $("select[comboname='CreditId']").combobox("loadData", data);
 
                                 ded.resolve();
@@ -672,8 +665,11 @@
             <legend>还款记录</legend>
 
             <table id="payment_dg" class="easyui-datagrid" data-options="singleSelect: true,
-                   rownumbers: true, toolbar: '#payment_tb',
-                   onDblClickRow: onEdit, onEndEdit: onEndEdit, rowStyler: PaymentStyler">
+                   rownumbers: true, 
+                   toolbar: '#payment_tb',
+                   onDblClickRow: onEdit, 
+                   onEndEdit: onEndEdit, 
+                   rowStyler: PaymentStyler">
                 <thead>
 
                     <tr>
@@ -794,7 +790,9 @@
                     if (endEditing()) {
                         var row = $("#payment_dg").datagrid("selectRow", index)
                             .datagrid("getSelected");
-                        if (row.Hidden != false) {
+
+                        debugger
+                        if (row.Hidden != 2) {
                             $("#payment_dg").datagrid("beginEdit", index);
 
                             editIndex = index;
@@ -842,7 +840,7 @@
                 function RemovePayment() {
                     var row = $("#payment_dg").datagrid("getSelected");
                     var index = $("#payment_dg").datagrid("getRowIndex", row);
-                    if (row.Hidden == false) { return; }
+                    if (row.Hidden == 2) { return; }
                     $("#payment_dg")
                             .datagrid("deleteRow", index);
                     editIndex = undefined;
@@ -853,7 +851,7 @@
                     }
                 }
                 function PaymentStyler(index, row) {
-                    if (row.Hidden == false) {
+                    if (row.Hidden == 2) {
                         return "background-color:#F5FFFA;color:#000;";
                     }
                 }

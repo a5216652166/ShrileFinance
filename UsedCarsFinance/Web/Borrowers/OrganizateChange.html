@@ -43,7 +43,7 @@
             setTimeout(function () {
                 // 数据初始化
                 DataInit();
-            }, 200);
+            }, 100);
 
             // 页面初始化
             function PageInit() {
@@ -141,35 +141,6 @@
             }
         }
 
-        ////// 查询数据
-        ////function LoadDateForId(Id) {
-        ////    if (Id == null) {
-        ////        return;
-        ////    }
-
-        ////    // 通过Id获取数据
-        ////    var resultDate;
-        ////    $.ajax({
-        ////        async: false,
-        ////        data: { instanceId: Id },
-        ////        type: "GET",
-        ////        url: "../api/Customer/GetOrganizateChange",
-        ////        statusCode: {
-        ////            200: function (data) {
-        ////                resultDate = data;
-        ////            },
-        ////            500: function (data) {
-        ////                $.messager.alert('错误', data.responseJSON.ExceptionMessage);
-        ////            },
-        ////            400: function (data) {
-        ////                $.messager.alert('错误', data.responseJSON.Message, "info");
-        ////            }
-        ////        }
-        ////    });
-
-        ////    return resultDate;
-        ////}
-
         // 加载数据
         function LoadData(data) {
             if (!data || data == null) {
@@ -214,13 +185,13 @@
             }
 
                 // 加载诉讼事件
-            else if (name = "Litigation" && data.Litigation != undefined && data.Litigation.length > 0) {
+            else if (name == "Litigation" && data.Litigation != undefined && data.Litigation.length > 0) {
                 // 加载诉讼事件
                 FieldsetLoadDateFactory("Litigation", "table", data.Litigation);
             }
 
                 // 加载大事件
-            else if (name = "BigEvent" && data.BigEvent != undefined && data.BigEvent.length > 0) {
+            else if (name == "BigEvent" && data.BigEvent != undefined && data.BigEvent.length > 0) {
                 // 加载大事件
                 FieldsetLoadDateFactory("BigEvent", "table", data.BigEvent);
             }
