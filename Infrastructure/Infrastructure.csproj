@@ -66,7 +66,6 @@
     <Compile Include="Logger\ILogger\ILogger.cs" />
     <Compile Include="ValidMethod\AlgorithmHelper.cs" />
     <Compile Include="File\FileHelper.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="Http\HttpHelper.cs" />
     <Compile Include="Logger\Log4net.cs" />
     <Compile Include="Logger\LoggingModule.cs" />
