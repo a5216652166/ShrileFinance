@@ -95,6 +95,15 @@
             if (data == null) {
                 return;
             }
+
+            if (data.CreditLimit) {
+                data.CreditLimit /= 10000;
+            }
+
+            if (data.CreditBalance) {
+                data.CreditBalance /= 10000;
+            }
+
             // 加载贷款合同基本信息
             $("#ff fieldset#CreditContract").form("load", data);
             if (data.OrganizationId != "") {
@@ -151,6 +160,13 @@
                     }
                 });
 
+                if (data.GuranteeContract)
+                {
+                    $(data.GuranteeContract).each(function (i, e) {
+                        e.MarginTxt /= 10000;
+                    });
+                }
+
                 // 数据存储和展示
                 $("fieldset#GuarantorContract table#GuarantorContract_dg").datagrid('loadData', data.GuranteeContract);
             }
@@ -164,11 +180,16 @@
         function BuildData() {
             var value = $("form#ff fieldset#CreditContract").serializeJson();
 
+            if (value.CreditLimit)
+            {
+                value.CreditLimit *= 10000;
+            }
+
             if (value.HasGuarantee == 1) {
                 value.GuranteeContract = $("fieldset#GuarantorContract table#GuarantorContract_dg").datagrid('getRows');
                 // 修正担保合同保证金额（贷款贷款额度）
                 $(value.GuranteeContract).each(function (i, e) {
-                    e.Margin = $('fieldset#CreditContract input[textboxname=CreditLimit]').textbox('getValue');
+                    e.Margin = 10000 * $('fieldset#CreditContract input[textboxname=CreditLimit]').textbox('getValue');
                 });
             }
             if (value.HasGuarantee == "1") {
@@ -436,13 +457,13 @@
                 <div class="col-6">
                     <label>贷款额度:</label>
                     <input name="CreditLimit" id="CreditLimit" class="easyui-textbox" data-options="required:true,onChange:GetCreditBalance,validType:'Money'" />
-                    <span class="unit">元</span>
+                    <span class="unit">万元</span>
                 </div>
 
                 <div class="col-6">
                     <label>贷款余额:</label>
                     <input name="CreditBalance" id="CreditBalance" class="easyui-textbox" readonly />
-                    <span class="unit">元</span>
+                    <span class="unit">万元</span>
                 </div>
             </div>
 
