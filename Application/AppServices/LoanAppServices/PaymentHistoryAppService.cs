@@ -58,7 +58,7 @@
         }
 
         /// <summary>
-        /// 新增还款
+        /// 新增还款实体
         /// </summary>
         /// <param name="entities">还款实体</param>
         public void AddPayments(IEnumerable<PaymentHistory> entities)

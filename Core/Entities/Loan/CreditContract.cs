@@ -23,9 +23,9 @@
         }
 
         public CreditContract(
-            DateTime effectiveDate, 
-            DateTime expirationDate, 
-            decimal creditLimit, 
+            DateTime effectiveDate,
+            DateTime expirationDate,
+            decimal creditLimit,
             CreditContractStatusEnum status)
         {
             Loans = new HashSet<Loan>();
@@ -111,7 +111,7 @@
 
             if (creditContract.EffectiveDate > creditContract.ExpirationDate)
             {
-                exception =new ArgumentOutOfRangeAppException(nameof(ExpirationDate), "合同终止日期必须小于等于生效日期.");
+                exception = new ArgumentOutOfRangeAppException(nameof(ExpirationDate), "合同终止日期必须小于等于生效日期.");
             }
 
             if (creditContract.CreditBalance > creditContract.CreditLimit)
@@ -194,7 +194,7 @@
 
             // 抵押序号列表
             var mortgageNumbers = guarantyContractMortgage.Select(m => Convert.ToInt32(m.MortgageNumber)).Where(m => m > 0).ToList();
-            
+
             // 设置序号
             foreach (var item in guarantyContractMortgage)
             {

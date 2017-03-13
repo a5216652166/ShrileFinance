@@ -29,7 +29,8 @@
         /// <summary>
         /// 创建机构
         /// </summary>
-        /// <param name="model">机构Model</param>
+        /// <param name="model">机构视图</param>
+        /// <returns>机构实体</returns>
         public Organization Create(OrganizationViewModel model)
         {
             var organization = Mapper.Map<Organization>(model.Base);
@@ -74,7 +75,7 @@
             //// 报文追踪转移至流程处理
         }
 
-        public void Create(Organization entity) 
+        public void Create(Organization entity)
             => organizationRepository.Create(entity);
 
         public void Modify(OrganizationViewModel model)

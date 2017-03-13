@@ -28,6 +28,7 @@
         /// 创建授信合同
         /// </summary>
         /// <param name="model">授信合同Model</param>
+        /// <returns>授信合同实体</returns>
         public CreditContract Create(CreditContractViewModel model)
         {
             if (model == null)

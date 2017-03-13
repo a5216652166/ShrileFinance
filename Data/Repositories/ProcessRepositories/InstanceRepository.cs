@@ -16,7 +16,7 @@
 
         IPagedList<Instance> IInstanceRepository.DoingPagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime)
         {
-            var instances =default(IQueryable<Instance>);
+            var instances = default(IQueryable<Instance>);
 
             // 管理员
             if (currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")

@@ -23,7 +23,7 @@
             CreateMap(typeof(IPagedList<>), typeof(IPagedList<>)).ConvertUsing(typeof(PagedListTypeConverter<,>));
 
             CreateMap<Core.Entities.AppUser, UserViewModel>()
-                //.ForMember(d => d.Role, opt => opt.ResolveUsing(s => Infrastructure.Helper.RoleIdToName(s.RoleId)))
+                ////.ForMember(d => d.Role, opt => opt.ResolveUsing(s => Infrastructure.Helper.RoleIdToName(s.RoleId)))
                 .ForMember(d => d.Phone, opt => opt.MapFrom(s => s.PhoneNumber));
 
             CreateMap<Instance, ViewModels.ProcessViewModels.InstanceViewModel>()
@@ -80,7 +80,7 @@
             CreateMap<CreditExamine, CreditExamineViewModel>();
             CreateMap<FinanceExtension, OperationViewModel>();
             CreateMap<FinanceProduce, FinanceProduceViewModel>();
-            
+
             // 征信报文
             CreateMap<Trace, TraceViewModel>();
         }

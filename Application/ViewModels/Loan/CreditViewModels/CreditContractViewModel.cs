@@ -80,7 +80,6 @@
         /// <summary>
         /// 贷款合同ViewModel数据对接(服务页面)
         /// </summary>
-        /// <param name="model">贷款合同ViewModel</param>
         internal void DataConvertForGuranteeContract()
         {
             var model = this;
@@ -141,7 +140,6 @@
         /// <summary>
         /// 贷款合同ViewModel数据对接（协调后台）
         /// </summary>
-        /// <param name="model">贷款合同ViewModel</param>
         internal void DataConvertForGurantyContract()
         {
             var model = this;
