@@ -1,8 +1,5 @@
 ﻿namespace Core.Entities.CreditInvestigation.Datagram.LoanDatagrams
 {
-    using System.Collections.Generic;
-    using Record;
-
     /// <summary>
     /// 贷款业务信息采集报文
     /// </summary>
@@ -22,12 +19,6 @@
             ////};
         }
 
-        public override DatagramTypeEnum Type
-        {
-            get
-            {
-                return DatagramTypeEnum.贷款业务信息采集报文;
-            }
-        }
+        public override DatagramTypeEnum Type => DatagramTypeEnum.贷款业务信息采集报文;
     }
 }

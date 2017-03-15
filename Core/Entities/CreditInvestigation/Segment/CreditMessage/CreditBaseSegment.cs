@@ -30,16 +30,10 @@
         public string 信息记录类型 { get; set; }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(7, true, Describe = "信息类别")]
-        public override char SegmentType
-        {
-            get { return 'B'; }
-        }
+        public override char SegmentType => 'B';
 
         [MetaCode(11, MetaCodeTypeEnum.AN), SegmentRule(8, true, Describe = "填写数据发生机构的代码")]
-        public string 金融机构代码
-        {
-            get { return DatagramFile.FINANCIALORGANIZATIONCODE; }
-        }
+        public string 金融机构代码 => DatagramFile.FINANCIALORGANIZATIONCODE;
 
         /// <summary>
         /// 贷款卡编码/中征码(根据贷款合同中机构ID获取中征码手动映射)
@@ -54,18 +48,12 @@
         public string CreditContractCode { get; set; }
 
         [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(95, true)]
-        public string 信息记录操作类型
-        {
-            get { return "1"; }
-        }
+        public string 信息记录操作类型 => "1";
 
         [MetaCode(8, MetaCodeTypeEnum.Date), SegmentRule(96, true)]
         public string 业务发生日期 { get; set; }
 
         [MetaCode(20, MetaCodeTypeEnum.AN), SegmentRule(104, true)]
-        public string 信息记录跟踪编号
-        {
-            get { return string.Empty.PadLeft(20, '0'); }
-        }
+        public string 信息记录跟踪编号 => string.Empty.PadLeft(20, '0');
     }
 }

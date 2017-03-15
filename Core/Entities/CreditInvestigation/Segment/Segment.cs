@@ -126,22 +126,12 @@
                 this.type = type;
             }
 
-            public int Position
-            {
-                get { return position; }
-            }
+            public int Position => position;
 
-            public int Length
-            {
-                get { return length; }
-            }
+            public int Length => length;
 
             public string GetValue()
-            {
-                var result = Padding(this.value);
-
-                return result;
-            }
+                => Padding(value);
 
             private string Padding(string value)
             {

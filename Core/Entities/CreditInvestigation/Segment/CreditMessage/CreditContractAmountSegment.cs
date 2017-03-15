@@ -14,16 +14,10 @@
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
-        public override char SegmentType
-        {
-            get { return 'E'; }
-        }
+        public override char SegmentType => 'E';
 
         [MetaCode(3, MetaCodeTypeEnum.AN), SegmentRule(2, true)]
-        public string 币种
-        {
-            get { return "CNY"; }
-        }
+        public string 币种 => "CNY";
 
         /// <summary>
         /// 贷款合同金额

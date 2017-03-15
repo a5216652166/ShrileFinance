@@ -33,12 +33,6 @@
         {
         }
 
-        public override RecordTypeEnum Type
-        {
-            get
-            {
-                return RecordTypeEnum.贷款业务合同信息记录;
-            }
-        }
+        public override RecordTypeEnum Type => RecordTypeEnum.贷款业务合同信息记录;
     }
 }

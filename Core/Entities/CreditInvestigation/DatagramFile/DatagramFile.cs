@@ -94,7 +94,8 @@
             return Encoding.GetEncoding("GB2312").GetBytes(content);
         }
 
-        public Datagram GetDatagram(DatagramTypeEnum type) => Datagrams.Single(m => m.Type == type);
+        public Datagram GetDatagram(DatagramTypeEnum type) 
+            => Datagrams.Single(m => m.Type == type);
 
         /// <summary>
         /// 封装

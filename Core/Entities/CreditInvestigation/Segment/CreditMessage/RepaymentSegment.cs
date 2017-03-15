@@ -17,10 +17,7 @@
         }
 
         [MetaCode(1, MetaCodeTypeEnum.AN), SegmentRule(1, true, Describe = "段标")]
-        public override char SegmentType
-        {
-            get { return 'G'; }
-        }
+        public override char SegmentType => 'G';
 
         /// <summary>
         /// 借据编号
