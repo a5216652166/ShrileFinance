@@ -80,10 +80,10 @@
     <Compile Include="Entities\HiddenEnum.cs" />
     <Compile Include="Entities\IO\FileSystem.cs" />
     <Compile Include="Interfaces\IProcessable.cs" />
-    <Compile Include="Interfaces\Repositories\IDatagramFileRepository.cs" />
+    <Compile Include="Interfaces\Repositories\DatagramRepositories\IDatagramFileRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFileSystemRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IPaymentHistoryRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IProcessTempDataRepository.cs" />
+    <Compile Include="Interfaces\Repositories\LoanRepositories\IPaymentHistoryRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ProcessRepositories\IProcessTempDataRepository.cs" />
     <Compile Include="Services\CreditInvestigation\DatagramFactoryService.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\UnusedDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\BigEventRecord.cs" />
@@ -228,22 +228,22 @@
     <Compile Include="Exceptions\InvalidOperationAppException.cs" />
     <Compile Include="Interfaces\IAggregateRoot.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
-    <Compile Include="Interfaces\Repositories\IContractRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IDraftRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IProcessRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IFormRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IInstanceRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IFinanceRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IFinancingProjectRepository.cs" />
-    <Compile Include="Interfaces\Repositories\ICreditContractRepository.cs" />
-    <Compile Include="Interfaces\Repositories\ILoanRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IOrganizationRepository.cs" />
+    <Compile Include="Interfaces\Repositories\LoanRepositories\IContractRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ProcessRepositories\IDraftRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ProcessRepositories\IProcessRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ProcessRepositories\IFormRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ProcessRepositories\IInstanceRepository.cs" />
+    <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinanceRepository.cs" />
+    <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinancingProjectRepository.cs" />
+    <Compile Include="Interfaces\Repositories\LoanRepositories\ICreditContractRepository.cs" />
+    <Compile Include="Interfaces\Repositories\LoanRepositories\ILoanRepository.cs" />
+    <Compile Include="Interfaces\Repositories\LoanRepositories\IOrganizationRepository.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Interfaces\Repositories\IProduceRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IPartnerRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IRepository.cs" />
+    <Compile Include="Interfaces\Repositories\FinanceRepositories\IProduceRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ProcessRepositories\IPartnerRepository.cs" />
+    <Compile Include="Interfaces\Repositories\LoanRepositories\IRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUnitOfWork.cs" />
-    <Compile Include="Interfaces\Repositories\ITraceRepostitory.cs" />
+    <Compile Include="Interfaces\Repositories\DatagramRepositories\ITraceRepostitory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -261,6 +261,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
