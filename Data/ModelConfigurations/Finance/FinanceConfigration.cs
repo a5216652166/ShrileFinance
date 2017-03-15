@@ -2,9 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
-    using Core.Entities.Finance;
 
-    public class FinanceConfigration : EntityTypeConfiguration<Finance>
+    public class FinanceConfigration : EntityTypeConfiguration<Core.Entities.Finance.Finance>
     {
         public FinanceConfigration()
         {

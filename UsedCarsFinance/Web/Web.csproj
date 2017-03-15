@@ -156,6 +156,7 @@
     <Content Include="Borrowers\OrganizateChange.html" />
     <Content Include="CreditInvestigation\CreditMessageManage1.html" />
     <Content Include="CreditInvestigation\CreditMessageManage.html" />
+    <Content Include="Finance\ProduceList.html" />
     <Content Include="Process\Img\信封1.png" />
     <Content Include="Statistics\LoanCount.html" />
     <Content Include="Finance\FinanceApproval.html" />
@@ -1245,6 +1246,7 @@
     <Compile Include="Controllers\BankCredit\ReportFilesController.cs" />
     <Compile Include="Controllers\BankCredit\SegmentRuleController.cs" />
     <Compile Include="Controllers\BankCredit\TempRecordController.cs" />
+    <Compile Include="Controllers\Finance\NewProduceController.cs" />
     <Compile Include="Controllers\Loan\CreditController.cs" />
     <Compile Include="Controllers\Customer\CustomerController.cs" />
     <Compile Include="Controllers\Finance\ApplicantController.cs" />

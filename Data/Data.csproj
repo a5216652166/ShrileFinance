@@ -143,9 +143,14 @@
     <Compile Include="Migrations\201703080749440_ProcessDecouple.Designer.cs">
       <DependentUpon>201703080749440_ProcessDecouple.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703150938148_AddNewProduce.cs" />
+    <Compile Include="Migrations\201703150938148_AddNewProduce.Designer.cs">
+      <DependentUpon>201703150938148_AddNewProduce.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="ModelConfigurations\Finance\ProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\ActionConfiguration.cs" />
     <Compile Include="ModelConfigurations\Finance\ApplicantConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />
@@ -194,7 +199,7 @@
     <Compile Include="ModelConfigurations\Finance\FinanceExtensionConfiguration.cs" />
     <Compile Include="ModelConfigurations\Finance\FinanceProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\ProcessTempDataConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Product\FinancingProjectConfigration.cs" />
+    <Compile Include="ModelConfigurations\Produce\FinancingProjectConfigration.cs" />
     <Compile Include="ModelConfigurations\Customer\FinancialAffairsConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\ProcessConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\FormConfiguration.cs" />
@@ -222,10 +227,10 @@
     </Compile>
     <Compile Include="ModelConfigurations\Customer\ParentConfigration.cs" />
     <Compile Include="ModelConfigurations\PartnerConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Product\FinancingItemConfigration.cs" />
+    <Compile Include="ModelConfigurations\Produce\FinancingItemConfigration.cs" />
     <Compile Include="ModelConfigurations\Loan\PledgeGuarantyContractConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\ProfitConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Product\ProduceConfigration.cs" />
+    <Compile Include="ModelConfigurations\Produce\ProduceConfigration.cs" />
     <Compile Include="ModelConfigurations\Customer\StockholderConfiguration.cs" />
     <Compile Include="ModelConfigurations\TypeConfigurationExtensions.cs" />
     <Compile Include="ModelConfigurations\AppUserConfiguration.cs" />
@@ -337,6 +342,7 @@
     </Compile>
     <Compile Include="Repositories\AppUserStore.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\NewProduceRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\ContractRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\CreditContractRespostiory.cs" />
     <Compile Include="Repositories\DatagramRepositories\DatagramFileRepository.cs" />
@@ -351,7 +357,7 @@
     <Compile Include="Repositories\LoanRepositories\PaymentHistoryRepository.cs" />
     <Compile Include="Repositories\ProcessRepositories\ProcessTempDataRepository.cs" />
     <Compile Include="Repositories\DatagramRepositories\TraceRepository.cs" />
-    <Compile Include="Repositories\FinanceRepositories\ProduceRepository.cs" />
+    <Compile Include="Repositories\ProduceRepositories\ProduceRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinanceRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\PartnerRepository.cs" />
   </ItemGroup>
@@ -430,6 +436,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703080749440_ProcessDecouple.resx">
       <DependentUpon>201703080749440_ProcessDecouple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703150938148_AddNewProduce.resx">
+      <DependentUpon>201703150938148_AddNewProduce.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

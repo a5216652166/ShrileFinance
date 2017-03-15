@@ -15,6 +15,7 @@
             //// 关注
             CreateMap<BigEvent, BigEventSegment>();
             CreateMap<Litigation, LitigationSegment>();
+
             //// 机构
             CreateMap<AssociatedEnterprise, AssociatedEnterpriseSegment>();
             CreateMap<Organization, BaseSegment>();
@@ -25,6 +26,7 @@
             CreateMap<OrganizationParent, ParentSegment>();
             CreateMap<OrganizationProperties, PropertySegment>();
             CreateMap<Stockholder, StockholderSegment>();
+
             ////贷款和担保
             CreateMap<CreditContract, CreditContractSegment>();
             CreateMap<CreditContract, CreditContractAmountSegment>();

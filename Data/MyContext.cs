@@ -2,6 +2,7 @@
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
+    using Data.ModelConfigurations.Finance;
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
     using ModelConfigurations.CreditInvestigation;
@@ -60,7 +61,8 @@
                 .Add(new VehicleConfigration())
                 .Add(new FinanceExtensionConfiguration())
                 .Add(new ContactConfiguration())
-                .Add(new CreditExamineConfiguration());
+                .Add(new CreditExamineConfiguration())
+                .Add(new ProduceConfiguration());
 
             // Organization Configurations
             modelBuilder.Configurations
