@@ -2,13 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Core.Interfaces;
 
-    public enum ProductStateEnum : byte
+    public enum ProduceTypeEnum : byte
     {
-        正常 = 1,
-        失效 = 2,
-        暂未启用 = 3
+        纯分期 = 1,
+        保证金加三期月供提前付 = 2,
+        均匀贷 = 3,
+        低息贷 = 4,
+        保证金加分期 = 5,
     }
 
     public enum LeaseTypeEnum : byte
@@ -22,6 +25,11 @@
         protected NewProduce() : base()
         {
         }
+
+        /// <summary>
+        /// 产品类型
+        /// </summary>
+        public ProduceTypeEnum ProduceType { get; protected set; }
 
         /// <summary>
         /// 代码
@@ -39,34 +47,19 @@
         public int Interval { get; protected set; }
 
         /// <summary>
-        /// 名义利率
-        /// </summary>
-        public decimal InterestRate { get; protected set; }
-
-        /// <summary>
-        /// 保证金
-        /// </summary>
-        public decimal Margin { get; protected set; }
-
-        /// <summary>
         /// 手续费
         /// </summary>
         public decimal Poundage { get; protected set; }
 
         /// <summary>
-        /// 租赁方式
+        /// 保证金
         /// </summary>
-        public LeaseTypeEnum LeaseType { get; protected set; }
+        public decimal MarginRate { get; protected set; }
 
         /// <summary>
-        /// 月供系数
+        /// 月费率
         /// </summary>
-        public decimal MonthCoefficient { get; protected set; }
-
-        /// <summary>
-        /// 费率
-        /// </summary>
-        public decimal Rate { get; protected set; }
+        public decimal MonthRate { get; protected set; }
 
         /// <summary>
         /// 渠道返点
@@ -79,50 +72,24 @@
         public decimal SalesmanRate { get; protected set; }
 
         /// <summary>
+        /// 名义利率
+        /// </summary>
+        public decimal InterestRate { get; protected set; }
+
+        /// <summary>
+        /// 租赁方式
+        /// </summary>
+        public LeaseTypeEnum LeaseType { get; protected set; }
+
+        /// <summary>
+        /// 偿还本金比例
+        /// </summary>
+        public string RepayPrincipals { get; protected set; }
+
+        /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime CreatedDate { get; protected set; }
-
-        /// <summary>
-        /// 状态
-        /// </summary>
-        public ProductStateEnum EffectiveState { get; protected set; }
-
-        public static NewProduce CreateNewEntity(
-            string code,
-            int timeLimit,
-            int interval,
-            decimal interestRate,
-            decimal margin,
-            LeaseTypeEnum leaseType,
-            decimal monthCoefficient,
-            decimal poundage,
-            decimal channelRate,
-            decimal salesmanRate,
-            DateTime createdDate,
-            ProductStateEnum effectiveState = ProductStateEnum.正常)
-                => new NewProduce()
-                {
-                    Code = code,
-                    TimeLimit = timeLimit,
-                    Interval = interval,
-                    InterestRate = interestRate,
-                    Margin = margin,
-                    LeaseType = leaseType,
-                    MonthCoefficient = monthCoefficient,
-                    Poundage = poundage,
-                    ChannelRate = channelRate,
-                    SalesmanRate = salesmanRate,
-                    EffectiveState = effectiveState,
-                    CreatedDate = createdDate
-                };
-
-        /// <summary>
-        /// 设置产品状态
-        /// </summary>
-        /// <param name="state">状态</param>
-        public void SetState(ProductStateEnum state)
-            => EffectiveState = state;
 
         /// <summary>
         /// 计算还款计算表
@@ -131,6 +98,16 @@
         public IEnumerable<object> CalculateRepayTable()
         {
             throw new NotImplementedException();
+        }
+
+        public void Valid()
+        {
+            var array = RepayPrincipals.Split('-').ToList();
+
+            if (array.Sum(m => decimal.Parse(m)) != 100)
+            {
+                throw new ArgumentException(message: "偿还本金比例之和应为100%");
+            }
         }
     }
 }

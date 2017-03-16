@@ -138,8 +138,8 @@
     <Compile Include="ViewModels\FinanceViewModels\FinanceAuidtViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinanceProduceViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\LoanViewModel.cs" />
-    <Compile Include="ViewModels\FinanceViewModels\NewProduceListViewModel.cs" />
-    <Compile Include="ViewModels\FinanceViewModels\NewProduceViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceListViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\OperationViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\PartnerAndUser.cs" />
     <Compile Include="ViewModels\IEntityViewModel.cs" />

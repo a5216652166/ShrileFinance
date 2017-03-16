@@ -1,6 +1,6 @@
 ﻿namespace Application.Mappings
 {
-    using Application.ViewModels.FinanceViewModels;
+    using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using AutoMapper;
     using Core.Entities.Finance;
 

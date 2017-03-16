@@ -9,19 +9,19 @@
         {
             HasKey(m => m.Id);
 
+            Property(m => m.ProduceType).IsRequired();
             Property(m => m.Code).IsRequired();
             Property(m => m.TimeLimit).IsRequired();
             Property(m => m.Interval).IsRequired();
-            Property(m => m.InterestRate).IsRequired();
-            Property(m => m.Margin).IsRequired();
             Property(m => m.Poundage).IsRequired();
-            Property(m => m.LeaseType).IsRequired();
-            Property(m => m.MonthCoefficient).IsRequired();
-            Ignore(m=>m.Rate);
+            Property(m => m.MarginRate).IsRequired();
+            Property(m => m.MonthRate).IsRequired();
             Property(m => m.ChannelRate).IsRequired();
             Property(m => m.SalesmanRate).IsRequired();
+            Property(m => m.InterestRate).IsRequired();
+            Property(m => m.LeaseType).IsRequired();
+            Property(m => m.RepayPrincipals).IsRequired();
             Property(m => m.CreatedDate).IsRequired();
-            Property(m => m.EffectiveState).IsRequired();
 
             ToTable("FANC_Produce");
         }

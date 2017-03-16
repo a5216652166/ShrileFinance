@@ -6,6 +6,6 @@
 
     public interface INewProduceRepository : IRepository<NewProduce>
     {
-        IPagedList<NewProduce> ProduceList(string searchString, int page, int size, DateTime? beginTime = null, DateTime? endTime = null, ProductStateEnum? state = null);
+        IPagedList<NewProduce> ProduceList(string searchString, int page, int size, DateTime? beginTime = null, DateTime? endTime = null);
     }
 }

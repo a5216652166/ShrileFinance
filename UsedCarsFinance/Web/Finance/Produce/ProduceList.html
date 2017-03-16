@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>产品列表页</title>
+    <link href="../../Content/easyui/themes/gray/easyui.css" rel="stylesheet" />
+    <link href="../../Content/easyui/themes/icon.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery/jquery.js"></script>
+    <script src="../../Scripts/easyui/jquery.easyui.js"></script>
+    <script src="../../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="../../Scripts/usedcars.js"></script>
+    <script type="text/javascript">
+        uc.grid = new UCGrid("#dg");
+
+        function BeforeLoad(param) {
+            param.Search = $("#ProductCodeOrName").textbox("getValue");
+        }
+
+        function Reload() {
+            uc.grid.Reload();
+        }
+
+        function ProduceEdit() {
+            var url = "Finance/Produce/ProduceEdit.html?method=" + this.id;
+
+            if (this.id != "add") {
+                var row = uc.grid.GetSelected();
+
+                if (row) {
+                    url += "&ProduceId=" + row.Id;
+                }
+                else {
+                    return;
+                }
+
+                debugger
+            }
+            uc.ShowWindow("产品信息", url);
+        }
+
+    </script>
+</head>
+<body>
+    <table id="dg" class="easyui-datagrid" data-options="height:630,toolbar:'#tb',rownumbers:true,
+        singleSelect: true,
+        pagination: true,
+        pageSize: 20,
+        pageList: [10,20,30,40,50],
+        method: 'GET',
+        url: '../../api/NewProduce/GetPageList',
+        loadMsg: '正在加载，请稍候...',
+        onBeforeLoad: BeforeLoad
+        ">
+        <thead>
+            <tr>
+                <th data-options="field:'Id',hidden:true">Id</th>
+                <th data-options="field:'Code',width:100,align:'center'">代码</th>
+                <th data-options="field:'TimeLimit',width:120,align:'center'">期限</th>
+                <th data-options="field:'InterestRate',width:200,align:'center'">名义利率（%）</th>
+                <th data-options="field:'MarginRate',width:120,align:'center'">保证金（%）</th>
+                <th data-options="field:'MonthRate',width:120,align:'center'">月费率（%）</th>
+                <th data-options="field:'ChannelRate',width:120,align:'center'">渠道返点（%）</th>
+                <th data-options="field:'SalesmanRate',width:120,align:'center'">员工提成（%）</th>
+                <th data-options="field:'LeaseType',width:120,align:'center'">租赁方式</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="tb">
+        <div style="height:60px;">
+            <div style="height:30px; width:auto;">
+                <label for="ProductCodeOrName">产品代码或产品名称:</label>
+                <input id="ProductCodeOrName" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入产品代码或产品名称'" />
+                <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
+            </div>
+            <div style="height:30px; width:auto;">
+                <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:ProduceEdit,iconCls:'icon-add',plain:true">添加</a>
+                <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:ProduceEdit,iconCls:'icon-edit',plain:true">修改</a>
+                <a id="view" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="onClick:ProduceEdit,iconCls:'icon-search',plain:true">查看</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

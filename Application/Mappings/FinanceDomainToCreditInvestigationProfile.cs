@@ -2,7 +2,7 @@
 {
     using AutoMapper;
     using Core.Entities.Finance;
-    using ViewModels.FinanceViewModels;
+    using ViewModels.FinanceViewModels.ProduceViewModels;
 
     public class FinanceDomainToCreditInvestigationProfile : Profile
     {

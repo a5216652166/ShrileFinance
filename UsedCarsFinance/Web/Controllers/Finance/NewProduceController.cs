@@ -1,9 +1,10 @@
 ﻿namespace Web.Controllers.Finance
 {
+    using System;
     using System.Web.Http;
     using Application.AppServices.FinanceAppServices;
     using Application.ViewModels;
-    using Application.ViewModels.FinanceViewModels;
+    using Application.ViewModels.FinanceViewModels.ProduceViewModels;
 
     public class NewProduceController : ApiController
     {
@@ -20,6 +21,30 @@
             var list = produceAppService.GetPageList(search, page, rows);
 
             return Ok(new PagedListViewModel<NewProduceListViewModel>(list));
+        }
+
+        [HttpGet]
+        public IHttpActionResult Get(Guid produceId)
+        {
+            var model = produceAppService.Get(produceId);
+
+            return Ok(model);
+        }
+
+        [HttpPost]
+        public IHttpActionResult Create(NewProduceViewModel model)
+        {
+            produceAppService.Create(model);
+
+            return Ok(model);
+        }
+
+        [HttpPost]
+        public IHttpActionResult Modify(NewProduceViewModel model)
+        {
+            produceAppService.Modify(model);
+
+            return Ok(model);
         }
     }
 }
