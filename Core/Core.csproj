@@ -75,6 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
+    <Compile Include="Entities\Finance\FinancialItem.cs" />
+    <Compile Include="Entities\Finance\FinancialLoan.cs" />
     <Compile Include="Entities\Finance\NewProduce.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
@@ -84,6 +86,8 @@
     <Compile Include="Entities\IO\FileSystem.cs" />
     <Compile Include="Interfaces\IProcessable.cs" />
     <Compile Include="Interfaces\Repositories\DatagramRepositories\IDatagramFileRepository.cs" />
+    <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinancialItemRepository.cs" />
+    <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinancialLoanRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\INewProduceRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFileSystemRepository.cs" />
     <Compile Include="Interfaces\Repositories\LoanRepositories\IPaymentHistoryRepository.cs" />

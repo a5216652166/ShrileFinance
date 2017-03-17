@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\FileSystemAppServices\FileSystemAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\FinancialLoanAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\NewProduceAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\CreditContractAppService.cs" />
     <Compile Include="AppServices\ProcessAppservices\DraftAppService.cs" />
@@ -137,6 +138,9 @@
     <Compile Include="ViewModels\FinanceViewModels\FinanceApplyViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinanceAuidtViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinanceProduceViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\FinancialItemViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\FinancialLoanListViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\FinancialLoanViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\LoanViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceListViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceViewModel.cs" />

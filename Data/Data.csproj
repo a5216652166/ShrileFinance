@@ -147,10 +147,16 @@
     <Compile Include="Migrations\201703150938148_AddNewProduce.Designer.cs">
       <DependentUpon>201703150938148_AddNewProduce.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703170648533_AddFinancialLoan.cs" />
+    <Compile Include="Migrations\201703170648533_AddFinancialLoan.Designer.cs">
+      <DependentUpon>201703170648533_AddFinancialLoan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="ModelConfigurations\Finance\ProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\FinancialItemConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\FinancialLoanConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\NewProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\ActionConfiguration.cs" />
     <Compile Include="ModelConfigurations\Finance\ApplicantConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />
@@ -342,6 +348,8 @@
     </Compile>
     <Compile Include="Repositories\AppUserStore.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\FinancialItemRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\FinancialLoanRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\NewProduceRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\ContractRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\CreditContractRespostiory.cs" />
@@ -439,6 +447,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703150938148_AddNewProduce.resx">
       <DependentUpon>201703150938148_AddNewProduce.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703170648533_AddFinancialLoan.resx">
+      <DependentUpon>201703170648533_AddFinancialLoan.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,12 +1,13 @@
 ﻿namespace Application.AppServices.FinanceAppServices
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using AutoMapper;
     using Core.Entities.Finance;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using X.PagedList;
-    using System.Linq;
 
     public class NewProduceAppService
     {
@@ -21,10 +22,7 @@
         {
             var entityList = produceRepository.ProduceList(search, page, rows);
 
-            var models = Mapper.Map<IPagedList<NewProduceListViewModel>>(entityList);
-
-
-            return models;
+            return Mapper.Map<IPagedList<NewProduceListViewModel>>(entityList);
         }
 
         public NewProduceViewModel Get(Guid produceId)
@@ -41,11 +39,11 @@
 
         public void Create(NewProduceViewModel model)
         {
-            model.CreatedDate = DateTime.Now;
-
             model.RepayPrincipals = string.Join("-", model.RepayPrincipal.ToArray());
 
             var entity = Mapper.Map<NewProduce>(model);
+
+            entity.SetCreatedDate();
 
             entity.Valid();
 
@@ -54,13 +52,22 @@
             produceRepository.Commit();
         }
 
+        public IEnumerable<KeyValuePair<Guid, string>> Options()
+            => produceRepository.GetAll().OrderByDescending(m => m.CreatedDate).Select(m => new KeyValuePair<Guid, string>(m.Id, m.Code)).AsEnumerable();
+
         public void Modify(NewProduceViewModel model)
         {
             var entity = produceRepository.Get(model.Id);
 
+            model.RepayPrincipals = string.Join("-", model.RepayPrincipal.ToArray());
+
             Mapper.Map(model, entity);
 
+            entity.Valid();
+
             produceRepository.Modify(entity);
+
+            produceRepository.Commit();
         }
     }
 }

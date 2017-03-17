@@ -20,6 +20,9 @@
         直租 = 2
     }
 
+    /// <summary>
+    /// 产品
+    /// </summary>
     public class NewProduce : Entity, IAggregateRoot
     {
         protected NewProduce() : base()
@@ -100,13 +103,23 @@
             throw new NotImplementedException();
         }
 
+        public void SetCreatedDate()
+            => CreatedDate = DateTime.Now;
+
         public void Valid()
         {
+            var exception = default(Exception);
+
             var array = RepayPrincipals.Split('-').ToList();
 
             if (array.Sum(m => decimal.Parse(m)) != 100)
             {
-                throw new ArgumentException(message: "偿还本金比例之和应为100%");
+                exception = new ArgumentException(message: "偿还本金比例之和应为100%");
+            }
+
+            if (exception != default(Exception))
+            {
+                throw exception;
             }
         }
     }

@@ -74,9 +74,14 @@
         /// </summary>
         public IEnumerable<string> RepayPrincipal { get; set; }
 
+        /// <summary>
+        /// 偿还本金比例
+        /// </summary>
         public string RepayPrincipals { get; set; }
 
-
+        /// <summary>
+        /// 数据录入时间
+        /// </summary>
         public DateTime CreatedDate { get; set; }
     }
 }

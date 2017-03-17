@@ -62,7 +62,9 @@
                 .Add(new FinanceExtensionConfiguration())
                 .Add(new ContactConfiguration())
                 .Add(new CreditExamineConfiguration())
-                .Add(new ProduceConfiguration());
+                .Add(new NewProduceConfiguration())
+                .Add(new FinancialLoanConfiguration())
+                .Add(new FinancialItemConfiguration());
 
             // Organization Configurations
             modelBuilder.Configurations

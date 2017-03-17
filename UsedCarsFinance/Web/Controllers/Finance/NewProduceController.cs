@@ -46,5 +46,13 @@
 
             return Ok(model);
         }
+
+        [HttpGet]
+        public IHttpActionResult Options()
+        {
+           var options =  produceAppService.Options();
+
+            return Ok(options);
+        }
     }
 }
