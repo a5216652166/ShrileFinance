@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
@@ -83,5 +83,13 @@
         /// 数据录入时间
         /// </summary>
         public DateTime CreatedDate { get; set; }
+
+        public void ParseRepayPrincipal()
+        {
+            if (string.IsNullOrEmpty(RepayPrincipals) == false)
+            {
+                RepayPrincipal = RepayPrincipals.Split('-');
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using AutoMapper;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
 
     public class FinanceViewModelToDomainMappingProfile : Profile
     {

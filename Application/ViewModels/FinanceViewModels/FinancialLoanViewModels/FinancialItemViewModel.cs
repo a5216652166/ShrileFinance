@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class FinancialItemViewModel
+    public class FinancialItemViewModel: IEntityViewModel
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// 项目名称

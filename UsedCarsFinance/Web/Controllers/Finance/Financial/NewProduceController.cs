@@ -1,4 +1,4 @@
-﻿namespace Web.Controllers.Finance
+﻿namespace Web.Controllers.Finance.Financial
 {
     using System;
     using System.Web.Http;

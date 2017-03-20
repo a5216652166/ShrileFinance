@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using AutoMapper;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
@@ -54,11 +54,14 @@
 
             entity.Valid();
 
-            Valid(entity.FinancialItem.Name);
+            Valid(entity.LoanNum);
 
             financialLoanRepository.Create(entity);
 
-            financialItemRepository.Create(entity.FinancialItem);
+            foreach (var item in entity.FinancialItem)
+            {
+                financialItemRepository.Create(item);
+            }
 
             financialLoanRepository.Commit();
 
@@ -66,11 +69,11 @@
             {
                 var exception = default(Exception);
 
-                var count = financialLoanRepository.GetAll(m => m.FinancialItem.Name == name).Count();
+                var count = financialLoanRepository.GetAll(m => m.LoanNum == name).Count();
 
                 if (count > 0)
                 {
-                    exception = new ArgumentOutOfRangeAppException(message: $"已存在该融资项名称{name}");
+                    exception = new ArgumentOutOfRangeAppException(message: $"已存在该放款编号：{name}");
                 }
 
                 if (exception != default(Exception))
@@ -88,9 +91,11 @@
 
             Mapper.Map(model, entity);
 
+            UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
+
             entity.Valid();
 
-            Valid(entity.FinancialItem.Name, entity.Id);
+            Valid(entity.LoanNum, entity.Id);
 
             financialLoanRepository.Modify(entity);
 
@@ -100,11 +105,11 @@
             {
                 var exception = default(Exception);
 
-                var count = financialLoanRepository.GetAll(m => m.FinancialItem.Name == name && m.Id != id).Count();
+                var count = financialLoanRepository.GetAll(m => m.LoanNum == name && m.Id != id).Count();
 
                 if (count > 0)
                 {
-                    exception = new ArgumentOutOfRangeAppException(message: $"已存在该融资项名称{name}");
+                    exception = new ArgumentOutOfRangeAppException(message: $"已存在该放款编号：{name}");
                 }
 
                 if (exception != default(Exception))

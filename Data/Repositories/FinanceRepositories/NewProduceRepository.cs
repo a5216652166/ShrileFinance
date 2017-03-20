@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using X.PagedList;
 

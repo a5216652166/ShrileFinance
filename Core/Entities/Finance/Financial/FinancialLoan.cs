@@ -1,8 +1,9 @@
-﻿namespace Core.Entities.Finance
+﻿namespace Core.Entities.Finance.Financial
 {
     using System;
     using Core.Interfaces;
     using Core.Exceptions;
+    using System.Collections.Generic;
 
     public enum LoanDateEnum : byte
     {
@@ -10,7 +11,7 @@
         每月20号 = 2
     }
 
-    public enum AssetTypeEnum : byte
+    public enum StateEnum : byte
     {
         正常运营 = 1,
         主动结清 = 2,
@@ -28,6 +29,11 @@
         }
 
         /// <summary>
+        /// 放款编号
+        /// </summary>
+        public string LoanNum { get; protected set; }
+
+        /// <summary>
         /// 放款日期
         /// </summary>
         public DateTime LoanDate { get; protected set; }
@@ -38,9 +44,9 @@
         public LoanDateEnum RepayDate { get; protected set; }
 
         /// <summary>
-        /// 资产类型
+        /// 放款状态
         /// </summary>
-        public AssetTypeEnum AssetType { get; protected set; }
+        public StateEnum State { get; protected set; }
 
         /// <summary>
         /// 创建时间
@@ -50,7 +56,7 @@
         /// <summary>
         /// 融资项
         /// </summary>
-        public virtual FinancialItem FinancialItem { get; protected set; }
+        public virtual ICollection<FinancialItem> FinancialItem { get; protected set; }
 
         /// <summary>
         /// 产品
@@ -59,9 +65,6 @@
 
         public void SetProduce(NewProduce produce)
             => NewProduce = produce;
-
-        public void SetFinancialItem(FinancialItem financialItem)
-            => FinancialItem = financialItem;
 
         public void SetCreatedDate()
             => CreatedDate = DateTime.Now;
@@ -74,7 +77,7 @@
             {
                 exception = new ArgumentNullAppException(message: "产品引用为空！");
             }
-            else if (FinancialItem == null)
+            else if (FinancialItem == null || FinancialItem.Count == 0)
             {
                 exception = new ArgumentNullAppException(message: "融资项为空！");
             }

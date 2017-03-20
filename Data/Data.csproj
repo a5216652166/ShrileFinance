@@ -154,9 +154,9 @@
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="ModelConfigurations\Finance\FinancialItemConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\FinancialLoanConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\NewProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\Financial\FinancialItemConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\Financial\FinancialLoanConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Finance\Financial\NewProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\ActionConfiguration.cs" />
     <Compile Include="ModelConfigurations\Finance\ApplicantConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />

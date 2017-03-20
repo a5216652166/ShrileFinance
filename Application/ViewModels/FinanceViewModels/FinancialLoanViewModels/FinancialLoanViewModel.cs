@@ -1,14 +1,20 @@
 ﻿namespace Application.ViewModels.FinanceViewModels.FinancialLoanViewModels
 {
     using System;
+    using System.Collections.Generic;
     using Application.ViewModels.FinanceViewModels.ProduceViewModels;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
     public class FinancialLoanViewModel
     {
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// 放款编号
+        /// </summary>
+        public string LoanNum { get; set; }
 
         /// <summary>
         /// 放款日
@@ -22,10 +28,10 @@
         public LoanDateEnum RepayDate { get; set; }
 
         /// <summary>
-        /// 资产类型
+        /// 放款状态
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public AssetTypeEnum AssetType { get; set; }
+        public StateEnum State { get; set; }
 
         /// <summary>
         /// 创建时间
@@ -35,7 +41,7 @@
         /// <summary>
         /// 融资项
         /// </summary>
-        public FinancialItemViewModel FinancialItem { get; set; }
+        public IEnumerable<FinancialItemViewModel> FinancialItem { get; set; }
 
         /// <summary>
         /// 产品

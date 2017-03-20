@@ -5,7 +5,7 @@
     using System.Linq;
     using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using AutoMapper;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using X.PagedList;
@@ -35,7 +35,11 @@
                 throw new ArgumentException("参数无效");
             }
 
-            return Mapper.Map<NewProduceViewModel>(entity);
+            var model = Mapper.Map<NewProduceViewModel>(entity);
+
+            model.ParseRepayPrincipal();
+
+            return model;
         }
 
         public void Create(NewProduceViewModel model)

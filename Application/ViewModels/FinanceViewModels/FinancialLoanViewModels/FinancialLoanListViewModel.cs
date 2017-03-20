@@ -1,13 +1,18 @@
 ﻿namespace Application.ViewModels.FinanceViewModels.FinancialLoanViewModels
 {
     using System;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
     public class FinancialLoanListViewModel
     {
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// 放款编号
+        /// </summary>
+        public string LoanNum { get; set; }
 
         /// <summary>
         /// 放款日期
@@ -21,20 +26,15 @@
         public LoanDateEnum RepayDate { get; set; }
 
         /// <summary>
-        /// 资产类型
+        /// 放款状态
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public AssetTypeEnum AssetType { get; set; } = AssetTypeEnum.正常运营;
+        public StateEnum State { get; set; } = StateEnum.正常运营;
 
         /// <summary>
-        /// 融资项名称
+        /// 融资总额
         /// </summary>
-        public string FinancialItemName { get; set; }
-
-        /// <summary>
-        /// 融资额
-        /// </summary>
-        public decimal FinancialAmount { get; set; }
+        public decimal FinancialAmounts { get; set; }
 
         /// <summary>
         /// 产品代码

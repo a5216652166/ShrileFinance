@@ -1,7 +1,7 @@
 ﻿using System;
 using Core.Interfaces;
 
-namespace Core.Entities.Finance
+namespace Core.Entities.Finance.Financial
 {
     /// <summary>
     /// 融资项

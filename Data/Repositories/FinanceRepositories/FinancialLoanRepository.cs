@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using X.PagedList;
 
@@ -18,7 +18,7 @@
 
             searchString = searchString ?? string.Empty;
 
-            products = GetAll(item => item.FinancialItem.Name.Contains(searchString)).OrderByDescending(m => m.CreatedDate);
+            products = GetAll(item => item.LoanNum.Contains(searchString)).OrderBy(m => m.LoanNum);
 
             if (beginTime != null)
             {

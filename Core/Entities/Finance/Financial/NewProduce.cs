@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Finance
+﻿namespace Core.Entities.Finance.Financial
 {
     using System;
     using System.Collections.Generic;

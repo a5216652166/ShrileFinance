@@ -1,7 +1,7 @@
-﻿namespace Data.ModelConfigurations.Finance
+﻿namespace Data.ModelConfigurations.Finance.Financial
 {
     using System.Data.Entity.ModelConfiguration;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
 
     public class NewProduceConfiguration : EntityTypeConfiguration<NewProduce>
     {

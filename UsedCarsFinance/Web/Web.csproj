@@ -1249,8 +1249,8 @@
     <Compile Include="Controllers\BankCredit\ReportFilesController.cs" />
     <Compile Include="Controllers\BankCredit\SegmentRuleController.cs" />
     <Compile Include="Controllers\BankCredit\TempRecordController.cs" />
-    <Compile Include="Controllers\Finance\FinancialLoanController.cs" />
-    <Compile Include="Controllers\Finance\NewProduceController.cs" />
+    <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />
+    <Compile Include="Controllers\Finance\Financial\NewProduceController.cs" />
     <Compile Include="Controllers\Loan\CreditController.cs" />
     <Compile Include="Controllers\Customer\CustomerController.cs" />
     <Compile Include="Controllers\Finance\ApplicantController.cs" />

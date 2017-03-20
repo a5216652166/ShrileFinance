@@ -75,9 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
-    <Compile Include="Entities\Finance\FinancialItem.cs" />
-    <Compile Include="Entities\Finance\FinancialLoan.cs" />
-    <Compile Include="Entities\Finance\NewProduce.cs">
+    <Compile Include="Entities\Finance\Financial\FinancialItem.cs" />
+    <Compile Include="Entities\Finance\Financial\FinancialLoan.cs" />
+    <Compile Include="Entities\Finance\Financial\NewProduce.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Entities\Process\ProcessTempData.cs" />

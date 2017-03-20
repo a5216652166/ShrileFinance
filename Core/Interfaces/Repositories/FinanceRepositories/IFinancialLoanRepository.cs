@@ -1,7 +1,7 @@
 ﻿namespace Core.Interfaces.Repositories.FinanceRepositories
 {
     using System;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using X.PagedList;
 
     public interface IFinancialLoanRepository : IRepository<FinancialLoan>

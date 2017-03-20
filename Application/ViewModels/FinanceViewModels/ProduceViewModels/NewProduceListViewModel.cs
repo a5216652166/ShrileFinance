@@ -1,7 +1,7 @@
 ﻿namespace Application.ViewModels.FinanceViewModels.ProduceViewModels
 {
     using System;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
@@ -49,6 +49,11 @@
         /// 月费率
         /// </summary>
         public decimal MonthRate { get; set; }
+
+        /// <summary>
+        /// 年费率
+        /// </summary>
+        public decimal YearRate { get; set; }
 
         /// <summary>
         /// 渠道返点

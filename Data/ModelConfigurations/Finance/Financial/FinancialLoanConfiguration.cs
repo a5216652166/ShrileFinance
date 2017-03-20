@@ -1,7 +1,7 @@
-﻿namespace Data.ModelConfigurations.Finance
+﻿namespace Data.ModelConfigurations.Finance.Financial
 {
     using System.Data.Entity.ModelConfiguration;
-    using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
 
     public class FinancialLoanConfiguration : EntityTypeConfiguration<FinancialLoan>
     {
@@ -9,12 +9,14 @@
         {
             HasKey(m => m.Id);
 
+            Property(m=>m.LoanNum).IsRequired().HasMaxLength(20);
             Property(m => m.LoanDate).IsRequired();
             Property(m => m.RepayDate).IsRequired();
-            Property(m => m.AssetType).IsRequired();
+            Property(m => m.State).IsRequired();
 
             HasRequired(m => m.NewProduce);
-            HasRequired(m => m.FinancialItem);
+
+            HasMany(m => m.FinancialItem).WithOptional().Map(m => m.MapKey("FinancialLoanId"));
 
             ToTable("FANC_FinancialLoan");
         }

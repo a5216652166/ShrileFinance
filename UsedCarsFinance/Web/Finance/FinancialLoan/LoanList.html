@@ -54,21 +54,21 @@
         <thead>
             <tr>
                 <th data-options="field:'Id',hidden:true">Id</th>
-                <th data-options="field:'FinancialItemName',width:100,align:'center'">融资项名称</th>
-                <th data-options="field:'FinancialAmount',width:120,align:'center'">融资额</th>
+                <th data-options="field:'LoanNum',width:100,align:'center'">放款编号</th>
+                <th data-options="field:'FinancialAmounts',width:120,align:'center'">融资总额</th>
                 <th data-options="field:'NewProduceCode',width:200,align:'center'">产品代码</th>
                 <th data-options="field:'NewProduceTimeLimit',width:120,align:'center'">产品期限</th>
                 <th data-options="field:'LoanDate',width:120,align:'center'">放款日</th>
                 <th data-options="field:'RepayDate',width:120,align:'center'">还款日</th>
-                <th data-options="field:'AssetType',width:120,align:'center'">资产类型</th>
+                <th data-options="field:'State',width:120,align:'center'">放款类型</th>
             </tr>
         </thead>
     </table>
     <div id="tb">
         <div style="height:60px;">
             <div style="height:30px; width:auto;">
-                <label for="ProductCodeOrName">项目名称:</label>
-                <input id="ProductCodeOrName" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入项目名称'" />
+                <label for="ProductCodeOrName">放款编号:</label>
+                <input id="ProductCodeOrName" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入放款编号'" />
                 <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:Reload">搜索</a>
             </div>
             <div style="height:30px; width:auto;">
