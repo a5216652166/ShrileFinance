@@ -6,6 +6,7 @@
     using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using AutoMapper;
     using Core.Entities.Finance;
+    using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using X.PagedList;
 
@@ -47,9 +48,28 @@
 
             entity.Valid();
 
+            Valid(entity.Code);
+
             produceRepository.Create(entity);
 
             produceRepository.Commit();
+
+            void Valid(string code)
+            {
+                var exception = default(Exception);
+
+                var count = produceRepository.GetAll(m => m.Code == code).Count();
+
+                if (count > 0)
+                {
+                    exception = new ArgumentOutOfRangeAppException(message: $"已存在该产品代码{code}");
+                }
+
+                if (exception != default(Exception))
+                {
+                    throw exception;
+                }
+            }
         }
 
         public IEnumerable<KeyValuePair<Guid, string>> Options()
@@ -65,9 +85,28 @@
 
             entity.Valid();
 
+            Valid(entity.Code, entity.Id);
+
             produceRepository.Modify(entity);
 
             produceRepository.Commit();
+
+            void Valid(string code, Guid id)
+            {
+                var exception = default(Exception);
+
+                var count = produceRepository.GetAll(m => m.Code == code && m.Id != id).Count();
+
+                if (count > 0)
+                {
+                    exception = new ArgumentOutOfRangeAppException(message: $"已存在该代码{code}");
+                }
+
+                if (exception != default(Exception))
+                {
+                    throw exception;
+                }
+            }
         }
     }
 }

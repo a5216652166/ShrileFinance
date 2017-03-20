@@ -1,8 +1,10 @@
 ﻿namespace Application.AppServices.FinanceAppServices
 {
     using System;
+    using System.Linq;
     using AutoMapper;
     using Core.Entities.Finance;
+    using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using X.PagedList;
@@ -52,11 +54,30 @@
 
             entity.Valid();
 
+            Valid(entity.FinancialItem.Name);
+
             financialLoanRepository.Create(entity);
 
             financialItemRepository.Create(entity.FinancialItem);
 
             financialLoanRepository.Commit();
+
+            void Valid(string name)
+            {
+                var exception = default(Exception);
+
+                var count = financialLoanRepository.GetAll(m => m.FinancialItem.Name == name).Count();
+
+                if (count > 0)
+                {
+                    exception = new ArgumentOutOfRangeAppException(message: $"已存在该融资项名称{name}");
+                }
+
+                if (exception != default(Exception))
+                {
+                    throw exception;
+                }
+            }
         }
 
         public void Modify(FinancialLoanViewModel model)
@@ -69,9 +90,28 @@
 
             entity.Valid();
 
+            Valid(entity.FinancialItem.Name, entity.Id);
+
             financialLoanRepository.Modify(entity);
 
             financialLoanRepository.Commit();
+
+            void Valid(string name, Guid id)
+            {
+                var exception = default(Exception);
+
+                var count = financialLoanRepository.GetAll(m => m.FinancialItem.Name == name && m.Id != id).Count();
+
+                if (count > 0)
+                {
+                    exception = new ArgumentOutOfRangeAppException(message: $"已存在该融资项名称{name}");
+                }
+
+                if (exception != default(Exception))
+                {
+                    throw exception;
+                }
+            }
         }
     }
 }

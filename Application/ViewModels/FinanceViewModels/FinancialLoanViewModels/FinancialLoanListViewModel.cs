@@ -24,7 +24,7 @@
         /// 资产类型
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public AssetTypeEnum AssetType { get; set; } = AssetTypeEnum.默认;
+        public AssetTypeEnum AssetType { get; set; } = AssetTypeEnum.正常运营;
 
         /// <summary>
         /// 融资项名称

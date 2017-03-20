@@ -12,7 +12,7 @@
 
     public enum AssetTypeEnum : byte
     {
-        默认 = 1,
+        正常运营 = 1,
         主动结清 = 2,
         根本违约 = 3,
         资产转让 = 4

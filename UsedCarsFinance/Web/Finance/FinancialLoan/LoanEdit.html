@@ -22,16 +22,19 @@
 
         function Init() {
             if (query.method == "mod" || query.method == "view") {
+                $("a#save").linkbutton("disable");
+
                 $.ajax({
                     async: true,
                     type: "Get",
                     data: { loanId: query.Id },
                     url: "../../api/FinancialLoan/Get",
                     success: function (data) {
-                        debugger
                         LoadData(data);
                     }
                 });
+
+                $("a#save").linkbutton("enable");
 
                 if (query.method == "mod") {
                     $("form.container fieldset#Base>legend").text("放款编辑");
@@ -110,14 +113,20 @@
             }
 
             var data = BuildData();
-            debugger
+
             $.ajax({
                 async: false,
                 type: 'POST',
                 data: data,
                 url: url,
-                success: function (data) {
-                    $.messager.show({ msg: "操作成功！" });
+                statusCode: {
+                    200: function (data) {
+                        uc.form.Cancel();
+                        top.$.messager.show({ msg: "提交成功" });
+                    },
+                    400: function (data) {
+                        top.$.messager.show({ msg: data.responseJSON.Message });
+                    }
                 }
             });
         }
@@ -235,7 +244,7 @@
                            valueField: 'value',
 		                   textField: 'text',
                            data:[
-                           {value:'1',text:'默认'},
+                           {value:'1',text:'正常运营'},
                            {value:'2',text:'主动结清'},
                            {value:'3',text:'根本违约'},
                            {value:'4',text:'资产转让'},
