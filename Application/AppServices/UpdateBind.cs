@@ -7,8 +7,10 @@
 
     public class UpdateBind
     {
-        public void Bind<TEntity, TViewModel>(ICollection<TEntity> entities, IEnumerable<TViewModel> models) where TEntity : IEntity where TViewModel : ViewModels.IEntityViewModel
+        public static IEnumerable<TEntity> BindCollection<TEntity, TViewModel>(ICollection<TEntity> entities, IEnumerable<TViewModel> models) where TEntity : IEntity where TViewModel : ViewModels.IEntityViewModel
         {
+            var removeEntities = default(IEnumerable<TEntity>);
+
             // 参数空校验及处理
             entities = entities ?? new List<TEntity>();
             models = models ?? new List<TViewModel>();
@@ -17,8 +19,15 @@
             var modelIds = models.Select(m => m.Id);
 
             // 从实体集合中移除Id不在models的Id集合中的项
-            entities.Where(m => !modelIds.Contains(m.Id)).ToList()
-                .ForEach(m => entities.Remove(m));
+            removeEntities = entities.Where(m => modelIds.Contains(m.Id) == false).ToList();
+
+            foreach (var item in removeEntities)
+            {
+                entities.Remove(item);
+            }
+
+            ////entities.Where(m => !modelIds.Contains(m.Id)).ToList()
+            ////    .ForEach(m => entities.Remove(m));
 
             // 遍历models的每一项，若entities存在对象项，则直接进行映射，反之，则通过该项映射产生entities的对应项，并加入entities集合中
             foreach (var model in models)
@@ -36,9 +45,11 @@
                     entities.Add(entity);
                 }
             }
+
+            return removeEntities;
         }
 
-        public static void BindCollection<TEntity, TViewModel>(ICollection<TEntity> entities, IEnumerable<TViewModel> models) where TEntity : IEntity where TViewModel : ViewModels.IEntityViewModel
+        public void Bind<TEntity, TViewModel>(ICollection<TEntity> entities, IEnumerable<TViewModel> models) where TEntity : IEntity where TViewModel : ViewModels.IEntityViewModel
         {
             // 参数空校验及处理
             entities = entities ?? new List<TEntity>();

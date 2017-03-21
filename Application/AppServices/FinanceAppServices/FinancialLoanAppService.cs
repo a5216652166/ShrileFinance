@@ -1,6 +1,7 @@
 ﻿namespace Application.AppServices.FinanceAppServices
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
     using Core.Entities.Finance.Financial;
@@ -52,6 +53,11 @@
 
             entity.SetCreatedDate();
 
+            foreach (var item in model.FinancialItem)
+            {
+                entity.FinancialItem.Add(Mapper.Map<FinancialItem>(item));
+            }
+
             entity.Valid();
 
             Valid(entity.LoanNum);
@@ -91,7 +97,9 @@
 
             Mapper.Map(model, entity);
 
-            UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
+            var removeFinancialItems = UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
+
+            financialItemRepository.RemoveOldEntity(removeFinancialItems);
 
             entity.Valid();
 

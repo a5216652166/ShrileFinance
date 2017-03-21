@@ -87,15 +87,18 @@
             $("form.container fieldset input#produceId").combobox('select', data.NewProduce.Id);
 
             $("form.container fieldset input[name=Id]").val(data.Id);
-            
+
             $("form.container fieldset#financeItem table#financeItem_dg").datagrid('loadData', data.FinancialItem);
+
+            // 加载融资总额
+            LoanTotalFinancialAmount();
         }
 
         function BuildData() {
             var data = $("form.container fieldset#Base").serializeJson();
 
             data.FinancialItem = $("form.container fieldset#financeItem table#financeItem_dg").datagrid("getRows");
-            
+
             data.NewProduce = {};
             data.NewProduce.Id = $("form.container fieldset input#produceId").combobox('getValue');
 
@@ -129,7 +132,7 @@
             }
 
             var data = BuildData();
-            
+
             $.ajax({
                 async: false,
                 type: 'POST',
@@ -210,6 +213,20 @@
                 </div>
 
                 <div class="col-6">
+                    <label>放款状态:</label>
+                    <input class="easyui-combobox" name="State" data-options="value:'',editable:false,required:true,
+                           valueField: 'value',
+		                   textField: 'text',
+                           data:[
+                           {value:'1',text:'正常运营'},
+                           {value:'2',text:'主动结清'},
+                           {value:'3',text:'根本违约'},
+                           {value:'4',text:'资产转让'},
+                           ]
+                           " />
+                </div>
+
+                <div class="col-6">
                     <label>产品代码:</label>
                     <input class="easyui-combobox" id="produceId" data-options="
                        required:true,
@@ -222,21 +239,54 @@
                        " />
                     <script type="text/javascript">
                         function SelectProduce(record) {
-                            ////if (record.Key)
-                            ////{
-                            ////    $.ajax({
-                            ////        async: false,
-                            ////        type: 'GET',
-                            ////        data: { produceId: record.Key },
-                            ////        url: '../../api/NewProduce/Get',
-                            ////        success: function (data) {
-                            ////            alert(data.Code);
-                            ////            $.messager.show({ msg: "数据获取成功！" });
-                            ////        }
-                            ////    });
-                            ////}
+                            if (record.Key)
+                            {
+                                $.ajax({
+                                    async: false,
+                                    type: 'GET',
+                                    data: { produceId: record.Key },
+                                    url: '../../api/NewProduce/Get',
+                                    success: function (data) {
+                                        LoadProduceShower(data);
+                                    }
+                                });
+                            }
+
+                            function LoadProduceShower(data)
+                            {
+                                $('form.container fieldset#Base input#InterestRate').textbox('setValue', data.InterestRate);
+                                $('form.container fieldset#Base input#TimeLimitNumber').textbox('setValue', Math.ceil(data.TimeLimit / data.Interval));
+                                $('form.container fieldset#Base input#ProduceType').combobox('select', data.ProduceType);
+                            }
                         }
                     </script>
+                </div>
+
+                <div class="col-6">
+                    <label>名义利率:</label>
+                    <input id="InterestRate" class="easyui-textbox" data-options="required:false,value:'',readonly:true" />
+                    <unit>%</unit>
+                </div>
+
+                <div class="col-6">
+                    <label>期数:</label>
+                    <input id="TimeLimitNumber" class="easyui-textbox" data-options="required:false,value:'',readonly:true" />
+                    <unit>期</unit>
+                </div>
+
+                <div class="col-6">
+                    <label>产品类型:</label>
+                    <input id="ProduceType" class="easyui-combobox" data-options="required:false,readonly:true,
+                           valueField: 'value',
+		                   textField: 'text',
+                           data:[
+                           {value:'1',text:'纯分期'},
+                           {value:'2',text:'保证金加三期月供提前付'},
+                           {value:'3',text:'均匀贷'},
+                           {value:'4',text:'低息贷'},
+                           {value:'5',text:'保证金加分期'}
+                           ]
+                    " />
                 </div>
 
                 <div class="col-6">
@@ -258,56 +308,6 @@
                            ]
                            " />
                 </div>
-
-                <div class="col-6">
-                    <label>放款状态:</label>
-                    <input class="easyui-combobox" name="State" data-options="value:'',editable:false,required:true,
-                           valueField: 'value',
-		                   textField: 'text',
-                           data:[
-                           {value:'1',text:'正常运营'},
-                           {value:'2',text:'主动结清'},
-                           {value:'3',text:'根本违约'},
-                           {value:'4',text:'资产转让'},
-                           ]
-                           " />
-                </div>
-
-
-                <!--<div class="col-6">
-                    <label>项目名称:</label>
-                    <input class="easyui-textbox" name="Name" data-options="value:'',validType:['length[0,40]'],required:true" />
-                </div>-->
-
-                <!--<div class="col-6">
-                    <label>融资本金:</label>
-                    <input class="easyui-textbox" name="Principal" data-options="value:'',validType:['length[0,100]','Money'],required:true" />
-                    <unit>元</unit>
-                </div>-->
-
-                <!--<div class="col-6">
-                    <label>税率:</label>
-                    <input class="easyui-textbox" name="Rate" data-options="value:'',validType:['Money','Rate'],required:true" />
-                    <unit>%</unit>
-                </div>-->
-
-                <!--<div class="col-6">
-                    <label>增值税进项税额:</label>
-                    <input class="easyui-textbox" name="VATamount" data-options="value:'',validType:['length[0,100]','Money'],required:true" />
-                    <unit>元</unit>
-                </div>-->
-
-                <!--<div class="col-6">
-                    <label>发票金额:</label>
-                    <input class="easyui-textbox" name="InvoiceAmount" data-options="value:'',validType:['length[0,100]','Money'],required:true" />
-                    <unit>元</unit>
-                </div>-->
-
-                <!--<div class="col-6">
-                    <label>融资额:</label>
-                    <input class="easyui-textbox" name="FinancialAmount" data-options="value:'',validType:['length[0,100]','Money'],required:true" />
-                    <unit>元</unit>
-                </div>-->
             </div>
         </fieldset>
 
@@ -330,15 +330,8 @@
                                 required:true,
                                 validType:''
                             }
-                        }">名称</th>
-                        <th data-options="field:'Principal',width:140,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:true,
-                                validType:'Money'
-                            }
-                        }">融资本金（元）</th>
+                        }">项目名称</th>
+
                         <th data-options="field:'FinancialAmount',width:140,align:'center',
                         editor:{
                             type:'textbox',
@@ -347,6 +340,16 @@
                                 validType:'Money'
                             }
                         }">融资额（元）</th>
+
+                        <th data-options="field:'Principal',width:140,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:'Money'
+                            }
+                        }">融资本金（元）</th>
+
                         <th data-options="field:'Rate',width:140,align:'center',
                         editor:{
                             type:'textbox',
@@ -355,6 +358,7 @@
                                 validType:'Rate'
                             }
                         }">税率（%）</th>
+
                         <th data-options="field:'VATamount',width:140,align:'center',
                             editor:{
                             type:'textbox',
@@ -363,6 +367,7 @@
                                 validType:'Money'
                             },
                         }">增值税进项税额（元）</th>
+
                         <th data-options="field:'InvoiceAmount',width:140,align:'center',
                             editor:{
                             type:'textbox',
@@ -375,7 +380,7 @@
                 </thead>
             </table>
 
-            <div id="financeItem_tb">
+            <div id="financeItem_tb" style="display:none">
                 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:AppendfinanceItem">添加</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true,onClick:ModifyfinanceItem">修改</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:RemovefinanceItem">移除</a>
@@ -454,18 +459,65 @@
                             $("#financeItem_dg").datagrid("deleteRow", index);
 
                             editIndex = undefined;
+
+                            // 加载融资总额
+                            LoanTotalFinancialAmount();
                         }
 
                         function AcceptfinanceItem() {
                             if (endEditing()) {
                                 $("#financeItem_dg").datagrid("acceptChanges");
+
+                                // 加载融资总额
+                                LoanTotalFinancialAmount();
                             }
                         }
 
                         function financeItemStyler(index, row) {
-
                         }
             </script>
+
+            <div class="row" style="display:none">
+                <div class="col-6"></div>
+                <div class="col-6">
+                    <label>融资总额:</label>
+                    <input class="easyui-textbox" id="TotalFinancialAmount" data-options="readonly:true,value:''" />
+                    <unit>元</unit>
+                    <script type="text/javascript">
+                        function LoanTotalFinancialAmount() {
+                            var amountArray = [];
+                            $($("#financeItem_dg").datagrid('getRows')).each(function (i, e) {
+                                amountArray.push(e.FinancialAmount);
+                            });
+
+                            if (IsArray(amountArray) == true) {
+                                if (amountArray.length == 0) {
+                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").parents('div.row').hide();
+                                }
+                                else {
+                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").parents('div.row').show();
+                                }
+
+                                var total = 0;
+
+                                $(amountArray).each(function (i, e) {
+                                    if (isNaN(parseFloat(e)) == false) {
+                                        total += parseFloat(e) * 100;
+                                    }
+                                });
+
+                                total = total == 0 ? '' : total / 100;
+
+                                $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', total);
+                            }
+
+                            function IsArray(obj) {
+                                return Object.prototype.toString.call(obj) === '[object Array]';
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
         </fieldset>
         <div id="btn">
             <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',onClick:Submit">保存</a>

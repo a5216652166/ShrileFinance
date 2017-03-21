@@ -29,11 +29,11 @@ namespace Data.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Name = c.String(nullable: false, maxLength: 200),
+                        financialAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Principal = c.Decimal(precision: 18, scale: 2),
                         Rate = c.Decimal(precision: 18, scale: 2),
                         VATamount = c.Decimal(precision: 18, scale: 2),
                         InvoiceAmount = c.Decimal(precision: 18, scale: 2),
-                        financialAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
                         FinancialLoanId = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)

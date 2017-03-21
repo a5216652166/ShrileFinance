@@ -56,7 +56,7 @@
         /// <summary>
         /// 融资项
         /// </summary>
-        public virtual ICollection<FinancialItem> FinancialItem { get; protected set; }
+        public virtual ICollection<FinancialItem> FinancialItem { get; protected set; } = new HashSet<FinancialItem>();
 
         /// <summary>
         /// 产品

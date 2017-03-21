@@ -1,5 +1,6 @@
 ﻿namespace Application.Mappings
 {
+    using System;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using AutoMapper;
@@ -10,16 +11,29 @@
         public FinanceViewModelToDomainMappingProfile()
         {
             CreateMap<NewProduceViewModel, NewProduce>()
+                .ForMember(m => m.Id, m => m.MapFrom(o => AllowId(o.Id)))
                 .ForMember(m => m.CreatedDate, o => o.Ignore());
 
             CreateMap<FinancialItemViewModel, FinancialItem>()
-                .ForMember(m => m.Id, o => o.Ignore());
+                .ForMember(m => m.Id, m => m.MapFrom(o => AllowId(o.Id)));
 
             CreateMap<FinancialLoanViewModel, FinancialLoan>()
-                .ForMember(m => m.Id, o => o.Ignore())
+                .ForMember(m => m.Id, m => m.MapFrom(o => AllowId(o.Id)))
                 .ForMember(m => m.NewProduce, o => o.Ignore())
                 .ForMember(m => m.CreatedDate, o => o.Ignore())
-                .ForMember(m => m.FinancialItem, m => m.MapFrom(o => o.FinancialItem));
+                .ForMember(m => m.FinancialItem, o => o.Ignore());
+        }
+
+        private Guid AllowId(Guid? id)
+        {
+            if (id.HasValue && id != Guid.Empty)
+            {
+                return id.Value;
+            }
+            else
+            {
+                return Guid.NewGuid();
+            }
         }
     }
 }
