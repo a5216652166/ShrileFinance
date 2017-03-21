@@ -1,7 +1,6 @@
 ﻿namespace Core.Entities.CreditInvestigation
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using Exceptions;
@@ -17,7 +16,8 @@
         逾期 = 5,
         合同变更 = 6,
         欠息 = 7,
-        机构变更 = 8
+        机构变更 = 8,
+        展期 = 9
     }
 
     public enum TraceStatusEmum : byte

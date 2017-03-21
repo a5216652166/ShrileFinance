@@ -16,9 +16,6 @@
 
         public DatagramTypeEnum UnusedType { get; private set; }
 
-        public override DatagramTypeEnum Type
-        {
-            get { return UnusedType; }
-        }
+        public override DatagramTypeEnum Type => UnusedType;
     }
 }

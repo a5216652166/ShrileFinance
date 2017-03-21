@@ -93,13 +93,7 @@
         public string LoanTypes { get; set; }
 
         [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(131, true)]
-        public string 展期标志
-        {
-            get
-            {
-                return "2";
-            }
-        }
+        public string 展期标志 { get; private set; } = "2";
 
         /// <summary>
         /// 四级分类
@@ -112,5 +106,8 @@
         /// </summary>
         [MetaCode(1, MetaCodeTypeEnum.N), SegmentRule(134, true)]
         public string FiveCategoryAssetsClassification { get; set; }
+
+        public void SetRollOver()
+            => 展期标志 = "1";
     }
 }

@@ -88,6 +88,8 @@
                     datagramFiles.Add(
                         CreateBorrower(trace));
                     break;
+                case TraceTypeEnum.展期:
+                    throw new NotImplementedException();
                 default:
                     throw new ArgumentOutOfRangeAppException(nameof(trace.Type), "不支持的跟踪操作类型。");
             }
