@@ -60,6 +60,8 @@
                     Disabled("fieldset")
 
                     $("form.container fieldset#financeItem div.datagrid-toolbar a>span").hide();
+
+                    $("form.container fieldset#repayTable div.datagrid-toolbar a>span").hide();
                 }
             }
             else {
@@ -98,6 +100,9 @@
             if (amounts.toString().length == 0) {
                 $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', data.FinancialAmounts);
             }
+
+            // 加载还款计划表
+            LoadRepayTable();
         }
 
         function BuildData() {
@@ -537,14 +542,14 @@
         <fieldset id="repayTable">
             <legend>还款计划表</legend>
             <table id="repayTable_dg" class="easyui-datagrid" data-options="singleSelect: true,
-                   rownumbers: true,
+                   rownumbers: false,
                    toolbar: '#repayTable_tb',
                    onDblClickRow: onRepayEdit,
                    onEndEdit: onRepayEndEdit
                    ">
                 <thead>
                     <tr>
-                        <th data-options="field:'NPerNum',width:50,align:'center',
+                        <th data-options="field:'NPerNum',width:70,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
