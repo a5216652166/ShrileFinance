@@ -110,19 +110,23 @@
 
             if (valid == false) {
                 $.messager.show({ msg: "请填写完必填项！" });
+
+                return valid;
             }
 
             var data = BuildData();
             data.cal = 0;
-
+            
             $(data.RepayPrincipal).each(function (i, e) {
-                data.cal += e * 100;
+                data.cal += parseInt(e * 100);
             });
-
+            
             valid = valid && (data.cal / 100 == 100);
-
+            
             if (valid == false) {
                 $.messager.show({ msg: "偿还本金比例之和应为100%！" });
+
+                return valid;
             }
 
             return valid;
@@ -338,8 +342,8 @@
 
                 <div class="col-6">
                     <label>手续费:</label>
-                    <input name="Poundage" class="easyui-textbox" data-options="required:true,value:'',validType:['Money','length[0,5]','Rate']" />
-                    <unit>%</unit>
+                    <input name="Poundage" class="easyui-textbox" data-options="required:true,value:'',validType:['Money']" />
+                    <unit>元</unit>
                 </div>
 
                 <div class="col-6">
@@ -360,10 +364,13 @@
                     <unit>%</unit>
                     <script type="text/javascript">
                         function LoadYearRate(value) {
-                            $("form.container fieldset#Base input#yearRate").textbox("setValue", value);
+                            var yearRate = 0;
 
-                            if (value >= 0 && value <= 100)
-                                $("form.container fieldset#Base input#yearRate").textbox("setValue", value * 100 * 12 / 100);
+                            if ($("form.container fieldset#Base input[textboxname=MonthRate]").textbox("isValid")) {
+                                yearRate = parseInt(value * 100) * 12 / 100;
+                            }
+
+                            $("form.container fieldset#Base input#yearRate").textbox("setValue", yearRate);
                         }
                     </script>
                 </div>
