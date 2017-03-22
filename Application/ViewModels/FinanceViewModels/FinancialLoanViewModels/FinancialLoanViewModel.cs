@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
@@ -39,9 +40,14 @@
         public DateTime CreatedDate { get; set; }
 
         /// <summary>
+        /// 融资总额
+        /// </summary>
+        public decimal FinancialAmounts { get; set; }
+
+        /// <summary>
         /// 融资项
         /// </summary>
-        public IEnumerable<FinancialItemViewModel> FinancialItem { get; set; }
+        public IEnumerable<FinancialItemViewModel> FinancialItem { get; set; } = new HashSet<FinancialItemViewModel>();
 
         /// <summary>
         /// 产品

@@ -54,6 +54,11 @@
         public DateTime CreatedDate { get; protected set; }
 
         /// <summary>
+        /// 融资总额
+        /// </summary>
+        public decimal FinancialAmounts { get; protected set; }
+
+        /// <summary>
         /// 融资项
         /// </summary>
         public virtual ICollection<FinancialItem> FinancialItem { get; protected set; } = new HashSet<FinancialItem>();
@@ -69,6 +74,9 @@
         public void SetCreatedDate()
             => CreatedDate = DateTime.Now;
 
+        public void SetFinanceAmounts(decimal amount)
+            => FinancialAmounts = amount;
+
         public void Valid()
         {
             var exception = default(Exception);
@@ -77,7 +85,7 @@
             {
                 exception = new ArgumentNullAppException(message: "产品引用为空！");
             }
-            else if (FinancialItem == null || FinancialItem.Count == 0)
+            else if (NewProduce.LeaseType == LeaseTypeEnum.直租 && FinancialItem.Count == 0)
             {
                 exception = new ArgumentNullAppException(message: "融资项为空！");
             }

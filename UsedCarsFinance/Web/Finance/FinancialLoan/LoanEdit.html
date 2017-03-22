@@ -92,16 +92,25 @@
 
             // 加载融资总额
             LoanTotalFinancialAmount();
+
+            var amounts = $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('getValue');
+
+            if (amounts.toString().length == 0)
+            {
+                $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', data.FinancialAmounts);
+            }
         }
 
         function BuildData() {
             var data = $("form.container fieldset#Base").serializeJson();
 
+            data.FinancialAmounts = $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('getValue');
+
             data.FinancialItem = $("form.container fieldset#financeItem table#financeItem_dg").datagrid("getRows");
 
             data.NewProduce = {};
             data.NewProduce.Id = $("form.container fieldset input#produceId").combobox('getValue');
-
+            
             return data;
         }
 
@@ -239,8 +248,7 @@
                        " />
                     <script type="text/javascript">
                         function SelectProduce(record) {
-                            if (record.Key)
-                            {
+                            if (record.Key) {
                                 $.ajax({
                                     async: false,
                                     type: 'GET',
@@ -252,8 +260,7 @@
                                 });
                             }
 
-                            function LoadProduceShower(data)
-                            {
+                            function LoadProduceShower(data) {
                                 $('form.container fieldset#Base input#InterestRate').textbox('setValue', data.InterestRate);
                                 $('form.container fieldset#Base input#TimeLimitNumber').textbox('setValue', Math.ceil(data.TimeLimit / data.Interval));
                                 $('form.container fieldset#Base input#ProduceType').combobox('select', data.ProduceType);
@@ -453,12 +460,17 @@
                         }
 
                         function RemovefinanceItem() {
+                            editIndex = undefined;
+
+                            if ($("#financeItem_dg").datagrid('getRows').length == 0) {
+                                return;
+                            }
+
                             var row = $("#financeItem_dg").datagrid("getSelected");
                             var index = $("#financeItem_dg").datagrid("getRowIndex", row);
 
                             $("#financeItem_dg").datagrid("deleteRow", index);
 
-                            editIndex = undefined;
 
                             // 加载融资总额
                             LoanTotalFinancialAmount();
@@ -466,10 +478,13 @@
 
                         function AcceptfinanceItem() {
                             if (endEditing()) {
+
                                 $("#financeItem_dg").datagrid("acceptChanges");
 
-                                // 加载融资总额
-                                LoanTotalFinancialAmount();
+                                if ($("#financeItem_dg").datagrid('getRows').length > 0) {
+                                    // 加载融资总额
+                                    LoanTotalFinancialAmount();
+                                }
                             }
                         }
 
@@ -477,11 +492,11 @@
                         }
             </script>
 
-            <div class="row" style="display:none">
+            <div class="row">
                 <div class="col-6"></div>
                 <div class="col-6">
                     <label>融资总额:</label>
-                    <input class="easyui-textbox" id="TotalFinancialAmount" data-options="readonly:true,value:''" />
+                    <input class="easyui-textbox" id="TotalFinancialAmount" data-options="readonly:false,value:'',required:true,validType:['Money'] " />
                     <unit>元</unit>
                     <script type="text/javascript">
                         function LoanTotalFinancialAmount() {
@@ -492,23 +507,23 @@
 
                             if (IsArray(amountArray) == true) {
                                 if (amountArray.length == 0) {
-                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").parents('div.row').hide();
+                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', false).textbox('setValue','');
                                 }
                                 else {
-                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").parents('div.row').show();
+                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', true).textbox('setValue', '');
+
+                                    var total = 0;
+
+                                    $(amountArray).each(function (i, e) {
+                                        if (isNaN(parseFloat(e)) == false) {
+                                            total += parseFloat(e) * 100;
+                                        }
+                                    });
+
+                                    total = total == 0 ? '' : total / 100;
+
+                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', total);
                                 }
-
-                                var total = 0;
-
-                                $(amountArray).each(function (i, e) {
-                                    if (isNaN(parseFloat(e)) == false) {
-                                        total += parseFloat(e) * 100;
-                                    }
-                                });
-
-                                total = total == 0 ? '' : total / 100;
-
-                                $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', total);
                             }
 
                             function IsArray(obj) {

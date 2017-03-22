@@ -53,6 +53,8 @@
 
             entity.SetCreatedDate();
 
+            DistinguishProduceLeaseType(entity, model);
+
             foreach (var item in model.FinancialItem)
             {
                 entity.FinancialItem.Add(Mapper.Map<FinancialItem>(item));
@@ -60,7 +62,7 @@
 
             entity.Valid();
 
-            Valid(entity.LoanNum);
+            ValidLoanNum(entity.LoanNum);
 
             financialLoanRepository.Create(entity);
 
@@ -71,7 +73,7 @@
 
             financialLoanRepository.Commit();
 
-            void Valid(string name)
+            void ValidLoanNum(string name)
             {
                 var exception = default(Exception);
 
@@ -93,9 +95,11 @@
         {
             var entity = financialLoanRepository.Get(model.Id);
 
-            entity.SetProduce(newProduceRepository.Get(model.NewProduce.Id));
+            DistinguishProduceLeaseType(entity, model);
 
             Mapper.Map(model, entity);
+
+            entity.SetProduce(newProduceRepository.Get(model.NewProduce.Id));
 
             var removeFinancialItems = UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
 
@@ -124,6 +128,18 @@
                 {
                     throw exception;
                 }
+            }
+        }
+
+        private void DistinguishProduceLeaseType(FinancialLoan entity, FinancialLoanViewModel model)
+        {
+            if (entity.NewProduce.LeaseType == LeaseTypeEnum.回租)
+            {
+                entity.SetFinanceAmounts(model.FinancialAmounts);
+            }
+            else
+            {
+                entity.SetFinanceAmounts(entity.FinancialItem.Sum(m=>m.financialAmount));
             }
         }
     }

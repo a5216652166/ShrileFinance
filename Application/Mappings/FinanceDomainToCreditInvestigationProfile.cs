@@ -18,7 +18,6 @@
             CreateMap<FinancialItem, FinancialItemViewModel>();
 
             CreateMap<FinancialLoan, FinancialLoanListViewModel>()
-                .ForMember(m => m.FinancialAmounts, m => m.MapFrom(o => o.FinancialItem.Sum(t => t.financialAmount)))
                 .ForMember(m => m.NewProduceCode, m => m.MapFrom(o => o.NewProduce.Code))
                 .ForMember(m => m.NewProduceTimeLimit, m => m.MapFrom(o => o.NewProduce.TimeLimit));
 
