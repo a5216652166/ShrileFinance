@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using AutoMapper;
     using Core.Entities.Finance.Financial;
     using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories;
+    using ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using X.PagedList;
 
     public class NewProduceAppService
@@ -76,9 +76,6 @@
             }
         }
 
-        public IEnumerable<KeyValuePair<Guid, string>> Options()
-            => produceRepository.GetAll().OrderByDescending(m => m.CreatedDate).Select(m => new KeyValuePair<Guid, string>(m.Id, m.Code)).AsEnumerable();
-
         public void Modify(NewProduceViewModel model)
         {
             var entity = produceRepository.Get(model.Id);
@@ -112,5 +109,25 @@
                 }
             }
         }
+
+        public IEnumerable<RepayTableViewModel> LoadRepayTable(Guid produceId, decimal pV)
+        {
+            var produce = produceRepository.Get(produceId);
+
+            if (produce == null)
+            {
+                throw new ArgumentNullAppException(message: "产品为空！");
+            }
+
+            if (pV <= 0)
+            {
+                throw new ArgumentNullAppException(message: "本金应不小于0！");
+            }
+
+            return Mapper.Map<IEnumerable<RepayTableViewModel>>(produce.CalculateRepayTable(pV));
+        }
+
+        public IEnumerable<KeyValuePair<Guid, string>> Options()
+            => produceRepository.GetAll().OrderByDescending(m => m.CreatedDate).Select(m => new KeyValuePair<Guid, string>(m.Id, m.Code)).AsEnumerable();
     }
 }

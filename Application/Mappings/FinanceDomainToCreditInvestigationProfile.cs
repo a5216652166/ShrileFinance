@@ -1,10 +1,9 @@
 ﻿namespace Application.Mappings
 {
     using System.Linq;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using AutoMapper;
     using Core.Entities.Finance.Financial;
-    using ViewModels.FinanceViewModels.ProduceViewModels;
+    using ViewModels.FinanceViewModels.FinancialLoanViewModels;
 
     public class FinanceDomainToCreditInvestigationProfile : Profile
     {
@@ -14,6 +13,8 @@
 
             CreateMap<NewProduce, NewProduceListViewModel>()
                 .ForMember(m => m.YearRate, m => m.MapFrom(o => o.MonthRate * 12));
+
+            CreateMap<RepayTable, RepayTableViewModel>();
 
             CreateMap<FinancialItem, FinancialItemViewModel>();
 

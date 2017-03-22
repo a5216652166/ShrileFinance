@@ -64,6 +64,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Entities\Finance\Financial\NewProduceTests.cs" />
     <Compile Include="Entities\Flow\ProcessTempDataTests.cs" />
     <Compile Include="Entities\Loan\CreditContractTests.cs" />
     <Compile Include="Entities\Loan\LoanTests.cs" />

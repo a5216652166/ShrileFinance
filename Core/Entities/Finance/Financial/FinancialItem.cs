@@ -1,8 +1,7 @@
-﻿using System;
-using Core.Interfaces;
-
-namespace Core.Entities.Finance.Financial
+﻿namespace Core.Entities.Finance.Financial
 {
+    using Core.Interfaces;
+
     /// <summary>
     /// 融资项
     /// </summary>
@@ -20,12 +19,12 @@ namespace Core.Entities.Finance.Financial
         /// <summary>
         /// 融资额
         /// </summary>
-        public decimal financialAmount { get; protected set; }
+        public decimal FinancialAmount { get; protected set; }
 
         /// <summary>
         /// 融资本金
         /// </summary>
-        public decimal? Principal{ get; protected set; }
+        public decimal? Principal { get; protected set; }
 
         /// <summary>
         /// 税率

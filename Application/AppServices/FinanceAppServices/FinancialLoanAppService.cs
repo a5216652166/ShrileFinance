@@ -139,7 +139,7 @@
             }
             else
             {
-                entity.SetFinanceAmounts(entity.FinancialItem.Sum(m=>m.financialAmount));
+                entity.SetFinanceAmounts(entity.FinancialItem.Sum(m=>m.FinancialAmount));
             }
         }
     }

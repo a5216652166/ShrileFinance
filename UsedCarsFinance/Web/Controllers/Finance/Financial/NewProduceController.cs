@@ -4,7 +4,7 @@
     using System.Web.Http;
     using Application.AppServices.FinanceAppServices;
     using Application.ViewModels;
-    using Application.ViewModels.FinanceViewModels.ProduceViewModels;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
 
     public class NewProduceController : ApiController
     {
@@ -54,5 +54,9 @@
 
             return Ok(options);
         }
+
+        [HttpGet]
+        public IHttpActionResult LoadRepayTable(Guid produceId, decimal pV)
+            => Ok(produceAppService.LoadRepayTable(produceId, pV));
     }
 }

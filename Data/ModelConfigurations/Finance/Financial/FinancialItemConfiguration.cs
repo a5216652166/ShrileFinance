@@ -14,7 +14,7 @@
             Property(m => m.Rate).IsOptional();
             Property(m => m.VATamount).IsOptional();
             Property(m => m.InvoiceAmount).IsOptional();
-            Property(m => m.financialAmount).IsRequired();
+            Property(m => m.FinancialAmount).IsRequired();
 
             ToTable("FANC_FinancialItem");
         }

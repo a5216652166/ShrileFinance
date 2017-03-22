@@ -1,4 +1,4 @@
-﻿namespace Application.ViewModels.FinanceViewModels.ProduceViewModels
+﻿namespace Application.ViewModels.FinanceViewModels.FinancialLoanViewModels
 {
     using System;
     using System.Collections.Generic;

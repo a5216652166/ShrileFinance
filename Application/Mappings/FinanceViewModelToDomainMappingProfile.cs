@@ -1,10 +1,9 @@
 ﻿namespace Application.Mappings
 {
     using System;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
-    using Application.ViewModels.FinanceViewModels.ProduceViewModels;
     using AutoMapper;
     using Core.Entities.Finance.Financial;
+    using ViewModels.FinanceViewModels.FinancialLoanViewModels;
 
     public class FinanceViewModelToDomainMappingProfile : Profile
     {

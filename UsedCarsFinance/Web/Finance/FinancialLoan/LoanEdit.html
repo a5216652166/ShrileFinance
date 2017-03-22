@@ -95,8 +95,7 @@
 
             var amounts = $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('getValue');
 
-            if (amounts.toString().length == 0)
-            {
+            if (amounts.toString().length == 0) {
                 $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', data.FinancialAmounts);
             }
         }
@@ -110,7 +109,7 @@
 
             data.NewProduce = {};
             data.NewProduce.Id = $("form.container fieldset input#produceId").combobox('getValue');
-            
+
             return data;
         }
 
@@ -533,6 +532,173 @@
                     </script>
                 </div>
             </div>
+        </fieldset>
+
+        <fieldset id="repayTable">
+            <legend>还款计划表</legend>
+            <table id="repayTable_dg" class="easyui-datagrid" data-options="singleSelect: true,
+                   rownumbers: true,
+                   toolbar: '#repayTable_tb',
+                   onDblClickRow: onRepayEdit,
+                   onEndEdit: onRepayEndEdit
+                   ">
+                <thead>
+                    <tr>
+                        <th data-options="field:'NPerNum',width:50,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:true,
+                                validType:'',
+                                readonly:true,
+                                validType:'Money'
+                            }
+                        }">期数</th>
+
+                        <th data-options="field:'PlanAmount',width:110,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:true,
+                                validType:'',
+                                readonly:true,
+                                validType:'Money'
+                            }
+                        }">计划还款金额(元)</th>
+
+                        <th data-options="field:'Amount',width:110,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:'',
+                                readonly:false,
+                                validType:'Money'
+                            }
+                        }">实际还款金额(元)</th>
+
+                        <th data-options="field:'PlanPrincipal',width:110,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:true,
+                                validType:'',
+                                readonly:true,
+                                validType:'Money'
+                            }
+                        }">计划还款本金(元)</th>
+
+                        <th data-options="field:'Principal',width:110,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:'',
+                                readonly:false,
+                                validType:'Money'
+                            }
+                        }">实际还款本金(元)</th>
+
+                        <th data-options="field:'PlanInterest',width:100,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:true,
+                                validType:'',
+                                readonly:true,
+                                validType:'Money'
+                            }
+                        }">计划还款利息(元)</th>
+
+                        <th data-options="field:'Interest',width:100,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:'',
+                                readonly:false,
+                                validType:'Money'
+                            }
+                        }">实际还款利息(元)</th>
+
+                        <th data-options="field:'PlanAmountBlance',width:100,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:true,
+                                validType:'',
+                                readonly:true,
+                                validType:'Money'
+                            }
+                        }">计划还款余额(元)</th>
+
+                        <th data-options="field:'AmountBlance',width:100,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:'',
+                                readonly:false,
+                                validType:'Money'
+                            }
+                        }">实际还款余额(元)</th>
+
+                    </tr>
+                </thead>
+            </table>
+
+            <div id="repayTable_tb" style="display:none">
+                <a href="javascript:void(0)" id="Loan" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:LoadRepayTable">加载还款计划表</a>
+                <a href="javascript:void(0)" id="End" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:onRepayEndEdit">确定</a>
+            </div>
+            <script type="text/javascript">
+                        function LoadRepayTable() {
+                            var produceId = $("form.container fieldset#Base input#produceId").combobox('getValue');
+                            var pV = $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('getValue');
+
+                            if (produceId.toString().length == 0) {
+                                $.messager.show({ msg: "请选择产品" });
+
+                                return false;
+                            }
+                            debugger
+                            if ($("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('isValid') == false)
+                            {
+                                $.messager.show({ msg: "请输入融资总额！" });
+
+                                return false;
+                            }
+
+                            $("form.container fieldset#repayTable div#repayTable_tb a#Load").linkbutton('disable');
+
+                            $.ajax({
+                                async: false,
+                                type: 'GET',
+                                data: { produceId: produceId, pV: pV },
+                                url: '../../api/NewProduce/LoadRepayTable',
+                                statusCode: {
+                                    200: function (data) {
+                                        LoadRepayInfo(data);
+                                        $("form.container fieldset#repayTable div#repayTable_tb a#Load").linkbutton('enable');
+                                    },
+                                    400: function (data) {
+                                        top.$.messager.show({ msg: data.responseJSON.Message});
+                                    }
+                                }
+                            });
+
+                            function LoadRepayInfo(data) {
+                                $("form.container fieldset#repayTable table#repayTable_dg").datagrid('loadData', data);
+                            }
+                        }
+
+                        function onRepayEdit(){
+                        }
+
+                        function onRepayEndEdit() {
+                            $.messager.show({ msg:"确定" });
+                        }
+            </script>
         </fieldset>
         <div id="btn">
             <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',onClick:Submit">保存</a>

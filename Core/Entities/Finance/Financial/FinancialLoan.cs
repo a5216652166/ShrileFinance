@@ -1,9 +1,9 @@
 ﻿namespace Core.Entities.Finance.Financial
 {
     using System;
-    using Core.Interfaces;
-    using Core.Exceptions;
     using System.Collections.Generic;
+    using Core.Exceptions;
+    using Core.Interfaces;
 
     public enum LoanDateEnum : byte
     {
@@ -67,6 +67,11 @@
         /// 产品
         /// </summary>
         public virtual NewProduce NewProduce { get; protected set; }
+
+        /// <summary>
+        /// 还款计划表
+        /// </summary>
+        public virtual RepayTable RepayTable { get; }
 
         public void SetProduce(NewProduce produce)
             => NewProduce = produce;

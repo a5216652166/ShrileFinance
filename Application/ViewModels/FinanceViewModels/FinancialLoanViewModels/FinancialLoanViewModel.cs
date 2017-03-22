@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Application.ViewModels.FinanceViewModels.ProduceViewModels;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
