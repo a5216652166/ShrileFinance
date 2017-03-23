@@ -35,6 +35,11 @@
         public decimal PlanAmountBlance { get; protected set; }
 
         /// <summary>
+        /// 罚息
+        /// </summary>
+        public decimal PenaltyInterest { get; protected set; }
+
+        /// <summary>
         /// 创建还款计划表实例
         /// </summary>
         /// <param name="nperNum">期数编号（第nPerNum期）</param>

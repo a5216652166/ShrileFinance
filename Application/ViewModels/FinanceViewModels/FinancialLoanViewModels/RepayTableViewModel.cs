@@ -26,5 +26,10 @@
         /// 计划还款余额
         /// </summary>
         public decimal PlanAmountBlance { get; set; }
+
+        /// <summary>
+        /// 罚息
+        /// </summary>
+        public decimal PenaltyInterest { get; set; }
     }
 }

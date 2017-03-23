@@ -328,6 +328,7 @@
                         }
                     }
                 </script>
+
                 <div class="col-6">
                     <label>间隔:</label>
                     <input name="Interval" class="easyui-textbox" data-options="required:true,value:'1',validType:['Integer','length[0,6]'],onChange:ChangeTimeLimit" />
@@ -455,6 +456,11 @@
                         }
 
                         function onEdit(index) {
+                            // 禁用状态下，阻止编辑
+                            if ($("form.container fieldset#RepayPrincipals").attr("disabled") == "disabled") {
+                                return false;
+                            }
+
                             if (endEditing()) {
                                 $("#RepayPrincipal_dg").datagrid("beginEdit", index);
 

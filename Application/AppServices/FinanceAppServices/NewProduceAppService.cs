@@ -112,19 +112,24 @@
 
         public IEnumerable<RepayTableViewModel> LoadRepayTable(Guid produceId, decimal pV)
         {
+            var repayTables = default(IEnumerable<RepayTable>);
+
             var produce = produceRepository.Get(produceId);
 
             if (produce == null)
             {
                 throw new ArgumentNullAppException(message: "产品为空！");
             }
-
-            if (pV <= 0)
+            else if (pV > 0)
             {
-                throw new ArgumentNullAppException(message: "本金应不小于0！");
+                repayTables = produce.CalculateRepayTable(pV);
+            }
+            else
+            {
+                repayTables = new HashSet<RepayTable>();
             }
 
-            return Mapper.Map<IEnumerable<RepayTableViewModel>>(produce.CalculateRepayTable(pV));
+            return Mapper.Map<IEnumerable<RepayTableViewModel>>(repayTables);
         }
 
         public IEnumerable<KeyValuePair<Guid, string>> Options()

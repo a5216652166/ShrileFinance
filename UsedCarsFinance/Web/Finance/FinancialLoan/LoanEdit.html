@@ -242,6 +242,7 @@
                 <div class="col-6">
                     <label>产品代码:</label>
                     <input class="easyui-combobox" id="produceId" data-options="
+                       async:false,
                        required:true,
                        valueField:'Key',
                        textField:'Value',
@@ -250,6 +251,7 @@
                        editable:false,
                        onSelect:SelectProduce
                        " />
+                    <input type="hidden" id="produceLeaseType" value="回租" />
                     <script type="text/javascript">
                         function SelectProduce(record) {
                             if (record.Key) {
@@ -268,6 +270,16 @@
                                 $('form.container fieldset#Base input#InterestRate').textbox('setValue', data.InterestRate);
                                 $('form.container fieldset#Base input#TimeLimitNumber').textbox('setValue', Math.ceil(data.TimeLimit / data.Interval));
                                 $('form.container fieldset#Base input#ProduceType').combobox('select', data.ProduceType);
+
+                                $('form.container fieldset#Base input#MarginRate').textbox('setValue', data.MarginRate);
+                                $('form.container fieldset#Base input#LeaseType').combobox('select', data.LeaseType);
+
+                                $('form.container fieldset#Base input#produceLeaseType').val(data.LeaseType);
+
+                                setTimeout(function () {
+                                    // 加载融资总额
+                                    LoanTotalFinancialAmount();
+                                }, 200);
                             }
                         }
                     </script>
@@ -286,6 +298,12 @@
                 </div>
 
                 <div class="col-6">
+                    <label>保证金:</label>
+                    <input id="MarginRate" class="easyui-textbox" data-options="required:false,value:'',readonly:true" />
+                    <unit>%</unit>
+                </div>
+
+                <div class="col-6">
                     <label>产品类型:</label>
                     <input id="ProduceType" class="easyui-combobox" data-options="required:false,readonly:true,
                            valueField: 'value',
@@ -297,6 +315,15 @@
                            {value:'4',text:'低息贷'},
                            {value:'5',text:'保证金加分期'}
                            ]
+                    " />
+                </div>
+
+                <div class="col-6">
+                    <label>租赁方式:</label>
+                    <input id="LeaseType" class="easyui-combobox" data-options="readonly:true,required:false,value:'',
+                           valueField: 'value',
+		                   textField: 'text',
+                           data:[{value:'1',text:'回租'},{value:'2',text:'直租'}]
                     " />
                 </div>
 
@@ -336,10 +363,18 @@
                         <th data-options="field:'Id',hidden:true"></th>
                         <th data-options="field:'Name',width:160,align:'center',
                         editor:{
-                            type:'textbox',
+                            type:'combobox',
                             options:{
                                 required:true,
-                                validType:''
+                                validType:'',
+                                valueField:'text',
+                                textField:'text',
+                                data:[
+                                {'text':'车价'},
+                                {'text':'购置税'},
+                                {'text':'车船税'},
+                                {'text':'GPS'}
+                                ]
                             }
                         }">项目名称</th>
 
@@ -421,6 +456,12 @@
                         }
 
                         function onEdit(index) {
+                            // 禁用状态下，阻止编辑
+                            if ($("form.container fieldset#financeItem").attr("disabled") == "disabled")
+                            {
+                                return false;
+                            }
+
                             if (endEditing()) {
                                 $("#financeItem_dg").datagrid("beginEdit", index);
 
@@ -475,7 +516,6 @@
 
                             $("#financeItem_dg").datagrid("deleteRow", index);
 
-
                             // 加载融资总额
                             LoanTotalFinancialAmount();
                         }
@@ -504,27 +544,34 @@
                     <unit>元</unit>
                     <script type="text/javascript">
                         function LoanTotalFinancialAmount() {
-                            var amountArray = [];
+                            var produceLessType = $('form.container fieldset#Base input#produceLeaseType').val();
+                            var AmountArray = [];
+                            debugger
                             $($("#financeItem_dg").datagrid('getRows')).each(function (i, e) {
-                                amountArray.push(e.FinancialAmount);
+                                if (produceLessType == "回租") {
+                                    AmountArray.push(e.FinancialAmount == undefined ? 0 : e.FinancialAmount);
+                                }
+                                else {
+                                    AmountArray.push(e.Principal == undefined ? 0 : e.Principal);
+                                }
                             });
 
-                            if (IsArray(amountArray) == true) {
-                                if (amountArray.length == 0) {
-                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', false).textbox('setValue','');
+                            if (IsArray(AmountArray) == true) {
+                                if (AmountArray.length == 0) {
+                                    $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', false).textbox('setValue', '');
                                 }
                                 else {
                                     $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', true).textbox('setValue', '');
 
                                     var total = 0;
 
-                                    $(amountArray).each(function (i, e) {
+                                    $(AmountArray).each(function (i, e) {
                                         if (isNaN(parseFloat(e)) == false) {
                                             total += parseFloat(e) * 100;
                                         }
                                     });
 
-                                    total = total == 0 ? '' : total / 100;
+                                    total = total / 100;
 
                                     $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', total);
                                 }
@@ -549,7 +596,7 @@
                    ">
                 <thead>
                     <tr>
-                        <th data-options="field:'NPerNum',width:70,align:'center',
+                        <th data-options="field:'NPerNum',width:50,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -560,7 +607,7 @@
                             }
                         }">期数</th>
 
-                        <th data-options="field:'PlanAmount',width:110,align:'center',
+                        <th data-options="field:'PlanAmount',width:100,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -571,7 +618,7 @@
                             }
                         }">计划还款金额(元)</th>
 
-                        <th data-options="field:'Amount',width:110,align:'center',
+                        <th data-options="field:'Amount',width:100,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -582,7 +629,7 @@
                             }
                         }">实际还款金额(元)</th>
 
-                        <th data-options="field:'PlanPrincipal',width:110,align:'center',
+                        <th data-options="field:'PlanPrincipal',width:100,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -593,7 +640,7 @@
                             }
                         }">计划还款本金(元)</th>
 
-                        <th data-options="field:'Principal',width:110,align:'center',
+                        <th data-options="field:'Principal',width:100,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -648,13 +695,23 @@
                             }
                         }">实际还款余额(元)</th>
 
+                        <th data-options="field:'PenaltyInterest',width:80,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:'',
+                                readonly:true,
+                                validType:'Money'
+                            }
+                        }">罚息(元)</th>
                     </tr>
                 </thead>
             </table>
 
             <div id="repayTable_tb" style="display:none">
                 <a href="javascript:void(0)" id="Loan" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:LoadRepayTable">加载还款计划表</a>
-                <a href="javascript:void(0)" id="End" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:onRepayEndEdit">确定</a>
+                <!--<a href="javascript:void(0)" id="End" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:onRepayEndEdit">确定</a>-->
             </div>
             <script type="text/javascript">
                         function LoadRepayTable() {
