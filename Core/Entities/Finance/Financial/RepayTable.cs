@@ -20,14 +20,29 @@
         public decimal PlanPrincipal { get; protected set; }
 
         /// <summary>
+        /// 实际还款本金
+        /// </summary>
+        public decimal? Principal { get; protected set; }
+
+        /// <summary>
         /// 计划还款利息
         /// </summary>
         public decimal PlanInterest { get; protected set; }
 
         /// <summary>
-        /// 计划还款金额
+        /// 实际还款利息
+        /// </summary>
+        public decimal? Interest { get; protected set; }
+
+        /// <summary>
+        /// 计划还款金额(本金+利息)
         /// </summary>
         public decimal PlanAmount => PlanPrincipal + PlanInterest;
+
+        /// <summary>
+        /// 实际还款金额
+        /// </summary>
+        public decimal? Amount => null; // (Principal.HasValue && Interest.HasValue) ? Principal.Value + Interest.Value : null; //(Principal.HasValue?Principal.Value:0) + (Interest.HasValue?Interest.Value:0);
 
         /// <summary>
         /// 计划还款余额
@@ -35,9 +50,14 @@
         public decimal PlanAmountBlance { get; protected set; }
 
         /// <summary>
+        /// 实际还款余额
+        /// </summary>
+        public decimal? AmountBlance { get; protected set; }
+
+        /// <summary>
         /// 罚息
         /// </summary>
-        public decimal PenaltyInterest { get; protected set; }
+        public decimal? PenaltyInterest { get; protected set; }
 
         /// <summary>
         /// 创建还款计划表实例
