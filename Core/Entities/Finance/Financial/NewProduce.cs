@@ -185,8 +185,6 @@
             repayTables.Last().SetPlanInterest(lastRepay.PlanInterest + lastRepay.PlanAmountBlance);
             repayTables.Last().SetPlanPrincipalBlance(0);
 
-            repayTables = CalculateRepayTable_1(pV).ToList();
-
             return repayTables;
 
             decimal PMT()
