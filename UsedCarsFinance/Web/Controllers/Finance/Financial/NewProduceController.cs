@@ -2,7 +2,7 @@
 {
     using System;
     using System.Web.Http;
-    using Application.AppServices.FinanceAppServices;
+    using Application.AppServices.FinanceAppServices.FinancialAppServices;
     using Application.ViewModels;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
 

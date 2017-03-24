@@ -18,6 +18,7 @@
             Property(m => m.ActualDatePayment);
             Property(m => m.ScheduledDatePayment);
             Property(m => m.PaymentTypes).HasMaxLength(2);
+            Property(m => m.CreateDate).IsRequired();
 
             ToTable("LOAN_PaymentHistory");
         }

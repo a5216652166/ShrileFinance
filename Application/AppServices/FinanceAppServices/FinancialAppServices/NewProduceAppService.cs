@@ -1,4 +1,4 @@
-﻿namespace Application.AppServices.FinanceAppServices
+﻿namespace Application.AppServices.FinanceAppServices.FinancialAppServices
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,7 @@
     using AutoMapper;
     using Core.Entities.Finance.Financial;
     using Core.Exceptions;
-    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using X.PagedList;
 

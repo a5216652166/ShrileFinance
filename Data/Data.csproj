@@ -155,14 +155,19 @@
     <Compile Include="Migrations\201703220511337_UpdateFinancialLoan.Designer.cs">
       <DependentUpon>201703220511337_UpdateFinancialLoan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703241135288_UpdatePaymentHistory.cs" />
+    <Compile Include="Migrations\201703241135288_UpdatePaymentHistory.Designer.cs">
+      <DependentUpon>201703241135288_UpdatePaymentHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="ModelConfigurations\Finance\Financial\FinancialItemConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\Financial\FinancialLoanConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\Financial\NewProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialItemConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialLoanConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\NewProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\PartnerConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\ActionConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\ApplicantConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\ApplicantConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\ConcernBaseSegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\LitigationSegmentConfiguration.cs" />
@@ -202,12 +207,12 @@
     <Compile Include="ModelConfigurations\Customer\AssociatedEnterpriseConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\BigEventConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\CashFlowConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\ContactConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\CreditExamineConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\ContactConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\CreditExamineConfiguration.cs" />
     <Compile Include="ModelConfigurations\DraftConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\FinanceConfigration.cs" />
-    <Compile Include="ModelConfigurations\Finance\FinanceExtensionConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\FinanceProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfigration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceExtensionConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\ProcessTempDataConfiguration.cs" />
     <Compile Include="ModelConfigurations\Produce\FinancingProjectConfigration.cs" />
     <Compile Include="ModelConfigurations\Customer\FinancialAffairsConfiguration.cs" />
@@ -246,7 +251,7 @@
     <Compile Include="ModelConfigurations\AppUserConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\InstitutionIncomeExpenditureConfiguration.cs" />
     <Compile Include="ModelConfigurations\Customer\InstitutionLiabilitiesConfiguration.cs" />
-    <Compile Include="ModelConfigurations\Finance\VehicleConfigration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\VehicleConfigration.cs" />
     <Compile Include="Models\CRET_Cities.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -353,8 +358,10 @@
     <Compile Include="Repositories\AppUserStore.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinancialItemRepository.cs" />
-    <Compile Include="Repositories\FinanceRepositories\FinancialLoanRepository.cs" />
-    <Compile Include="Repositories\FinanceRepositories\NewProduceRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\FinancialRepositories\FinancialLoanRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\FinancialRepositories\NewProduceRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\PartnerRepositories\PartnerRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\PartnerRepositories\PartnerUserRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\ContractRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\CreditContractRespostiory.cs" />
     <Compile Include="Repositories\DatagramRepositories\DatagramFileRepository.cs" />
@@ -457,6 +464,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703220511337_UpdateFinancialLoan.resx">
       <DependentUpon>201703220511337_UpdateFinancialLoan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703241135288_UpdatePaymentHistory.resx">
+      <DependentUpon>201703241135288_UpdatePaymentHistory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

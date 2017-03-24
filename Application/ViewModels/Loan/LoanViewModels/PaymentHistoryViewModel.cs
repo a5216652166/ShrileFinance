@@ -78,6 +78,11 @@
         public Guid LoanId { get; set; }
 
         /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateDate { get; set; }
+
+        /// <summary>
         /// 所属流程Id
         /// </summary>
         public Guid InstanceId { get; set; }

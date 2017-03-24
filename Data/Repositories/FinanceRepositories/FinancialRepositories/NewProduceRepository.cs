@@ -1,9 +1,9 @@
-﻿namespace Data.Repositories.FinanceRepositories
+﻿namespace Data.Repositories.FinanceRepositories.FinancialRepositories
 {
     using System;
     using System.Linq;
     using Core.Entities.Finance.Financial;
-    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using X.PagedList;
 
     public class NewProduceRepository : BaseRepository<NewProduce>, INewProduceRepository

@@ -43,6 +43,8 @@
                     continue;
                 }
 
+                item.CreateDate = DateTime.Now;
+
                 var paymentHistory = Mapper.Map<PaymentHistory>(item);
 
                 paymentHistory.LoanId = paymentViewModel.LoanId;

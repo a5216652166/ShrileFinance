@@ -78,6 +78,11 @@
         /// </summary>
         public string PaymentTypes { get; set; }
 
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateDate { get; protected set; }
+
         /////// <summary>
         /////// 该还款信息所属流程ID
         /////// </summary>
