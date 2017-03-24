@@ -43,8 +43,6 @@
                     continue;
                 }
 
-                item.CreateDate = DateTime.Now;
-
                 var paymentHistory = Mapper.Map<PaymentHistory>(item);
 
                 paymentHistory.LoanId = paymentViewModel.LoanId;
@@ -73,6 +71,8 @@
 
             foreach (var item in entities)
             {
+                item.AllotCreateDate();
+
                 paymentService.Payment(loan, item);
 
                 paymentHistoryRepository.Create(item);

@@ -83,6 +83,9 @@
         /// </summary>
         public DateTime CreateDate { get; protected set; }
 
+        public void AllotCreateDate()
+            => CreateDate = DateTime.Now;
+
         /////// <summary>
         /////// 该还款信息所属流程ID
         /////// </summary>
