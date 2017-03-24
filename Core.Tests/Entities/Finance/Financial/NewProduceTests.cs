@@ -2,6 +2,7 @@
 
 namespace Core.Tests.Entities.Finance.Financial
 {
+    using System.Linq;
     using Core.Entities.Finance.Financial;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,9 +14,9 @@ namespace Core.Tests.Entities.Finance.Financial
         {
             var pv = 10000.00M;
 
-            var rr = NewProduce.Create().CalculateRepayTable(pv);
+            var rr = NewProduce.Create().CalculateRepayTable_1(pv);
 
-            Assert.IsTrue(true);
+            Assert.IsTrue(rr.Count() > 0);
         }
     }
 }

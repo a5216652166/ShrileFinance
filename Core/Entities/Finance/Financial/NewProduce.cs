@@ -43,7 +43,7 @@
         /// <summary>
         /// 期限
         /// </summary>
-        public int TimeLimit { get; protected set; } = 60;
+        public int TimeLimit { get; protected set; } = 30;
 
         /// <summary>
         /// 间隔
@@ -95,13 +95,35 @@
         /// </summary>
         public DateTime CreatedDate { get; protected set; }
 
+        public static NewProduce Create()
+            => new NewProduce();
+
+        public void SetCreatedDate()
+            => CreatedDate = DateTime.Now;
+
+        public void Valid()
+        {
+            var exception = default(Exception);
+
+            var array = RepayPrincipals.Split('-').ToList();
+
+            if (array.Sum(m => decimal.Parse(m)) != 100)
+            {
+                exception = new ArgumentException(message: "偿还本金比例之和应为100%");
+            }
+
+            if (exception != default(Exception))
+            {
+                throw exception;
+            }
+        }
 
         /// <summary>
         /// 计算还款计划表
         /// </summary>
         /// <param name="pV">融资总额</param>
         /// <returns></returns>
-        public IEnumerable<RepayTable> CalculateRepayTable_Old(decimal pV)
+        public IEnumerable<RepayTable> CalculateRepayTable(decimal pV)
         {
             // 还款表
             var repayTables = default(ICollection<RepayTable>);
@@ -162,6 +184,8 @@
             var lastRepay = repayTables.Last();
             repayTables.Last().SetPlanInterest(lastRepay.PlanInterest + lastRepay.PlanAmountBlance);
             repayTables.Last().SetPlanPrincipalBlance(0);
+
+            repayTables = CalculateRepayTable_1(pV).ToList();
 
             return repayTables;
 
@@ -224,7 +248,51 @@
             }
         }
 
-        public IEnumerable<RepayTable> CalculateRepayTable(decimal pV)
+        public IEnumerable<RepayTable> CalculateRepayTable_1(decimal pV)
+        {
+            ProduceType = ProduceTypeEnum.低息贷;
+
+            var repayTables = default(IEnumerable<RepayTable>);
+
+            // 等额本息
+            var dic1 = new HashSet<ProduceTypeEnum>() {
+                ProduceTypeEnum.低息贷,
+                ProduceTypeEnum.保证金加三期月供提前付,
+                ProduceTypeEnum.保证金加分期,
+                ProduceTypeEnum.均匀贷,
+                ProduceTypeEnum.纯分期
+            };
+
+            // 等额本金
+            var dic2 = new HashSet<ProduceTypeEnum>() {
+                ProduceTypeEnum.低息贷,
+                ProduceTypeEnum.保证金加三期月供提前付,
+                ProduceTypeEnum.保证金加分期,
+                ProduceTypeEnum.均匀贷,
+                ProduceTypeEnum.纯分期
+            };
+
+            switch (ProduceType)
+            {
+                case ProduceTypeEnum type when dic1.Contains(type):
+                    repayTables = CalculateRepayTablePIW(pV);
+                    break;
+                case ProduceTypeEnum type when dic2.Contains(type):
+                    repayTables = CalculateRepayTableSTD(pV);
+                    break;
+                default:
+                    break;
+            }
+
+            return repayTables ?? new HashSet<RepayTable>();
+        }
+
+        /// <summary>
+        /// 等额本息还款计划表
+        /// </summary>
+        /// <param name="pV">融资总额</param>
+        /// <returns></returns>
+        private IEnumerable<RepayTable> CalculateRepayTablePIW(decimal pV)
         {
             // 还款计划表
             var repayTables = default(ICollection<RepayTable>);
@@ -259,33 +327,55 @@
                 // 第i年尾款
                 var fV = pV * fVrate;
 
+                // 第i年融资总额
+                var pv = pV - repayTables.Sum(m => m.PlanPrincipal);
+
+                // 第i年期数
+                var nPer = NPers() - repayTables.Count + 1;
+
                 // 第i年，每期还款额
-                var pmt = Math.Round(PMT(fV), MidpointRounding.AwayFromZero);
+                var pmt = Math.Round(PMT(nPer, pv, fV) * 100, MidpointRounding.AwayFromZero) / 100;
 
                 // 第i年，每期还款额(镜像)
-                var pmtM = PMT(fV);
+                var pmtM = PMT(nPer, pv, fV);
 
-                // 第i年的总期数
+                // 第i年内的总期数
                 var npers = (TimeLimit - 12 * i) < 0 ? TimeLimit - 12 * (i - 1) : 12;
                 npers = Convert.ToInt32(Math.Ceiling((decimal)npers / Interval));
 
                 // 第i年还款记录
                 for (int j = 1; j <= npers; j++)
                 {
+                    // 上一期的余额
                     var oldBlance = repayTables.Last().PlanAmountBlance;
 
+                    // 本期的利息
                     var interest = Math.Round(oldBlance * (100 * perRate), MidpointRounding.AwayFromZero) / 100;
 
+                    // 本期的利息（镜像）
                     var interestM = oldBlance * perRate;
 
+                    // 还款计划表加入本期还款计划
                     repayTables.Add(RepayTable.Create(12 * (i - 1) + j, pmt - interest, interest, oldBlance + interest - pmt));
 
+                    // 还款计划表加入本期还款计划（本金）
                     repayTablesM.Add(RepayTable.Create(12 * (i - 1) + j, pmt - interestM, interestM, oldBlance + interestM - pmt));
                 }
             }
 
             // 移除第0期
             repayTables.Remove(repayTables.First());
+
+            // 移除第0期(镜像)
+            repayTablesM.Remove(repayTablesM.First());
+
+            // 误差修正
+            var lastRepay = repayTables.Last();
+            var error = Error(repayTables, repayTablesM);
+
+            repayTables.First().SetPlanPrincipal(lastRepay.PlanPrincipal + error.principalError);
+            repayTables.First().SetPlanInterest(lastRepay.PlanAmountBlance + error.interestError);
+            repayTables.Last().SetPlanPrincipalBlance(0);
 
             return repayTables;
 
@@ -304,37 +394,32 @@
                  => Convert.ToDouble((InterestRate == 0 ? 1 : InterestRate) / 100 / 12 * (Interval == 0 ? 1 : Interval));
 
             // 计算第n年的每期还款额
-            decimal PMT(decimal fv)
+            decimal PMT(int nper, decimal pv, decimal fv)
             {
                 var rate = NPerRate();
 
-                var nPer = NPers();
+                return Convert.ToDecimal(Financial.Pmt(rate, nper, -Convert.ToDouble(pv), Convert.ToDouble(fv)));
+            }
 
-                return Convert.ToDecimal(Financial.Pmt(rate, nPer, -Convert.ToDouble(pV), Convert.ToDouble(fv)));
+            // 计算误差
+            (decimal principalError, decimal interestError) Error(IEnumerable<RepayTable> repays, IEnumerable<RepayTable> repaysM)
+            {
+                var principalError = repaysM.Sum(m => m.PlanPrincipal) + repayTables.Last().PlanAmountBlance - repays.Sum(m => m.PlanPrincipal);
+
+                var interestError = repaysM.Sum(m => m.PlanInterest) - repaysM.Sum(m => m.PlanInterest);
+
+                return (Math.Round(principalError*100)/100, Math.Round(interestError)/100);
             }
         }
 
-        public static NewProduce Create()
-            => new NewProduce();
-
-        public void SetCreatedDate()
-            => CreatedDate = DateTime.Now;
-
-        public void Valid()
+        /// <summary>
+        /// 等额本金还款计划表
+        /// </summary>
+        /// <param name="pV">融资总额</param>
+        /// <returns></returns>
+        private IEnumerable<RepayTable> CalculateRepayTableSTD(decimal pV)
         {
-            var exception = default(Exception);
-
-            var array = RepayPrincipals.Split('-').ToList();
-
-            if (array.Sum(m => decimal.Parse(m)) != 100)
-            {
-                exception = new ArgumentException(message: "偿还本金比例之和应为100%");
-            }
-
-            if (exception != default(Exception))
-            {
-                throw exception;
-            }
+            throw new NotImplementedException();
         }
     }
 }
