@@ -1,5 +1,6 @@
-﻿namespace Infrastructure.JSON.Tests
+﻿namespace Core.Tests.InfrastructureTest.JSON.Tests
 {
+    using Infrastructure.JSON;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

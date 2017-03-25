@@ -49,9 +49,9 @@
         {
             var entity = Mapper.Map<FinancialLoan>(model);
 
-            entity.SetProduce(newProduceRepository.Get(model.NewProduce.Id));
+            entity.NewProduce = newProduceRepository.Get(model.NewProduce.Id);
 
-            entity.SetCreatedDate();
+            entity.AllowCreatedDate();
 
             DistinguishProduceLeaseType(entity, model);
 
@@ -99,7 +99,7 @@
 
             Mapper.Map(model, entity);
 
-            entity.SetProduce(newProduceRepository.Get(model.NewProduce.Id));
+            entity.NewProduce = newProduceRepository.Get(model.NewProduce.Id);
 
             var removeFinancialItems = UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
 
@@ -135,11 +135,11 @@
         {
             if (entity.NewProduce.LeaseType == LeaseTypeEnum.回租)
             {
-                entity.SetFinanceAmounts(model.FinancialAmounts);
+                entity.FinancialAmounts = model.FinancialAmounts;
             }
             else
             {
-                entity.SetFinanceAmounts(entity.FinancialItem.Sum(m=>m.FinancialAmount));
+                entity.FinancialAmounts = entity.FinancialItem.Sum(m => m.FinancialAmount);
             }
         }
     }

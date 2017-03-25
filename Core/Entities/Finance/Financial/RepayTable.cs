@@ -12,27 +12,27 @@
         /// <summary>
         /// 期数编号（第nPerNum期）
         /// </summary>
-        public int NPerNum { get; protected set; }
+        public int NPerNum { get; set; }
 
         /// <summary>
         /// 计划还款本金
         /// </summary>
-        public decimal PlanPrincipal { get; protected set; }
+        public decimal PlanPrincipal { get; set; }
 
         /// <summary>
         /// 实际还款本金
         /// </summary>
-        public decimal? Principal { get; protected set; }
+        public decimal? Principal { get; set; }
 
         /// <summary>
         /// 计划还款利息
         /// </summary>
-        public decimal PlanInterest { get; protected set; }
+        public decimal PlanInterest { get; set; }
 
         /// <summary>
         /// 实际还款利息
         /// </summary>
-        public decimal? Interest { get; protected set; }
+        public decimal? Interest { get; set; }
 
         /// <summary>
         /// 计划还款金额(本金+利息)
@@ -47,17 +47,17 @@
         /// <summary>
         /// 计划还款余额
         /// </summary>
-        public decimal PlanAmountBlance { get; protected set; }
+        public decimal PlanAmountBlance { get; set; }
 
         /// <summary>
         /// 实际还款余额
         /// </summary>
-        public decimal? AmountBlance { get; protected set; }
+        public decimal? AmountBlance { get; set; }
 
         /// <summary>
         /// 罚息
         /// </summary>
-        public decimal? PenaltyInterest { get; protected set; }
+        public decimal? PenaltyInterest { get; set; }
 
         /// <summary>
         /// 创建还款计划表实例
@@ -67,7 +67,7 @@
         /// <param name="planInterest">计划还款利息</param>
         /// <param name="planAmountBlance">计划还款本金余额</param>
         /// <returns></returns>
-        public static RepayTable Create(int nperNum, decimal planPrincipal, decimal planInterest, decimal planAmountBlance)
+        public static RepayTable CreateInstance(int nperNum, decimal planPrincipal, decimal planInterest, decimal planAmountBlance)
             => new RepayTable()
             {
                 Id = Guid.NewGuid(),

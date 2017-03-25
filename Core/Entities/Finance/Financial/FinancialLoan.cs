@@ -31,56 +31,50 @@
         /// <summary>
         /// 放款编号
         /// </summary>
-        public string LoanNum { get; protected set; }
+        public string LoanNum { get;  set; }
 
         /// <summary>
         /// 放款日期
         /// </summary>
-        public DateTime LoanDate { get; protected set; }
+        public DateTime LoanDate { get;  set; }
 
         /// <summary>
         /// 还款日
         /// </summary>
-        public LoanDateEnum RepayDate { get; protected set; }
+        public LoanDateEnum RepayDate { get;  set; }
 
         /// <summary>
         /// 放款状态
         /// </summary>
-        public StateEnum State { get; protected set; }
+        public StateEnum State { get;  set; }
 
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreatedDate { get; protected set; }
+        public DateTime CreatedDate { get;  set; }
 
         /// <summary>
         /// 融资总额
         /// </summary>
-        public decimal FinancialAmounts { get; protected set; }
+        public decimal FinancialAmounts { get;  set; }
 
         /// <summary>
         /// 融资项
         /// </summary>
-        public virtual ICollection<FinancialItem> FinancialItem { get; protected set; } = new HashSet<FinancialItem>();
+        public virtual ICollection<FinancialItem> FinancialItem { get;  set; } = new HashSet<FinancialItem>();
 
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual NewProduce NewProduce { get; protected set; }
+        public virtual NewProduce NewProduce { get;  set; }
 
         /// <summary>
         /// 还款计划表
         /// </summary>
         public virtual RepayTable RepayTable { get; }
 
-        public void SetProduce(NewProduce produce)
-            => NewProduce = produce;
-
-        public void SetCreatedDate()
+        public void AllowCreatedDate()
             => CreatedDate = DateTime.Now;
-
-        public void SetFinanceAmounts(decimal amount)
-            => FinancialAmounts = amount;
 
         public void Valid()
         {

@@ -1,7 +1,7 @@
-﻿namespace Infrastructure.ValidMethod.Tests
+﻿namespace Core.Tests.InfrastructureTest.ValidMethod.Tests
 {
+    using Infrastructure.ValidMethod;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using ValidMethod;
 
     [TestClass]
     public class TypeValidHelperTests

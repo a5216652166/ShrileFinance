@@ -48,7 +48,7 @@
 
             var entity = Mapper.Map<NewProduce>(model);
 
-            entity.SetCreatedDate();
+            entity.AllowCreatedDate();
 
             entity.Valid();
 

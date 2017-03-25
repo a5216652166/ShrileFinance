@@ -68,15 +68,15 @@
     <Compile Include="Entities\Flow\ProcessTempDataTests.cs" />
     <Compile Include="Entities\Loan\CreditContractTests.cs" />
     <Compile Include="Entities\Loan\LoanTests.cs" />
-    <Compile Include="JSON\EntityCloneHelperTests.cs" />
-    <Compile Include="JSON\JsonConvertHelperTests.cs" />
-    <Compile Include="JSON\JsonParseHelperTests.cs" />
+    <Compile Include="InfrastructureTest\JSON\EntityCloneHelperTests.cs" />
+    <Compile Include="InfrastructureTest\JSON\JsonConvertHelperTests.cs" />
+    <Compile Include="InfrastructureTest\JSON\JsonParseHelperTests.cs" />
     <Compile Include="PackingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="ValidMethod\AlgorithmHelperTests.cs" />
-    <Compile Include="ValidMethod\TypeValidHelperTests.cs" />
+    <Compile Include="InfrastructureTest\ValidMethod\AlgorithmHelperTests.cs" />
+    <Compile Include="InfrastructureTest\ValidMethod\TypeValidHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

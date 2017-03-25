@@ -10,18 +10,36 @@
         /// <typeparam name="T">类型</typeparam>
         /// <param name="obj">实体对象</param>
         /// <returns>克隆版实体</returns>
-        public static T Clone<T>(T obj) where T : class
+        public static T Clone<T>(T obj, bool depth = false) where T : class
         {
             if (obj == default(T))
             {
                 return default(T);
             }
 
-            var jsonSerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto };
+            var setting = new JsonSerializerSettings()
+            {
+                TypeNameHandling = TypeNameHandling.None,
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                ObjectCreationHandling = ObjectCreationHandling.Auto,
+            };
 
-            var jsonData = JsonConvert.SerializeObject(obj, jsonSerializerSettings);
+            if (depth)
+            {
+                setting.TypeNameHandling = TypeNameHandling.Auto;
+            }
 
-            var newObj = JsonConvert.DeserializeObject<T>(jsonData, jsonSerializerSettings);
+            var jsonData = JsonConvert.SerializeObject(obj, setting);
+
+            var newObj = default(T);
+
+            try
+            {
+                newObj = JsonConvert.DeserializeObject<T>(jsonData, setting);
+            }
+            catch
+            {
+            }
 
             return newObj;
         }

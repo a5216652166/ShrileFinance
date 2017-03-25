@@ -1,9 +1,8 @@
-﻿
-
-namespace Core.Tests.Entities.Finance.Financial
+﻿namespace Core.Tests.Entities.Finance.Financial
 {
     using Core.Entities.Finance.Financial;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Infrastructure.JSON;
 
     [TestClass]
     public class NewProduceTests
@@ -11,9 +10,13 @@ namespace Core.Tests.Entities.Finance.Financial
         [TestMethod]
         public void CalculateRepayTableTest1()
         {
+            var entity = NewProduce.CreateInstance();
+
+            var clone = EntityCloneHelper.Clone(entity);
+
             var pv = 10000.00M;
 
-            var rr = NewProduce.Create().CalculateRepayTable(pv);
+            var rr = NewProduce.CreateInstance().CalculateRepayTable(pv);
 
             Assert.IsTrue(true);
         }

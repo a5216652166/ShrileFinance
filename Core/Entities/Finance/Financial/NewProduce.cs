@@ -33,68 +33,67 @@
         /// <summary>
         /// 产品类型
         /// </summary>
-        public ProduceTypeEnum ProduceType { get; protected set; }
+        public ProduceTypeEnum ProduceType { get; set; }
 
         /// <summary>
         /// 代码
         /// </summary>
-        public string Code { get; protected set; }
+        public string Code { get; set; }
 
         /// <summary>
         /// 期限
         /// </summary>
-        public int TimeLimit { get; protected set; } = 60;
+        public int TimeLimit { get; set; } = 60;
 
         /// <summary>
         /// 间隔
         /// </summary>
-        public int Interval { get; protected set; } = 1;
+        public int Interval { get; set; } = 1;
 
         /// <summary>
         /// 手续费
         /// </summary>
-        public decimal Poundage { get; protected set; }
+        public decimal Poundage { get; set; }
 
         /// <summary>
         /// 保证金
         /// </summary>
-        public decimal MarginRate { get; protected set; }
+        public decimal MarginRate { get; set; }
 
         /// <summary>
         /// 月费率
         /// </summary>
-        public decimal MonthRate { get; protected set; }
+        public decimal MonthRate { get; set; }
 
         /// <summary>
         /// 渠道返点
         /// </summary>
-        public decimal ChannelRate { get; protected set; }
+        public decimal ChannelRate { get; set; }
 
         /// <summary>
         /// 员工提成
         /// </summary>
-        public decimal SalesmanRate { get; protected set; }
+        public decimal SalesmanRate { get; set; }
 
         /// <summary>
         /// 名义利率
         /// </summary>
-        public decimal InterestRate { get; protected set; } = 4.75M;
+        public decimal InterestRate { get; set; } = 4.75M;
 
         /// <summary>
         /// 租赁方式
         /// </summary>
-        public LeaseTypeEnum LeaseType { get; protected set; }
+        public LeaseTypeEnum LeaseType { get; set; }
 
         /// <summary>
         /// 偿还本金比例
         /// </summary>
-        public string RepayPrincipals { get; protected set; } = "33.4-33.3-33.3";
+        public string RepayPrincipals { get; set; } = "33.4-33.3-33.3";
 
         /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime CreatedDate { get; protected set; }
-
 
         /// <summary>
         /// 计算还款计划表
@@ -107,7 +106,7 @@
             var repayTables = default(ICollection<RepayTable>);
 
             // 还款表(镜像)
-            var repaytablesM = default(ICollection<RepayTable>);
+            ////var repaytablesM = default(ICollection<RepayTable>);
 
             // 每个周期的利率
             var nPerRate = InterestRate * (Interval == 0 ? 1 : Interval) / 12 / 100;
@@ -137,10 +136,10 @@
             var planPrincipalBlanceM = pvM - (pmtM - planInterestM);
 
             // 记录第一期还款计划(四舍五入，保留两位小数)
-            repayTables = new List<RepayTable>() { RepayTable.Create(1, pmt - planInterest, planInterest, pv - (pmt - planInterest)) };
+            repayTables = new List<RepayTable>() { RepayTable.CreateInstance(1, pmt - planInterest, planInterest, pv - (pmt - planInterest)) };
 
             // 记录第一期还款计划(镜像)
-            repayTables = new List<RepayTable>() { RepayTable.Create(1, pmtM - planInterest, planInterest, pv - (pmt - planInterest)) };
+            repayTables = new List<RepayTable>() { RepayTable.CreateInstance(1, pmtM - planInterest, planInterest, pv - (pmt - planInterest)) };
 
             for (int i = 2; i <= Math.Ceiling(GetNPer()); i++)
             {
@@ -148,20 +147,20 @@
 
                 planInterest = Math.Round(oldPlanAmountBlance * (100 * nPerRate), MidpointRounding.AwayFromZero) / 100;
 
-                repayTables.Add(RepayTable.Create(i, pmt - planInterest, planInterest, oldPlanAmountBlance - (pmt - planInterest)));
+                repayTables.Add(RepayTable.CreateInstance(i, pmt - planInterest, planInterest, oldPlanAmountBlance - (pmt - planInterest)));
             }
 
             // 设置第一期的还款本金和利息
             var error = CalculateError(pv, repayTables.Sum(m => m.PlanAmount), repayTables.Sum(m => m.PlanInterest));
 
             var firstRepay = repayTables.First();
-            repayTables.First().SetPlanPrincipal(Math.Ceiling(100 * (firstRepay.PlanPrincipal + error.amountError)) / 100);
-            repayTables.First().SetPlanInterest(Math.Ceiling(100 * (firstRepay.PlanInterest + error.interestError)) / 100);
+            repayTables.First().PlanPrincipal = Math.Ceiling(100 * (firstRepay.PlanPrincipal + error.amountError)) / 100;
+            repayTables.First().PlanInterest = Math.Ceiling(100 * (firstRepay.PlanInterest + error.interestError)) / 100;
 
             // 设置最后一期的还款本金和剩余还款金额
             var lastRepay = repayTables.Last();
-            repayTables.Last().SetPlanInterest(lastRepay.PlanInterest + lastRepay.PlanAmountBlance);
-            repayTables.Last().SetPlanPrincipalBlance(0);
+            repayTables.Last().PlanInterest = lastRepay.PlanInterest + lastRepay.PlanAmountBlance;
+            repayTables.Last().PlanAmountBlance = 0;
 
             return repayTables;
 
@@ -233,10 +232,10 @@
             var repayTablesM = default(ICollection<RepayTable>);
 
             // 记录第0期
-            repayTables = new HashSet<RepayTable>() { RepayTable.Create(0, 0, 0, pV) };
+            repayTables = new HashSet<RepayTable>() { RepayTable.CreateInstance(0, 0, 0, pV) };
 
             // 记录第0期（镜像）
-            repayTablesM = new HashSet<RepayTable>() { RepayTable.Create(0, 0, 0, pV) };
+            repayTablesM = new HashSet<RepayTable>() { RepayTable.CreateInstance(0, 0, 0, pV) };
 
             // 总期数（恒定）
             var pers = NPers();
@@ -278,9 +277,9 @@
 
                     var interestM = oldBlance * perRate;
 
-                    repayTables.Add(RepayTable.Create(12 * (i - 1) + j, pmt - interest, interest, oldBlance + interest - pmt));
+                    repayTables.Add(RepayTable.CreateInstance(12 * (i - 1) + j, pmt - interest, interest, oldBlance + interest - pmt));
 
-                    repayTablesM.Add(RepayTable.Create(12 * (i - 1) + j, pmt - interestM, interestM, oldBlance + interestM - pmt));
+                    repayTablesM.Add(RepayTable.CreateInstance(12 * (i - 1) + j, pmt - interestM, interestM, oldBlance + interestM - pmt));
                 }
             }
 
@@ -314,10 +313,10 @@
             }
         }
 
-        public static NewProduce Create()
+        public static NewProduce CreateInstance()
             => new NewProduce();
 
-        public void SetCreatedDate()
+        public void AllowCreatedDate()
             => CreatedDate = DateTime.Now;
 
         public void Valid()
