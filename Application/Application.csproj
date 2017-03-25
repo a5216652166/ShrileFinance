@@ -91,8 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\FileSystemAppServices\FileSystemAppService.cs" />
-    <Compile Include="AppServices\FinanceAppServices\FinancialLoanAppService.cs" />
-    <Compile Include="AppServices\FinanceAppServices\NewProduceAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\FinancialLoanAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\NewProduceAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\CreditContractAppService.cs" />
     <Compile Include="AppServices\ProcessAppservices\DraftAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinanceAppService.cs" />
@@ -237,6 +237,7 @@
     <Compile Include="Startup\Startup.AutoMapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AppServices\FinanceAppServices\PartnerAppServices\" />
     <Folder Include="ViewModels\Unused\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,4 @@
-﻿namespace Data.ModelConfigurations.Finance.Financial
+﻿namespace Data.ModelConfigurations.FinanceConfigurations.FinancialConfigurations
 {
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Finance.Financial;

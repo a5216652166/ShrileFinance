@@ -9,6 +9,7 @@
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="obj">实体对象</param>
+        /// <param name="depth">深度</param>
         /// <returns>克隆版实体</returns>
         public static T Clone<T>(T obj, bool depth = false) where T : class
         {

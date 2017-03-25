@@ -71,6 +71,8 @@
 
             foreach (var item in entities)
             {
+                item.AllotCreateDate();
+
                 paymentService.Payment(loan, item);
 
                 paymentHistoryRepository.Create(item);

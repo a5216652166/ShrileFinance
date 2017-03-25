@@ -2,7 +2,7 @@
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
-    using Data.ModelConfigurations.Finance.Financial;
+    using Data.ModelConfigurations.FinanceConfigurations.FinancialConfigurations;
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
     using ModelConfigurations.CreditInvestigation;

@@ -12,13 +12,20 @@
         /// <typeparam name="T">类型</typeparam>
         /// <param name="jsonStr">json字符串</param>
         /// <returns>引用对象</returns>
-        public static T Convert2Object<T>(string jsonStr) where T : class
+        public static T Convert2Object<T>(string jsonStr, bool depth = false) where T : class
         {
             T obj = default(T);
 
             if (string.IsNullOrEmpty(jsonStr) == false)
             {
-                obj = JsonConvert.DeserializeObject<T>(jsonStr, JsonSerializerSettings);
+                if (depth)
+                {
+                    obj = JsonConvert.DeserializeObject<T>(jsonStr, JsonSerializerSettings);
+                }
+                else
+                {
+                    obj = JsonConvert.DeserializeObject<T>(jsonStr);
+                }
             }
 
             return obj;
@@ -29,14 +36,22 @@
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="obj">引用对象</param>
+        /// <param name="depth">深度</param>
         /// <returns>json字符串</returns>
-        public static string Convert2JsonStr<T>(T obj) where T : class
+        public static string Convert2JsonStr<T>(T obj, bool depth = false) where T : class
         {
             var jsonStr = default(string);
 
             if (obj != default(T))
             {
-                jsonStr = JsonConvert.SerializeObject(obj, JsonSerializerSettings);
+                if (depth)
+                {
+                    jsonStr = JsonConvert.SerializeObject(obj, JsonSerializerSettings);
+                }
+                else
+                {
+                    jsonStr = JsonConvert.SerializeObject(obj);
+                }
             }
 
             jsonStr = string.IsNullOrEmpty(jsonStr) ? null : jsonStr;

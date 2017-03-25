@@ -1,4 +1,4 @@
-﻿namespace Core.Interfaces.Repositories.FinanceRepositories
+﻿namespace Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories
 {
     using System;
     using Core.Entities.Finance.Financial;
