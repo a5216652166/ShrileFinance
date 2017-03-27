@@ -82,13 +82,20 @@
         }
 
         function LoadData(data) {
+            // 加载基础信息
             $("form.container fieldset#Base").form('load', data);
 
-            var repayArray = data.RepayPrincipals.split('-');
+            // 加载 偿还本金
+            var repayPrincipals = [];
+            $(data.RepayPrincipal).each(function (i, e) {
+                var tempRepay = {};
+                tempRepay.YearNum = "第" + (i + 1) + "年";
+                tempRepay.PrincipalRate = e;
+                tempRepay.MonthCoefficient = 0;
 
-            $("form.container fieldset#RepayPrincipals>div.row input[textboxname=RepayPrincipal]").each(function (i, e) {
-                $(e).textbox('setValue', repayArray[i]);
+                repayPrincipals.push(tempRepay);
             });
+            $("form.container fieldset#RepayPrincipals table#RepayPrincipal_dg").datagrid('loadData', repayPrincipals);
         }
 
         function BuildData() {
@@ -116,13 +123,13 @@
 
             var data = BuildData();
             data.cal = 0;
-            
+
             $(data.RepayPrincipal).each(function (i, e) {
                 data.cal += parseInt(e * 100);
             });
-            
+
             valid = valid && (data.cal / 100 == 100);
-            
+
             if (valid == false) {
                 $.messager.show({ msg: "偿还本金比例之和应为100%！" });
 

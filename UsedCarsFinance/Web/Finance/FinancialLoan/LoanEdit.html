@@ -546,7 +546,7 @@
                         function LoanTotalFinancialAmount() {
                             var produceLessType = $('form.container fieldset#Base input#produceLeaseType').val();
                             var AmountArray = [];
-                            debugger
+                            
                             $($("#financeItem_dg").datagrid('getRows')).each(function (i, e) {
                                 if (produceLessType == "回租") {
                                     AmountArray.push(e.FinancialAmount == undefined ? 0 : e.FinancialAmount);
@@ -723,7 +723,7 @@
 
                                 return false;
                             }
-                            debugger
+                            
                             if ($("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('isValid') == false)
                             {
                                 $.messager.show({ msg: "请输入融资总额！" });
