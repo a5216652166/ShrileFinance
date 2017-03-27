@@ -1,7 +1,7 @@
 ﻿namespace Core.Interfaces.Repositories
 {
     using Entities;
-    using Entities.Partner;
+    using Core.Entities.Finance.Partners;
 
     public interface IPartnerRepository : IRepository<Partner>
     {

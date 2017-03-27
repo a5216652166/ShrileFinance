@@ -36,7 +36,7 @@
 
         public DateTime CreatedDate { get; protected set; }
 
-        public UserTypeEnum? UserType => AppUser.UserType;
+        public UserTypeEnum? UserType;//// => AppUser.UserType;
 
         public LockoutEnum LockoutEnabled => AppUser.LockoutEnabled ? LockoutEnum.禁用 : LockoutEnum.启用;
 
@@ -46,7 +46,7 @@
         {
             var partnerUser = new PartnerUser() { Name = name, Pwd = pwd };
 
-            partnerUser.AppUser = new AppUser() { UserType = UserTypeEnum.合作商 };
+            ////partnerUser.AppUser = new AppUser() { UserType = UserTypeEnum.合作商 };
 
             return partnerUser;
         }

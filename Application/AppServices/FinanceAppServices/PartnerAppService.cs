@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using Core.Entities;
-    using Core.Entities.Partner;
+    using Core.Entities.Finance.Partners;
     using Core.Interfaces.Repositories;
     using Microsoft.AspNet.Identity;
     using ViewModels;

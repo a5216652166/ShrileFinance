@@ -18,6 +18,6 @@
 
         public string RoleId => Roles.First().RoleId;
 
-        public UserTypeEnum? UserType { get; set; } = UserTypeEnum.晟融;
+        ////public UserTypeEnum? UserType { get; set; } = UserTypeEnum.晟融;
     }
 }

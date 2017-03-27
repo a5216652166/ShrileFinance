@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
-    using Core.Entities.Partner;
+    using Core.Entities.Finance.Partners;
 
     public class PartnerConfiguration : EntityTypeConfiguration<Partner>
     {

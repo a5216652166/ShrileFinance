@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using Core.Entities;
-    using Core.Entities.Partner;
+    using Core.Entities.Finance.Partners;
     using Core.Interfaces.Repositories;
 
     public class PartnerRepository : BaseRepository<Partner>, IPartnerRepository

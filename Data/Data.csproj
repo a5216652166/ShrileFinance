@@ -159,10 +159,6 @@
     <Compile Include="Migrations\201703241135288_UpdatePaymentHistory.Designer.cs">
       <DependentUpon>201703241135288_UpdatePaymentHistory.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703270444542_AddPartner.cs" />
-    <Compile Include="Migrations\201703270444542_AddPartner.Designer.cs">
-      <DependentUpon>201703270444542_AddPartner.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -472,9 +468,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703241135288_UpdatePaymentHistory.resx">
       <DependentUpon>201703241135288_UpdatePaymentHistory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703270444542_AddPartner.resx">
-      <DependentUpon>201703270444542_AddPartner.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

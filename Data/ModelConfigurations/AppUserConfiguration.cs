@@ -8,7 +8,7 @@
         public AppUserConfiguration() : base()
         {
             Property(m => m.Name).IsRequired().HasMaxLength(50);
-            Property(m => m.UserType).IsOptional();
+            ////Property(m => m.UserType).IsOptional();
         }
     }
 }

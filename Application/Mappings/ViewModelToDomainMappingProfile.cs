@@ -4,6 +4,7 @@
     using Core.Entities;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Finance;
+    using Core.Entities.Finance.Partners;
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;
@@ -25,7 +26,7 @@
                 .ForMember(d => d.UserName, opt => opt.Ignore())
                 .ForMember(d => d.PhoneNumber, opt => opt.MapFrom(s => s.Phone));
 
-            CreateMap<PartnerViewModel, Core.Entities.Partner.Partner>()
+            CreateMap<PartnerViewModel, Partner>()
                 .ForMember(d => d.Produces, opt => opt.Ignore())
                 .ForMember(d => d.Accounts, opt => opt.Ignore())
                 .ForMember(d => d.Approvers, opt => opt.Ignore());

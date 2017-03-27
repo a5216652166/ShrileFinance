@@ -235,7 +235,7 @@
     <Compile Include="Entities\Finance\FinanceExtension.cs" />
     <Compile Include="Entities\Finance\FinanceStateEnum.cs" />
     <Compile Include="Entities\Produce\FinancingProject.cs" />
-    <Compile Include="Entities\Partner\Partner.cs" />
+    <Compile Include="Entities\Finance\Partners\Partner.cs" />
     <Compile Include="Entities\Produce\Produce.cs" />
     <Compile Include="Entities\Produce\FinancingItem.cs" />
     <Compile Include="Entities\Produce\Scheme.cs" />

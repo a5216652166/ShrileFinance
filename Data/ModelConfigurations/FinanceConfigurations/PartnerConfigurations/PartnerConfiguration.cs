@@ -17,8 +17,8 @@
 
             Property(m => m.IsDelete).IsRequired();
             Property(m => m.CreatedDate).IsRequired();
-            HasMany(m => m.Produces).WithOptional().Map(m => m.MapKey("PartnerId"));
-            HasMany(m => m.PartnerUsers).WithOptional().Map(m => m.MapKey("PartnerId"));
+            HasMany(m => m.Produces).WithOptional().Map(m => m.MapKey("Partner_Id"));
+            HasMany(m => m.PartnerUsers).WithOptional().Map(m => m.MapKey("Partner_Id"));
 
             ToTable("FANC_Partner");
         }

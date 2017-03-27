@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Partner
+﻿namespace Core.Entities.Finance.Partners
 {
     using System;
     using System.Collections.Generic;
