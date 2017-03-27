@@ -101,6 +101,7 @@
     <Compile Include="AppServices\ProcessAppservices\ProcessScriptAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinancingProjectAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\LoanAppService.cs" />
+    <Compile Include="AppServices\Vehicle\VehicleAppService.cs" />
     <Compile Include="Mappings\DomainToCreditInvestigationProfile.cs" />
     <Compile Include="Mappings\FinanceDomainToCreditInvestigationProfile.cs" />
     <Compile Include="Mappings\FinanceViewModelToDomainMappingProfile.cs" />
