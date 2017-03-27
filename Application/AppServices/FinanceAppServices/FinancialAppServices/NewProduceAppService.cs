@@ -78,7 +78,7 @@
 
         public void Modify(NewProduceViewModel model)
         {
-            var entity = produceRepository.Get(model.Id);
+            var entity = produceRepository.Get(model.Id.Value);
 
             model.RepayPrincipals = string.Join("-", model.RepayPrincipal.ToArray());
 

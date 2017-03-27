@@ -64,7 +64,9 @@
                 .Add(new CreditExamineConfiguration())
                 .Add(new NewProduceConfiguration())
                 .Add(new FinancialLoanConfiguration())
-                .Add(new FinancialItemConfiguration());
+                .Add(new FinancialItemConfiguration())
+                .Add(new ModelConfigurations.FinanceConfigurations.PartnerConfigurations.PartnerConfiguration())
+                .Add(new ModelConfigurations.FinanceConfigurations.PartnerConfigurations.PartnerUserConfiguration());
 
             // Organization Configurations
             modelBuilder.Configurations

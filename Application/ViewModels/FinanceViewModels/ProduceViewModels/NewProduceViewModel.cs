@@ -6,9 +6,9 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    public class NewProduceViewModel
+    public class NewProduceViewModel : IEntityViewModel
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public ProduceTypeEnum ProduceType { get; set; }

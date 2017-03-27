@@ -17,5 +17,7 @@
         public string Name { get; set; }
 
         public string RoleId => Roles.First().RoleId;
+
+        public UserTypeEnum? UserType { get; set; } = UserTypeEnum.晟融;
     }
 }
