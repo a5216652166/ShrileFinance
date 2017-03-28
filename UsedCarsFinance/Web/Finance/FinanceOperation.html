@@ -13,7 +13,17 @@
     <script src="Content/FinanceJs.js"></script>
     <script src="../Scripts/usedcars.js"></script>
     <script src="../BankInfo/JS/validType.js"></script>
+    <style>
+        td > .textbox[style*="height: 22px;"] {
+            height: 22px !important;
+        }
 
+            td > .textbox[style*="height: 22px;"] > .textbox-text {
+                padding: 0px 4px !important;
+                font-size: 12px !important;
+                line-height: 1.42857143;
+            }
+    </style>
     <script type="text/javascript">
         var query = {};
 
@@ -304,7 +314,7 @@
 
         <template id="Operation">
             <fieldset name="CreditBankInfo">
-                <legend>放款信息</legend>
+                <legend>放款信息</legend>      
                 <div class="row">
                     <div class="col-6">
                         <label>放款主体：</label>
@@ -326,6 +336,131 @@
                         <input name="CreditBankCard" class="easyui-textbox" data-options="required:false,validType:['Integer','length[19,19]'],value:'',readonly:true" />
                     </div>
                 </div>
+
+                <div class="row">
+
+                    <fieldset id="account_user">
+                        <table id="account_dg" class="easyui-datagrid" data-options="singleSelect: true,
+                   toolbar: '#account_tb', onClickCell: onClickCell, onEndEdit: onEndEdit">
+                            <thead>
+                                <tr>
+                                    <th data-options="field:'CreditAccountName',width:150,
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                readonly:true,
+                                novalidate:true,
+                                validType:'',
+                                delay:800
+                            }
+                        }">放款账户</th>
+                                    <th data-options="field:'LoanPrincipal',width:150,
+                        formatter:function(value,row){
+                            return row.Role;
+                        },
+                        editor:{
+                            type:'combobox',
+                            options:{
+						        editable:false,
+                                required:true,
+                                data:[
+                                    {'value':'客户','text':'客户'},
+                                    {'value':'渠道','text':'渠道'}
+                                ]
+                            }
+                        }">放款主体</th>
+                                    <th data-options="field:'CreditBankName',width:150,
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false
+                            }
+                        }">开户行</th>
+                                    <th data-options="field:'CreditBankCard',width:200,
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                validType:['Integer','length[19,19]']
+                            }
+                        }">卡号</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <div id="account_tb">
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:AppendAccount">添加</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:RemoveAccount">移除</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:AcceptAccount">确定</a>
+                        </div>
+
+                        <script>
+                            var editIndex = undefined;
+                            function endEditing() {
+                                if (editIndex == undefined) { return true; }
+                                if ($("#account_dg").datagrid("validateRow", editIndex)) {
+                                    $("#account_dg").datagrid("endEdit", editIndex);
+                                    editIndex = undefined;
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                            function onClickCell(index, field) {
+                                if (editIndex != index) {
+                                    if (endEditing()) {
+                                        $("#account_dg").datagrid("selectRow", index)
+                                            .datagrid("beginEdit", index);
+                                        var ed = $("#account_dg").datagrid("getEditor", { index: index, field: field });
+                                        if (ed) {
+                                            ($(ed.target).data("textbox") ? $(ed.target).textbox("textbox") : $(ed.target)).focus();
+                                        }
+                                        editIndex = index;
+                                    } else {
+                                        setTimeout(function () {
+                                            $("#account_dg").datagrid("selectRow", editIndex);
+                                        }, 0);
+                                    }
+                                }
+                            }
+                            function onEndEdit(index, row) {
+                                //var ed = $(this).datagrid('getEditor', {
+                                //    index: index,
+                                //    field: 'Role'
+                                //});
+                                //row.RoleName = $(ed.target).combobox('getText');
+                            }
+                            function AppendAccount() {
+                                if (endEditing()) {
+                                    $("#account_dg").datagrid("appendRow", { Role: "客户" });
+                                    editIndex = $("#account_dg").datagrid("getRows").length - 1;
+
+                                    $("#account_dg").datagrid("selectRow", editIndex)
+                                        .datagrid("beginEdit", editIndex);
+
+                                    var ed = $("#account_dg").datagrid('getEditor', {
+                                        index: editIndex,
+                                        field: 'Username'
+                                    });
+                                    $(ed.target).textbox("readonly", false).textbox("enableValidation");
+                                }
+                            }
+                            function RemoveAccount() {
+                                if (editIndex == undefined) { return; }
+                                $("#account_dg").datagrid("cancelEdit", editIndex)
+                                    .datagrid("deleteRow", editIndex);
+                                editIndex = undefined;
+                            }
+                            function AcceptAccount() {
+                                if (endEditing()) {
+                                    $("#account_dg").datagrid("acceptChanges");
+                                }
+                            }
+                        </script>
+                    </fieldset>
+
+                </div>
+
                 <script type="text/javascript">
                     function ChooseLoanPrincipal(record) {
                         if (record) {
