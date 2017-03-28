@@ -609,6 +609,14 @@
                 return 'background-color:#d9fcfb;color:blue;font-weight:bold;';
             }
         }
+
+        //车架号、上牌城市自动切换必填和非必填属性
+        function AutoSwitchProperties(re) {
+            if (re == true || re == false) {
+                $("input[textboxname=FrameNo]").textbox({ required: re });
+                $("input[textboxname=RegisterCity").textbox({ required: re });
+            }            
+        }
     </script>
 </head>
 <body>
@@ -618,6 +626,10 @@
             <input type="hidden" id="InstanceId" name="InstanceId">
             <input name="ProduceId" id="ProduceId" type="hidden" />
 
+        </div>
+        <div>
+            <a id="addsssss" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-ok',onClick:AutoSwitch">选择产品</a>
+            <a id="addsss" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-ok',onClick:Auto">选择产品</a>
         </div>
         <div>
             <input id="ac-1" class="ac-1" name="accordion-1" type="radio" checked/>
@@ -701,7 +713,7 @@
                     <div class="row">
                         <div class="col-6">
                             <label>车架号:</label>
-                            <input name="FrameNo" class="easyui-textbox" data-options="validType:['AN','length[17,17]']" />
+                            <input name="FrameNo" class="easyui-textbox" data-options="validType:['AN','length[17,17]'],required:true" />
                         </div>
 
                         <div class="col-6">
@@ -741,7 +753,7 @@
                     <div class="row">
                         <div class="col-6">
                             <label>车辆上牌城市:</label>
-                            <input name="RegisterCity" class="easyui-textbox" />
+                            <input name="RegisterCity" class="easyui-textbox" data-options="required:true" />
                         </div>
 
                         <div class="col-6">
