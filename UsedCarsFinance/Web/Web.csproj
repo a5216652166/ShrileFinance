@@ -1251,6 +1251,7 @@
     <Compile Include="Controllers\BankCredit\TempRecordController.cs" />
     <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />
     <Compile Include="Controllers\Finance\Financial\NewProduceController.cs" />
+    <Compile Include="Controllers\Finance\Vehicle\VehiclePriseController.cs" />
     <Compile Include="Controllers\Loan\CreditController.cs" />
     <Compile Include="Controllers\Customer\CustomerController.cs" />
     <Compile Include="Controllers\Finance\ApplicantController.cs" />

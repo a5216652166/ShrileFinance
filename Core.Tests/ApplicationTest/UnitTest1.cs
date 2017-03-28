@@ -9,7 +9,7 @@
         [TestMethod]
         public void TestMethod1()
         {
-            var data = new VehicleAppService().PostToGetVehiclePrise("vfaytrc", "ssgwlgu", string.Empty, string.Empty, string.Empty, string.Empty);
+            var data = new VehicleAppService().PostToGetVehiclePrise("vfaytrc", "ssgwlgu");
             Assert.IsTrue(true);
         }
     }

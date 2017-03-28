@@ -9,6 +9,20 @@
     </script>
 </head>
 <body>
-    <iframe id="iframe" name="print_frame" src="http://localhost/UCF/Upload/PDF/HZ011605001.pdf" style="width:100%;height:800px;border:0;"></iframe>
+    <!--<iframe id="iframe" name="print_frame" src="http://localhost/UCF/Upload/PDF/HZ011605001.pdf" style="width:100%;height:800px;border:0;"></iframe>-->
+    <script>
+        $(function() {
+            $.ajax({
+                async: false,
+                type: "Post",
+                url: "../api/VehiclePrise/PostToGetVehiclePrise",
+                statusCode: {
+                    200: function (data) {
+                    }
+                }
+            });
+        })
+    </script>
 </body>
+
 </html>
