@@ -92,6 +92,7 @@
     <Compile Include="Entities\HiddenEnum.cs" />
     <Compile Include="Entities\IO\FileSystem.cs" />
     <Compile Include="Entities\UserTypeEnum.cs" />
+    <Compile Include="Entities\Vehicle\VehiclePrise.cs" />
     <Compile Include="Interfaces\IDeleteable.cs" />
     <Compile Include="Interfaces\IProcessable.cs" />
     <Compile Include="Interfaces\Repositories\DatagramRepositories\IDatagramFileRepository.cs" />
