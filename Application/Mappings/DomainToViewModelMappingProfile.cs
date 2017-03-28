@@ -70,8 +70,8 @@
             CreateMap<InstitutionIncomeExpenditure, InstitutionIncomeExpenditureViewModel>();
             CreateMap<InstitutionLiabilities, InstitutionLiabilitiesViewModel>();
 
-            CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceViewModel>();
-            CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceListViewModel>();
+            ////CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceViewModel>();
+            ////CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceListViewModel>();
             CreateMap<FinancingItem, ViewModels.ProduceViewModel.FinancingItemViewModel>();
             CreateMap<FinancingProject, ViewModels.ProduceViewModel.FinancingProjectViewModel>();
             CreateMap<Finance, FinanceApplyViewModel>();

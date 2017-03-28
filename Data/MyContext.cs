@@ -2,6 +2,7 @@
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
+    using Data.ModelConfigurations.ProduceConfigurations;
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
     using ModelConfigurations.CreditInvestigationConfigurations;
@@ -16,7 +17,6 @@
     using ModelConfigurations.IOConfigurations;
     using ModelConfigurations.LoanConfigurations;
     using ModelConfigurations.ProcessConfigurations;
-    using ModelConfigurations.ProduceConfigurations;
 
     public class MyContext : IdentityDbContext
     {
@@ -51,7 +51,8 @@
             modelBuilder.Configurations
                 .Add(new FinancingItemConfigration())
                 .Add(new FinancingProjectConfigration())
-                .Add(new OldProduceConfigration());
+                ////.Add(new OldProduceConfigration())
+                ;
 
             // Partner and Draft Configurations
             modelBuilder.Configurations
@@ -67,7 +68,7 @@
                 .Add(new FinanceExtensionConfiguration())
                 .Add(new ContactConfiguration())
                 .Add(new CreditExamineConfiguration())
-                .Add(new NewProduceConfiguration())
+                .Add(new ProduceConfiguration())
                 .Add(new FinancialLoanConfiguration())
                 .Add(new FinancialItemConfiguration());
 

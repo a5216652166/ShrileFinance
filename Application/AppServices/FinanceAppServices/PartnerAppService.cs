@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using AutoMapper;
     using Core.Entities;
+    using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using Core.Entities.Identity;
     using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
@@ -181,18 +183,18 @@
             return models;
         }
 
-        public List<ProduceListViewModel> GetPageListByPartner(string serach)
+        public IEnumerable<NewProduceListViewModel> GetPageListByPartner(string serach)
         {
-            var partner = repository.GetByUser(userManager.CurrentUser());
+            var produces = default(IEnumerable<Produce>);
 
-            var produces = partner.Produces.AsEnumerable();
+            produces = repository.GetByUser(userManager.CurrentUser()).Produces;
 
             if (!string.IsNullOrEmpty(serach))
             {
                 produces = produces.Where(m => m.Code.Contains(serach));
             }
 
-            return Mapper.Map<List<ProduceListViewModel>>(produces).ToList();
+            return Mapper.Map<IEnumerable<NewProduceListViewModel>>(produces);
         }
     }
 }

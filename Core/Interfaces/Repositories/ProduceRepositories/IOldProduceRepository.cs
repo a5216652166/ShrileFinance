@@ -6,8 +6,8 @@
     /// <summary>
     /// 产品仓储
     /// </summary>
-    public interface IOldProduceRepository : IRepository<OldProduce>
-    {
-        IPagedList<OldProduce> List(string searchString, int page, int size);
-    }
+    ////public interface IOldProduceRepository : IRepository<OldProduce>
+    ////{
+    ////    IPagedList<OldProduce> List(string searchString, int page, int size);
+    ////}
 }

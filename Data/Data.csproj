@@ -159,6 +159,10 @@
     <Compile Include="Migrations\201703241135288_UpdatePaymentHistory.Designer.cs">
       <DependentUpon>201703241135288_UpdatePaymentHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703281228201_UpdateProduceT.cs" />
+    <Compile Include="Migrations\201703281228201_UpdateProduceT.Designer.cs">
+      <DependentUpon>201703281228201_UpdateProduceT.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -208,7 +212,7 @@
     <Compile Include="ModelConfigurations\CustomerConfigurations\StockholderConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialItemConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialLoanConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\NewProduceConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\ProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\NewPartnerConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\PartnerUserConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\ActionConfiguration.cs" />
@@ -247,7 +251,7 @@
     <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\PartnerConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProduceConfigurations\FinancingItemConfigration.cs" />
     <Compile Include="ModelConfigurations\LoanConfigurations\PledgeGuarantyContractConfiguration.cs" />
-    <Compile Include="ModelConfigurations\ProduceConfigurations\ProduceConfigration.cs" />
+    <Compile Include="ModelConfigurations\ProduceConfigurations\OldProduceConfigration.cs" />
     <Compile Include="ModelConfigurations\TypeConfigurationExtensions.cs" />
     <Compile Include="ModelConfigurations\AppUserConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\VehicleConfigration.cs" />
@@ -466,6 +470,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703241135288_UpdatePaymentHistory.resx">
       <DependentUpon>201703241135288_UpdatePaymentHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703281228201_UpdateProduceT.resx">
+      <DependentUpon>201703281228201_UpdateProduceT.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

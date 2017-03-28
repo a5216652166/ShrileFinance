@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using Interfaces;
-    using Produce;
 
     public class Finance : Entity, IAggregateRoot, IProcessable
     {
@@ -159,7 +159,7 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual OldProduce Produce { get; set; }
+        public virtual Produce Produce { get; set; }
 
         /// <summary>
         /// 融资对应产品的融资项

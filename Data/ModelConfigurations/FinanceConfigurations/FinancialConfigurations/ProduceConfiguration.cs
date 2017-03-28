@@ -3,9 +3,9 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Finance.Financial;
 
-    public class NewProduceConfiguration : EntityTypeConfiguration<Produce>
+    public class ProduceConfiguration : EntityTypeConfiguration<Produce>
     {
-        public NewProduceConfiguration()
+        public ProduceConfiguration()
         {
             HasKey(m => m.Id);
 

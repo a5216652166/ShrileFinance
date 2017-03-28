@@ -257,7 +257,7 @@
                 CustomerBankCard = finance.FinanceExtension.CustomerBankCard,
                 CustomerBankName = finance.FinanceExtension.CustomerBankName,
                 OnePayInterest = finance.OnePayInterest,
-                Payment = Math.Round(Convert.ToDouble((object)(finance.Principal * finance.OncePayMonths / finance.Produce.FinancingPeriods)), 2),
+                Payment = Math.Round(Convert.ToDouble(finance.Principal * finance.OncePayMonths / finance.Produce.TimeLimit), 2),
             };
         }
 
@@ -312,7 +312,7 @@
             creditExamineReportViewModel.ProductNumber = finance.Produce.Code;
 
             // 产品详解
-            creditExamineReportViewModel.ProductExplain = finance.Produce.Remarks;
+            creditExamineReportViewModel.ProductExplain = finance.Produce.Code;
 
             // 产品种类
             creditExamineReportViewModel.ProductCategorie = finance.Vehicle.BusinessType.ToString();
@@ -547,7 +547,7 @@
             operationReportViewModel = PartialMapper(refObj: finance, outObj: operationReportViewModel, array: array);
 
             // 客户保证金比例
-            operationReportViewModel.CustomerBailRatio = finance.Produce.CustomerBailRatio;
+            operationReportViewModel.CustomerBailRatio = finance.Produce.MarginRate;
 
             // 融资项
             operationReportViewModel.FinancingItems = GetFinancingItemsOrCosts(finance);
