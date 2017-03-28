@@ -94,6 +94,8 @@
     <Compile Include="AppServices\FileSystemAppServices\FileSystemAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\FinancialLoanAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\NewProduceAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\PartnerAppServices\PartnerAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\PartnerAppServices\PartnerUserAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\CreditContractAppService.cs" />
     <Compile Include="AppServices\ProcessAppservices\DraftAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinanceAppService.cs" />
@@ -145,6 +147,8 @@
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\FinancialLoanViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\LoanViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\RepayTableViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\PartnerViewModels\PartnerUserViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\PartnerViewModels\PartnerViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceListViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\OperationViewModel.cs" />
@@ -239,7 +243,6 @@
     <Compile Include="Startup\Startup.AutoMapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AppServices\FinanceAppServices\PartnerAppServices\" />
     <Folder Include="ViewModels\Unused\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

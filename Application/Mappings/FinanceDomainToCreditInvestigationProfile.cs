@@ -3,7 +3,9 @@
     using System.Linq;
     using AutoMapper;
     using Core.Entities.Finance.Financial;
+    using Core.Entities.Finance.Partners;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
+    using ViewModels.FinanceViewModels.PartnerViewModels;
 
     public class FinanceDomainToCreditInvestigationProfile : Profile
     {
@@ -24,6 +26,12 @@
 
             CreateMap<FinancialLoan, FinancialLoanViewModel>()
                 .ForMember(m => m.FinancialItem, m => m.MapFrom(o => o.FinancialItem.OrderBy(t => t.Name)));
+
+            CreateMap<PartnerUser, PartnerUserViewModel>();
+
+            CreateMap<NewPartner, PartnerViewModel>()
+                .ForMember(m => m.PartnerUsers, m => m.MapFrom(o => o.PartnerUsers))
+                .ForMember(m => m.Produces, m => m.MapFrom(o => o.Produces));
         }
     }
 }

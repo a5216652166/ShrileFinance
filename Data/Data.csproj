@@ -166,6 +166,7 @@
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialLoanConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\NewProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\PartnerConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\PartnerUserConfiguration.cs" />
     <Compile Include="ModelConfigurations\Process\ActionConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\ApplicantConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigation\Segment\BorrowMessage\Concern\BigEventSegmentConfiguration.cs" />

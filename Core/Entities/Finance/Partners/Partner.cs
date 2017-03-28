@@ -2,38 +2,45 @@
 {
     using System;
     using System.Collections.Generic;
-    using Core.Entities.Finance.Financial;
-    using Core.Interfaces;
+    using Interfaces;
+    using Produce;
 
-    /// <summary>
-    /// 合作商
-    /// </summary>
-    public class Partner : Entity, IAggregateRoot, IDeleteable
+    public class Partner : Entity, IAggregateRoot
     {
-        protected Partner()
+        public Partner()
         {
+            Produces = new HashSet<Produce>();
+            Approvers = new HashSet<AppUser>();
+            Accounts = new HashSet<AppUser>();
+            DateCreated = DateTime.Now;
         }
 
-        /// <summary>
-        /// 名称
-        /// </summary>
-        public string Name { get; protected set; }
+        public string Name { get; set; }
 
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime CreatedDate { get; protected set; }
+        public decimal LineOfCredit { get; set; }
 
-        /// <summary>
-        /// 用户
-        /// </summary>
-        public virtual ICollection<PartnerUser> PartnerUsers { get; protected set; }
+        public decimal AmountOfBail { get; set; }
 
-        /// <summary>
-        /// 产品
-        /// </summary>
-        public virtual ICollection<NewProduce> Produces { get; protected set; }
+        public string Address { get; set; }
 
-        public bool IsDelete { get; set; } = false;
+        public string ProxyArea { get; set; }
+
+        public string VehicleManage { get; set; }
+
+        public string ControllerName { get; set; }
+
+        public string ControllerIdentity { get; set; }
+
+        public string ControllerPhone { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public string Remarks { get; set; }
+
+        public virtual ICollection<Produce> Produces { get; set; }
+
+        public virtual ICollection<AppUser> Approvers { get; set; }
+
+        public virtual ICollection<AppUser> Accounts { get; set; }
     }
 }

@@ -7,18 +7,18 @@
     using Core.Interfaces.Repositories.FinanceRepositories.PartnerRepositories;
     using X.PagedList;
 
-    public class PartnerRepository : BaseRepository<Partner>, IPartnerRepository
+    public class PartnerRepository : BaseRepository<NewPartner>, IPartnerRepository
     {
         public PartnerRepository(MyContext context) : base(context)
         {
         }
 
-        public override void Remove(Partner entity)
+        public override void Remove(NewPartner entity)
             => ((IDeleteable)entity).IsDelete = true;
 
-        IPagedList<Partner> IPartnerRepository.FinancialLoanList(string searchString, int page, int size, DateTime? beginTime, DateTime? endTime)
+        IPagedList<NewPartner> IPartnerRepository.PartnerList(string searchString, int page, int size, DateTime? beginTime, DateTime? endTime)
         {
-            var partners = default(IQueryable<Partner>);
+            var partners = default(IQueryable<NewPartner>);
 
             searchString = searchString ?? string.Empty;
 

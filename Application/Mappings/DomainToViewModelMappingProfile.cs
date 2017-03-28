@@ -5,6 +5,7 @@
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Finance;
+    using Core.Entities.Finance.Partners;
     using Core.Entities.Process;
     using Core.Entities.Produce;
     using Core.Entities.Vehicle;
@@ -43,7 +44,7 @@
                 });
             CreateMap<FAction, ViewModels.ProcessViewModels.ActionViewModel>();
 
-            CreateMap<Core.Entities.Partner.Partner, PartnerViewModel>()
+            CreateMap<Partner, PartnerViewModel>()
                 .ForMember(d => d.Approvers, opt => opt.ResolveUsing(s => s.Approvers.Select(m => m.Id)));
             CreateMap<Produce, ViewModels.PartnerViewModels.ProduceViewModel>();
 

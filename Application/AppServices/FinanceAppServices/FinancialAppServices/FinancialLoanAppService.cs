@@ -49,7 +49,7 @@
         {
             var entity = Mapper.Map<FinancialLoan>(model);
 
-            entity.NewProduce = newProduceRepository.Get(model.NewProduce.Id);
+            entity.NewProduce = newProduceRepository.Get(model.NewProduce.Id.Value);
 
             entity.AllowCreatedDate();
 
@@ -99,7 +99,7 @@
 
             Mapper.Map(model, entity);
 
-            entity.NewProduce = newProduceRepository.Get(model.NewProduce.Id);
+            entity.NewProduce = newProduceRepository.Get(model.NewProduce.Id.Value);
 
             var removeFinancialItems = UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
 

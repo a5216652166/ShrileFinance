@@ -8,8 +8,8 @@
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.Finance;
+    using Core.Entities.Finance.Partners;
     using Core.Entities.Identity;
-    using Core.Entities.Partner;
     using Core.Interfaces.Repositories;
     using Data.PDF;
     using ViewModels.FinanceViewModels;

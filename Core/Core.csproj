@@ -85,13 +85,13 @@
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Entities\Finance\Financial\RepayTable.cs" />
-    <Compile Include="Entities\Finance\Partners\Partner.cs" />
+    <Compile Include="Entities\Finance\Partners\NewPartner.cs" />
     <Compile Include="Entities\Finance\Partners\PartnerUser.cs" />
     <Compile Include="Entities\Process\ProcessTempData.cs" />
     <Compile Include="Entities\Process\ProcessTypeEnum.cs" />
     <Compile Include="Entities\HiddenEnum.cs" />
     <Compile Include="Entities\IO\FileSystem.cs" />
-    <Compile Include="Entities\Vehicle\VehiclePrise.cs" />
+    <Compile Include="Entities\UserTypeEnum.cs" />
     <Compile Include="Interfaces\IDeleteable.cs" />
     <Compile Include="Interfaces\IProcessable.cs" />
     <Compile Include="Interfaces\Repositories\DatagramRepositories\IDatagramFileRepository.cs" />
@@ -235,7 +235,7 @@
     <Compile Include="Entities\Finance\FinanceExtension.cs" />
     <Compile Include="Entities\Finance\FinanceStateEnum.cs" />
     <Compile Include="Entities\Produce\FinancingProject.cs" />
-    <Compile Include="Entities\Partner\Partner.cs" />
+    <Compile Include="Entities\Finance\Partners\Partner.cs" />
     <Compile Include="Entities\Produce\Produce.cs" />
     <Compile Include="Entities\Produce\FinancingItem.cs" />
     <Compile Include="Entities\Produce\Scheme.cs" />
