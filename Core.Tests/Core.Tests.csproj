@@ -64,6 +64,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ApplicationTest\UnitTest1.cs" />
     <Compile Include="Entities\Finance\Financial\NewProduceTests.cs" />
     <Compile Include="Entities\Flow\ProcessTempDataTests.cs" />
     <Compile Include="Entities\Loan\CreditContractTests.cs" />
@@ -79,6 +80,10 @@
     <Compile Include="InfrastructureTest\ValidMethod\TypeValidHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj">
+      <Project>{b731b153-38cd-4043-ae5f-b46302b4d310}</Project>
+      <Name>Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{9efa088c-87ef-4270-85fc-10418c4529ce}</Project>
       <Name>Core</Name>

@@ -76,6 +76,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -101,7 +102,7 @@
     <Compile Include="AppServices\ProcessAppservices\ProcessScriptAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinancingProjectAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\LoanAppService.cs" />
-    <Compile Include="AppServices\Vehicle\VehicleAppService.cs" />
+    <Compile Include="AppServices\VehicleAppservices\VehicleAppService.cs" />
     <Compile Include="Mappings\DomainToCreditInvestigationProfile.cs" />
     <Compile Include="Mappings\FinanceDomainToCreditInvestigationProfile.cs" />
     <Compile Include="Mappings\FinanceViewModelToDomainMappingProfile.cs" />
