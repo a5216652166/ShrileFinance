@@ -46,7 +46,7 @@
         {
             model.RepayPrincipals = string.Join("-", model.RepayPrincipal.ToArray());
 
-            var entity = Mapper.Map<NewProduce>(model);
+            var entity = Mapper.Map<Produce>(model);
 
             entity.AllowCreatedDate();
 

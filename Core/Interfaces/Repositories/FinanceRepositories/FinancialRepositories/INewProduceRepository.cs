@@ -4,8 +4,8 @@
     using Entities.Finance.Financial;
     using X.PagedList;
 
-    public interface INewProduceRepository : IRepository<NewProduce>
+    public interface INewProduceRepository : IRepository<Produce>
     {
-        IPagedList<NewProduce> ProduceList(string searchString, int page, int size, DateTime? beginTime = null, DateTime? endTime = null);
+        IPagedList<Produce> ProduceList(string searchString, int page, int size, DateTime? beginTime = null, DateTime? endTime = null);
     }
 }

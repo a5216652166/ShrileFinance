@@ -7,9 +7,10 @@
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.Finance.Partners;
-    using Core.Interfaces.Repositories;
+    using Core.Entities.Identity;
+    using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
     using Microsoft.AspNet.Identity;
-    using ViewModels;
     using ViewModels.AccountViewModels;
     using ViewModels.PartnerViewModels;
     using ViewModels.ProduceViewModel;
@@ -18,19 +19,22 @@
     public class PartnerAppService
     {
         private readonly IPartnerRepository repository;
-        private readonly IProduceRepository produceRepository;
+        private readonly INewProduceRepository produceRepository;
         private readonly AppUserManager userManager;
-        private AccountAppService accountService;
+        private readonly AccountAppService accountService;
+        private readonly AppRoleManager roleManager;
 
         public PartnerAppService(
             IPartnerRepository repository,
-            IProduceRepository produceRepository,
+            INewProduceRepository produceRepository,
             AppUserManager userManager,
+            AppRoleManager roleManager,
             AccountAppService accountService)
         {
             this.repository = repository;
             this.produceRepository = produceRepository;
             this.userManager = userManager;
+            this.roleManager = roleManager;
             this.accountService = accountService;
         }
 
@@ -38,7 +42,16 @@
         {
             var partner = repository.Get(key);
 
-            return Mapper.Map<PartnerViewModel>(partner);
+            var model = Mapper.Map<PartnerViewModel>(partner);
+
+            foreach (var item in model.Accounts)
+            {
+                var role = roleManager.FindById(partner.Accounts.Single(m => m.Id == item.Id).RoleId);
+
+                item.Role = role.Name;
+            }
+
+            return model;
         }
 
         public async Task Create(PartnerViewModel model)
@@ -55,7 +68,7 @@
                 throw new Core.Exceptions.InvalidOperationAppException("每个角色有且仅有一个审批用户.");
             }
 
-            if (model.Accounts != null && model.Accounts.Count() > 0)
+            if (model.Accounts.Count() > 0)
             {
                 foreach (var item in model.Accounts)
                 {
@@ -80,6 +93,7 @@
         public async Task ModifyAsync(PartnerViewModel model)
         {
             var partner = repository.Get(model.Id.Value);
+
             Mapper.Map(model, partner);
 
             var produceIds = model.Produces.Select(m => m.Id);
@@ -100,28 +114,28 @@
             }
 
             var modelIds = model.Accounts.Select(m => m.Id);
-                partner.Accounts.Where(m => !modelIds.Contains(m.Id)).ToList()
-                    .ForEach(m => partner.Accounts.Remove(m));
+            partner.Accounts.Where(m => !modelIds.Contains(m.Id)).ToList()
+                .ForEach(m => partner.Accounts.Remove(m));
 
-                foreach (var item in model.Accounts)
+            foreach (var item in model.Accounts)
+            {
+                var entity = partner.Accounts.SingleOrDefault(m => m.Id == item.Id);
+
+                if (entity == null)
                 {
-                    var entity = partner.Accounts.SingleOrDefault(m => m.Id == item.Id);
+                    var idenResult = await accountService.CreateUserAsync(item);
 
-                    if (entity == null)
+                    if (!idenResult.Succeeded)
                     {
-                        var idenResult = await accountService.CreateUserAsync(item);
-
-                        if (!idenResult.Succeeded)
-                        {
-                            throw new Core.Exceptions.ArgumentAppException(idenResult.Errors.First());
-                        }
-
-                        entity = userManager.FindById(item.Id);
-                        partner.Accounts.Add(entity);
+                        throw new Core.Exceptions.ArgumentAppException(idenResult.Errors.First());
                     }
 
-                    Mapper.Map(entity, item);
+                    entity = userManager.FindById(item.Id);
+                    partner.Accounts.Add(entity);
                 }
+
+                Mapper.Map(entity, item);
+            }
 
             repository.Modify(partner);
             repository.Commit();
@@ -175,7 +189,7 @@
 
             if (!string.IsNullOrEmpty(serach))
             {
-                produces = produces.Where(m => m.Name.Contains(serach) || m.Code.Contains(serach));
+                produces = produces.Where(m => m.Code.Contains(serach));
             }
 
             return Mapper.Map<List<ProduceListViewModel>>(produces).ToList();

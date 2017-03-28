@@ -4,8 +4,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using Core.Entities.Process;
-    using Core.Interfaces.Repositories;
-    using X.PagedList;
+    using Core.Interfaces.Repositories.ProcessRepositories;
 
     public class ProcessRepository : BaseRepository<Flow>, IProcessRepository
     {

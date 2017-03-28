@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class ProduceViewModel
+    public class ProduceOptionViewModel
     {
         public Guid Id { get; set; }
 

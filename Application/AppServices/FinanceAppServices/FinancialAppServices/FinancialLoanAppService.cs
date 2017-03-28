@@ -5,7 +5,7 @@
     using AutoMapper;
     using Core.Entities.Finance.Financial;
     using Core.Exceptions;
-    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.FinanceRepositories.FinanceRepositories;
     using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using X.PagedList;

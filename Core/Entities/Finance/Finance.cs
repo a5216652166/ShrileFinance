@@ -159,7 +159,7 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual Produce Produce { get; set; }
+        public virtual OldProduce Produce { get; set; }
 
         /// <summary>
         /// 融资对应产品的融资项

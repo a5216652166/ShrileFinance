@@ -47,7 +47,7 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual ICollection<NewProduce> Produces { get; set; } = new HashSet<NewProduce>();
+        public virtual ICollection<Produce> Produces { get; set; } = new HashSet<Produce>();
 
         public bool IsDelete { get; set; } = false;
 

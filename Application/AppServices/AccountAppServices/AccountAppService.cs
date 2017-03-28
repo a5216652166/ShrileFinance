@@ -60,9 +60,7 @@
 
             var viewModel = Mapper.Map<UserViewModel>(user);
 
-            var role = roleManager.FindById(user.RoleId);
-
-            viewModel.Role = role.Name;
+            viewModel.Role = roleManager.FindById(user.RoleId).Name;
 
             return viewModel;
         }
@@ -102,6 +100,13 @@
             users = users.OrderByDescending(m => m.Id);
 
             var userList = Mapper.Map<IPagedList<UserViewModel>>(users.ToPagedList(pageNumber, pageSize));
+            
+            foreach (var item in userList)
+            {
+                // 角色补充
+                var user = userManager.FindById(item.Id);
+                item.Role = roleManager.FindById(user.RoleId).Name;
+            }
 
             return userList;
         }

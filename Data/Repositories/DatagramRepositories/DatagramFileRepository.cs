@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using Core.Entities.CreditInvestigation.DatagramFile;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.DatagramRepositories;
 
     public class DatagramFileRepository : BaseRepository<DatagramFile>, IDatagramFileRepository
     {

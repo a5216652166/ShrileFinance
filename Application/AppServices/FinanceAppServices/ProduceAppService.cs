@@ -6,19 +6,20 @@
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.Produce;
-    using Core.Interfaces.Repositories;
-    using ViewModels;
+    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
+    using Core.Interfaces.Repositories.ProduceRepositories;
     using ViewModels.ProduceViewModel;
     using X.PagedList;
 
     public class ProduceAppService
     {
-        private readonly IProduceRepository repository;
+        private readonly IOldProduceRepository repository;
         private readonly IFinancingProjectRepository projectRepository;
         private readonly AppUserManager userManager;
         private readonly IPartnerRepository partnerRepository;
 
-        public ProduceAppService(IProduceRepository repository, IFinancingProjectRepository projectRepository, AppUserManager userManager, IPartnerRepository partnerRepository)
+        public ProduceAppService(IOldProduceRepository repository, IFinancingProjectRepository projectRepository, AppUserManager userManager, IPartnerRepository partnerRepository)
         {
             this.repository = repository;
             this.projectRepository = projectRepository;
@@ -28,7 +29,7 @@
 
         public ProduceViewModel Get(Guid id)
         {
-            Produce produce = repository.Get(id);
+            OldProduce produce = repository.Get(id);
             var produceViewModel = Mapper.Map<ProduceViewModel>(produce);
 
             return produceViewModel;
@@ -36,7 +37,7 @@
 
         public void Create(ProduceViewModel value)
         {
-            var produce = Mapper.Map<Produce>(value);
+            var produce = Mapper.Map<OldProduce>(value);
             produce.FinancingItems = Mapper.Map<ICollection<FinancingItem>>(value.FinancingItems);
             if (value.Poundage != null)
             {

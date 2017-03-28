@@ -4,7 +4,7 @@
     using Application.ViewModels.ProduceViewModel;
     using AutoMapper;
     using Core.Entities.Produce;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.FinanceRepositories;
 
     public class FinancingProjectAppService
     {

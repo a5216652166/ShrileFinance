@@ -4,7 +4,8 @@
     using System.Linq;
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Loan;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.DatagramRepositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
     using Data;
     using Data.Repositories;
 

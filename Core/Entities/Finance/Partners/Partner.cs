@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using Core.Entities.Finance.Financial;
     using Interfaces;
-    using Produce;
 
     public class Partner : Entity, IAggregateRoot
     {

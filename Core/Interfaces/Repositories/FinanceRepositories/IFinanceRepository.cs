@@ -1,8 +1,6 @@
-﻿namespace Core.Interfaces.Repositories
+﻿namespace Core.Interfaces.Repositories.FinanceRepositories
 {
-    using System;
     using System.Data;
-    using System.Data.Entity;
     using System.Data.SqlClient;
     using Entities.Finance;
 

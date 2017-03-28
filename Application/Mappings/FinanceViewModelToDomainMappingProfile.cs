@@ -11,7 +11,7 @@
     {
         public FinanceViewModelToDomainMappingProfile()
         {
-            CreateMap<NewProduceViewModel, NewProduce>()
+            CreateMap<NewProduceViewModel, Produce>()
                 .ForMember(m => m.Id, m => m.MapFrom(o => AllowId(o.Id)))
                 .ForMember(m => m.CreatedDate, o => o.Ignore());
 

@@ -10,7 +10,9 @@
     using Core.Entities.Finance;
     using Core.Entities.Finance.Partners;
     using Core.Entities.Identity;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
     using Data.PDF;
     using ViewModels.FinanceViewModels;
 

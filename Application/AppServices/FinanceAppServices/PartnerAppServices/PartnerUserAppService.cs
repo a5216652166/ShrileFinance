@@ -9,9 +9,9 @@
 
     public class PartnerUserAppService
     {
-        private readonly IPartnerRepository partnerRepository;
+        private readonly INewPartnerRepository partnerRepository;
 
-        public PartnerUserAppService(IPartnerRepository partnerRepository)
+        public PartnerUserAppService(INewPartnerRepository partnerRepository)
         {
             this.partnerRepository = partnerRepository;
         }

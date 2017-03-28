@@ -10,10 +10,10 @@
 
     public class PartnerAppService
     {
-        private readonly IPartnerRepository partnerRepository;
+        private readonly INewPartnerRepository partnerRepository;
         private readonly AppUserManager userManager;
 
-        public PartnerAppService(IPartnerRepository partnerRepository, AppUserManager userManager)
+        public PartnerAppService(INewPartnerRepository partnerRepository, AppUserManager userManager)
         {
             this.partnerRepository = partnerRepository;
             this.userManager = userManager;

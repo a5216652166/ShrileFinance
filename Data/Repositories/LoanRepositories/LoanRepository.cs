@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using Core.Entities.Loan;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
     using X.PagedList;
 
     public class LoanRepository : BaseRepository<Loan>, ILoanRepository

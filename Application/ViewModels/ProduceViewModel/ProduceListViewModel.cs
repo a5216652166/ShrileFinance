@@ -20,7 +20,7 @@
         /// <summary>
         /// 还款方式
         /// </summary>
-        public Produce.RepaymentMethodEnum RepaymentMethod { get; set; }
+        public OldProduce.RepaymentMethodEnum RepaymentMethod { get; set; }
 
         public string RepaymentMethodDesc {
             get { return RepaymentMethod.ToString(); }

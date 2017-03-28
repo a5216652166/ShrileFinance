@@ -9,7 +9,7 @@
         {
             HasKey(m => m.Id);
 
-            Property(m=>m.LoanNum).IsRequired().HasMaxLength(20);
+            Property(m => m.LoanNum).IsRequired().HasMaxLength(20);
             Property(m => m.LoanDate).IsRequired();
             Property(m => m.RepayDate).IsRequired();
             Property(m => m.State).IsRequired();
@@ -22,4 +22,3 @@
         }
     }
 }
-

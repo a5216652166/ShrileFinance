@@ -1,8 +1,8 @@
 ﻿namespace Core.Entities.Finance.Partners
 {
     using System;
-    using Core.Interfaces;
     using Core.Entities;
+    using Core.Interfaces;
 
     public enum LockoutEnum : byte
     {
@@ -36,7 +36,7 @@
 
         public DateTime CreatedDate { get; protected set; }
 
-        public UserTypeEnum? UserType;//// => AppUser.UserType;
+        public UserTypeEnum? UserType { get; } //// => AppUser.UserType;
 
         public LockoutEnum LockoutEnabled => AppUser.LockoutEnabled ? LockoutEnum.禁用 : LockoutEnum.启用;
 

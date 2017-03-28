@@ -11,9 +11,9 @@
     {
         public FinanceDomainToCreditInvestigationProfile()
         {
-            CreateMap<NewProduce, NewProduceViewModel>();
+            CreateMap<Produce, NewProduceViewModel>();
 
-            CreateMap<NewProduce, NewProduceListViewModel>()
+            CreateMap<Produce, NewProduceListViewModel>()
                 .ForMember(m => m.YearRate, m => m.MapFrom(o => o.MonthRate * 12));
 
             CreateMap<RepayTable, RepayTableViewModel>();

@@ -153,6 +153,7 @@
     <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\OperationViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\PartnerAndUser.cs" />
+    <Compile Include="ViewModels\HiddenEnum.cs" />
     <Compile Include="ViewModels\IEntityViewModel.cs" />
     <Compile Include="ViewModels\Loan\CreditViewModels\GuarantorViewModel.cs" />
     <Compile Include="ViewModels\Loan\LoanViewModels\PaymentViewModel.cs" />

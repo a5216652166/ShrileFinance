@@ -3,7 +3,7 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Finance.Financial;
 
-    public class NewProduceConfiguration : EntityTypeConfiguration<NewProduce>
+    public class NewProduceConfiguration : EntityTypeConfiguration<Produce>
     {
         public NewProduceConfiguration()
         {

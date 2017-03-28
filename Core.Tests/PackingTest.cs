@@ -4,7 +4,7 @@
     using System.IO;
     using System.Text;
     using Core.Entities.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
-    using Data.ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
+    using Data.ModelConfigurations.CreditInvestigationConfigurations.SegmentConfigurations.BorrowMessageConfigurations.FinancialAffairConfigurations;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     
     /// <summary>

@@ -3,12 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Core.Entities;
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Loan;
     using Core.Entities.Process;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
     using Newtonsoft.Json.Linq;
     using ViewModels.FinanceViewModels;
     using ViewModels.Loan.CreditViewModel;

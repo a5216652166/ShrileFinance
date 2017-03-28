@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>授信主体详情</title>
+    <title>合作商主体详情</title>
     <meta charset="utf-8" />
     <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
     <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
@@ -104,7 +104,7 @@
 
         function Submit() {
             if (!endEditing()) {
-                $.messager.show({ msg: "请先保存授信帐号." });
+                $.messager.show({ msg: "请先保存合作商帐号." });
 
                 return false;
             }
@@ -125,6 +125,7 @@
                 $("<option>", { text: text, value: value }).appendTo("select[name=Produces]");
             }
         }
+
         function ProduceAppend() {
             var produce = $("select[comboname=Produce]");
 
@@ -133,6 +134,7 @@
 				produce.combobox("getValue")
 			);
         }
+
         function ProduceRemove() {
             //移除已选中的项
             $("select[name=Produces] option:selected").remove();
@@ -142,7 +144,7 @@
 <body>
     <form id="credit_ff" class="container">
         <fieldset id="credit_info">
-            <legend>授信信息</legend>
+            <legend>合作商信息</legend>
 
             <div class="hidden">
                 <input type="text" name="Id" hidden />
@@ -150,12 +152,12 @@
 
             <div class="row">
                 <div class="col-6">
-                    <label>主体名称:</label>
+                    <label>名称:</label>
                     <input name="Name" class="easyui-textbox" required />
                 </div>
 
                 <div class="col-6">
-                    <label>授信额度:</label>
+                    <label>额度:</label>
                     <input name="LineOfCredit" class="easyui-textbox" required data-options="validType:'Price'" />
                     <span class="unit">元</span>
                 </div>
@@ -165,11 +167,11 @@
                 <div class="col-6">
                     <label>选择产品:</label>
                     <select name="Produce" class="easyui-combobox" data-options="method: 'GET',
-                        url: '../api/Produce/GetAll',
+                        url: '../api/NewProduce/Options',
                         editable:false,
                         width:315,
-                        valueField:'Id',
-                        textField:'Code'
+                        valueField:'Key',
+                        textField:'Value'
                     "></select>
                     <button type="button" onclick="ProduceAppend()">添加</button>
                     <button type="button" onclick="ProduceRemove()">移除</button>
@@ -277,7 +279,9 @@
                         url: "../api/User/Option",
                         data: params,
                         statusCode: {
-                            200: function (data) { $(selector).combobox("loadData", data); },
+                            200: function (data) {
+                                $(selector).combobox("loadData", data);
+                            },
                             400: uc.E400
                         }
                     });
@@ -297,7 +301,7 @@
                                 required:true,
                                 readonly:true,
                                 novalidate:true,
-                                validType:['checkUsernameRepeat','checkUsernameFormat'],
+                                validType:['checkUsernameFormat'],
                                 delay:800
                             }
                         }">帐号</th>
@@ -306,12 +310,11 @@
                             return row.Role;
                         },
                         editor:{
-                            type:'combobox',
+                            type:'textbox',
                             options:{
 						        editable:false,
                                 required:true,
                                 data:[
-                                    {'value':'渠道经理','text':'渠道经理'},
                                     {'value':'客户经理','text':'客户经理'}
                                 ]
                             }
