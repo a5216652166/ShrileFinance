@@ -51,8 +51,11 @@
                 new AppRole { Id = "C042BEE1-05A4-E611-80C5-507B9DE4A488", Name = "运营复审", Power = 3 },
                 new AppRole { Id = "C142BEE1-05A4-E611-80C5-507B9DE4A488", Name = "财务", Power = 3 },
                 new AppRole { Id = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "总经理", Power = 2 },
+
                 new AppRole { Id = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "客户经理", Power = 4 },
+
                 new AppRole { Id = "C442BEE1-05A4-E611-80C5-507B9DE4A488", Name = "渠道经理", Power = 4 },
+
                 new AppRole { Id = "C542BEE1-05A4-E611-80C5-507B9DE4A488", Name = "出纳", Power = 3 },
                 new AppRole { Id = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "有权审核人", Power = 3 });
 
@@ -105,13 +108,14 @@
             context.Set<Flow>().AddOrUpdate(
                 m => m.Id,
                 new Flow { Id = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "融资流程" },
-                new Flow { Id = new Guid("{238C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "贷款流程" },
-                new Flow { Id = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "新增机构" },
-                new Flow { Id = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "贷款合同" },
-                new Flow { Id = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "借据" },
-                new Flow { Id = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "还款" },
-                new Flow { Id = new Guid("{08824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "机构变更" }
 
+                ////new Flow { Id = new Guid("{238C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "贷款流程" },
+                
+                new Flow { Id = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "新增机构流程" },
+                new Flow { Id = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "贷款流程" },
+                new Flow { Id = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "借据流程" },
+                new Flow { Id = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "还款流程" },
+                new Flow { Id = new Guid("{08824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "机构变更流程" }
                 );
 
             context.Set<Node>().AddOrUpdate(
@@ -130,27 +134,27 @@
                 new Node { Id = new Guid("{1495D79F-08A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "放款审批" },
                 new Node { Id = new Guid("{1595D79F-08A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", Name = "财务打款" },
 
-                // 新增机构
+                /* 新增机构（客户经理 —— 有权审核人 -- 总经理） */
                 new Node { Id = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构信息" },
                 new Node { Id = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构审核" },
                 new Node { Id = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构审批" },
 
-                // 新增贷款
+                /* 新增贷款（客户经理 —— 有权审核人 -- 总经理） */
                 new Node { Id = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "贷款合同" },
                 new Node { Id = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "贷款合同审核" },
                 new Node { Id = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "贷款合同审批" },
 
-                // 新增借据
+                /* 新增借据（客户经理 —— 有权审核人 -- 总经理） */
                 new Node { Id = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "借据管理" },
                 new Node { Id = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "借据管理审核" },
                 new Node { Id = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "借据管理审批" },
 
-                // 新增还款
+                /* 新增还款（客户经理 -- 出纳 —— 有权审核人）  */
                 new Node { Id = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "还款管理" },
                 new Node { Id = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C542BEE1-05A4-E611-80C5-507B9DE4A488", Name = "还款管理审核" },
                 new Node { Id = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "还款管理审批" },
 
-                // 机构变更
+                /* 机构变更（客户经理 —— 有权审核人 -- 总经理） */
                 new Node { Id = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{08824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构变更信息" },
                 new Node { Id = new Guid("{B5EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{08824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构变更审核" },
                 new Node { Id = new Guid("{B6EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FlowId = new Guid("{08824FE1-78D1-E611-80CA-507B9DE4A488}"), RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", Name = "机构变更审批" }
@@ -189,35 +193,39 @@
                 new FAction { Id = new Guid("{444B41DB-14A4-E611-80C5-507B9DE4A488}"), NodeId = new Guid("{1595D79F-08A4-E611-80C5-507B9DE4A488}"), TransferId = null, Name = "完成", Type = ActionTypeEnum.完成, AllocationType = ActionAllocationEnum.无, Method = "FinanceFinish" },
                 new FAction { Id = new Guid("{454B41DB-14A4-E611-80C5-507B9DE4A488}"), NodeId = new Guid("{1595D79F-08A4-E611-80C5-507B9DE4A488}"), TransferId = new Guid("{1095D79F-08A4-E611-80C5-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.记录, Method = null },
 
-                // 机构流程
+                /* 机构流程  */
+                // 客户经理（发起）
                 new FAction { Id = new Guid("{A36FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "提交", Type = ActionTypeEnum.发起, AllocationType = ActionAllocationEnum.指定, Method = "Organization" },
+                // 有权审核人（通过、退回）
                 new FAction { Id = new Guid("{A46FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "通过", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.指定, Method = null },
                 new FAction { Id = new Guid("{A56FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
+                // 总经理（通过、退回）
                 new FAction { Id = new Guid("{A66FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = null, Name = "完成", Type = ActionTypeEnum.完成, AllocationType = ActionAllocationEnum.无, Method = "OrganizationFinish" },
                 new FAction { Id = new Guid("{A76FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
 
-                // 贷款流程
+                /* 贷款流程  */
+                // 客户经理
                 new FAction { Id = new Guid("{A86FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "提交", Type = ActionTypeEnum.发起, AllocationType = ActionAllocationEnum.指定, Method = "CreditContract" },
                 new FAction { Id = new Guid("{A96FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "通过", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.指定, Method = null },
                 new FAction { Id = new Guid("{AA6FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
                 new FAction { Id = new Guid("{AB6FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = null, Name = "完成", Type = ActionTypeEnum.完成, AllocationType = ActionAllocationEnum.无, Method = "CreditContractSigned" },
                 new FAction { Id = new Guid("{AC6FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
 
-                // 借据流程
+                /* 借据流程 */
                 new FAction { Id = new Guid("{AD6FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "提交", Type = ActionTypeEnum.发起, AllocationType = ActionAllocationEnum.指定, Method = "Loan" },
                 new FAction { Id = new Guid("{AE6FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "通过", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.指定, Method = null },
                 new FAction { Id = new Guid("{AF6FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
                 new FAction { Id = new Guid("{B06FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = null, Name = "完成", Type = ActionTypeEnum.完成, AllocationType = ActionAllocationEnum.无, Method = "LoanFinish" },
                 new FAction { Id = new Guid("{B16FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
 
-                // 还款流程
+                /* 还款流程  */
                 new FAction { Id = new Guid("{B26FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "提交", Type = ActionTypeEnum.发起, AllocationType = ActionAllocationEnum.指定, Method = "Payment" },
                 new FAction { Id = new Guid("{B36FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "通过", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.指定, Method = null },
                 new FAction { Id = new Guid("{B46FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
                 new FAction { Id = new Guid("{B56FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = null, Name = "完成", Type = ActionTypeEnum.完成, AllocationType = ActionAllocationEnum.无, Method = "PaymentFinish" },
                 new FAction { Id = new Guid("{B66FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
 
-                // 机构变更流程
+                /* 机构变更流程  */
                 new FAction { Id = new Guid("{B76FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{B5EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "提交", Type = ActionTypeEnum.发起, AllocationType = ActionAllocationEnum.指定, Method = "OrganizateChange" },
                 new FAction { Id = new Guid("{B86FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B5EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{B6EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "通过", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.指定, Method = null },
                 new FAction { Id = new Guid("{B96FA6EB-62D1-E611-80CA-507B9DE4A488}"), NodeId = new Guid("{B5EDA2A7-79D1-E611-80CA-507B9DE4A488}"), TransferId = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), Name = "退回", Type = ActionTypeEnum.流转, AllocationType = ActionAllocationEnum.发起者, Method = null },
@@ -235,11 +243,21 @@
                 new Form { Id = new Guid("{5CDC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "运营审核", Link = "../Finance/FinanceApproval.html", Sort = 200 },
                 new Form { Id = new Guid("{5DDC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "财务信息", Link = "../Finance/Loan.html", Sort = 200 },
                 new Form { Id = new Guid("{5EDC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "合同生成", Link = "../Finance/PrintContract.html", Sort = 200 },
+
+                /* 个人业务系统 */
+
+
+
+
+
+                /* 企业业务系统 */
                 new Form { Id = new Guid("{5FDC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{04824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "机构管理", Link = "../Borrowers/OrganizatePage.html", Sort = 200 },
                 new Form { Id = new Guid("{60DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{05824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "贷款合同", Link = "../Loan/CreditContractEdit.html", Sort = 200 },
                 new Form { Id = new Guid("{61DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{06824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "借据申请", Link = "../Loan/LoanEdit.html?view=loan", Sort = 200 },
                 new Form { Id = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{07824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "还款管理", Link = "../Loan/LoanEdit.html?view=payment", Sort = 200 },
                 new Form { Id = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{08824FE1-78D1-E611-80CA-507B9DE4A488}"), Name = "机构变更", Link = "../Borrowers/OrganizateChange.html", Sort = 200 },
+
+                // 通用
                 new Form { Id = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "审核意见", Link = "../Process/ExamineOpinion.html", Sort = 200 }
                 );
 
@@ -310,7 +328,7 @@
                 new FormNode { NodeId = new Guid("{1595D79F-08A4-E611-80C5-507B9DE4A488}"), FormId = new Guid("{5DDC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{1595D79F-08A4-E611-80C5-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
 
-                // 新增机构
+                /* 新增机构  */
                 new FormNode { NodeId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{5FDC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
                 new FormNode { NodeId = new Guid("{A8EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{A9EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{5FDC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
@@ -318,6 +336,8 @@
                 new FormNode { NodeId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{5FDC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{AAEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
 
+                /* 新增贷款 */
+                // 客户经理发起贷款
                 new FormNode { NodeId = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{60DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
                 new FormNode { NodeId = new Guid("{ABEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{ACEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{60DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
@@ -325,6 +345,7 @@
                 new FormNode { NodeId = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{60DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{ADEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
 
+                /* 新增借据  */ 
                 new FormNode { NodeId = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{61DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
                 new FormNode { NodeId = new Guid("{AEEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{AFEDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{61DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
@@ -332,6 +353,7 @@
                 new FormNode { NodeId = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{61DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{B0EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
 
+                /* 新增还款  */
                 new FormNode { NodeId = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态3, IsOpen = true, IsHandler = true },
                 new FormNode { NodeId = new Guid("{B1EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{B2EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = true, IsHandler = true },
@@ -339,7 +361,7 @@
                 new FormNode { NodeId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{62DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = true, IsHandler = true },
                 new FormNode { NodeId = new Guid("{B3EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
 
-                // 机构变更
+                /* 机构变更 */
                 new FormNode { NodeId = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.状态1, IsOpen = true, IsHandler = true },
                 new FormNode { NodeId = new Guid("{B4EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{FFFFFFFF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
                 new FormNode { NodeId = new Guid("{B5EDA2A7-79D1-E611-80CA-507B9DE4A488}"), FormId = new Guid("{63DC5FCF-18A4-E611-80C5-507B9DE4A488}"), State = FormStateEnum.禁用, IsOpen = false, IsHandler = false },
@@ -350,14 +372,20 @@
 
             context.Set<FormRole>().AddOrUpdate(
                 m => new { m.RoleId, m.FormId },
+
+                /* 初审员  */
                 new FormRole { RoleId = "BD42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BD42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("58DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BD42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("59DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BD42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
+
+                /* 复审员 */
                 new FormRole { RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("58DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("59DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BE42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
+
+                /* 运营初审 */
                 new FormRole { RoleId = "BF42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BF42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("58DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BF42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("59DC5FCF-18A4-E611-80C5-507B9DE4A488") },
@@ -365,6 +393,8 @@
                 new FormRole { RoleId = "BF42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5BDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BF42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5CDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "BF42BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
+
+                /* 运营复审 */
                 new FormRole { RoleId = "C042BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C042BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("58DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C042BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("59DC5FCF-18A4-E611-80C5-507B9DE4A488") },
@@ -372,6 +402,8 @@
                 new FormRole { RoleId = "C042BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5BDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C042BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5CDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C042BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
+
+                /* 财务 */
                 new FormRole { RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("58DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("59DC5FCF-18A4-E611-80C5-507B9DE4A488") },
@@ -380,6 +412,8 @@
                 new FormRole { RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5CDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5DDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C142BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
+
+                /* 总经理(个人) */
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("58DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("59DC5FCF-18A4-E611-80C5-507B9DE4A488") },
@@ -388,21 +422,35 @@
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5CDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5DDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5ADC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5BDC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
+
+                /* 总经理(企业) */
+                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("63DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+
+
+                /* 渠道经理 */
                 new FormRole { RoleId = "C442BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C442BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5ADC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C442BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5BDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C442BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
 
+                /* 客户经理（个人） */
+                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("57DC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5ADC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5BDC5FCF-18A4-E611-80C5-507B9DE4A488") },
+                new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
+
+                /* 客户经理（企业） */
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C342BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("63DC5FCF-18A4-E611-80C5-507B9DE4A488") },
 
+
+                /* 有权审核人 */
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
@@ -410,14 +458,9 @@
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("63DC5FCF-18A4-E611-80C5-507B9DE4A488") },
                 new FormRole { RoleId = "C642BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
 
-                // 出纳
+                /* 出纳 */
                 new FormRole { RoleId = "C542BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("62DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C542BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") },
-
-                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("5FDC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("60DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("61DC5FCF-18A4-E611-80C5-507B9DE4A488") },
-                new FormRole { RoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("63DC5FCF-18A4-E611-80C5-507B9DE4A488") }
+                new FormRole { RoleId = "C542BEE1-05A4-E611-80C5-507B9DE4A488", FormId = new Guid("FFFFFFFF-18A4-E611-80C5-507B9DE4A488") }
                 );
 
             context.SaveChanges();
