@@ -11,7 +11,6 @@
         public Finance()
         {
             DateEffective = DateTime.Now;
-            DateCreated = DateTime.Now;
             Applicant = new HashSet<Applicant>();
             Contact = new HashSet<Contract>();
         }
@@ -33,13 +32,6 @@
             /// </summary>
             一次性付息 = 3
         }
-
-        ////public HiddenEnum Hidden { get; set; } = HiddenEnum.审核中;
-
-        /// <summary>
-        /// 产品ID
-        /// </summary>
-        public Guid ProduceId { get; set; }
 
         /// <summary>
         /// 实际用款额(融资本金)
@@ -75,11 +67,6 @@
         /// 放款日期
         /// </summary>
         public DateTime? DateEffective { get; set; }
-
-        /// <summary>
-        /// 创建日期
-        /// </summary>
-        public DateTime DateCreated { get; set; }
 
         /// <summary>
         /// 融资金额
@@ -164,11 +151,11 @@
         /// <summary>
         /// 融资对应产品的融资项
         /// </summary>
-        public virtual ICollection<FinanceProduce> FinanceProduce { get; set; }
+        public virtual ICollection<FinancialItem> FinancialItem { get; set; }
 
         /// <summary>
-        /// 信审报告
+        /// 创建日期
         /// </summary>
-        public virtual CreditExamine CreditExamine { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
     }
 }

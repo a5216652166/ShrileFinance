@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
 
-    public class PartnerViewModel
+    public class NewPartnerViewModel
     {
         public Guid Id { get; set; }
 
@@ -36,6 +36,6 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual ICollection<NewProduceViewModel> Produces { get; set; } = new HashSet<NewProduceViewModel>();
+        public virtual ICollection<ProduceViewModel> Produces { get; set; } = new HashSet<ProduceViewModel>();
     }
 }

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
     using AutoMapper;
     using Core.Entities.Finance.Financial;
     using Core.Exceptions;
@@ -10,23 +11,23 @@
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using X.PagedList;
 
-    public class NewProduceAppService
+    public class ProduceAppService
     {
-        private readonly INewProduceRepository produceRepository;
+        private readonly IProduceRepository produceRepository;
 
-        public NewProduceAppService(INewProduceRepository produceRepository)
+        public ProduceAppService(IProduceRepository produceRepository)
         {
             this.produceRepository = produceRepository;
         }
 
-        public IPagedList<NewProduceListViewModel> GetPageList(string search, int page, int rows)
+        public IPagedList<ProduceListViewModel> GetPageList(string search, int page, int rows)
         {
             var entityList = produceRepository.ProduceList(search, page, rows);
 
-            return Mapper.Map<IPagedList<NewProduceListViewModel>>(entityList);
+            return Mapper.Map<IPagedList<ProduceListViewModel>>(entityList);
         }
 
-        public NewProduceViewModel Get(Guid produceId)
+        public ProduceViewModel Get(Guid produceId)
         {
             var entity = produceRepository.Get(produceId);
 
@@ -35,14 +36,14 @@
                 throw new ArgumentException("参数无效");
             }
 
-            var model = Mapper.Map<NewProduceViewModel>(entity);
+            var model = Mapper.Map<ProduceViewModel>(entity);
 
             model.ParseRepayPrincipal();
 
             return model;
         }
 
-        public void Create(NewProduceViewModel model)
+        public void Create(ProduceViewModel model)
         {
             model.RepayPrincipals = string.Join("-", model.RepayPrincipal.ToArray());
 
@@ -76,7 +77,7 @@
             }
         }
 
-        public void Modify(NewProduceViewModel model)
+        public void Modify(ProduceViewModel model)
         {
             var entity = produceRepository.Get(model.Id.Value);
 

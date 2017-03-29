@@ -86,7 +86,7 @@
     </Compile>
     <Compile Include="Entities\Finance\Financial\RepayTable.cs" />
     <Compile Include="Entities\Finance\Partners\NewPartner.cs" />
-    <Compile Include="Entities\Finance\Partners\PartnerUser.cs" />
+    <Compile Include="Entities\Finance\Partners\NewPartnerUser.cs" />
     <Compile Include="Entities\Process\ProcessTempData.cs" />
     <Compile Include="Entities\Process\ProcessTypeEnum.cs" />
     <Compile Include="Entities\IO\FileSystem.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="Interfaces\Repositories\DatagramRepositories\IDatagramFileRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinancialItemRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\FinancialRepositories\IFinancialLoanRepository.cs" />
-    <Compile Include="Interfaces\Repositories\FinanceRepositories\FinancialRepositories\INewProduceRepository.cs" />
+    <Compile Include="Interfaces\Repositories\FinanceRepositories\FinancialRepositories\IProduceRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\PartnerRepositories\IPartnerRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\PartnerRepositories\IPartnerUserRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFileSystemRepository.cs" />
@@ -230,7 +230,6 @@
     <Compile Include="Entities\Finance\Applicant.cs" />
     <Compile Include="Entities\Finance\Contract.cs" />
     <Compile Include="Entities\Loan\CreditContract.cs" />
-    <Compile Include="Entities\Finance\CreditExamine.cs" />
     <Compile Include="Entities\Finance\Finance.cs" />
     <Compile Include="Entities\Finance\FinanceExtension.cs" />
     <Compile Include="Entities\Finance\FinanceStateEnum.cs" />

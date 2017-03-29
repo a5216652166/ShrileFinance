@@ -1,11 +1,12 @@
-﻿namespace Application.ViewModels.FinanceViewModels.FinancialLoanViewModels
+﻿namespace Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels
 {
     using System;
+    using System.Collections.Generic;
     using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    public class NewProduceListViewModel
+    public class ProduceListViewModel
     {
         public Guid Id { get; set; }
 
@@ -13,6 +14,12 @@
         /// 代码
         /// </summary>
         public string Code { get; set; }
+
+        /// <summary>
+        /// 产品类型
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ProduceTypeEnum ProduceType { get; set; }
 
         /// <summary>
         /// 期限
@@ -64,6 +71,11 @@
         /// 员工提成
         /// </summary>
         public decimal SalesmanRate { get; set; }
+
+        /// <summary>
+        /// 偿还本金比例
+        /// </summary>
+        public IEnumerable<string> RepayPrincipal { get; set; }
 
         /// <summary>
         /// 创建时间

@@ -163,6 +163,14 @@
     <Compile Include="Migrations\201703281228201_UpdateProduceT.Designer.cs">
       <DependentUpon>201703281228201_UpdateProduceT.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703290812191_UpdataFinance.cs" />
+    <Compile Include="Migrations\201703290812191_UpdataFinance.Designer.cs">
+      <DependentUpon>201703290812191_UpdataFinance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703291040585_RemoveCreditExamine.cs" />
+    <Compile Include="Migrations\201703291040585_RemoveCreditExamine.Designer.cs">
+      <DependentUpon>201703291040585_RemoveCreditExamine.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -210,6 +218,7 @@
     <Compile Include="ModelConfigurations\CustomerConfigurations\ParentConfigration.cs" />
     <Compile Include="ModelConfigurations\CustomerConfigurations\ProfitConfiguration.cs" />
     <Compile Include="ModelConfigurations\CustomerConfigurations\StockholderConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\CreditExamineConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialItemConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialLoanConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\ProduceConfiguration.cs" />
@@ -224,7 +233,6 @@
     <Compile Include="ModelConfigurations\CreditInvestigationConfigurations\DatagramFileConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigationConfigurations\RecordConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\ContactConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\CreditExamineConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\DraftConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\FinanceConfigration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\FinanceExtensionConfiguration.cs" />
@@ -362,7 +370,7 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinancialItemRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinancialRepositories\FinancialLoanRepository.cs" />
-    <Compile Include="Repositories\FinanceRepositories\FinancialRepositories\NewProduceRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\FinancialRepositories\ProduceRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\PartnerRepositories\NewPartnerRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\PartnerRepositories\PartnerUserRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\ContractRepository.cs" />
@@ -473,6 +481,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703281228201_UpdateProduceT.resx">
       <DependentUpon>201703281228201_UpdateProduceT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703290812191_UpdataFinance.resx">
+      <DependentUpon>201703290812191_UpdataFinance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703291040585_RemoveCreditExamine.resx">
+      <DependentUpon>201703291040585_RemoveCreditExamine.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

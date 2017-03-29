@@ -67,7 +67,7 @@
                 .Add(new VehicleConfigration())
                 .Add(new FinanceExtensionConfiguration())
                 .Add(new ContactConfiguration())
-                .Add(new CreditExamineConfiguration())
+                ////.Add(new CreditExamineConfiguration())
                 .Add(new ProduceConfiguration())
                 .Add(new FinancialLoanConfiguration())
                 .Add(new FinancialItemConfiguration());

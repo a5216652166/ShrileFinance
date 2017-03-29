@@ -19,21 +19,21 @@
             this.userManager = userManager;
         }
 
-        public PartnerViewModel Get(Guid partnerId)
+        public NewPartnerViewModel Get(Guid partnerId)
         {
             var partner = partnerRepository.Get(partnerId);
 
-            return Map<PartnerViewModel>(partner);
+            return Map<NewPartnerViewModel>(partner);
         }
 
-        public IEnumerable<PartnerViewModel> PartnerList(string name, int page, int size)
+        public IEnumerable<NewPartnerViewModel> PartnerList(string name, int page, int size)
         {
             var partnerList = partnerRepository.PartnerList(name, page, size);
 
-            return Map<IEnumerable<PartnerViewModel>>(partnerList);
+            return Map<IEnumerable<NewPartnerViewModel>>(partnerList);
         }
 
-        public void Create(PartnerViewModel model)
+        public void Create(NewPartnerViewModel model)
         {
             var partner = Map<NewPartner>(model);
 
@@ -41,7 +41,7 @@
             partnerRepository.Commit();
         }
 
-        public void Modify(PartnerViewModel model)
+        public void Modify(NewPartnerViewModel model)
         {
             var partner = partnerRepository.Get(model.Id);
 

@@ -3,7 +3,7 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Finance.Partners;
 
-    public class PartnerUserConfiguration : EntityTypeConfiguration<PartnerUser>
+    public class PartnerUserConfiguration : EntityTypeConfiguration<NewPartnerUser>
     {
         public PartnerUserConfiguration()
         {

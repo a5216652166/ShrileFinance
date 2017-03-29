@@ -1,4 +1,4 @@
-﻿namespace Application.ViewModels.FinanceViewModels.FinancialLoanViewModels
+﻿namespace Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -6,10 +6,13 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    public class NewProduceViewModel : IEntityViewModel
+    public class ProduceViewModel : IEntityViewModel
     {
         public Guid? Id { get; set; }
 
+        /// <summary>
+        /// 产品类型
+        /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         public ProduceTypeEnum ProduceType { get; set; }
 
@@ -84,12 +87,18 @@
         /// </summary>
         public DateTime CreatedDate { get; set; }
 
-        public void ParseRepayPrincipal()
+        public IEnumerable<string> ParseRepayPrincipal()
         {
+            var array = default(IEnumerable<string>);
+
             if (string.IsNullOrEmpty(RepayPrincipals) == false)
             {
-                RepayPrincipal = RepayPrincipals.Split('-');
+                array = RepayPrincipals.Split('-');
+
+                RepayPrincipal = array;
             }
+
+            return array;
         }
     }
 }

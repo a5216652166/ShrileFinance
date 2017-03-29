@@ -6,15 +6,15 @@
     using Core.Interfaces.Repositories.FinanceRepositories.PartnerRepositories;
     using X.PagedList;
 
-    public class PartnerUserRepository : BaseRepository<PartnerUser>, IPartnerUserRepository
+    public class PartnerUserRepository : BaseRepository<NewPartnerUser>, IPartnerUserRepository
     {
         public PartnerUserRepository(MyContext context) : base(context)
         {
         }
 
-        IPagedList<PartnerUser> IPartnerUserRepository.PartnerUserList(string searchString, int page, int size, DateTime? beginTime, DateTime? endTime)
+        IPagedList<NewPartnerUser> IPartnerUserRepository.PartnerUserList(string searchString, int page, int size, DateTime? beginTime, DateTime? endTime)
         {
-            var partners = default(IQueryable<PartnerUser>);
+            var partners = default(IQueryable<NewPartnerUser>);
 
             searchString = searchString ?? string.Empty;
 

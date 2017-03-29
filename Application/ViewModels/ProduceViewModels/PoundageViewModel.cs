@@ -1,4 +1,4 @@
-﻿namespace Application.ViewModels.ProduceViewModel
+﻿namespace Application.ViewModels.ProduceViewModels
 {
     public class PoundageViewModel
     {

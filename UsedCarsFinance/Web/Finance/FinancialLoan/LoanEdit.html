@@ -86,7 +86,7 @@
         function LoadData(data) {
             $("form.container fieldset#Base").form('load', data);
 
-            $("form.container fieldset input#produceId").combobox('select', data.NewProduce.Id);
+            $("form.container fieldset input#produceId").combobox('select', data.Produce.Id);
 
             $("form.container fieldset input[name=Id]").val(data.Id);
 
@@ -112,8 +112,8 @@
 
             data.FinancialItem = $("form.container fieldset#financeItem table#financeItem_dg").datagrid("getRows");
 
-            data.NewProduce = {};
-            data.NewProduce.Id = $("form.container fieldset input#produceId").combobox('getValue');
+            data.Produce = {};
+            data.Produce.Id = $("form.container fieldset input#produceId").combobox('getValue');
 
             return data;
         }
@@ -373,7 +373,7 @@
                                 {'text':'车价'},
                                 {'text':'购置税'},
                                 {'text':'车船税'},
-                                {'text':'GPS'}
+                                {'text':'GPS费用'}
                                 ]
                             }
                         }">项目名称</th>

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.Finance.Financial;
@@ -15,20 +15,19 @@
     using Microsoft.AspNet.Identity;
     using ViewModels.AccountViewModels;
     using ViewModels.PartnerViewModels;
-    using ViewModels.ProduceViewModel;
     using X.PagedList;
 
     public class PartnerAppService
     {
         private readonly IPartnerRepository repository;
-        private readonly INewProduceRepository produceRepository;
+        private readonly IProduceRepository produceRepository;
         private readonly AppUserManager userManager;
         private readonly AccountAppService accountService;
         private readonly AppRoleManager roleManager;
 
         public PartnerAppService(
             IPartnerRepository repository,
-            INewProduceRepository produceRepository,
+            IProduceRepository produceRepository,
             AppUserManager userManager,
             AppRoleManager roleManager,
             AccountAppService accountService)
@@ -183,7 +182,7 @@
             return models;
         }
 
-        public IEnumerable<NewProduceListViewModel> GetPageListByPartner(string serach)
+        public IEnumerable<ProduceListViewModel> GetPageListByPartner(string serach)
         {
             var produces = default(IEnumerable<Produce>);
 
@@ -194,7 +193,7 @@
                 produces = produces.Where(m => m.Code.Contains(serach));
             }
 
-            return Mapper.Map<IEnumerable<NewProduceListViewModel>>(produces);
+            return Mapper.Map<IEnumerable<ProduceListViewModel>>(produces);
         }
     }
 }

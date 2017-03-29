@@ -1,27 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Web.Http;
-using Application;
-using Application.ViewModels.ProduceViewModel;
+﻿
 
-namespace Web.Controllers.Produce
-{
-    public class FinancingProjectController : ApiController
-    {
-        private readonly FinancingProjectAppService financingProjectAppService;
+////namespace Web.Controllers.Produce
+////{
+////    using System.Web.Http;
+////    using Application;
 
-        public FinancingProjectController(FinancingProjectAppService financingProjectAppService)
-        {
-            this.financingProjectAppService = financingProjectAppService;
-        }
+////    public class FinancingProjectController : ApiController
+////    {
+////        private readonly FinancingProjectAppService financingProjectAppService;
 
-        public List<FinancingProjectListViewModel> GetAll()
-        {
-            return financingProjectAppService.GetAll();
-        }
+////        public FinancingProjectController(FinancingProjectAppService financingProjectAppService)
+////        {
+////            this.financingProjectAppService = financingProjectAppService;
+////        }
 
-        public IEnumerable<FinancingProjectListViewModel> GetByIsFinancing(bool isFinancing)
-        {
-            return financingProjectAppService.GetByIsFinancing(isFinancing);
-        }
-    }
-}
+////        ////public List<FinancingProjectListViewModel> GetAll()
+////        ////{
+////        ////    return financingProjectAppService.GetAll();
+////        ////}
+
+////        ////public IEnumerable<FinancingProjectListViewModel> GetByIsFinancing(bool isFinancing)
+////        ////{
+////        ////    return financingProjectAppService.GetByIsFinancing(isFinancing);
+////        ////}
+////    }
+////}

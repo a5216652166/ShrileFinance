@@ -6,13 +6,13 @@
     using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using X.PagedList;
 
-    public class NewProduceRepository : BaseRepository<Produce>, INewProduceRepository
+    public class ProduceRepository : BaseRepository<Produce>, IProduceRepository
     {
-        public NewProduceRepository(MyContext context) : base(context)
+        public ProduceRepository(MyContext context) : base(context)
         {
         }
 
-        IPagedList<Produce> INewProduceRepository.ProduceList(string searchString, int page, int size, DateTime? beginTime, DateTime? endTime)
+        IPagedList<Produce> IProduceRepository.ProduceList(string searchString, int page, int size, DateTime? beginTime, DateTime? endTime)
         {
             var products = default(IQueryable<Produce>);
 

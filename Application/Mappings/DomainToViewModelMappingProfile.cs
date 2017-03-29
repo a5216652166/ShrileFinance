@@ -72,14 +72,15 @@
 
             ////CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceViewModel>();
             ////CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceListViewModel>();
-            CreateMap<FinancingItem, ViewModels.ProduceViewModel.FinancingItemViewModel>();
-            CreateMap<FinancingProject, ViewModels.ProduceViewModel.FinancingProjectViewModel>();
+            ////CreateMap<FinancingItem, ViewModels.ProduceViewModels.FinancingItemViewModel>();
+            ////CreateMap<FinancingProject, ViewModels.ProduceViewModels.FinancingProjectViewModel>();
+
             CreateMap<Finance, FinanceApplyViewModel>();
             CreateMap<Vehicle, VehicleViewModel>();
             CreateMap<Applicant, ApplicationViewModel>();
             CreateMap<Contract, ContractViewModel>();
             CreateMap<Finance, LoanViewModel>();
-            CreateMap<CreditExamine, CreditExamineViewModel>();
+            ////CreateMap<CreditExamine, CreditExamineViewModel>();
             CreateMap<FinanceExtension, OperationViewModel>();
             CreateMap<FinanceProduce, FinanceProduceViewModel>();
 

@@ -12,7 +12,6 @@
             Produces = new HashSet<Produce>();
             Approvers = new HashSet<AppUser>();
             Accounts = new HashSet<AppUser>();
-            DateCreated = DateTime.Now;
         }
 
         public string Name { get; set; }
@@ -33,8 +32,6 @@
 
         public string ControllerPhone { get; set; }
 
-        public DateTime DateCreated { get; set; }
-
         public string Remarks { get; set; }
 
         public virtual ICollection<Produce> Produces { get; set; }
@@ -42,5 +39,7 @@
         public virtual ICollection<AppUser> Approvers { get; set; }
 
         public virtual ICollection<AppUser> Accounts { get; set; }
+
+        public DateTime DateCreated { get; set; } = DateTime.Now;
     }
 }

@@ -42,7 +42,7 @@
         /// <summary>
         /// 用户
         /// </summary>
-        public virtual ICollection<PartnerUser> PartnerUsers { get; set; } = new HashSet<PartnerUser>();
+        public virtual ICollection<NewPartnerUser> PartnerUsers { get; set; } = new HashSet<NewPartnerUser>();
 
         /// <summary>
         /// 产品

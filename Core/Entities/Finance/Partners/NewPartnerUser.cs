@@ -13,9 +13,9 @@
     /// <summary>
     /// 合作商用户
     /// </summary>
-    public class PartnerUser : Entity, IAggregateRoot
+    public class NewPartnerUser : Entity, IAggregateRoot
     {
-        protected PartnerUser()
+        protected NewPartnerUser()
         {
         }
 
@@ -42,9 +42,9 @@
 
         public virtual AppUser AppUser { get; protected set; }
 
-        public PartnerUser CreateInstance(string name, string pwd)
+        public NewPartnerUser CreateInstance(string name, string pwd)
         {
-            var partnerUser = new PartnerUser() { Name = name, Pwd = pwd };
+            var partnerUser = new NewPartnerUser() { Name = name, Pwd = pwd };
 
             ////partnerUser.AppUser = new AppUser() { UserType = UserTypeEnum.合作商 };
 
