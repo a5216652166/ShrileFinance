@@ -59,11 +59,6 @@
         public decimal? OnePayInterest { get; set; }
 
         /// <summary>
-        /// 状态
-        /// </summary>
-        public FinanceStateEnum State { get; set; }
-
-        /// <summary>
         /// 放款日期
         /// </summary>
         public DateTime? DateEffective { get; set; }

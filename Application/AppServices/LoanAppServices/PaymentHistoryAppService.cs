@@ -27,7 +27,7 @@
         /// 新增还款
         /// </summary>
         /// <param name="paymentViewModel">还款视图</param>
-        /// <returns>新增还款</returns>
+        /// <returns>还款记录集合</returns>
         public IEnumerable<PaymentHistory> AddPayments(PaymentViewModel paymentViewModel)
         {
             var payments = new List<PaymentHistory>();

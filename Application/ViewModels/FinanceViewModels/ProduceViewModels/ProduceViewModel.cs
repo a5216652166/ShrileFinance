@@ -22,6 +22,11 @@
         public string Code { get; set; }
 
         /// <summary>
+        /// 名义利率
+        /// </summary>
+        public decimal InterestRate { get; set; }
+
+        /// <summary>
         /// 期限
         /// </summary>
         public int TimeLimit { get; set; }
@@ -30,11 +35,6 @@
         /// 间隔
         /// </summary>
         public int Interval { get; set; }
-
-        /// <summary>
-        /// 名义利率
-        /// </summary>
-        public decimal InterestRate { get; set; }
 
         /// <summary>
         /// 保证金

@@ -63,7 +63,6 @@
     <Compile Include="JSON\EntityCloneHelper.cs" />
     <Compile Include="JSON\JsonConvertHelper.cs" />
     <Compile Include="JSON\JsonParseHelper.cs" />
-    <Compile Include="Logger\ILogger\ILogger.cs" />
     <Compile Include="PDF\WordToPDF.cs" />
     <Compile Include="ValidMethod\AlgorithmHelper.cs" />
     <Compile Include="File\FileHelper.cs" />
@@ -93,7 +92,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{9efa088c-87ef-4270-85fc-10418c4529ce}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

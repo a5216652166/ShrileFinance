@@ -60,13 +60,6 @@
             CreateMap<InstitutionIncomeExpenditureViewModel, InstitutionIncomeExpenditure>();
             CreateMap<InstitutionLiabilitiesViewModel, InstitutionLiabilities>();
 
-            ////CreateMap<ViewModels.ProduceViewModel.ProduceViewModel, OldProduce>()
-                ////.ForMember(d => d.FinancingItems, opt => opt.Ignore());
-            ////CreateMap<FinancingItemViewModel, FinancingItem>();
-            ////CreateMap<FinancingProjectViewModel, FinancingProject>();
-
-            // 信审报告
-            ////CreateMap<CreditExamineViewModel, CreditExamine>();
             CreateMap<FinanceAuidtViewModel, Finance>();
             CreateMap<ContractViewModel, Contract>();
             CreateMap<ApplicationViewModel, Applicant>();
@@ -75,7 +68,6 @@
                 .ForMember(d => d.Produce, opt => opt.Ignore())
                 .ForMember(d => d.FinancialItem, opt => opt.Ignore())
                 .ForMember(d => d.Applicant, opt => opt.Ignore());
-            CreateMap<FinanceProduceViewModel, FinanceProduce>();
         }
     }
 }

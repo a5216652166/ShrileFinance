@@ -6,7 +6,5 @@
     public interface IProcessable
     {
         Guid Id { get; set; }
-
-        ////HiddenEnum Hidden { get; set; }
     }
 }

@@ -3,7 +3,6 @@
     using System.Linq;
     using Core.Entities.Finance.Financial;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Infrastructure.JSON;
 
     [TestClass]
     public class NewProduceTests

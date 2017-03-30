@@ -6,20 +6,20 @@ namespace Data.Migrations
     {
         public override void Up()
         {
-            Sql(@"IF object_id(N'[dbo].[FK__Notice_Ac__Actio__7A3223E8]', N'F') IS NOT NULL
-                ALTER TABLE[dbo].[Notice_ActionNotice] DROP CONSTRAINT[FK__Notice_Ac__Actio__7A3223E8]");
-            DropForeignKey("dbo.Notice_ActionNotice", "ActionId", "dbo.FLOW_Action");
-            DropTable("dbo.FLOW_MenuWithRole");
-            DropTable("dbo.FLOW_MenuWithNode");
-            DropTable("dbo.FLOW_Menu");
-            DropTable("dbo.FLOW_FormWithRole");
-            DropTable("dbo.FLOW_FormWithNode");
-            DropTable("dbo.FLOW_Form");
-            DropTable("dbo.FLOW_Log");
-            DropTable("dbo.FLOW_Instance");
-            DropTable("dbo.FLOW_Action");
-            DropTable("dbo.FLOW_Node");
-            DropTable("dbo.FLOW_WorkFlow");
+            ////Sql(@"IF object_id(N'[dbo].[FK__Notice_Ac__Actio__7A3223E8]', N'F') IS NOT NULL
+            ////    ALTER TABLE[dbo].[Notice_ActionNotice] DROP CONSTRAINT[FK__Notice_Ac__Actio__7A3223E8]");
+            ////DropForeignKey("dbo.Notice_ActionNotice", "ActionId", "dbo.FLOW_Action");
+            ////DropTable("dbo.FLOW_MenuWithRole");
+            ////DropTable("dbo.FLOW_MenuWithNode");
+            ////DropTable("dbo.FLOW_Menu");
+            ////DropTable("dbo.FLOW_FormWithRole");
+            ////DropTable("dbo.FLOW_FormWithNode");
+            ////DropTable("dbo.FLOW_Form");
+            ////DropTable("dbo.FLOW_Log");
+            ////DropTable("dbo.FLOW_Instance");
+            ////DropTable("dbo.FLOW_Action");
+            ////DropTable("dbo.FLOW_Node");
+            ////DropTable("dbo.FLOW_WorkFlow");
 
             CreateTable(
                 "dbo.FLOW_WorkFlow",

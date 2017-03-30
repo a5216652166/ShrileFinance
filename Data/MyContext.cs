@@ -46,13 +46,6 @@
                 .Add(new FormRoleConfiguration())
                 .Add(new ProcessTempDataConfiguration());
 
-            ////// Produce Configurations
-            ////modelBuilder.Configurations
-            ////    .Add(new FinancingItemConfigration())
-            ////    .Add(new FinancingProjectConfigration())
-            ////    ////.Add(new OldProduceConfigration())
-            ////    ;
-
             // Partner and Draft Configurations
             modelBuilder.Configurations
                 .Add(new PartnerConfiguration())
@@ -61,7 +54,6 @@
             // Finance Configurations
             modelBuilder.Configurations
                 .Add(new FinanceConfigration())
-                .Add(new FinanceProduceConfiguration())
                 .Add(new ApplicantConfiguration())
                 .Add(new VehicleConfigration())
                 .Add(new FinanceExtensionConfiguration())

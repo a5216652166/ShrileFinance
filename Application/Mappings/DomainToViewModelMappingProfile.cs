@@ -24,7 +24,7 @@
             CreateMap(typeof(IPagedList<>), typeof(IPagedList<>)).ConvertUsing(typeof(PagedListTypeConverter<,>));
 
             CreateMap<Core.Entities.AppUser, UserViewModel>()
-                ////.ForMember(d => d.Role, opt => opt.ResolveUsing(s => Infrastructure.Helper.RoleIdToName(s.RoleId)))
+                //// .ForMember(d => d.Role, opt => opt.ResolveUsing(s => Infrastructure.Helper.RoleIdToName(s.RoleId)))
                 .ForMember(d => d.Phone, opt => opt.MapFrom(s => s.PhoneNumber));
 
             CreateMap<Instance, ViewModels.ProcessViewModels.InstanceViewModel>()
@@ -69,21 +69,13 @@
             CreateMap<InstitutionIncomeExpenditure, InstitutionIncomeExpenditureViewModel>();
             CreateMap<InstitutionLiabilities, InstitutionLiabilitiesViewModel>();
 
-            ////CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceViewModel>();
-            ////CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceListViewModel>();
-            ////CreateMap<FinancingItem, ViewModels.ProduceViewModels.FinancingItemViewModel>();
-            ////CreateMap<FinancingProject, ViewModels.ProduceViewModels.FinancingProjectViewModel>();
-
             CreateMap<Finance, FinanceApplyViewModel>();
             CreateMap<Vehicle, VehicleViewModel>();
             CreateMap<Applicant, ApplicationViewModel>();
             CreateMap<Contract, ContractViewModel>();
             CreateMap<Finance, LoanViewModel>();
-            ////CreateMap<CreditExamine, CreditExamineViewModel>();
             CreateMap<FinanceExtension, OperationViewModel>();
-            CreateMap<FinanceProduce, FinanceProduceViewModel>();
 
-            // 征信报文
             CreateMap<Trace, TraceViewModel>();
         }
     }
