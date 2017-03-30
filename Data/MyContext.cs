@@ -2,7 +2,6 @@
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
-    using Data.ModelConfigurations.ProduceConfigurations;
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
     using ModelConfigurations.CreditInvestigationConfigurations;
@@ -47,12 +46,12 @@
                 .Add(new FormRoleConfiguration())
                 .Add(new ProcessTempDataConfiguration());
 
-            // Produce Configurations
-            modelBuilder.Configurations
-                .Add(new FinancingItemConfigration())
-                .Add(new FinancingProjectConfigration())
-                ////.Add(new OldProduceConfigration())
-                ;
+            ////// Produce Configurations
+            ////modelBuilder.Configurations
+            ////    .Add(new FinancingItemConfigration())
+            ////    .Add(new FinancingProjectConfigration())
+            ////    ////.Add(new OldProduceConfigration())
+            ////    ;
 
             // Partner and Draft Configurations
             modelBuilder.Configurations

@@ -8,7 +8,6 @@
     using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using Core.Entities.Process;
-    using Core.Entities.Produce;
     using Core.Entities.Vehicle;
     using ViewModels.AccountViewModels;
     using ViewModels.CreditInvesitigation.TraceViewModels;

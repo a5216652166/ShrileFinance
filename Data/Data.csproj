@@ -238,7 +238,6 @@
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\FinanceExtensionConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\FinanceProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\ProcessTempDataConfiguration.cs" />
-    <Compile Include="ModelConfigurations\ProduceConfigurations\FinancingProjectConfigration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\ProcessConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\FormConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\FormNodeConfiguration.cs" />
@@ -257,9 +256,7 @@
     <Compile Include="ModelConfigurations\CreditInvestigationConfigurations\TraceConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\NodeConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\PartnerConfiguration.cs" />
-    <Compile Include="ModelConfigurations\ProduceConfigurations\FinancingItemConfigration.cs" />
     <Compile Include="ModelConfigurations\LoanConfigurations\PledgeGuarantyContractConfiguration.cs" />
-    <Compile Include="ModelConfigurations\ProduceConfigurations\OldProduceConfigration.cs" />
     <Compile Include="ModelConfigurations\TypeConfigurationExtensions.cs" />
     <Compile Include="ModelConfigurations\AppUserConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\VehicleConfigration.cs" />
@@ -381,13 +378,11 @@
     <Compile Include="Repositories\ProcessRepositories\ProcessRepository.cs" />
     <Compile Include="Repositories\ProcessRepositories\FormRepository.cs" />
     <Compile Include="Repositories\ProcessRepositories\InstanceRepository.cs" />
-    <Compile Include="Repositories\FinanceRepositories\FinancingProjectRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\LoanRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\OrganizationRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\PaymentHistoryRepository.cs" />
     <Compile Include="Repositories\ProcessRepositories\ProcessTempDataRepository.cs" />
     <Compile Include="Repositories\DatagramRepositories\TraceRepository.cs" />
-    <Compile Include="Repositories\ProduceRepositories\OldProduceRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinanceRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\PartnerRepositories\PartnerRepository.cs" />
   </ItemGroup>

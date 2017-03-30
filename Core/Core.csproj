@@ -233,11 +233,7 @@
     <Compile Include="Entities\Finance\Finance.cs" />
     <Compile Include="Entities\Finance\FinanceExtension.cs" />
     <Compile Include="Entities\Finance\FinanceStateEnum.cs" />
-    <Compile Include="Entities\Produce\FinancingProject.cs" />
     <Compile Include="Entities\Finance\Partners\Partner.cs" />
-    <Compile Include="Entities\Produce\OldProduce.cs" />
-    <Compile Include="Entities\Produce\FinancingItem.cs" />
-    <Compile Include="Entities\Produce\Scheme.cs" />
     <Compile Include="Entities\Vehicle\Vehicle.cs" />
     <Compile Include="Exceptions\AppException.cs" />
     <Compile Include="Exceptions\ArgumentAppException.cs" />
@@ -252,12 +248,10 @@
     <Compile Include="Interfaces\Repositories\ProcessRepositories\IFormRepository.cs" />
     <Compile Include="Interfaces\Repositories\ProcessRepositories\IInstanceRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinanceRepository.cs" />
-    <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinancingProjectRepository.cs" />
     <Compile Include="Interfaces\Repositories\LoanRepositories\ICreditContractRepository.cs" />
     <Compile Include="Interfaces\Repositories\LoanRepositories\ILoanRepository.cs" />
     <Compile Include="Interfaces\Repositories\LoanRepositories\IOrganizationRepository.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Interfaces\Repositories\ProduceRepositories\IOldProduceRepository.cs" />
     <Compile Include="Interfaces\Repositories\ProcessRepositories\IPartnerRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepository.cs" />
     <Compile Include="Interfaces\Repositories\IUnitOfWork.cs" />
