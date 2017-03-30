@@ -201,11 +201,11 @@
     <Content Include="Finance\images\down.png" />
     <Content Include="Finance\Content\FinanceJs.js" />
     <Content Include="Finance\FinanceAudit.html" />
-    <Content Include="Finance\CreditExamine.html" />
+    <Content Include="Finance\Unused\CreditExamine.html" />
     <Content Include="Finance\FinanceOperation.html" />
     <Content Include="Finance\Unused\InfoAdditional.html" />
-    <Content Include="Finance\Loan.html" />
-    <Content Include="Finance\NewFinanceEdit.html" />
+    <Content Include="Finance\LoanInfo.html" />
+    <Content Include="Finance\FinanceEdit.html" />
     <Content Include="Finance\Unused\Operation.html" />
     <Content Include="Process\FlowTest\Frame.html" />
     <Content Include="Process\FlowTest\Test1.html" />
@@ -535,7 +535,7 @@
     <Content Include="Finance\Content\uploadimages.css" />
     <Content Include="Finance\Content\UploadImages.js" />
     <Content Include="Finance\LoanUploadImages.html" />
-    <Content Include="Finance\PrintContract.html" />
+    <Content Include="Finance\Unused\PrintContract.html" />
     <Content Include="Finance\Unused\Review.html" />
     <Content Include="Process\ExamineOpinion.html" />
     <Content Include="Process\FrameView.html" />
@@ -1167,7 +1167,7 @@
     <Content Include="Content\uploadify\uploadify.swf" />
     <Content Include="Credit\CreditEdit.html" />
     <Content Include="Credit\CreditList.html" />
-    <Content Include="Finance\ApplicantEdit.html" />
+    <Content Include="Finance\Unused\ApplicantEdit.html" />
     <Content Include="Finance\Content\Webppt\image\left-arrow.png" />
     <Content Include="Finance\Content\Webppt\image\right-arrow.png" />
     <Content Include="Finance\Unused\CreditExamineReport.html" />
