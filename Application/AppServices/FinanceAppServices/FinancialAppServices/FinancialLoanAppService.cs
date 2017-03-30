@@ -5,7 +5,7 @@
     using AutoMapper;
     using Core.Entities.Finance.Financial;
     using Core.Exceptions;
-    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.FinanceRepositories.FinanceRepositories;
     using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using X.PagedList;
@@ -13,16 +13,16 @@
     public class FinancialLoanAppService
     {
         private readonly IFinancialLoanRepository financialLoanRepository;
-        private readonly INewProduceRepository newProduceRepository;
+        private readonly IProduceRepository produceRepository;
         private readonly IFinancialItemRepository financialItemRepository;
 
         public FinancialLoanAppService(
             IFinancialLoanRepository financialLoanRepository,
-            INewProduceRepository newProduceRepository,
+            IProduceRepository produceRepository,
             IFinancialItemRepository financialItemRepository)
         {
             this.financialLoanRepository = financialLoanRepository;
-            this.newProduceRepository = newProduceRepository;
+            this.produceRepository = produceRepository;
             this.financialItemRepository = financialItemRepository;
         }
 
@@ -49,7 +49,7 @@
         {
             var entity = Mapper.Map<FinancialLoan>(model);
 
-            entity.NewProduce = newProduceRepository.Get(model.NewProduce.Id.Value);
+            entity.NewProduce = produceRepository.Get(model.NewProduce.Id.Value);
 
             entity.AllowCreatedDate();
 
@@ -99,7 +99,7 @@
 
             Mapper.Map(model, entity);
 
-            entity.NewProduce = newProduceRepository.Get(model.NewProduce.Id.Value);
+            entity.NewProduce = produceRepository.Get(model.NewProduce.Id.Value);
 
             var removeFinancialItems = UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
 

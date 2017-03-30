@@ -3,12 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Core.Entities;
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Loan;
     using Core.Entities.Process;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
     using Newtonsoft.Json.Linq;
     using ViewModels.FinanceViewModels;
     using ViewModels.Loan.CreditViewModel;
@@ -89,14 +89,14 @@
             // 创建融资审核
             financeAppService.EditFinanceAuidt(financeAudit);
 
-            // 获取信审数据
-            var financeCreditExmine = GetData<CreditExamineViewModel>("59DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            ////// 获取信审数据
+            ////var financeCreditExmine = GetData<CreditExamineViewModel>("59DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
-            // 创建信审
-            financeAppService.EditCreditExamine(financeCreditExmine);
+            ////// 创建信审
+            ////financeAppService.EditCreditExamine(financeCreditExmine);
 
-            // 修改信审审核人
-            financeAppService.SetApprover(financeAudit.FinanceId);
+            ////// 修改信审审核人
+            ////financeAppService.SetApprover(financeAudit.FinanceId);
         }
 
         /// <summary>
@@ -110,8 +110,8 @@
             // 修改融资审核
             financeAppService.EditFinanceAuidt(financeAudit);
 
-            // 修改信审审核人
-            financeAppService.SetApprover(financeAudit.FinanceId);
+            ////// 修改信审审核人
+            ////financeAppService.SetApprover(financeAudit.FinanceId);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@
         public void FinalApproval()
         {
             // 修改信审审核人
-            financeAppService.SetApprover(Instance.RootKey.Value);
+            ////financeAppService.SetApprover(Instance.RootKey.Value);
         }
 
         /// <summary>

@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using Core.Entities;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
 
     public class ProcessTempDataRepository : BaseRepository<ProcessTempData>, IProcessTempDataRepository
     {

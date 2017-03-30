@@ -1,63 +1,63 @@
 ﻿namespace Web.Controllers.Produce
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Web.Http;
-    using Application;
-    using Application.ViewModels;
-    using Application.ViewModels.ProduceViewModel;
+    ////using System;
+    ////using System.Collections.Generic;
+    ////using System.Web.Http;
+    ////using Application;
+    ////using Application.ViewModels;
+    ////using Application.ViewModels.ProduceViewModel;
 
-    public class ProduceController : ApiController
-    {
-        private readonly ProduceAppService produceAppService;
+    ////public class ProduceController : ApiController
+    ////{
+    ////    private readonly ProduceAppService produceAppService;
 
-        public ProduceController(ProduceAppService produceAppService)
-        {
-            this.produceAppService = produceAppService;
-        }
+    ////    public ProduceController(ProduceAppService produceAppService)
+    ////    {
+    ////        this.produceAppService = produceAppService;
+    ////    }
 
-       [HttpGet]
-        public IHttpActionResult Get(Guid id)
-        {
-             var produce = produceAppService.Get(id);
+    ////   [HttpGet]
+    ////    public IHttpActionResult Get(Guid id)
+    ////    {
+    ////         var produce = produceAppService.Get(id);
 
-            return Ok(produce);
-        }
+    ////        return Ok(produce);
+    ////    }
 
-        public IHttpActionResult GetAll()
-        {
-            var produce = produceAppService.GetAll();
+    ////    public IHttpActionResult GetAll()
+    ////    {
+    ////        var produce = produceAppService.GetAll();
 
-            return Ok(produce);
-        }
+    ////        return Ok(produce);
+    ////    }
 
-        public IHttpActionResult GetByCode(string code)
-        {
-            var proudce = produceAppService.GetByCode(code);
+    ////    public IHttpActionResult GetByCode(string code)
+    ////    {
+    ////        var proudce = produceAppService.GetByCode(code);
 
-            return Ok(proudce);
-        }
+    ////        return Ok(proudce);
+    ////    }
 
-        public IHttpActionResult Create(ProduceViewModel value)
-        {
-            produceAppService.Create(value);
+    ////    public IHttpActionResult Create(ProduceViewModel value)
+    ////    {
+    ////        produceAppService.Create(value);
 
-            return Ok();
-        }
+    ////        return Ok();
+    ////    }
 
-        public IHttpActionResult Modify(ProduceViewModel value)
-        {
-            produceAppService.Modify(value);
+    ////    public IHttpActionResult Modify(ProduceViewModel value)
+    ////    {
+    ////        produceAppService.Modify(value);
 
-            return Ok();
-        }
+    ////        return Ok();
+    ////    }
 
-        [HttpGet]
-        public IHttpActionResult GetPageList(int page, int rows, string Search)
-        {
-            var list = produceAppService.GetPageList(Search, page, rows);
+    ////    [HttpGet]
+    ////    public IHttpActionResult GetPageList(int page, int rows, string Search)
+    ////    {
+    ////        var list = produceAppService.GetPageList(Search, page, rows);
 
-            return Ok(new PagedListViewModel<ProduceListViewModel>(list));
-        }
-    }
+    ////        return Ok(new PagedListViewModel<ProduceListViewModel>(list));
+    ////    }
+    ////}
 }

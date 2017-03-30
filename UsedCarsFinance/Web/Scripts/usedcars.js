@@ -384,10 +384,10 @@ $.extend($.fn.validatebox.defaults.rules, {
 		},
 		message: "请输入正确的日期！(如:2000)"
 	},
-	//重复验证
+	//重复验证 [弃用][严重占用数据库资源，由后台一次校验即可]
 	checkUsernameRepeat: {
-		validator: function (value, param) {
-			var result = false;
+        validator: function (value, param) {
+            var result = true;
 
 			$.ajax({
 				async: false,
@@ -395,16 +395,20 @@ $.extend($.fn.validatebox.defaults.rules, {
 				type: "GET",
 				url: "../api/User/CheckUsername",
 				statusCode: {
-					200: function (data) {
-						result = true;
-					}
+                    200: function (data) {
+                        result = data == "False" ? false : true;
+                    },
+                    400: function (data)
+                    {
+                    }
 				}
 			});
 
 			return result;
 		},
 		message: '用户名已使用!'
-	},
+    },
+
 	//帐号
 	checkUsernameFormat: {
 		validator: function (value) {

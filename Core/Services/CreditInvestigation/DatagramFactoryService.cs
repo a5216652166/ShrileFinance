@@ -3,6 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Core.Interfaces.Repositories.DatagramRepositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
     using Entities.CreditInvestigation;
     using Entities.CreditInvestigation.Datagram;
     using Entities.CreditInvestigation.DatagramFile;
@@ -10,7 +13,6 @@
     using Entities.CreditInvestigation.Record.OrganizationRecords;
     using Entities.Loan;
     using Exceptions;
-    using Interfaces.Repositories;
 
     public class DatagramFactoryService
     {

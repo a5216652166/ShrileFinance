@@ -32,10 +32,10 @@
 
         public string Remarks { get; set; }
 
-        public IEnumerable<ProduceViewModel> Produces { get; set; }
+        public IEnumerable<ProduceOptionViewModel> Produces { get; set; } = new HashSet<ProduceOptionViewModel>();
 
-        public IEnumerable<string> Approvers { get; set; }
+        public IEnumerable<string> Approvers { get; set; } = new HashSet<string>();
 
-        public IEnumerable<UserViewModel> Accounts { get; set; }
+        public IEnumerable<UserViewModel> Accounts { get; set; } = new HashSet<UserViewModel>();
     }
 }

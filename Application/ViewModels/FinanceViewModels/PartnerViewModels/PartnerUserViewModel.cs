@@ -6,7 +6,7 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    public class PartnerUserViewModel:IEntityViewModel
+    public class PartnerUserViewModel : IEntityViewModel
     {
         public Guid? Id { get; set; }
 

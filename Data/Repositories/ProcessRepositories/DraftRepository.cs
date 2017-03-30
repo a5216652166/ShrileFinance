@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using Core.Entities.Other;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
 
     public class DraftRepository : BaseRepository<Draft>, IDraftRepository
     {

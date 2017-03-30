@@ -2,8 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
     using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
@@ -52,6 +51,6 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public NewProduceViewModel NewProduce { get; set; }
+        public ProduceViewModel NewProduce { get; set; }
     }
 }

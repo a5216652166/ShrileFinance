@@ -11,6 +11,10 @@
     using Core.Entities.Process;
     using Core.Exceptions;
     using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.DatagramRepositories;
+    using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
     using Newtonsoft.Json.Linq;
     using ViewModels.ProcessViewModels;
     using X.PagedList;

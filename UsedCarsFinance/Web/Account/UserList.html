@@ -31,7 +31,8 @@
 			}
 
 			uc.ShowWindow("用户信息", url);
-		}
+        }
+
 		function EnableUser() {
 			var row = uc.grid.GetSelected();
 
@@ -54,7 +55,8 @@
 					top.$.messager.show({ msg: "该用户已启用！" });
 				}
 			}
-		}
+        }
+
 		function DisableUser() {
 			var row = uc.grid.GetSelected();
 
@@ -77,7 +79,8 @@
 					top.$.messager.show({ msg: "该用户已停用！" });
 				}
 			}
-		}
+        }
+
 		function ResetPassword() {
 		    $.messager.confirm('确认', '确定重置该用户密码吗?<br />重置后密码为 <span style="color:red;">s666666</span>!', function (r) {
 				if (r) {

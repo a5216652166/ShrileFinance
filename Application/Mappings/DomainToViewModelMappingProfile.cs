@@ -5,6 +5,7 @@
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Finance;
+    using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using Core.Entities.Process;
     using Core.Entities.Produce;
@@ -46,7 +47,7 @@
 
             CreateMap<Partner, PartnerViewModel>()
                 .ForMember(d => d.Approvers, opt => opt.ResolveUsing(s => s.Approvers.Select(m => m.Id)));
-            CreateMap<Produce, ViewModels.PartnerViewModels.ProduceViewModel>();
+            CreateMap<Produce, ProduceOptionViewModel>();
 
             CreateMap<Organization, OrganizationViewModel>();
             CreateMap<AssociatedEnterprise, AssociatedEnterpriseViewModel>();
@@ -69,16 +70,17 @@
             CreateMap<InstitutionIncomeExpenditure, InstitutionIncomeExpenditureViewModel>();
             CreateMap<InstitutionLiabilities, InstitutionLiabilitiesViewModel>();
 
-            CreateMap<Produce, ViewModels.ProduceViewModel.ProduceViewModel>();
-            CreateMap<Produce, ViewModels.ProduceViewModel.ProduceListViewModel>();
-            CreateMap<FinancingItem, ViewModels.ProduceViewModel.FinancingItemViewModel>();
-            CreateMap<FinancingProject, ViewModels.ProduceViewModel.FinancingProjectViewModel>();
+            ////CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceViewModel>();
+            ////CreateMap<OldProduce, ViewModels.ProduceViewModel.ProduceListViewModel>();
+            ////CreateMap<FinancingItem, ViewModels.ProduceViewModels.FinancingItemViewModel>();
+            ////CreateMap<FinancingProject, ViewModels.ProduceViewModels.FinancingProjectViewModel>();
+
             CreateMap<Finance, FinanceApplyViewModel>();
             CreateMap<Vehicle, VehicleViewModel>();
             CreateMap<Applicant, ApplicationViewModel>();
             CreateMap<Contract, ContractViewModel>();
             CreateMap<Finance, LoanViewModel>();
-            CreateMap<CreditExamine, CreditExamineViewModel>();
+            ////CreateMap<CreditExamine, CreditExamineViewModel>();
             CreateMap<FinanceExtension, OperationViewModel>();
             CreateMap<FinanceProduce, FinanceProduceViewModel>();
 

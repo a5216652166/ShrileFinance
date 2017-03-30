@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Models.BankCredit;
-using System.Web;
-using BLL.FileOparate;
-using System.IO;
-
-namespace BLL.BankCredit
+﻿namespace BLL.BankCredit
 {
+    using System;
+    using System.Collections.Generic;
+    using Models.BankCredit;
+
     public class CombinaComMessageData : ICombinaData
     {
         private const string path = @"~\upload\messageFile\";
@@ -27,9 +21,9 @@ namespace BLL.BankCredit
             string messageFileType = string.Empty;
             int fileCount = 0;
             // 企业金融机构代码
-            string comFinancialInstitutionCode = "33207991216"; 
+            string comFinancialInstitutionCode = "33207991216";
 
-             ReportFilesInfo reportFilesInfo = _dataRule.GetReportFilesInfoById(fileId);
+            ReportFilesInfo reportFilesInfo = _dataRule.GetReportFilesInfoById(fileId);
             int messageFileId = reportFilesInfo == null ? 0 : reportFilesInfo.MessageFileId;
             int serviceObj = reportFilesInfo == null ? 0 : reportFilesInfo.ServiceObj;
 
@@ -57,11 +51,11 @@ namespace BLL.BankCredit
             List<ReportFilesInfo> reportFileInfo = new DAL.BankCredit.ReportFilesMapper().FindFileByPartnerName(partnerName);
             if (reportFileInfo.Count == 0)
             {
-                partnerName +="1".PadLeft(4, '0');
+                partnerName += "1".PadLeft(4, '0');
             }
             else
             {
-                partnerName+=((Convert.ToInt32(reportFileInfo[0].ReportTextName.Substring(22,4)))+1).ToString().PadLeft(4, '0');
+                partnerName += ((Convert.ToInt32(reportFileInfo[0].ReportTextName.Substring(22, 4))) + 1).ToString().PadLeft(4, '0');
             }
 
             messageName = partnerName + "00";

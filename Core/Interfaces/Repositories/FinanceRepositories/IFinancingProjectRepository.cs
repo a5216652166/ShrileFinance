@@ -1,4 +1,4 @@
-﻿namespace Core.Interfaces.Repositories
+﻿namespace Core.Interfaces.Repositories.FinanceRepositories
 {
     using System.Collections.Generic;
     using Entities.Produce;

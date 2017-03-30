@@ -6,6 +6,7 @@
     using Core.Entities;
     using Core.Entities.Process;
     using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
     using X.PagedList;
 
     public class InstanceRepository : BaseRepository<Instance>, IInstanceRepository

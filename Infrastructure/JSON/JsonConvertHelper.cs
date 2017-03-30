@@ -11,6 +11,7 @@
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="jsonStr">json字符串</param>
+        /// <param name="depth">深度</param>
         /// <returns>引用对象</returns>
         public static T Convert2Object<T>(string jsonStr, bool depth = false) where T : class
         {

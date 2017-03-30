@@ -2,16 +2,21 @@
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
-    using Data.ModelConfigurations.FinanceConfigurations.FinancialConfigurations;
+    using Data.ModelConfigurations.ProduceConfigurations;
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
-    using ModelConfigurations.CreditInvestigation;
-    using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Concern;
-    using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.FinancialAffair;
-    using ModelConfigurations.CreditInvestigation.Segment.BorrowMessage.Organization;
-    using ModelConfigurations.CreditInvestigation.Segment.CreditMessage;
-    using ModelConfigurations.IO;
-    using ModelConfigurations.Loan;
+    using ModelConfigurations.CreditInvestigationConfigurations;
+    using ModelConfigurations.CreditInvestigationConfigurations.SegmentConfigurations.BorrowMessageConfigurations.ConcernConfigurations;
+    using ModelConfigurations.CreditInvestigationConfigurations.SegmentConfigurations.BorrowMessageConfigurations.FinancialAffairConfigurations;
+    using ModelConfigurations.CreditInvestigationConfigurations.SegmentConfigurations.BorrowMessageConfigurations.OrganizationConfigurations;
+    using ModelConfigurations.CreditInvestigationConfigurations.SegmentConfigurations.CreditMessageConfigurations;
+    using ModelConfigurations.CustomerConfigurations;
+    using ModelConfigurations.FinanceConfigurations.FinanceConfiguration;
+    using ModelConfigurations.FinanceConfigurations.FinancialConfigurations;
+    using ModelConfigurations.FinanceConfigurations.PartnerConfigurations;
+    using ModelConfigurations.IOConfigurations;
+    using ModelConfigurations.LoanConfigurations;
+    using ModelConfigurations.ProcessConfigurations;
 
     public class MyContext : IdentityDbContext
     {
@@ -46,7 +51,8 @@
             modelBuilder.Configurations
                 .Add(new FinancingItemConfigration())
                 .Add(new FinancingProjectConfigration())
-                .Add(new ProduceConfigration());
+                ////.Add(new OldProduceConfigration())
+                ;
 
             // Partner and Draft Configurations
             modelBuilder.Configurations
@@ -61,8 +67,8 @@
                 .Add(new VehicleConfigration())
                 .Add(new FinanceExtensionConfiguration())
                 .Add(new ContactConfiguration())
-                .Add(new CreditExamineConfiguration())
-                .Add(new NewProduceConfiguration())
+                ////.Add(new CreditExamineConfiguration())
+                .Add(new ProduceConfiguration())
                 .Add(new FinancialLoanConfiguration())
                 .Add(new FinancialItemConfiguration());
 

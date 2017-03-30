@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BLL.BankCredit
+﻿namespace BLL.BankCredit
 {
+    using System;
+    using System.Collections.Generic;
+
     public class CodeProofMethod : BaseProofMethod
     {
         private static readonly DAL.BankCredit.DictionaryCodeMapper DictionaryCode = new DAL.BankCredit.DictionaryCodeMapper();

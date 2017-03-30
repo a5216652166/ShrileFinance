@@ -4,7 +4,7 @@
     using Core.Entities.Finance.Partners;
     using X.PagedList;
 
-    public interface IPartnerRepository: IRepository<NewPartner>
+    public interface INewPartnerRepository : IRepository<NewPartner>
     {
         IPagedList<NewPartner> PartnerList(string searchString, int page, int size, DateTime? beginTime = null, DateTime? endTime = null);
     }

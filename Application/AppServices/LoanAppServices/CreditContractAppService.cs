@@ -7,7 +7,7 @@
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Loan;
     using Core.Exceptions;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
     using ViewModels.Loan.CreditViewModel;
     using X.PagedList;
 

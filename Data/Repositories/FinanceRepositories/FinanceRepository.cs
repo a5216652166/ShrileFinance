@@ -2,10 +2,9 @@
 {
     using System;
     using System.Data;
-    using System.Data.Entity;
     using System.Data.SqlClient;
     using Core.Entities.Finance;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.FinanceRepositories;
     using Infrastructure.PDF;
 
     public class FinanceRepository : BaseRepository<Finance>, IFinanceRepository

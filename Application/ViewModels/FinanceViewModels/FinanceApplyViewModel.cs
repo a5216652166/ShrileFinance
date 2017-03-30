@@ -3,6 +3,9 @@
     using System;
     using System.Collections.Generic;
     using AccountViewModels;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
+    using Application.ViewModels.PartnerViewModels;
     using Core.Entities.Finance;
 
     public class FinanceApplyViewModel : IEntityViewModel
@@ -11,11 +14,6 @@
         /// 融资标识
         /// </summary>
         public Guid? Id { get; set; }
-
-        /// <summary>
-        /// 产品ID
-        /// </summary>
-        public Guid ProduceId { get; set; }
 
         /// <summary>
         /// 厂商指导价
@@ -53,9 +51,9 @@
         public UserViewModel CreateBy { get; set; }
 
         /// <summary>
-        /// 渠道
+        /// 合作商
         /// </summary>
-        public PartnerViewModels.PartnerViewModel CreateOf { get; set; }
+        public PartnerViewModel CreateOf { get; set; }
 
         /// <summary>
         /// 联系人
@@ -75,11 +73,11 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual ProduceViewModel.ProduceViewModel Produce { get; set; }
+        public virtual ProduceViewModel Produce { get; set; }
 
         /// <summary>
         /// 融资产品项
         /// </summary>
-        public virtual IEnumerable<FinanceProduceViewModel> FinanceProduce { get; set; }
+        public virtual IEnumerable<FinancialItemViewModel> FinancialItem { get; set; }
     }
 }

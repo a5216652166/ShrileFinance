@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Core.Entities.Produce;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.FinanceRepositories;
 
     public class FinancingProjectRepository : BaseRepository<FinancingProject>, IFinancingProjectRepository
     {

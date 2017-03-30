@@ -1,10 +1,9 @@
 ﻿namespace Application
 {
-    using System;
     using Core.Entities;
     using Core.Entities.Other;
     using Core.Exceptions;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
     using ViewModels.OtherViewModels;
 
     public class DraftAppService

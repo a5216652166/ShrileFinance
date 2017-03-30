@@ -1,7 +1,7 @@
-﻿using Models.BankCredit;
-
-namespace BLL.BankCredit
+﻿namespace BLL.BankCredit
 {
+    using Models.BankCredit;
+
     public class BusinessLogicScript
     {
         /// <summary>
@@ -11,7 +11,7 @@ namespace BLL.BankCredit
         /// <param name="postmessage"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public bool AddInfomationData(PostMessage postmessage,ref string message)
+        public bool AddInfomationData(PostMessage postmessage, ref string message)
         {
             var result = true;
 
@@ -19,6 +19,7 @@ namespace BLL.BankCredit
 
             InfoTypeInfo infoType = new DataRule().GetDataRuleByInfoTypeId(postmessage.InfoTypeId);
             MessageFileTypeInfo messageFileTypeInfo = new DataRule().GetMessageFileTypeInfoById(postmessage.messageTypeID);
+
             // 数据合法性校验
             result &= new DataAndRuleComPare().Compare(infoType, postmessage.recordID, postmessage.ReportId, messageInfo, postmessage, ref message);
 
@@ -28,6 +29,7 @@ namespace BLL.BankCredit
             {
                 result &= new Validates.ComInformationValidate(infoType.InfoTypeId, messageInfo).BaseValidateMethod();
             }
+
             // 个人通用规则校验
             else
             {

@@ -1,4 +1,4 @@
-﻿namespace Core.Interfaces.Repositories
+﻿namespace Core.Interfaces.Repositories.DatagramRepositories
 {
     using System;
     using System.Collections.Generic;

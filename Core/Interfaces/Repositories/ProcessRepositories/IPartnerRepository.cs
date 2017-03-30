@@ -1,7 +1,7 @@
-﻿namespace Core.Interfaces.Repositories
+﻿namespace Core.Interfaces.Repositories.ProcessRepositories
 {
-    using Entities;
     using Core.Entities.Finance.Partners;
+    using Entities;
 
     public interface IPartnerRepository : IRepository<Partner>
     {

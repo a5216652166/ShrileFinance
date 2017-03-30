@@ -5,7 +5,7 @@
     using System.Linq;
     using AutoMapper;
     using Core.Entities.CreditInvestigation;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.DatagramRepositories;
     using Core.Services.CreditInvestigation;
     using Infrastructure.File;
     using ViewModels.CreditInvesitigation.TraceViewModels;

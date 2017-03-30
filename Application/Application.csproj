@@ -93,7 +93,7 @@
   <ItemGroup>
     <Compile Include="AppServices\FileSystemAppServices\FileSystemAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\FinancialLoanAppService.cs" />
-    <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\NewProduceAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\ProduceAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\PartnerAppServices\PartnerAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\PartnerAppServices\PartnerUserAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\CreditContractAppService.cs" />
@@ -149,10 +149,11 @@
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\RepayTableViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\PartnerViewModels\PartnerUserViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\PartnerViewModels\PartnerViewModel.cs" />
-    <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceListViewModel.cs" />
-    <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\NewProduceViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\ProduceListViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\ProduceViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\OperationViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\PartnerAndUser.cs" />
+    <Compile Include="ViewModels\HiddenEnum.cs" />
     <Compile Include="ViewModels\IEntityViewModel.cs" />
     <Compile Include="ViewModels\Loan\CreditViewModels\GuarantorViewModel.cs" />
     <Compile Include="ViewModels\Loan\LoanViewModels\PaymentViewModel.cs" />
@@ -202,12 +203,6 @@
     <Compile Include="ViewModels\ProcessViewModels\FormViewModelEquality.cs" />
     <Compile Include="ViewModels\ProcessViewModels\OpinionViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModels\ProcessPostedViewModel.cs" />
-    <Compile Include="ViewModels\ProduceViewModel\FinancingProjectViewModel.cs" />
-    <Compile Include="ViewModels\ProduceViewModel\FinancingItemViewModel.cs" />
-    <Compile Include="ViewModels\ProduceViewModel\FinancingProjectListViewModel.cs" />
-    <Compile Include="ViewModels\ProduceViewModel\PoundageViewModel.cs" />
-    <Compile Include="ViewModels\ProduceViewModel\ProduceListViewModel.cs" />
-    <Compile Include="ViewModels\ProduceViewModel\ProduceViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModels\ActionViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModels\FormViewModel.cs" />
     <Compile Include="ViewModels\ProcessViewModels\FrameViewModel.cs" />

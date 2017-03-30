@@ -1,7 +1,5 @@
 ﻿namespace Core.Entities.Finance
 {
-    using System;
-
     /// <summary>
     /// 融资扩展
     /// </summary>

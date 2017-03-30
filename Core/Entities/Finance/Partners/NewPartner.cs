@@ -42,12 +42,12 @@
         /// <summary>
         /// 用户
         /// </summary>
-        public virtual ICollection<PartnerUser> PartnerUsers { get; set; } = new HashSet<PartnerUser>();
+        public virtual ICollection<NewPartnerUser> PartnerUsers { get; set; } = new HashSet<NewPartnerUser>();
 
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual ICollection<NewProduce> Produces { get; set; } = new HashSet<NewProduce>();
+        public virtual ICollection<Produce> Produces { get; set; } = new HashSet<Produce>();
 
         public bool IsDelete { get; set; } = false;
 

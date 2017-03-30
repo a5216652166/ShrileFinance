@@ -13,7 +13,7 @@
         {
             var pv = 10000.00M;
 
-            var rr = NewProduce.CreateInstance().CalculateRepayTable(pv);
+            var rr = Produce.CreateInstance().CalculateRepayTable(pv);
 
             Assert.IsTrue(rr.Count() > 0);
         }

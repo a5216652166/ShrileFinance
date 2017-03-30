@@ -5,7 +5,8 @@
     using System.Linq;
     using AutoMapper;
     using Core.Entities.Customers.Enterprise;
-    using Core.Interfaces.Repositories;
+    using Core.Interfaces.Repositories.LoanRepositories;
+    using Core.Interfaces.Repositories.ProcessRepositories;
     using ViewModels;
     using ViewModels.OrganizationViewModels;
     using X.PagedList;

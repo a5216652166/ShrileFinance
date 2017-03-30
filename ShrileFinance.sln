@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructures", "Infrastructures", "{0E8BDDAE-D15E-4CBB-80C7-D9327A3A49B1}"
 EndProject
@@ -26,8 +26,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "UsedCarsFinance\Web\Web.csproj", "{51793ED4-958F-49CC-A631-1946CF20ADD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{8C3CA377-21EE-46AE-B6C3-988074822CDF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeService", "TimeService\TimeService.csproj", "{D4C91394-A858-4B20-BFB1-FFDE7E7C8FA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,10 +73,6 @@ Global
 		{8C3CA377-21EE-46AE-B6C3-988074822CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C3CA377-21EE-46AE-B6C3-988074822CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C3CA377-21EE-46AE-B6C3-988074822CDF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4C91394-A858-4B20-BFB1-FFDE7E7C8FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4C91394-A858-4B20-BFB1-FFDE7E7C8FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4C91394-A858-4B20-BFB1-FFDE7E7C8FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4C91394-A858-4B20-BFB1-FFDE7E7C8FA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

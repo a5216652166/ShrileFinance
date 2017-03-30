@@ -5,12 +5,13 @@
     using Application.AppServices.FinanceAppServices.FinancialAppServices;
     using Application.ViewModels;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
 
     public class NewProduceController : ApiController
     {
-        private readonly NewProduceAppService produceAppService;
+        private readonly ProduceAppService produceAppService;
 
-        public NewProduceController(NewProduceAppService produceAppService)
+        public NewProduceController(ProduceAppService produceAppService)
         {
             this.produceAppService = produceAppService;
         }
@@ -20,7 +21,7 @@
         {
             var list = produceAppService.GetPageList(search, page, rows);
 
-            return Ok(new PagedListViewModel<NewProduceListViewModel>(list));
+            return Ok(new PagedListViewModel<ProduceListViewModel>(list));
         }
 
         [HttpGet]
@@ -32,7 +33,7 @@
         }
 
         [HttpPost]
-        public IHttpActionResult Create(NewProduceViewModel model)
+        public IHttpActionResult Create(ProduceViewModel model)
         {
             produceAppService.Create(model);
 
@@ -40,7 +41,7 @@
         }
 
         [HttpPost]
-        public IHttpActionResult Modify(NewProduceViewModel model)
+        public IHttpActionResult Modify(ProduceViewModel model)
         {
             produceAppService.Modify(model);
 

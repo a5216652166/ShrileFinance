@@ -66,7 +66,7 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual NewProduce NewProduce { get;  set; }
+        public virtual Produce NewProduce { get;  set; }
 
         /// <summary>
         /// 还款计划表

@@ -3,13 +3,13 @@
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Finance.Partners;
 
-    public class PartnerUserConfiguration : EntityTypeConfiguration<PartnerUser>
+    public class PartnerUserConfiguration : EntityTypeConfiguration<NewPartnerUser>
     {
         public PartnerUserConfiguration()
         {
             HasKey(m => m.Id);
             Property(m => m.Name).IsRequired();
-            Property(m=>m.PartnerId).IsRequired();
+            Property(m => m.PartnerId).IsRequired();
 
             Ignore(m => m.Pwd);
             Ignore(m => m.LockoutEnabled);
