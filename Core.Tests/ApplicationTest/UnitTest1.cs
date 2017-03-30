@@ -1,6 +1,7 @@
 ﻿namespace Core.Tests.ApplicationTest
 {
     using Application.AppServices.VehicleAppservices;
+    using Infrastructure.PDF;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -9,7 +10,7 @@
         [TestMethod]
         public void TestMethod1()
         {
-            var data = new VehicleAppService().PostToGetVehiclePrise("vfaytrc", "ssgwlgu");
+            var data = new WordToPDF().SingleWordToPDF();
             Assert.IsTrue(true);
         }
     }
