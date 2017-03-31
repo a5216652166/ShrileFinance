@@ -1,7 +1,5 @@
 ﻿$(function () {
     GetUserInfo();
-    //Timeer();
-    MessageCount();
     RanderMenus();
 });
 function GetUserInfo() {
@@ -11,39 +9,9 @@ function GetUserInfo() {
         url: "api/User/CurrentUser",
         statusCode: {
         	200: function (data) {
-        		$("#user_id").val(data.Id);
         		$("#user_name").text(data.Name);
         		$("#role_name").text(data.Role);
             }
-        }
-    });
-}
-
-function Timeer() {
-    setTimeout(function () { Timeer(); MessageCount() },500000)
-}
-
-function MessageCount() {
-    $.ajax({
-        async: true,
-        type: "GET",
-        url: "api/Instance/DoingListCount",
-        statusCode: {
-            200: function (data) {
-                $("span#message").text(data);//.css({ "color": "red", "text-align": "center" })
-            }
-        }
-    });
-}
-
-function PromptClick() {
-    $("div#menus>div").each(function (i, e) {
-        if ($(e).find("div>div").text() == "业务流程") {
-            // 点击“业务流程”
-            $("#menus").accordion("select", i);
-
-            // 点击“代办列表”
-            $(e).find("ul>li>a").eq(0).click();
         }
     });
 }

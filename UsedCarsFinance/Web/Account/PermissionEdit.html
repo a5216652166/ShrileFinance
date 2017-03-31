@@ -10,6 +10,10 @@
 	<script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script src="../Scripts/usedcars.js"></script>
 	<script>
+		$(function () {
+			$("#role").combobox("select", "总经理");
+		});
+
 		function ChangeRole() {
 			$("#tree").tree("reload");
 		}
@@ -18,7 +22,9 @@
 			var role = $("#role");
 
 			//首次加载多选框未渲染, 不能使用getValue方法.
-			param.roleId = (role.css("display") == "none") ? role.combobox("getValue") : "3";
+			if (role.css("display") == "none") {
+				param.roleId = role.combobox("getValue");
+			}
 		}
 
 		function LoadFilter(data, p) {
@@ -85,8 +91,7 @@
             width:150,
             singleSelect:true,
             onSelect:ChangeRole,
-			editable:false,
-			value:3
+			editable:false
 		"></select>
 
 		<a href="javascript:void(0)" id="save" class="easyui-linkbutton" data-options="onClick:Submit" style="margin-left:30px">保存</a>

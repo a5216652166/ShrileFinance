@@ -9,7 +9,6 @@
 
     public class InstanceController : ApiController
     {
-        private static readonly BLL.Flow.Instance Instance = new BLL.Flow.Instance();
         private readonly InstanceAppService service;
 
         public InstanceController(InstanceAppService service)

@@ -332,6 +332,11 @@
         [HttpPost]
         public IHttpActionResult PermissionEdit(MenuPermissionsInfo model)
         {
+            if (string.IsNullOrEmpty(model.RoleId))
+            {
+                return BadRequest("角色不能为空.");
+            }
+
             BLL.User.Permissions menuPermissions = new BLL.User.Permissions();
 
             return menuPermissions.MenuPermissionEdit(model) ? (IHttpActionResult)Ok() : BadRequest("保存失败");
