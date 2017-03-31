@@ -51,6 +51,6 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public ProduceViewModel NewProduce { get; set; }
+        public ProduceViewModel Produce { get; set; }
     }
 }

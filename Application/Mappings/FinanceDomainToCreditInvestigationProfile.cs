@@ -42,8 +42,8 @@
             CreateMap<FinancialItem, FinancialItemViewModel>();
 
             CreateMap<FinancialLoan, FinancialLoanListViewModel>()
-                .ForMember(m => m.NewProduceCode, m => m.MapFrom(o => o.NewProduce.Code))
-                .ForMember(m => m.NewProduceTimeLimit, m => m.MapFrom(o => o.NewProduce.TimeLimit));
+                .ForMember(m => m.NewProduceCode, m => m.MapFrom(o => o.Produce.Code))
+                .ForMember(m => m.NewProduceTimeLimit, m => m.MapFrom(o => o.Produce.TimeLimit));
 
             CreateMap<FinancialLoan, FinancialLoanViewModel>()
                 .ForMember(m => m.FinancialItem, m => m.MapFrom(o => o.FinancialItem.OrderBy(t => t.Name)));

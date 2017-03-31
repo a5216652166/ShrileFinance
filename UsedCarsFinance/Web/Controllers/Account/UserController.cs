@@ -37,7 +37,7 @@
 
             return Ok(new
             {
-                rows = list,
+                rows = list.OrderBy(m => m.Username),
                 total = list.TotalItemCount
             });
         }
@@ -76,21 +76,39 @@
                 return BadRequest(ModelState);
             }
 
+            if (accountAppService.CheckUsername(model.Username))
+            {
+                return BadRequest("用户名已存在");
+            }
+
+            var result = default(IdentityResult);
+
             try
             {
-                var result = await accountAppService.CreateUserAsync(model);
-
-                if (!result.Succeeded)
-                {
-                    return GetErrorResult(result);
-                }
-
-                return Ok();
+                result = await accountAppService.CreateUserAsync(model);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+
+            return Ok();
+
+            ////try
+            ////{
+            ////    result = await accountAppService.CreateUserAsync(model);
+
+            ////    if (!result.Succeeded)
+            ////    {
+            ////        return GetErrorResult(result);
+            ////    }
+
+            ////    return Ok();
+            ////}
+            ////catch (Exception ex)
+            ////{
+            ////    return BadRequest(ex.Message);
+            ////}
         }
 
         /// <summary>

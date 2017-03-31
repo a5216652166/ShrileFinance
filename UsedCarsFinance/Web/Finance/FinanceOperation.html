@@ -24,13 +24,14 @@
                 line-height: 1.42857143;
             }
     </style>
+
     <script type="text/javascript">
         var query = {};
 
         $(function () {
             // 获取参数
             query.state = GetQueryString("state");
-            query.FinanceId = parent.flow.RootKey;
+            //query.FinanceId = parent.flow.RootKey;
 
             // 初始化
             Init(query);
@@ -76,8 +77,7 @@
                     // 运营
                     LoadData_Opera(data);
 
-                    if ($('#Contact_dg').datagrid('getSelections').length == 0)
-                    {
+                    if ($('#Contact_dg').datagrid('getSelections').length == 0) {
                         // 合同全选
                         $('#Contact_dg').datagrid('selectAll')
                     }
@@ -126,8 +126,7 @@
             // 序列化合同信息
             var array = [];
             var rows = $('#Contact_dg').datagrid('getRows');
-            if (rows.length > 0)
-            {
+            if (rows.length > 0) {
                 if ($.inArray(rows[0], $('#Contact_dg').datagrid('getSelections')) == -1) {
                     array.push(rows[0]);
                 }
@@ -272,7 +271,7 @@
                 //    tableData.push({ Name: e.Value.Key, Money: e.Value.Value + " 万元" });
                 //}
                 //else {
-                    tableData.push({ Name: e.Value.Key, Money: e.Value.Value + " 元" });
+                tableData.push({ Name: e.Value.Key, Money: e.Value.Value + " 元" });
                 //}
             });
 
@@ -294,16 +293,15 @@
         }
 
         // 设置保证金
-        function SetBail()
-        {
+        function SetBail() {
             var bailRatio = $("fieldset[name=Operation]>input[name=CustomerBailRatio]").val();
             var ActualAmount = $("fieldset[name=Operation] input[textboxname=ActualAmount]").textbox("getValue");
 
             if ((!isNaN(bailRatio)) && (!isNaN(ActualAmount))) {
-                $("fieldset[name=Operation] input[textboxname=Bail]").textbox("setValue", bailRatio * ActualAmount/100);
+                $("fieldset[name=Operation] input[textboxname=Bail]").textbox("setValue", bailRatio * ActualAmount / 100);
             }
             else {
-                $("fieldset[name=Operation] input[textboxname=Bail]").textbox("setValue","");
+                $("fieldset[name=Operation] input[textboxname=Bail]").textbox("setValue", "");
             }
         }
     </script>
@@ -314,13 +312,13 @@
 
         <template id="Operation">
             <fieldset name="CreditBankInfo">
-                <legend>放款信息</legend>      
-                <div class="row">
+                <legend>放款信息</legend>
+                <div class="row" style="display:none">
                     <div class="col-6">
                         <label>放款主体：</label>
                         <select name="LoanPrincipal" class="easyui-combobox" data-options="required:true,validType:'',value:'',readonly:false,editable:false,onSelect:ChooseLoanPrincipal">
                             <option value="Customer">客户</option>
-                            <option value="Channel">渠道</option>
+                            <option value="Channel">合作商</option>
                         </select>
                     </div>
                     <div class="col-6">
@@ -341,49 +339,49 @@
 
                     <fieldset id="account_user">
                         <table id="account_dg" class="easyui-datagrid" data-options="singleSelect: true,
-                   toolbar: '#account_tb', onClickCell: onClickCell, onEndEdit: onEndEdit">
+                            toolbar: '#account_tb', onClickCell: onClickCell, onEndEdit: onEndEdit">
                             <thead>
                                 <tr>
-                                    <th data-options="field:'CreditAccountName',width:150,
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                readonly:true,
-                                novalidate:true,
-                                validType:'',
-                                delay:800
-                            }
-                        }">放款账户</th>
                                     <th data-options="field:'LoanPrincipal',width:150,
-                        formatter:function(value,row){
-                            return row.Role;
-                        },
-                        editor:{
-                            type:'combobox',
-                            options:{
-						        editable:false,
-                                required:true,
-                                data:[
-                                    {'value':'客户','text':'客户'},
-                                    {'value':'渠道','text':'渠道'}
-                                ]
-                            }
-                        }">放款主体</th>
+                                    formatter:function(value,row){
+                                        return row.Role;
+                                    },
+                                    editor:{
+                                        type:'combobox',
+                                        options:{
+						                    editable:false,
+                                            required:true,
+                                            data:[
+                                                {'value':'客户','text':'客户'},
+                                                {'value':'合作商','text':'合作商'}
+                                            ]
+                                        }
+                                    }">放款主体</th>
+                                    <th data-options="field:'CreditAccountName',width:150,
+                                        editor:{
+                                            type:'textbox',
+                                            options:{
+                                                required:false,
+                                                readonly:false,
+                                                novalidate:true,
+                                                validType:'',
+                                                delay:800
+                                               }
+                                    }">放款账户</th>
                                     <th data-options="field:'CreditBankName',width:150,
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:false
-                            }
-                        }">开户行</th>
+                                    editor:{
+                                        type:'textbox',
+                                        options:{
+                                            required:false
+                                        }
+                                    }">开户行</th>
                                     <th data-options="field:'CreditBankCard',width:200,
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                validType:['Integer','length[19,19]']
-                            }
-                        }">卡号</th>
+                                        editor:{
+                                            type:'textbox',
+                                            options:{
+                                                validType:['Integer','length[19,19]']
+                                            }
+                                        }">卡号</th>
                                 </tr>
                             </thead>
                         </table>
@@ -462,84 +460,84 @@
                 </div>
 
                 <script type="text/javascript">
-                    function ChooseLoanPrincipal(record) {
-                        if (record) {
-                            if (record.text == "渠道") {
-                                // 渠道放款 可输入
-                                ChannelReadonly(false);
+                            function ChooseLoanPrincipal(record) {
+                                if (record) {
+                                    if (record.text == "合作商") {
+                                        // 合作商放款 可输入
+                                        ChannelReadonly(false);
+                                    }
+                                    else {
+                                        // 合作商放款 只读
+                                        ChannelReadonly(true);
+                                    }
+                                }
+
+                                $(this).combobox('setValue', record.value);
                             }
-                            else {
-                                // 渠道放款 只读
-                                ChannelReadonly(true);
+
+                            function ChannelReadonly(isReadonly) {
+                                if (isReadonly == true) {
+                                    $("fieldset[name=CreditBankInfo] input[textboxname=CreditAccountName]").textbox({
+                                        required: false,
+                                        validType: [],
+                                        value: '',
+                                        readonly: true
+                                    });
+
+                                    $("fieldset[name=CreditBankInfo] input[textboxname=CreditBankName]").textbox({
+                                        required: false,
+                                        validType: [],
+                                        value: '',
+                                        readonly: true
+                                    });
+
+                                    $("fieldset[name=CreditBankInfo] input[textboxname=CreditBankCard]").textbox({
+                                        required: false,
+                                        validType: ['Integer', 'length[19,19]'],
+                                        value: '',
+                                        readonly: true
+                                    });
+                                }
+                                else {
+                                    $("fieldset[name=CreditBankInfo] input[textboxname=CreditAccountName]").textbox({
+                                        required: true,
+                                        validType: [],
+                                        value: '',
+                                        readonly: false
+                                    });
+
+                                    $("fieldset[name=CreditBankInfo] input[textboxname=CreditBankName]").textbox({
+                                        required: true,
+                                        validType: [],
+                                        value: '',
+                                        readonly: false
+                                    });
+
+                                    $("fieldset[name=CreditBankInfo] input[textboxname=CreditBankCard]").textbox({
+                                        required: true,
+                                        validType: ['Integer', 'length[19,19]'],
+                                        value: '',
+                                        readonly: false
+                                    });
+                                }
                             }
-                        }
 
-                        $(this).combobox('setValue', record.value);
-                    }
+                            function ChangeReadonly(bool) {
+                                if ($("form fieldset[name=CustomerBankInfo]>div.row>div").length > 0) {
+                                    $("form fieldset[name=CustomerBankInfo]>div.row>div").remove();
+                                }
 
-                    function ChannelReadonly(isReadonly) {
-                        if (isReadonly == true) {
-                            $("fieldset[name=CreditBankInfo] input[textboxname=CreditAccountName]").textbox({
-                                required: false,
-                                validType: [],
-                                value: '',
-                                readonly: true
-                            });
+                                if (bool == true) {
+                                    // 加载只读模版
+                                    $("form fieldset[name=CustomerBankInfo]>div.row").append($("form fieldset[name=CustomerBankInfo]>div.row>template#CustomerBankInfo_R").html());
+                                }
+                                else {
+                                    // 加载可输入模版
+                                    $("form fieldset[name=CustomerBankInfo]>div.row").append($("form fieldset[name=CustomerBankInfo]>div.row>template#CustomerBankInfo_R").html());
+                                }
 
-                            $("fieldset[name=CreditBankInfo] input[textboxname=CreditBankName]").textbox({
-                                required: false,
-                                validType: [],
-                                value: '',
-                                readonly: true
-                            });
-
-                            $("fieldset[name=CreditBankInfo] input[textboxname=CreditBankCard]").textbox({
-                                required: false,
-                                validType: ['Integer', 'length[19,19]'],
-                                value: '',
-                                readonly: true
-                            });
-                        }
-                        else {
-                            $("fieldset[name=CreditBankInfo] input[textboxname=CreditAccountName]").textbox({
-                                required: true,
-                                validType: [],
-                                value: '',
-                                readonly: false
-                            });
-
-                            $("fieldset[name=CreditBankInfo] input[textboxname=CreditBankName]").textbox({
-                                required: true,
-                                validType: [],
-                                value: '',
-                                readonly: false
-                            });
-
-                            $("fieldset[name=CreditBankInfo] input[textboxname=CreditBankCard]").textbox({
-                                required: true,
-                                validType: ['Integer', 'length[19,19]'],
-                                value: '',
-                                readonly: false
-                            });
-                        }
-                    }
-
-                    function ChangeReadonly(bool) {
-                        if ($("form fieldset[name=CustomerBankInfo]>div.row>div").length > 0) {
-                            $("form fieldset[name=CustomerBankInfo]>div.row>div").remove();
-                        }
-
-                        if (bool == true) {
-                            // 加载只读模版
-                            $("form fieldset[name=CustomerBankInfo]>div.row").append($("form fieldset[name=CustomerBankInfo]>div.row>template#CustomerBankInfo_R").html());
-                        }
-                        else {
-                            // 加载可输入模版
-                            $("form fieldset[name=CustomerBankInfo]>div.row").append($("form fieldset[name=CustomerBankInfo]>div.row>template#CustomerBankInfo_R").html());
-                        }
-
-                        $.parser.parse($("form fieldset[name=CustomerBankInfo]>div.row"));
-                    }
+                                $.parser.parse($("form fieldset[name=CustomerBankInfo]>div.row"));
+                            }
                 </script>
             </fieldset>
 
@@ -610,10 +608,10 @@
                     </div>
                     <div class="col-6">
                         <label>实际用款额：</label>
-                        <input name="ActualAmount" class="easyui-textbox" data-options="required:true,validType:'Money',readonly:false,onChange:SetBail"/>
+                        <input name="ActualAmount" class="easyui-textbox" data-options="required:true,validType:'Money',readonly:false,onChange:SetBail" />
                         <span name="uint"><!--万元-->元</span>
                     </div>
-                   
+
                     <div class="col-6">
                         <label><!--先付月供：-->月供金额</label>
                         <input name="PayMonthly" class="easyui-textbox" data-options="required:true,validType:'Money',readonly:false" />

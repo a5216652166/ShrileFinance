@@ -49,7 +49,7 @@
         {
             var entity = Mapper.Map<FinancialLoan>(model);
 
-            entity.NewProduce = produceRepository.Get(model.NewProduce.Id.Value);
+            entity.Produce = produceRepository.Get(model.Produce.Id.Value);
 
             entity.AllowCreatedDate();
 
@@ -99,7 +99,7 @@
 
             Mapper.Map(model, entity);
 
-            entity.NewProduce = produceRepository.Get(model.NewProduce.Id.Value);
+            entity.Produce = produceRepository.Get(model.Produce.Id.Value);
 
             var removeFinancialItems = UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
 
@@ -133,7 +133,7 @@
 
         private void DistinguishProduceLeaseType(FinancialLoan entity, FinancialLoanViewModel model)
         {
-            if (entity.NewProduce.LeaseType == LeaseTypeEnum.回租)
+            if (entity.Produce.LeaseType == LeaseTypeEnum.回租)
             {
                 entity.FinancialAmounts = model.FinancialAmounts;
             }

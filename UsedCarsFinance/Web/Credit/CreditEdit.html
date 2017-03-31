@@ -36,6 +36,8 @@
                     $("#save").linkbutton("disable");
 
                     uc.form.DisableForm();
+
+
                 }
 
                 uc.form.LoadForm({
@@ -144,7 +146,7 @@
 <body>
     <form id="credit_ff" class="container">
         <fieldset id="credit_info">
-            <legend>合作商信息</legend>
+            <legend>基本信息</legend>
 
             <div class="hidden">
                 <input type="text" name="Id" hidden />
@@ -244,12 +246,12 @@
 
             <div class="row">
                 <div class="col-6">
-                    <label>初审人员:</label>
+                    <label>风控初审人员:</label>
                     <select name="User1" class="easyui-combobox approvers" data-options="editable:false" required></select>
                 </div>
 
                 <div class="col-6">
-                    <label>复审人员:</label>
+                    <label>风控复审人员:</label>
                     <select name="User2" class="easyui-combobox approvers" data-options="editable:false" required></select>
                 </div>
             </div>
@@ -268,7 +270,7 @@
 
             <div class="row">
                 <div class="col-6">
-                    <label>财务审核人员:</label>
+                    <label>财务总监:</label>
                     <select name="User5" class="easyui-combobox approvers" data-options="editable:false" required></select>
                 </div>
             </div>

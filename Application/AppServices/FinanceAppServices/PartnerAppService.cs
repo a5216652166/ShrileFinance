@@ -45,6 +45,8 @@
 
             var model = Mapper.Map<PartnerViewModel>(partner);
 
+            model.Approvers = partner.Approvers.Select(m => m.Id);
+
             foreach (var item in model.Accounts)
             {
                 var role = roleManager.FindById(partner.Accounts.Single(m => m.Id == item.Id).RoleId);

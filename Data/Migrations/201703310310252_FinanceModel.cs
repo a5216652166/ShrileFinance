@@ -175,16 +175,17 @@ namespace Data.Migrations
                         State = c.Byte(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         FinancialAmounts = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        NewProduce_Id = c.Guid(nullable: false),
+                        Produce_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.FANC_Produce", t => t.NewProduce_Id)
-                .Index(t => t.NewProduce_Id);
+                .ForeignKey("dbo.FANC_Produce", t => t.Produce_Id)
+                .Index(t => t.Produce_Id);
+            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.FANC_FinancialLoan", "NewProduce_Id", "dbo.FANC_Produce");
+            DropForeignKey("dbo.FANC_FinancialLoan", "Produce_Id", "dbo.FANC_Produce");
             DropForeignKey("dbo.FANC_FinancialItem", "FinancialLoanId", "dbo.FANC_FinancialLoan");
             DropForeignKey("dbo.FANC_Vehicle", "FinanceId", "dbo.FANC_Finance");
             DropForeignKey("dbo.FANC_Finance", "Produce_Id", "dbo.FANC_Produce");
@@ -194,7 +195,7 @@ namespace Data.Migrations
             DropForeignKey("dbo.FANC_Finance", "CreateBy_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.FANC_Contact", "FinanceId", "dbo.FANC_Finance");
             DropForeignKey("dbo.FANC_Applicant", "FinanceId", "dbo.FANC_Finance");
-            DropIndex("dbo.FANC_FinancialLoan", new[] { "NewProduce_Id" });
+            DropIndex("dbo.FANC_FinancialLoan", new[] { "Produce_Id" });
             DropIndex("dbo.FANC_Vehicle", new[] { "FinanceId" });
             DropIndex("dbo.FANC_FinancialItem", new[] { "FinancialLoanId" });
             DropIndex("dbo.FANC_FinancialItem", new[] { "FinanceId" });

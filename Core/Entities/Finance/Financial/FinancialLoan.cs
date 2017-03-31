@@ -66,7 +66,7 @@
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual Produce NewProduce { get;  set; }
+        public virtual Produce Produce { get;  set; }
 
         /// <summary>
         /// 还款计划表
@@ -80,11 +80,11 @@
         {
             var exception = default(Exception);
 
-            if (NewProduce == null)
+            if (Produce == null)
             {
                 exception = new ArgumentNullAppException(message: "产品引用为空！");
             }
-            else if (NewProduce.LeaseType == LeaseTypeEnum.直租 && FinancialItem.Count == 0)
+            else if (Produce.LeaseType == LeaseTypeEnum.直租 && FinancialItem.Count == 0)
             {
                 exception = new ArgumentNullAppException(message: "融资项为空！");
             }

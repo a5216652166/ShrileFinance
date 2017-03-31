@@ -79,18 +79,15 @@
         {
             var entitieList = new List<TEntity>();
 
-            if (entities != null && entities.Count() > 0)
+            foreach (var item in entities)
             {
-                foreach (var item in entities)
-                {
-                    entitieList.Add(item);
+                entitieList.Add(item);
 
-                    ////// 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
-                    ////if (item is IProcessable && ((IProcessable)item).Hidden == HiddenEnum.审核中)
-                    ////{
-                    ////    entitieList.Remove(item);
-                    ////}
-                }
+                ////// 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
+                ////if (item is IProcessable && ((IProcessable)item).Hidden == HiddenEnum.审核中)
+                ////{
+                ////    entitieList.Remove(item);
+                ////}
             }
 
             return entitieList.AsQueryable();

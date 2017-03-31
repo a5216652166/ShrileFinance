@@ -71,7 +71,7 @@
             // 打开Word文档
             var doc = app.Documents.Open(ref copyWordPath, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
 
-            var replace = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll;
+            var replace = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll as object;
             foreach (var item in placeholder)
             {
                 app.Selection.Find.Replacement.ClearFormatting();

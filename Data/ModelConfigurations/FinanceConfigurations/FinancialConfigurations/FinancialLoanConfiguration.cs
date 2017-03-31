@@ -14,7 +14,7 @@
             Property(m => m.RepayDate).IsRequired();
             Property(m => m.State).IsRequired();
 
-            HasRequired(m => m.NewProduce);
+            HasRequired(m => m.Produce);
 
             HasMany(m => m.FinancialItem).WithOptional().Map(m => m.MapKey("FinancialLoanId"));
 
