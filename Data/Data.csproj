@@ -63,45 +63,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201611240238384_IdentityModel.cs" />
-    <Compile Include="Migrations\201611240238384_IdentityModel.Designer.cs">
-      <DependentUpon>201611240238384_IdentityModel.cs</DependentUpon>
+    <Compile Include="Migrations\201703310214560_IdentityModel.cs" />
+    <Compile Include="Migrations\201703310214560_IdentityModel.Designer.cs">
+      <DependentUpon>201703310214560_IdentityModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611240247116_ProcessModel.cs" />
-    <Compile Include="Migrations\201611240247116_ProcessModel.Designer.cs">
-      <DependentUpon>201611240247116_ProcessModel.cs</DependentUpon>
+    <Compile Include="Migrations\201703310216246_ProcessModel.cs" />
+    <Compile Include="Migrations\201703310216246_ProcessModel.Designer.cs">
+      <DependentUpon>201703310216246_ProcessModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611240251145_ProduceModel.cs" />
-    <Compile Include="Migrations\201611240251145_ProduceModel.Designer.cs">
-      <DependentUpon>201611240251145_ProduceModel.cs</DependentUpon>
+    <Compile Include="Migrations\201703310302154_CreditInvestigations.cs" />
+    <Compile Include="Migrations\201703310302154_CreditInvestigations.Designer.cs">
+      <DependentUpon>201703310302154_CreditInvestigations.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611240253137_PartnerModel.cs" />
-    <Compile Include="Migrations\201611240253137_PartnerModel.Designer.cs">
-      <DependentUpon>201611240253137_PartnerModel.cs</DependentUpon>
+    <Compile Include="Migrations\201703310304557_OtherModel.cs" />
+    <Compile Include="Migrations\201703310304557_OtherModel.Designer.cs">
+      <DependentUpon>201703310304557_OtherModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611240554135_FinanceModel.cs" />
-    <Compile Include="Migrations\201611240554135_FinanceModel.Designer.cs">
-      <DependentUpon>201611240554135_FinanceModel.cs</DependentUpon>
+    <Compile Include="Migrations\201703310307000_ProduceModel.cs" />
+    <Compile Include="Migrations\201703310307000_ProduceModel.Designer.cs">
+      <DependentUpon>201703310307000_ProduceModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612010718553_LoanModel.cs" />
-    <Compile Include="Migrations\201612010718553_LoanModel.Designer.cs">
-      <DependentUpon>201612010718553_LoanModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612050735464_OrgainzationModel.cs" />
-    <Compile Include="Migrations\201612050735464_OrgainzationModel.Designer.cs">
-      <DependentUpon>201612050735464_OrgainzationModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612260749445_CreditInvestigationModel.cs" />
-    <Compile Include="Migrations\201612260749445_CreditInvestigationModel.Designer.cs">
-      <DependentUpon>201612260749445_CreditInvestigationModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703300833548_test.cs" />
-    <Compile Include="Migrations\201703300833548_test.Designer.cs">
-      <DependentUpon>201703300833548_test.cs</DependentUpon>
+    <Compile Include="Migrations\201703310310252_FinanceModel.cs" />
+    <Compile Include="Migrations\201703310310252_FinanceModel.Designer.cs">
+      <DependentUpon>201703310310252_FinanceModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="ModelConfigurations\CreditInvestigationConfigurations\SegmentConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigationConfigurations\SegmentConfigurations\BorrowMessageConfigurations\FinancialAffairConfigurations\BaseParagraphConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigationConfigurations\SegmentConfigurations\BorrowMessageConfigurations\FinancialAffairConfigurations\CashFlowParagraphConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigationConfigurations\SegmentConfigurations\BorrowMessageConfigurations\FinancialAffairConfigurations\IncomeExpenditureParagraphConfiguration.cs" />
@@ -184,105 +173,6 @@
     <Compile Include="ModelConfigurations\TypeConfigurationExtensions.cs" />
     <Compile Include="ModelConfigurations\AppUserConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\VehicleConfigration.cs" />
-    <Compile Include="Models\CRET_Cities.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\CRET_CreditInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\CRET_PartnerInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\CRET_ProcessUser.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_ApplicantInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_BankInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_Borrow.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_Contracts.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_CreditExamineReport.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_FinanceExtra.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_FinanceInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_ReviewInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FANC_VehicleInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FLOW_Action.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FLOW_Form.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FLOW_FormWithNode.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FLOW_FormWithRole.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FLOW_Instance.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FLOW_Log.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FLOW_Node.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\FLOW_WorkFlow.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\Notice_ActionNotice.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\Notice_Notice.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\OldContext.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\PROD_ProduceInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\SYS_DicCommon.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\SYS_DicType.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\SYS_FileList.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\SYS_Menu.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\SYS_OperationLog.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\SYS_Reference.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\USER_Role.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Models\USER_UserInfo.cs">
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="MyContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -308,7 +198,26 @@
     <Compile Include="Repositories\FinanceRepositories\FinanceRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\PartnerRepositories\PartnerRepository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201703310214560_IdentityModel.resx">
+      <DependentUpon>201703310214560_IdentityModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703310216246_ProcessModel.resx">
+      <DependentUpon>201703310216246_ProcessModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703310302154_CreditInvestigations.resx">
+      <DependentUpon>201703310302154_CreditInvestigations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703310304557_OtherModel.resx">
+      <DependentUpon>201703310304557_OtherModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703310307000_ProduceModel.resx">
+      <DependentUpon>201703310307000_ProduceModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703310310252_FinanceModel.resx">
+      <DependentUpon>201703310310252_FinanceModel.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -322,35 +231,6 @@
       <Project>{6dee6ac9-2f19-4e2e-98cb-9638e0ccb78a}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611240238384_IdentityModel.resx">
-      <DependentUpon>201611240238384_IdentityModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611240247116_ProcessModel.resx">
-      <DependentUpon>201611240247116_ProcessModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611240251145_ProduceModel.resx">
-      <DependentUpon>201611240251145_ProduceModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611240253137_PartnerModel.resx">
-      <DependentUpon>201611240253137_PartnerModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611240554135_FinanceModel.resx">
-      <DependentUpon>201611240554135_FinanceModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612010718553_LoanModel.resx">
-      <DependentUpon>201612010718553_LoanModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612050735464_OrgainzationModel.resx">
-      <DependentUpon>201612050735464_OrgainzationModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612260749445_CreditInvestigationModel.resx">
-      <DependentUpon>201612260749445_CreditInvestigationModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703300833548_test.resx">
-      <DependentUpon>201703300833548_test.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

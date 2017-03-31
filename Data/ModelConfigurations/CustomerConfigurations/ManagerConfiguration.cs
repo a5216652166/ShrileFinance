@@ -17,7 +17,7 @@
 
             HasMany(m => m.FamilyMembers).WithOptional().Map(m => m.MapKey("ManagerId"));
 
-            ToTable("CUST_Manager");
+            ToTable("CIOG_Manager");
         }
     }
 }

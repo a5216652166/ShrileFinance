@@ -26,7 +26,7 @@
             HasMany(m => m.Payments).WithRequired()
                 .HasForeignKey(m => m.LoanId);
 
-            ToTable("LOAN_Loan");
+            ToTable("CILN_Loan");
         }
     }
 }

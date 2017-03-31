@@ -20,7 +20,7 @@
             Property(m => m.PaymentTypes).HasMaxLength(2);
             Property(m => m.CreateDate).IsRequired();
 
-            ToTable("LOAN_PaymentHistory");
+            ToTable("CILN_PaymentHistory");
         }
     }
 }

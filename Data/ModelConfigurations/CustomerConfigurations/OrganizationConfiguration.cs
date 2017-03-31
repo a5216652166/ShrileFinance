@@ -63,7 +63,7 @@
             // 诉讼
             HasMany(m => m.Litigation).WithOptional().Map(m => m.MapKey("OrganizationId"));
 
-            ToTable("CUST_Organization");
+            ToTable("CIOG_Organization");
         }
     }
 }

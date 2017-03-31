@@ -10,12 +10,11 @@
             HasKey(m => m.Id);
 
             Property(m => m.InstanceId).IsRequired();
-
-            Property(m => m.JsonData).IsRequired().HasMaxLength(null);
+            Property(m => m.JsonData).IsRequired().HasColumnName("Data").HasMaxLength(null);
 
             HasRequired(m => m.Instance);
 
-            ToTable("Process_ProcessTempData");
+            ToTable("FLOW_InstanceData");
         }
     }
 }

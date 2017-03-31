@@ -25,7 +25,7 @@
 
             HasMany(m => m.FamilyMembers).WithOptional().Map(m => m.MapKey("StockholderId"));
 
-            ToTable("CUST_Stockholder");
+            ToTable("CIOG_Stockholder");
         }
     }
 }

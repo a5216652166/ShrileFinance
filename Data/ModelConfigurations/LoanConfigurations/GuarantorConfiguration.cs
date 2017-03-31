@@ -15,7 +15,7 @@
             Map<GuarantorOrganization>(t => t.Requires("Type").HasValue("GuarantyOrganization"));
             Map<GuarantorPerson>(t => t.Requires("Type").HasValue("GuarantyPerson"));
 
-            ToTable("LOAN_Guarantor");
+            ToTable("CILN_Guarantor");
         }
     }
 }

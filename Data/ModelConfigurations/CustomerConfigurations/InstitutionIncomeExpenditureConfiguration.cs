@@ -54,7 +54,7 @@
             Property(m => m.预算外资金支出).HasPrecision(18, 2);
             Property(m => m.预算外资金收入).HasPrecision(18, 2);
 
-            ToTable("CUST_InstitutionIncome");
+            ToTable("CIOG_InstitutionIncome");
         }
     }
 }

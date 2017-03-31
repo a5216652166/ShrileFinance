@@ -16,7 +16,7 @@
             Property(m => m.IsTemp).IsRequired();
             Ignore(m => m.Stream);
 
-            ToTable("IO_FileSystem");
+            ToTable("SYS_FileSystem");
         }
     }
 }

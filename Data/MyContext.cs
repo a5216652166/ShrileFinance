@@ -46,23 +46,6 @@
                 .Add(new FormRoleConfiguration())
                 .Add(new ProcessTempDataConfiguration());
 
-            // Partner and Draft Configurations
-            modelBuilder.Configurations
-                .Add(new PartnerConfiguration())
-                .Add(new DraftConfiguration());
-
-            // Finance Configurations
-            modelBuilder.Configurations
-                .Add(new FinanceConfigration())
-                .Add(new ApplicantConfiguration())
-                .Add(new VehicleConfigration())
-                .Add(new FinanceExtensionConfiguration())
-                .Add(new ContactConfiguration())
-                ////.Add(new CreditExamineConfiguration())
-                .Add(new ProduceConfiguration())
-                .Add(new FinancialLoanConfiguration())
-                .Add(new FinancialItemConfiguration());
-
             // Organization Configurations
             modelBuilder.Configurations
                 .Add(new OrganizationConfiguration())
@@ -98,6 +81,7 @@
                 .Add(new DatagramConfiguration())
                 .Add(new RecordConfiguration())
                 .Add(new TraceConfiguration())
+                .Add(new System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Core.Entities.CreditInvestigation.Segment.Segment>().ToTable("CIDG_Segment"))
                 .Add(new BigEventSegmentConfiguration())
                 .Add(new ConcernBaseSegmentConfiguration())
                 .Add(new LitigationSegmentConfiguration())
@@ -131,9 +115,25 @@
                 .Add(new InstitutionLiabilitiesParagraphConfiguration())
                 .Add(new ProfitsParagraphConfiguration());
 
-            // IO
+            // Draft, IO Configurations
             modelBuilder.Configurations
+                .Add(new DraftConfiguration())
                 .Add(new FileSystemConfiguration());
+
+            // Produce And Partner Configurations
+            modelBuilder.Configurations
+                .Add(new ProduceConfiguration())
+                .Add(new PartnerConfiguration());
+
+            // Finance Configurations
+            modelBuilder.Configurations
+                .Add(new FinanceConfigration())
+                .Add(new ApplicantConfiguration())
+                .Add(new VehicleConfigration())
+                .Add(new FinanceExtensionConfiguration())
+                .Add(new ContactConfiguration())
+                .Add(new FinancialLoanConfiguration())
+                .Add(new FinancialItemConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -77,7 +77,7 @@
             Property(m => m.SaleGoodsCash).HasPrecision(18, 2);
             Property(m => m.TaxesRefunds).HasPrecision(18, 2);
 
-            ToTable("CUST_CashFlow");
+            ToTable("CIOG_CashFlow");
         }
     }
 }
