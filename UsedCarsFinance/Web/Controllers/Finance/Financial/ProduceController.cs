@@ -16,7 +16,7 @@
         }
 
         [HttpGet]
-        public IHttpActionResult GetPageList(int page,int rows,string search)
+        public IHttpActionResult GetPageList(int page = 1, int rows = 1, string search = "")
         {
             var list = produceAppService.GetPageList(search, page, rows);
 
@@ -50,7 +50,7 @@
         [HttpGet]
         public IHttpActionResult Options()
         {
-           var options =  produceAppService.Options();
+            var options = produceAppService.Options();
 
             return Ok(options);
         }
