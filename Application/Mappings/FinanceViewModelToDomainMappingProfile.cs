@@ -29,7 +29,7 @@
 
             CreateMap<FinancialLoanViewModel, FinancialLoan>()
                 .ForMember(m => m.Id, m => m.MapFrom(o => AllowId(o.Id)))
-                .ForMember(m => m.NewProduce, o => o.Ignore())
+                .ForMember(m => m.Produce, o => o.Ignore())
                 .ForMember(m => m.CreatedDate, o => o.Ignore())
                 .ForMember(m => m.FinancialItem, o => o.Ignore());
         }

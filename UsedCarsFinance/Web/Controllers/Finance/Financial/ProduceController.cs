@@ -4,14 +4,13 @@
     using System.Web.Http;
     using Application.AppServices.FinanceAppServices.FinancialAppServices;
     using Application.ViewModels;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
 
-    public class NewProduceController : ApiController
+    public class ProduceController : ApiController
     {
         private readonly ProduceAppService produceAppService;
 
-        public NewProduceController(ProduceAppService produceAppService)
+        public ProduceController(ProduceAppService produceAppService)
         {
             this.produceAppService = produceAppService;
         }

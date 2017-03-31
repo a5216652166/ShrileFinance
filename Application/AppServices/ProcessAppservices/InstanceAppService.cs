@@ -334,6 +334,7 @@
             var instance = instanceReopsitory.Get(instanceId);
 
             var nodeForms = formRepository.GetByNode(instance.CurrentNodeId.Value)
+                .OrderBy(m => m.Form.Sort)
                 .Select(m => new FormViewModel
                 {
                     Id = m.FormId,

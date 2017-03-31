@@ -900,7 +900,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />
-    <Compile Include="Controllers\Finance\Financial\NewProduceController.cs" />
+    <Compile Include="Controllers\Finance\Financial\ProduceController.cs" />
+    <Compile Include="Controllers\Finance\ImageUploadController.cs" />
     <Compile Include="Controllers\Finance\Vehicle\VehiclePriseController.cs" />
     <Compile Include="Controllers\Loan\CreditController.cs" />
     <Compile Include="Controllers\Customer\CustomerController.cs" />
@@ -910,7 +911,6 @@
     <Compile Include="Controllers\Process\ProcessController.cs" />
     <Compile Include="Controllers\Statistics\StatisticsController.cs" />
     <Compile Include="Controllers\Finance\FinanceAuidtController.cs" />
-    <Compile Include="Controllers\Finance\ImageUploadController.cs" />
     <Compile Include="Controllers\Process\InstanceController.cs" />
     <Compile Include="Controllers\Produce\FinancingProjectController.cs" />
     <Compile Include="Controllers\Produce\ProduceController.cs" />
