@@ -1251,6 +1251,7 @@
     <Compile Include="Controllers\BankCredit\TempRecordController.cs" />
     <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />
     <Compile Include="Controllers\Finance\Financial\NewProduceController.cs" />
+    <Compile Include="Controllers\Finance\ImageUploadController.cs" />
     <Compile Include="Controllers\Finance\Vehicle\VehiclePriseController.cs" />
     <Compile Include="Controllers\Loan\CreditController.cs" />
     <Compile Include="Controllers\Customer\CustomerController.cs" />
@@ -1264,7 +1265,6 @@
     <Compile Include="Controllers\Unused\CreditExamineReportController.cs" />
     <Compile Include="Controllers\Finance\FinanceAuidtController.cs" />
     <Compile Include="Controllers\Finance\FinanceController.cs" />
-    <Compile Include="Controllers\Finance\ImageUploadController.cs" />
     <Compile Include="Controllers\Finance\CreditExamineController.cs" />
     <Compile Include="Controllers\Finance\OperationController.cs" />
     <Compile Include="Controllers\Process\FlowController.cs" />

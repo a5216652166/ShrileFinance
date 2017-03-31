@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.IO;
     using System.Linq;
     using AutoMapper;
     using Core.Entities;
@@ -16,14 +17,16 @@
     using Core.Interfaces.Repositories.LoanRepositories;
     using Core.Interfaces.Repositories.ProcessRepositories;
     using Data.PDF;
+    using Infrastructure.PDF;
     using ViewModels.FinanceViewModels;
+    using static Core.Entities.Finance.Applicant;
 
     /// <summary>
     /// 融资
     /// </summary>
     public class FinanceAppService
     {
-        private readonly IFinanceRepository repository;
+        private readonly IFinanceRepository financeRepository;
         private readonly AppUserManager userManager;
         private readonly AppRoleManager roleManager;
         private readonly IContractRepository contractRepository;
@@ -31,20 +34,74 @@
         private readonly IProduceRepository produceRepository;
 
         public FinanceAppService(
-            IFinanceRepository repository,
+            IFinanceRepository financeRepository,
             AppUserManager userManager,
             AppRoleManager roleManager,
             IContractRepository contractRepository,
             IPartnerRepository partnerRepository,
             IProduceRepository produceRepository)
         {
-            this.repository = repository;
+            this.financeRepository = financeRepository;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.contractRepository = contractRepository;
             this.partnerRepository = partnerRepository;
             this.produceRepository = produceRepository;
         }
+
+        public KeyValuePair<string, byte[]> DownloadSignle(Guid financeId)
+        {
+            var finance = financeRepository.Get(financeId);
+
+            ////var finance = new Finance();
+            ////finance.Applicant = new List<Applicant>() { new Applicant() { Type = TypeEnum.主要申请人 } };
+
+            ////var ssss = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
+            ////ssss.Name = "钟洪伟";
+            ////ssss.Sex = "男";
+            ////ssss.LiveHouseAddress = "浙江省杭州市萧山区缤纷小区8幢3单元601";
+            ////ssss.IdentityType = "身份证";
+            ////ssss.Identity = "339116199907158354";
+
+            ////finance.CreateOf = new Partner();
+            ////finance.CreateOf.Name = "杭州西湖法拉利4S店";
+            ////finance.Vehicle = new Core.Entities.Vehicle.Vehicle();
+            ////finance.Vehicle.MakeCode = "法拉利";
+            ////finance.Vehicle.PlateNo = "浙A888AA";
+            ////finance.Vehicle.FrameNo = "1589654E756542A69";
+
+            var param = new Dictionary<string, string>();
+            var info = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
+            param.Add("[@姓名@]", info.Name);
+            param.Add("[@性别@]", info.Sex);
+            param.Add("[@住址@]", info.LiveHouseAddress);
+            param.Add("[@证件类型@]", info.IdentityType);
+            param.Add("[@证件号码@]", info.Identity);
+            param.Add("[@年@]", info.Identity.Substring(6, 4));
+            param.Add("[@月@]", info.Identity.Substring(10, 2));
+            param.Add("[@日@]", info.Identity.Substring(12, 2));
+            param.Add("[@合作商@]", finance.CreateOf.Name);
+            param.Add("[@品牌@]", finance.Vehicle.MakeCode);
+            param.Add("[@车牌号@]", finance.Vehicle.PlateNo);
+            param.Add("[@识别号@]", finance.Vehicle.FrameNo);
+
+            var path = new WordToPDF().TransformWordToPDF(@"~\upload\PDF\", "UnmarriedStatement", param, "单身证明书");
+            var pair = new KeyValuePair<string, byte[]>($"单身证明书.pdf", GetFileBytes());
+
+            byte[] GetFileBytes()
+            {
+                var fi = new FileInfo(path);
+                var fs = fi.OpenRead();
+                var bytes = new byte[fs.Length];
+                fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
+                fs.Close();
+
+                return bytes;
+            }
+
+            return pair;            
+        }
+
 
         public void Create(FinanceApplyViewModel value)
         {
@@ -59,8 +116,8 @@
 
             finance.Produce = produceRepository.Get(value.Produce.Id.Value);
 
-            repository.Create(finance);
-            repository.Commit();
+            financeRepository.Create(finance);
+            financeRepository.Commit();
 
             value.Id = finance.Id;
         }
@@ -79,7 +136,7 @@
 
         public void Modify(FinanceApplyViewModel model)
         {
-            var finance = repository.Get(model.Id.Value);
+            var finance = financeRepository.Get(model.Id.Value);
 
             Mapper.Map(model, finance);
 
@@ -89,8 +146,8 @@
 
             finance.CreateBy = userManager.CurrentUser();
             finance.CreateOf = partnerRepository.GetByUser(userManager.CurrentUser());
-            repository.Modify(finance);
-            repository.Commit();
+            financeRepository.Modify(finance);
+            financeRepository.Commit();
         }
 
         public Contract GetContract(Guid contractId)
@@ -100,7 +157,7 @@
 
         public FinanceApplyViewModel Get(Guid id)
         {
-            var entity = repository.Get(id);
+            var entity = financeRepository.Get(id);
 
             var model = Mapper.Map<FinanceApplyViewModel>(entity);
 
@@ -109,7 +166,7 @@
 
         public string CreateLeaseInfoPdf(Guid financeId, string newPath)
         {
-            var finance = repository.Get(financeId);
+            var finance = financeRepository.Get(financeId);
 
             // 合同pdf地址
             string pdfPath = string.Empty;
@@ -122,7 +179,7 @@
             // 获取融资信息
             SqlParameter[] sqlparams = new SqlParameter[1];
             sqlparams[0] = new SqlParameter("FinanceId", financeId);
-            DataTable dt = repository.LeaseeContract(sqlparams);
+            DataTable dt = financeRepository.LeaseeContract(sqlparams);
 
             // 合同参数
             string contractParams = string.Empty;
@@ -156,8 +213,8 @@
                         Path = "~\\upload\\PDF\\"
                     });
 
-                    repository.Modify(finance);
-                    repository.Commit();
+                    financeRepository.Modify(finance);
+                    financeRepository.Commit();
                 }
             }
 
@@ -175,7 +232,7 @@
             // 合作商编码
             var partnerCode = "01";
 
-            var finance = repository.Get(financeid);
+            var finance = financeRepository.Get(financeid);
             var contract = finance.Contact.FirstOrDefault(m => m.Name == "融资租赁合同");
 
             if (contract != null)
@@ -220,7 +277,7 @@
         {
             Guid varCreateOf = new Guid();
 
-            var finance = repository.Get(financeId);
+            var finance = financeRepository.Get(financeId);
             if (finance.CreateOf == null)
             {
                 error = "未找到系统[渠道编码]";
@@ -263,7 +320,7 @@
         /// <returns>财务Model</returns>
         public LoanViewModel GetLoan(Guid financeId)
         {
-            var finance = repository.Get(financeId);
+            var finance = financeRepository.Get(financeId);
             LoanViewModel loan = Mapper.Map<LoanViewModel>(finance);
             return new LoanViewModel()
             {
@@ -457,7 +514,7 @@
             }
 
             // 获取融资实体
-            var finance = repository.Get(financeId);
+            var finance = financeRepository.Get(financeId);
 
             if (finance == null)
             {
@@ -509,7 +566,7 @@
             }
 
             // 获取该融资审核对应的融资实体
-            var finance = repository.Get(value.FinanceId);
+            var finance = financeRepository.Get(value.FinanceId);
 
             if (finance == null)
             {
@@ -527,7 +584,7 @@
                 //finance.FinancialItem = EditFinanceAuidts(financingItems: finance.FinancialItem, financingItemCollection: value.FinancingItems);
             }
 
-            repository.Modify(finance);
+            financeRepository.Modify(finance);
         }
 
         /// <summary>
@@ -543,7 +600,7 @@
             }
 
             // 获取信审报告实体
-            var finance = repository.Get(financeId);
+            var finance = financeRepository.Get(financeId);
 
             if (finance == null)
             {
@@ -593,7 +650,7 @@
             }
 
             // 获取该信审对应的融资实体
-            var finance = repository.Get(value.FinanceId);
+            var finance = financeRepository.Get(value.FinanceId);
 
             if (finance == null)
             {
@@ -642,10 +699,10 @@
                 }
             }
 
-            repository.Modify(finance);
+            financeRepository.Modify(finance);
 
             // 执行修改
-            repository.Commit();
+            financeRepository.Commit();
         }
 
         /// <summary>
