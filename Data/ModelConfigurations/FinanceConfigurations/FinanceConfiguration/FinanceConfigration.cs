@@ -15,7 +15,6 @@
             Property(m => m.RepaymentDate);
             Property(m => m.RepaymentScheme);
             Property(m => m.Bail);
-            Property(m => m.State);
             Property(m => m.OnePayInterest);
             Property(m => m.DateEffective);
             Property(m => m.DateCreated);

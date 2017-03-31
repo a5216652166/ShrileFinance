@@ -17,7 +17,7 @@
             Property(m => m.BigEventDescription).IsRequired().HasMaxLength(60);
             Property(m => m.BigEventDescription).IsRequired().HasMaxLength(250);
 
-            ToTable("CUST_BigEvent");
+            ToTable("CIOG_BigEvent");
         }
     }
 }

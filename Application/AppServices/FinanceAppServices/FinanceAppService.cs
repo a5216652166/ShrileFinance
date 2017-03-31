@@ -541,11 +541,6 @@
             if (financeAuditViewModel.Poundage == null)
             {
                 financeAuditViewModel.Poundage = decimal.Parse("0.00");
-                //var cost = finance.FinancialItem.ToList().FindAll(m => m.IsFinancing == false);
-                //cost.ToList().ForEach(item =>
-                //{
-                //    financeAuditViewModel.Poundage += item.Money;
-                //});
             }
 
             // 映射 融资比例区间
@@ -581,7 +576,7 @@
             if (!value.IsReview)
             {
                 // 修改融资项各金额
-                //finance.FinancialItem = EditFinanceAuidts(financingItems: finance.FinancialItem, financingItemCollection: value.FinancingItems);
+                // finance.FinancialItem = EditFinanceAuidts(financingItems: finance.FinancialItem, financingItemCollection: value.FinancingItems);
             }
 
             financeRepository.Modify(finance);
@@ -715,44 +710,12 @@
         {
             var financingItemsOrCosts = new List<KeyValuePair<Guid, KeyValuePair<string, decimal?>>>();
 
-            //finance.FinancialItem.ToList().FindAll(m => m.IsFinancing == isFinancing).ForEach(item =>
-            //  {
-            //      financingItemsOrCosts.Add(new KeyValuePair<Guid, KeyValuePair<string, decimal?>>(item.Id, new KeyValuePair<string, decimal?>(item.Name, item.Money)));
-            //  });
+            //// finance.FinancialItem.ToList().FindAll(m => m.IsFinancing == isFinancing).ForEach(item =>
+            ////  {
+            ////      financingItemsOrCosts.Add(new KeyValuePair<Guid, KeyValuePair<string, decimal?>>(item.Id, new KeyValuePair<string, decimal?>(item.Name, item.Money)));
+            ////  });
 
             return financingItemsOrCosts;
-        }
-
-        /// <summary>
-        /// 修改融资项各金额
-        /// </summary>
-        /// <param name="financingItems">融资对应的融资项</param>
-        /// <param name="financingItemCollection">前端传回的融资项</param>
-        /// <returns></returns>
-        private ICollection<FinanceProduce> EditFinanceAuidts(ICollection<FinanceProduce> financingItems, ICollection<KeyValuePair<Guid, KeyValuePair<string, decimal?>>> financingItemCollection)
-        {
-            var dictionary = new Dictionary<Guid, decimal>();
-            financingItemCollection.ToList().ForEach(item =>
-            {
-                if (item.Value.Value != null)
-                {
-                    dictionary.Add(item.Key, item.Value.Value.Value);
-                }
-            });
-
-            var financingItemList = financingItems.ToList();
-
-            // 更新融资项各金额
-            financingItemList.ForEach(financingItem =>
-            {
-                if (dictionary.Keys.Contains(financingItem.Id))
-                {
-                    // 更新指定融资项对应的金额
-                    financingItem.Money = dictionary[financingItem.Id];
-                }
-            });
-
-            return financingItemList;
         }
 
         /// <summary>

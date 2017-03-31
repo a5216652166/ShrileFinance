@@ -18,7 +18,7 @@
             Property(m => m.MonthRate).IsRequired();
             Property(m => m.ChannelRate).IsRequired();
             Property(m => m.SalesmanRate).IsRequired();
-            Property(m => m.InterestRate).IsRequired();
+            Property(m => m.InterestRate).HasPrecision(18, 4).IsRequired();
             Property(m => m.LeaseType).IsRequired();
             Property(m => m.RepayPrincipals).IsRequired();
             Property(m => m.CreatedDate).IsRequired();

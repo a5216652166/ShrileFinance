@@ -20,7 +20,7 @@
                 .Map<GuarantyContractMortgage>(t => t.Requires("Type").HasValue("MortgageGuarantyContract"))
                 .Map<GuarantyContractPledge>(t => t.Requires("Type").HasValue("PledgeGuarantyContract"));
 
-            ToTable("LOAN_GuarantyContract");
+            ToTable("CILN_GuarantyContract");
         }
     }
 }

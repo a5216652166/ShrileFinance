@@ -20,7 +20,7 @@
             HasMany(m => m.Loans).WithOptional()
                 .HasForeignKey(m => m.CreditId).WillCascadeOnDelete();
 
-            ToTable("LOAN_CreditContranct");
+            ToTable("CILN_CreditContranct");
         }
     }
 }

@@ -21,7 +21,7 @@
             Property(m => m.Reason).IsRequired().HasMaxLength(300);
             Property(m => m.Result).IsRequired().HasMaxLength(100);
 
-            ToTable("CUST_Litigation");
+            ToTable("CIOG_Litigation");
         }
     }
 }

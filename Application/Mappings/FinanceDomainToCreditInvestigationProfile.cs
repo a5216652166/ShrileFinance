@@ -11,7 +11,6 @@
     using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
-    using ViewModels.FinanceViewModels.PartnerViewModels;
 
     public class FinanceDomainToCreditInvestigationProfile : Profile
     {
@@ -32,7 +31,7 @@
                .ForMember(m => m.Produce, m => m.MapFrom(o => o.Produce));
 
             CreateMap<Produce, ProduceViewModel>()
-                .ForMember(m=>m.RepayPrincipal,m=>m.MapFrom(o=>o.RepayPrincipals.Split('-')));
+                .ForMember(m => m.RepayPrincipal, m => m.MapFrom(o => o.RepayPrincipals.Split('-')));
 
             CreateMap<Produce, ProduceListViewModel>()
                 .ForMember(m => m.RepayPrincipal, m => m.MapFrom(o => o.RepayPrincipals.Split('-')))
@@ -48,12 +47,6 @@
 
             CreateMap<FinancialLoan, FinancialLoanViewModel>()
                 .ForMember(m => m.FinancialItem, m => m.MapFrom(o => o.FinancialItem.OrderBy(t => t.Name)));
-
-            CreateMap<NewPartnerUser, PartnerUserViewModel>();
-
-            CreateMap<NewPartner, NewPartnerViewModel>()
-                .ForMember(m => m.PartnerUsers, m => m.MapFrom(o => o.PartnerUsers))
-                .ForMember(m => m.Produces, m => m.MapFrom(o => o.Produces));
         }
     }
 }

@@ -402,7 +402,7 @@ function AcountMasterTip() {
         $("section[id=D]").find("a#Fminus").click();
         $("section[id=D]").show();
     }
-    else (value == 1)
+    else if (value == 1)
     {
         $("section[id=F]").find("a#Fminus").click();
         $("section[id=F]").show();

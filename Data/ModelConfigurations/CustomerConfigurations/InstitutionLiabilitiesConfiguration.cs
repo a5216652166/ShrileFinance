@@ -66,7 +66,7 @@
             Property(m => m.预付账款).HasPrecision(18, 2);
             Property(m => m.预收账款).HasPrecision(18, 2);
 
-            ToTable("CUST_InstitutionLiabilities");
+            ToTable("CIOG_InstitutionLiabilities");
         }
     }
 }

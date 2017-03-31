@@ -35,7 +35,7 @@
             Property(m => m.SellingExpenses).HasPrecision(18, 2);
             Property(m => m.Type).IsRequired();
 
-            ToTable("CUST_Profit");
+            ToTable("CIOG_Profit");
         }
     }
 }

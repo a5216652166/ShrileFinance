@@ -25,7 +25,7 @@
             HasMany(m => m.Profit).WithOptional().Map(m => m.MapKey("FinancialAffairsId"));
             HasMany(m => m.CashFlow).WithOptional().Map(m => m.MapKey("FinancialAffairsId"));
 
-            ToTable("CUST_FinancialAffairs");
+            ToTable("CIOG_FinancialAffairs");
         }
     }
 }

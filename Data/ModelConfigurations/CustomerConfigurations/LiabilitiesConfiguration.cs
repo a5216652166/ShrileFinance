@@ -76,7 +76,7 @@
             Property(m => m.TransactionalFinancialLiabilities).HasPrecision(18, 2);
             Property(m => m.TransactionAssets).HasPrecision(18, 2);
 
-            ToTable("CUST_Liabilities");
+            ToTable("CIOG_Liabilities");
         }
     }
 }

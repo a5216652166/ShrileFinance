@@ -20,7 +20,7 @@
             Property(m => m.OrganizateCode).HasMaxLength(10);
             Property(m => m.InstitutionCreditCode).HasMaxLength(18);
 
-            ToTable("CUST_Parent");
+            ToTable("CIOG_Parent");
         }
     }
 }
