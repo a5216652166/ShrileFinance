@@ -12,7 +12,7 @@
             this.vehicleAppService = vehicleAppService;
         }
         
-        [HttpGet][AllowAnonymous]
+        [HttpGet]
         public object PostToGetVehiclePrise()
         {
             var ssss = vehicleAppService.PostToGetVehiclePrise("vfaytrc", "ssgwlgu");

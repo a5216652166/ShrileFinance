@@ -2,12 +2,21 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
     using System.Web.Http;
+    using Application;
+    using global::Infrastructure.Http;
     using Models;
 
     public class PdfContractController : ApiController
     {
         private static readonly BLL.Contract.PdfContract contract = new BLL.Contract.PdfContract();
+        private readonly FinanceAppService financeAppService;
+
+        public PdfContractController(FinanceAppService financeAppService)
+        {
+            this.financeAppService = financeAppService;
+        }
 
         /// <summary>
         /// 获取合同地址
@@ -44,5 +53,13 @@
             _contract.CreateContrant(id);
             return Ok();
         }
+
+        [HttpGet][AllowAnonymous]
+        public HttpResponseMessage DownloadSignle(Guid financeId)
+        {
+            var file = financeAppService.DownloadSignle(financeId);
+
+            return HttpHelper.Download(file);
+        }        
     }
 }
