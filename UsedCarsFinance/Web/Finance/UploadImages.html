@@ -82,8 +82,8 @@
         {
             $.ajax({
                 data: { financeId: query.FinanceId },
-                type: 'POST',
-                url: '../api/PdfContract/DownloadSignle',
+                type: 'GET',
+                url: '../api/ImageUpload/DownloadSignle',
                 statusCode: {
                     200: function (data) {
                         $.messager.show({ msg: "生成PDF成功！" });

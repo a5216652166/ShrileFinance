@@ -65,8 +65,7 @@
         }
 
         function LoadSuccess(data) {
-            // 刷新消息数目
-            parent.frames.MessageCount();
+            $.messager.show({ msg:"代办列表加载成功！" });
         }
 
         function Process() {

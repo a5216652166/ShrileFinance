@@ -159,8 +159,8 @@
     <Content Include="Finance\FinancialLoan\LoanList.html" />
     <Content Include="Finance\Produce\ProduceEdit.html" />
     <Content Include="Finance\Produce\ProduceList.html" />
+    <Content Include="Finance\Unused\FinanceApproval.html" />
     <Content Include="Statistics\LoanCount.html" />
-    <Content Include="Finance\FinanceApproval.html" />
     <Content Include="Finance\Unused\FinanceCustomer.html" />
     <Content Include="Finance\images\add.png" />
     <Content Include="BankInfo\BorrowerProfile.html" />
@@ -902,6 +902,7 @@
     <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />
     <Compile Include="Controllers\Finance\Financial\ProduceController.cs" />
     <Compile Include="Controllers\Finance\ImageUploadController.cs" />
+    <Compile Include="Controllers\Finance\OperationController.cs" />
     <Compile Include="Controllers\Finance\Vehicle\VehiclePriseController.cs" />
     <Compile Include="Controllers\Loan\CreditController.cs" />
     <Compile Include="Controllers\Customer\CustomerController.cs" />

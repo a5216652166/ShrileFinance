@@ -15,6 +15,7 @@
         {
             CreateMap<FinanceApplyViewModel, Finance>()
                 .ForMember(m => m.Contact, m => m.Ignore())
+                .ForMember(m => m.Applicant, m => m.Ignore())
                 .ForMember(m => m.FinancialItem, m => m.Ignore())
                 .ForMember(m => m.CreateBy, m => m.Ignore())
                 .ForMember(m => m.CreateOf, m => m.Ignore())
