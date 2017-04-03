@@ -13,42 +13,38 @@
     public abstract class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : Entity, IAggregateRoot
     {
-        private readonly DbContext context;
-
         protected BaseRepository(MyContext context)
         {
-            this.context = context;
+            Context = context;
+            Entities = context.Set<TEntity>();
         }
 
-        protected DbContext Context => context;
+        protected DbContext Context { get; private set; }
 
-        private DbSet<TEntity> Entities => context.Set<TEntity>();
+        protected DbSet<TEntity> Entities { get; private set; }
 
-        public virtual TEntity Get(Guid key)
+        public virtual IQueryable<TEntity> GetAll(
+            Expression<Func<TEntity, bool>> predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
-            if (Guid.Empty.Equals(key))
-            {
-                return default(TEntity);
-            }
-
-            return Entities.Find(key);
-        }
-
-        public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null)
-        {
-            var entities = Entities.AsQueryable();
+            IQueryable<TEntity> query = Entities;
 
             if (predicate != null)
             {
-                entities = entities.Where(predicate);
+                query = query.Where(predicate);
             }
 
-            return entities;
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return query;
         }
 
-        public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize)
+        public virtual TEntity Get(Guid key)
         {
-            return GetAll(predicate).OrderByDescending(m => m.Id).ToPagedList(pageNumber, pageSize);
+            return Entities.Find(key);
         }
 
         public virtual Guid Create(TEntity entity)
@@ -60,12 +56,18 @@
 
         public virtual void Modify(TEntity entity)
         {
+            Entities.Attach(entity);
             Context.Entry(entity).State = EntityState.Modified;
         }
 
         public virtual void Remove(TEntity entity)
         {
-            Context.Entry(entity).State = EntityState.Deleted;
+            if (Context.Entry(entity).State == EntityState.Deleted)
+            {
+                Entities.Attach(entity);
+            }
+
+            Entities.Remove(entity);
         }
 
         public virtual int Commit()

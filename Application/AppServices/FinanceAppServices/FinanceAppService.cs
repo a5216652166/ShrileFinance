@@ -387,7 +387,7 @@
 
             financeAuditViewModel = PartialMapper(refObj: finance, outObj: financeAuditViewModel, array: array);
 
-            financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.Poundage;
+            financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerBailRatio;
 
             return financeAuditViewModel;
         }

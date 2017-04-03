@@ -126,7 +126,7 @@
             financeAppService.EditOperation(finance);
 
             // 执行合同的生成
-            string path = @"~\upload\PDF\";
+            ////string path = @"~\upload\PDF\";
             ////financeAppService.CreateLeaseInfoPdf(finance.FinanceId, path);
         }
 
