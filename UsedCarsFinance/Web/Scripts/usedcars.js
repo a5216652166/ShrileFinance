@@ -63,75 +63,75 @@ function UsedCars() {
 	this.grid;// = new UCDataGrid();
 
 	/*	Method */
-	this.GetParams = function () {
-		var querys, params = {};
+    this.GetParams = function () {
+        var querys, params = {};
 
-		if (location.search.length > 1) {
-			querys = location.search.substring(1).split("&");
+        if (location.search.length > 1) {
+            querys = location.search.substring(1).split("&");
 
-			var item;
-			for (var i = 0; i < querys.length; i++) {
-				item = querys[i].split("=");
+            var item;
+            for (var i = 0; i < querys.length; i++) {
+                item = querys[i].split("=");
 
-				params[item[0]] = item[1];
-			}
-		}
+                params[item[0]] = item[1];
+            }
+        }
 
-		return params;
-	}
-	this.ShowWindow = function (title, url) {
-		top.$("#wiframe").attr("src", url);
+        return params;
+    };
+    this.ShowWindow = function (title, url) {
+        top.$("#wiframe").attr("src", url);
 
-		top.$("#win").window({
-			title: title,
-			closed: false,
-			onClose: uc.grid.Closed
-		});
-	}
-	this.CloseWindow = function () {
-		top.$("#wiframe").attr("src", "about:blank");
-		top.$("#win").window("close");
-	}
+        top.$("#win").window({
+            title: title,
+            closed: false,
+            onClose: uc.grid.Closed
+        });
+    };
+    this.CloseWindow = function () {
+        top.$("#wiframe").attr("src", "about:blank");
+        top.$("#win").window("close");
+    };
 
 	//默认 BadRequest 错误处理
-	this.E400 = function (xhr, status, error) {
-		var message = "";
+    this.E400 = function (xhr, status, error) {
+        var message = "";
 
-		if (xhr.responseJSON) {
-			if (xhr.responseJSON.ModelState) {
-				var modelState = xhr.responseJSON.ModelState;
+        if (xhr.responseJSON) {
+            if (xhr.responseJSON.ModelState) {
+                var modelState = xhr.responseJSON.ModelState;
 
-				for (item in modelState) {
-					$(modelState[item]).each(function (i, errMsg) {
-						message += errMsg + "<br />";
-					});
-				}
-			} else {
-				message = xhr.responseJSON.Message;
-			}
-		} else {
-			message = "请求失败!";
-		}
+                for (item in modelState) {
+                    $(modelState[item]).each(function (i, errMsg) {
+                        message += errMsg + "<br />";
+                    });
+                }
+            } else {
+                message = xhr.responseJSON.Message;
+            }
+        } else {
+            message = "请求失败!";
+        }
 
-		$.messager.alert("请求失败", message, "error");
-	}
+        $.messager.alert("请求失败", message, "error");
+    };
 
 	/*	Filter */
-	this.FilterCombo = function (data) {
-		if (data.success > -1) {
-			if (data.rows.length > 0) {
-				data = data.rows;
-			} else {
-				data = [];
-			}
-		} else {
-			Error(data);
+    this.FilterCombo = function (data) {
+        if (data.success > -1) {
+            if (data.rows.length > 0) {
+                data = data.rows;
+            } else {
+                data = [];
+            }
+        } else {
+            Error(data);
 
-			data = [];
-		}
+            data = [];
+        }
 
-		return data;
-	}
+        return data;
+    };
 }
 
 
@@ -143,115 +143,114 @@ function UCForm(formId) {
 	}
 
 	//{ async, *url, params, onLoad, onLoadSuccess }
-	this.LoadForm = function (options) {
-		$.ajax({
-			async: options.async || false,
-			data: options.params || {},
-			type: "GET",
-			url: options.url,
-			statusCode: {
-				200: options.onLoad || function (data) {
-					if (options.onLoadSuccess)
-						data = options.onLoadSuccess(data) || data;
+    this.LoadForm = function (options) {
+        $.ajax({
+            async: options.async || false,
+            data: options.params || {},
+            type: "GET",
+            url: options.url,
+            statusCode: {
+                200: options.onLoad || function (data) {
+                    if (options.onLoadSuccess)
+                        data = options.onLoadSuccess(data) || data;
 
-					getForm().form("load", data);
-				}
-			}
-		});
-	}
-	this.Load = function (data, selector) {
-		//var data = options.data;
-		var selector = $(selector || "fieldset");
-		var fieldTypes = ["combobox", "combotree", "datetimebox", "datebox", "combo", "textbox"];
+                    getForm().form("load", data);
+                }
+            }
+        });
+    };
+    this.Load = function (data, selector) {
+        selector = $(selector || "fieldset");
+        var fieldTypes = ["combobox", "combotree", "datetimebox", "datebox", "combo", "textbox"];
 
-		for (var name in data) {
-			var val = data[name];
+        for (var name in data) {
+            var val = data[name];
 
-			if (!_513(name, val)) {
-				selector.find("input[name='" + name + "']").val(val);
-				selector.find("textarea[name='" + name + "']").val(val);
-				selector.find("select[name='" + name + "']").val(val);
-			}
-		}
+            if (!_513(name, val)) {
+                selector.find("input[name='" + name + "']").val(val);
+                selector.find("textarea[name='" + name + "']").val(val);
+                selector.find("select[name='" + name + "']").val(val);
+            }
+        }
 
-		function _513(name, val) {
-			var _515 = getForm().find("[textboxName=\"" + name + "\"]");
-			if (_515.length) {
-				for (var i = 0; i < fieldTypes.length; i++) {
-					var type = fieldTypes[i];
-					var _516 = _515.data(type);
-					if (_516) {
-						if (_516.options.multiple || _516.options.range) {
-							_515[type]("setValues", val);
-						} else {
-							_515[type]("setValue", val);
-						}
-						return true;
-					}
-				}
-			}
-			return false;
-		};
-	}
+        function _513(name, val) {
+            var _515 = getForm().find("[textboxName=\"" + name + "\"]");
+            if (_515.length) {
+                for (var i = 0; i < fieldTypes.length; i++) {
+                    var type = fieldTypes[i];
+                    var _516 = _515.data(type);
+                    if (_516) {
+                        if (_516.options.multiple || _516.options.range) {
+                            _515[type]("setValues", val);
+                        } else {
+                            _515[type]("setValue", val);
+                        }
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    };
 
 	//{ async, method, *url, *data, statusCode }
-	this.Submit = function (options) {
-		var form = getForm();
+    this.Submit = function (options) {
+        var form = getForm();
 
-		//验证表单
-		if (form.form("validate")) {
-			$("#save").linkbutton("disable");
-		} else {
-			$.messager.show({ msg: "请填写剩下的必填内容!" });
+        //验证表单
+        if (form.form("validate")) {
+            $("#save").linkbutton("disable");
+        } else {
+            $.messager.show({ msg: "请填写剩下的必填内容!" });
 
-			return false;
-		}
+            return false;
+        }
 
-		if (options.method == "auto") {
-			var method = uc.GetParams().method;
+        if (options.method === "auto") {
+            var method = uc.GetParams().method;
 
-			if (method == "add") {
-				options.method = "POST";
-				options.url += "/POST";
-			} else if (method == "mod") {
-				options.method = "PUT"
-				options.url += "/PUT";
-			}
-		}
+            if (method === "add") {
+                options.method = "POST";
+                options.url += "/POST";
+            } else if (method === "mod") {
+                options.method = "PUT";
+                options.url += "/PUT";
+            }
+        }
 
-		$.ajax({
-			async: options.async || true,
-			data: options.data,
-			method: options.method || "GET",
-			url: options.url,
-			statusCode: options.statusCode || {
-				200: function (data) {
-					top.$.messager.show({ msg: "保存成功！" });
+        $.ajax({
+            async: options.async || true,
+            data: options.data,
+            method: options.method || "GET",
+            url: options.url,
+            statusCode: options.statusCode || {
+                200: function (data) {
+                    top.$.messager.show({ msg: "保存成功！" });
 
-					uc.form.Cancel();
-				}
-			},
-			error: function () {
-				$("#save").linkbutton("enable");
-			}
-		});
-	}
+                    uc.form.Cancel();
+                }
+            },
+            error: function () {
+                $("#save").linkbutton("enable");
+            }
+        });
+    };
 
-	this.Cancel = function () {
-		getForm().form("reset");
-		uc.CloseWindow();
-	}
+    this.Cancel = function () {
+        getForm().form("reset");
+        uc.CloseWindow();
+    };
 
-	this.DisableForm = function (selector) {
-		selector = selector || "fieldset";
+    this.DisableForm = function (selector) {
+        selector = selector || "fieldset";
 
-		$(selector + " select.easyui-combobox").combobox("disable");
-		$(selector + " input.easyui-combobox").combobox("disable");
+        $(selector + " select.easyui-combobox").combobox("disable");
+        $(selector + " input.easyui-combobox").combobox("disable");
         $(selector + " input.easyui-datebox").datebox("disable");
         $(selector + " input.easyui-textbox").textbox("disable");
         $(selector + " input.easyui-combotree").combotree("disable");
         $(selector + " select.easyui-combotree").combotree("disable");
-	}
+    };
 }
 
 /*	Datagrid */
@@ -261,29 +260,29 @@ function UCGrid(datagridId) {
 		return $(datagridId || ".easyui-datagrid");
 	}
 
-	this.GetSelected = function () {
-		var row = getDatagrid().datagrid("getSelected");
+    this.GetSelected = function () {
+        var row = getDatagrid().datagrid("getSelected");
 
-		if (!row) {
-			top.$.messager.show({ msg: "请选择一条记录!" });
-		}
+        if (!row) {
+            top.$.messager.show({ msg: "请选择一条记录!" });
+        }
 
-		return row;
-	}
-	this.Reload = function () {
-		getDatagrid().datagrid("reload");
-	}
-	this.Reset = function () {
-		$(".datagrid-toolbar div:first .textbox-f").textbox("reset");
-		$(".datagrid-toolbar div:first .combobox-f").combobox("reset");
-		$(".datagrid-toolbar form .textbox-f").textbox("reset");
-		$(".datagrid-toolbar form .combobox-f").combobox("reset");
+        return row;
+    };
+    this.Reload = function () {
+        getDatagrid().datagrid("reload");
+    };
+    this.Reset = function () {
+        $(".datagrid-toolbar div:first .textbox-f").textbox("reset");
+        $(".datagrid-toolbar div:first .combobox-f").combobox("reset");
+        $(".datagrid-toolbar form .textbox-f").textbox("reset");
+        $(".datagrid-toolbar form .combobox-f").combobox("reset");
 
-		uc.grid.Reload();
-	}
-	this.Closed = function () {
-		uc.grid.Reload();
-	}
+        uc.grid.Reload();
+    };
+    this.Closed = function () {
+        uc.grid.Reload();
+    };
 }
 
 
@@ -319,14 +318,9 @@ $.extend($.fn.validatebox.defaults.rules, {
     // 比例
     Ratio: {
         validator: function (value) {
-            if (isNaN(value) == false) {
-                if (value >= 0 && value <= 100)
-                    return true;
-            }
-
-            return false;
+            return /^(-?)(\d+)(\.?)(\d*)$/.test(value);
         },
-        message: '比例区间[0,100]'
+        message: "请输入正确的比例值。"
     },
     // 日期
     Date: {
@@ -394,7 +388,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 	// 组织机构代码证
 	OrganizationCode: {
 		validator: function (value) {
-			return /^[\da-zA-Z]{8}\-[\da-zA-Z]$/.test(value)
+            return /^[\da-zA-Z]{8}\-[\da-zA-Z]$/.test(value);
 		},
 		message: "请输入有效的组织机构代码证！(如：00000000-0)"
 	},
@@ -424,7 +418,7 @@ $.extend($.fn.validatebox.defaults.rules, {
                 url: "../api/User/CheckUsername",
                 statusCode: {
                     200: function (data) {
-                        result = data == "False" ? false : true;
+                        result = data === "False" ? false : true;
                     },
                     400: function (data) {
                     }
@@ -453,14 +447,12 @@ $.extend($.fn.validatebox.defaults.rules, {
     // [否决的, 使用 Ratio]
     ScaleRange: {
         validator: function (value, param) {
-            if (param == undefined) {
+            if (param === undefined) {
                 return value <= 100 && value >= 0;
             }
             else {
                 return value <= param[1] && value >= param[0];
             }
-
-            return false;
         },
         message: '比例区间超出边界！'
     }
