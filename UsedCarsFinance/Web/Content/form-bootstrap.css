@@ -61,6 +61,8 @@ fieldset > .row > div { margin-bottom: 15px; }
 .textbox > .textbox-text:focus { border-color: #66afe9; outline: 0; }
 .textbox[style*="height: 22px;"] { height: 34px !important; }
 .textbox[style*="height: 22px;"] > .textbox-text { padding: 6px 12px !important; font-size: 14px !important; line-height: 1.42857143; }
+.datagrid-cell .textbox[style*="height: 22px;"] { height: 22px !important; }
+.datagrid-cell .textbox[style*="height: 22px;"] > .textbox-text { padding: 0px 4px !important; font-size: 12px !important; }
 
 input[type="radio"],
 input[type="checkbox"] { margin: 4px 0 0; margin-top: 1px \9; line-height: normal; }
