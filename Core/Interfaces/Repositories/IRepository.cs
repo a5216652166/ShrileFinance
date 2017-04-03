@@ -8,9 +8,9 @@
     public interface IRepository<TEntity> : IUnitOfWork
         where TEntity : Entity, IAggregateRoot
     {
-		IQueryable<TEntity> GetAll(
-			Expression<Func<TEntity, bool>> predicate = null,
-			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        IQueryable<TEntity> GetAll(
+            Expression<Func<TEntity, bool>> predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
 
         TEntity Get(Guid key);
 

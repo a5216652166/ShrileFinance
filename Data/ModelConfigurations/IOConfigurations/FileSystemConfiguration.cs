@@ -1,7 +1,7 @@
 ﻿namespace Data.ModelConfigurations.IOConfigurations
 {
-    using System.Data.Entity.ModelConfiguration;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
     using Core.Entities.IO;
 
     public class FileSystemConfiguration : EntityTypeConfiguration<FileSystem>

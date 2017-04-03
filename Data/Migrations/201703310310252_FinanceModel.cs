@@ -180,7 +180,6 @@ namespace Data.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.FANC_Produce", t => t.Produce_Id)
                 .Index(t => t.Produce_Id);
-            
         }
         
         public override void Down()

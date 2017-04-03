@@ -1,7 +1,7 @@
 ﻿namespace Data.ModelConfigurations.Produce
 {
-    using System.Data.Entity.ModelConfiguration;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
     using Core.Produce;
 
     public class ProduceConfiguration : EntityTypeConfiguration<Produce>
@@ -21,7 +21,7 @@
             Property(m => m.PartnersCommissionRatio).HasPrecision(18, 8);
             Property(m => m.EmployeeCommissionRatio).HasPrecision(18, 8);
 
-            //HasMany(m => m.PrincipalRatios).WithRequired().WillCascadeOnDelete();
+            // HasMany(m => m.PrincipalRatios).WithRequired().WillCascadeOnDelete();
             Ignore(m => m.PrincipalRatios);
 
             ToTable("PROD_Produce");

@@ -1,10 +1,11 @@
-﻿using System;
-
-namespace Application.Produce.ProduceViewModels
+﻿namespace Application.Produce.ProduceViewModels
 {
+    using System;
+
     public class ProduceBindModel
     {
-        public string Code { get; internal set; }
         public Guid Id { get; internal set; }
+
+        public string Code { get; internal set; }
     }
 }

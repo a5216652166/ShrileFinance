@@ -1,7 +1,7 @@
 ﻿namespace Data.ModelConfigurations.FinanceConfigurations.FinancialConfigurations
 {
-    using System.Data.Entity.ModelConfiguration;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
     using Core.Entities.Finance.Financial;
 
     public class FinancialLoanConfiguration : EntityTypeConfiguration<FinancialLoan>

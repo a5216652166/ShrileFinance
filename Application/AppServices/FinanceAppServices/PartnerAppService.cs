@@ -8,13 +8,12 @@
     using Core.Entities;
     using Core.Entities.Finance.Partners;
     using Core.Entities.Identity;
-    using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using Core.Interfaces.Repositories.ProcessRepositories;
+    using Core.Produce;
     using Microsoft.AspNet.Identity;
     using Produce.ProduceViewModels;
     using ViewModels.AccountViewModels;
     using ViewModels.PartnerViewModels;
-    using Core.Produce;
     using X.PagedList;
 
     public class PartnerAppService
