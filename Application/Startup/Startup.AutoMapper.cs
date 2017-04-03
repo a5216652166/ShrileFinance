@@ -1,6 +1,7 @@
 ﻿namespace Application
 {
     using AutoMapper;
+    using AutoMapper.EquivalencyExpression;
     using Mappings;
 
     /// <summary>
@@ -12,6 +13,7 @@
         {
             Mapper.Initialize(config =>
             {
+                config.AddCollectionMappers();
                 config.AddProfile<DomainToViewModelMappingProfile>();
                 config.AddProfile<ViewModelToDomainMappingProfile>();
                 config.AddProfile<LoanDomainToViewModelProfile>();
@@ -19,6 +21,8 @@
                 config.AddProfile<DomainToCreditInvestigationProfile>();
                 config.AddProfile<FinanceDomainToCreditInvestigationProfile>();
                 config.AddProfile<FinanceViewModelToDomainMappingProfile>();
+                config.AddProfile<BindModelToProduceMappingProfile>();
+                config.AddProfile<ProduceToViewModelMappingProfile>();
             });
         }
     }
