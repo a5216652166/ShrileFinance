@@ -64,10 +64,12 @@
             CreateMap<ContractViewModel, Contract>();
             CreateMap<ApplicationViewModel, Applicant>();
             CreateMap<VehicleViewModel, Vehicle>();
-            CreateMap<FinanceApplyViewModel, Finance>()
-                .ForMember(d => d.Produce, opt => opt.Ignore())
-                .ForMember(d => d.FinancialItem, opt => opt.Ignore())
-                .ForMember(d => d.Applicant, opt => opt.Ignore());
+
+            //// [已存在该映射配置]
+            ////CreateMap<FinanceApplyViewModel, Finance>()
+            ////    .ForMember(d => d.Produce, opt => opt.Ignore())
+            ////    .ForMember(d => d.FinancialItem, opt => opt.Ignore())
+            ////    .ForMember(d => d.Applicant, opt => opt.Ignore());
         }
     }
 }

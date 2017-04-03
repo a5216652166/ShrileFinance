@@ -1,5 +1,6 @@
 ﻿namespace Data.Repositories
 {
+    using System;
     using System.Linq;
     using Core.Entities.Loan;
     using Core.Interfaces.Repositories.LoanRepositories;
@@ -9,6 +10,16 @@
     {
         public LoanRepository(MyContext context) : base(context)
         {
+        }
+
+        public override Guid Create(Loan entity)
+        {
+            if (Guid.Empty.Equals(entity.Id))
+            {
+                entity.Id = Guid.NewGuid();
+            }
+
+            return base.Create(entity);
         }
 
         IPagedList<Loan> ILoanRepository.PagedList(string searchString, int page, int size, LoanStatusEnum? status)

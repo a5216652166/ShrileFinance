@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
 
     /// <summary>
     /// 融资审核
@@ -14,9 +15,9 @@
         public Guid FinanceId { get; set; }
 
         /// <summary>
-        /// 融资项（Id、（Name、Maney））
+        /// 融资项
         /// </summary>
-        public ICollection<KeyValuePair<Guid, KeyValuePair<string, decimal?>>> FinancingItems { get; set; }
+        public virtual IEnumerable<FinancialItemViewModel> FinancialItem { get; set; }
 
         /// <summary>
         /// 厂商指导价
@@ -24,34 +25,19 @@
         public decimal? ManufacturerGuidePrice { get; set; }
 
         /// <summary>
-        /// 最小融资比例
+        /// 车辆指导价
         /// </summary>
-        public decimal MinFinancingRatio { get; set; }
-
-        /// <summary>
-        /// 最大融资比例
-        /// </summary>
-        public decimal MaxFinancingRatio { get; set; }
+        public string VehicleSalePrise { get; set; }
 
         /// <summary>
         /// 建议融资金额
         /// </summary>
         public decimal? AdviceMoney { get; set; }
-
-        /// <summary>
-        /// 建议融资比例
-        /// </summary>
-        public decimal? AdviceRatio { get; set; }
-
+       
         /// <summary>
         /// 审批融资金额
         /// </summary>
         public decimal? ApprovalMoney { get; set; }
-
-        /// <summary>
-        /// 审批融资比例
-        /// </summary>
-        public decimal? ApprovalRatio { get; set; }
 
         /// <summary>
         /// 月供额度

@@ -103,7 +103,7 @@ namespace Data.Migrations
                     {
                         Id = c.Guid(nullable: false, identity: true),
                         LoanPrincipal = c.String(maxLength: 20),
-                        CreditAccountName = c.String(maxLength: 20),
+                        CreditAccountName = c.String(),
                         CreditBankName = c.String(maxLength: 40),
                         CreditBankCard = c.String(maxLength: 40),
                         ContactJson = c.String(maxLength: 800),
