@@ -12,6 +12,6 @@
         /// <param name="page">页码</param>
         /// <param name="size">尺寸</param>
         /// <returns></returns>
-        IPagedList<Produce> List(string searchString, int page, int size);
+        IPagedList<Produce> PagedList(string searchString, int page, int size);
     }
 }

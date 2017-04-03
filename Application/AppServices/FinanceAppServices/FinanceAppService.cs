@@ -127,7 +127,7 @@
             finance.CreateBy = userManager.CurrentUser();
             finance.CreateOf = partnerRepository.GetByUser(userManager.CurrentUser());
 
-            finance.Produce = produceRepository.Get(value.Produce.Id.Value);
+            finance.Produce = produceRepository.Get(value.Produce.Id);
 
             financeRepository.Create(finance);
             financeRepository.Commit();

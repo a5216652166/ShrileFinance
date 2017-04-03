@@ -19,7 +19,7 @@
         public string ProduceType { get; private set; }
 
         /// <summary>
-        /// 利率（月）
+        /// 利率（年）
         /// </summary>
         public decimal Rate { get; private set; }
 

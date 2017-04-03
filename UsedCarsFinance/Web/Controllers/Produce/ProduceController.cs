@@ -42,6 +42,11 @@
         [HttpPost]
         public IHttpActionResult Post(ProduceBindModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             service.Create(model);
 
             return Ok(model);
@@ -50,6 +55,11 @@
         [HttpPut]
         public IHttpActionResult Put(ProduceBindModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             service.Modify(model);
 
             return Ok(model);

@@ -8,6 +8,7 @@
         public ProduceToViewModelMappingProfile()
         {
             CreateMap<Produce, Application.Produce.ProduceViewModels.ProduceViewModel>();
+            CreateMap<PrincipalRatio, Application.Produce.ProduceViewModels.PrincipalRatioViewModel>();
         }
     }
 }

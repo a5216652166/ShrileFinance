@@ -169,11 +169,11 @@
                 <div class="col-6">
                     <label>选择产品:</label>
                     <select name="Produce" class="easyui-combobox" data-options="method: 'GET',
-                        url: '../api/NewProduce/Options',
+                        url: '../api/Produce/Options',
                         editable:false,
                         width:315,
-                        valueField:'Key',
-                        textField:'Value'
+                        valueField:'Id',
+                        textField:'Code'
                     "></select>
                     <button type="button" onclick="ProduceAppend()">添加</button>
                     <button type="button" onclick="ProduceRemove()">移除</button>

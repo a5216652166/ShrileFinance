@@ -10,16 +10,16 @@
         {
         }
 
-        public IPagedList<Produce> List(string searchString, int page, int size)
+        public IPagedList<Produce> PagedList(string searchString, int page, int size)
         {
-            var entities = GetAll();
+            var query = GetAll();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                entities.Where(m => m.Code.Contains(searchString));
+                query = query.Where(m => m.Code.Contains(searchString));
             }
 
-            return entities.ToPagedList(page, size);
+            return query.ToPagedList(page, size);
         }
     }
 }

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
+    using Core.Exceptions;
     using Core.Produce;
     using ProduceViewModels;
     using X.PagedList;
@@ -19,7 +20,7 @@
 
         public IPagedList<ProduceViewModel> PagedList(string searchString, int page, int size)
         {
-            var produces = repository.List(searchString, page, size);
+            var produces = repository.PagedList(searchString, page, size);
 
             var models =
                 Mapper.Map<IPagedList<ProduceViewModel>>(produces);
@@ -53,7 +54,7 @@
 
             if (searchByCode.Count() > 0)
             {
-                throw new ArgumentException(message: $"产品已存在.");
+                throw new ArgumentAppException(message: $"产品已存在.");
             }
 
             var entity = Mapper.Map<Produce>(model);
@@ -66,7 +67,7 @@
 
         public void Modify(ProduceBindModel model)
         {
-            var entity = repository.Get(model.Id);
+            var entity = repository.Get(model.Id.Value);
 
             Mapper.Map(model, entity);
 
