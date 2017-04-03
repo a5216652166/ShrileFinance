@@ -247,10 +247,10 @@ function UCForm(formId) {
 
 		$(selector + " select.easyui-combobox").combobox("disable");
 		$(selector + " input.easyui-combobox").combobox("disable");
-		$(selector + " input.easyui-datebox").combobox("disable");
-		$(selector + " input.easyui-textbox").combobox("disable");
-		$(selector + " input.easyui-combotree").combobox("disable");
-		$(selector + " select.easyui-combotree").combobox("disable");
+        $(selector + " input.easyui-datebox").datebox("disable");
+        $(selector + " input.easyui-textbox").textbox("disable");
+        $(selector + " input.easyui-combotree").combotree("disable");
+        $(selector + " select.easyui-combotree").combotree("disable");
 	}
 }
 
