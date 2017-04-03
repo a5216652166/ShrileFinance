@@ -25,7 +25,7 @@ namespace Data.Migrations
                 "dbo.SYS_FileSystem",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
+                        Id = c.Guid(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 36),
                         OldName = c.String(nullable: false, maxLength: 100),
                         Extension = c.String(nullable: false, maxLength: 20),

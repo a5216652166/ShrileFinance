@@ -120,9 +120,13 @@
                 .Add(new DraftConfiguration())
                 .Add(new FileSystemConfiguration());
 
-            // Produce And Partner Configurations
+            // Produce Configurations
             modelBuilder.Configurations
                 .Add(new ModelConfigurations.Produce.ProduceConfiguration())
+                .Add(new ModelConfigurations.Produce.PrincipalRatioConfiguration());
+
+            // Partner Configurations
+            modelBuilder.Configurations
                 .Add(new PartnerConfiguration());
 
             // Finance Configurations

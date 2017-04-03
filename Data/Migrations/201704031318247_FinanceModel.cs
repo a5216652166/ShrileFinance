@@ -1,8 +1,7 @@
 namespace Data.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class FinanceModel : DbMigration
     {
         public override void Up()
@@ -35,7 +34,7 @@ namespace Data.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.CreateBy_Id)
                 .ForeignKey("dbo.CRET_Partner", t => t.CreateOf_Id)
-                .ForeignKey("dbo.FANC_Produce", t => t.Produce_Id)
+                .ForeignKey("dbo.PROD_Produce", t => t.Produce_Id)
                 .Index(t => t.CreateBy_Id)
                 .Index(t => t.CreateOf_Id)
                 .Index(t => t.Produce_Id);
@@ -120,7 +119,7 @@ namespace Data.Migrations
                 "dbo.FANC_FinancialItem",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
+                        Id = c.Guid(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 200),
                         FinancialAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Principal = c.Decimal(precision: 18, scale: 2),
@@ -168,7 +167,7 @@ namespace Data.Migrations
                 "dbo.FANC_FinancialLoan",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
+                        Id = c.Guid(nullable: false, identity: true),
                         LoanNum = c.String(nullable: false, maxLength: 20),
                         LoanDate = c.DateTime(nullable: false),
                         RepayDate = c.Byte(nullable: false),
@@ -178,16 +177,16 @@ namespace Data.Migrations
                         Produce_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.FANC_Produce", t => t.Produce_Id)
+                .ForeignKey("dbo.PROD_Produce", t => t.Produce_Id)
                 .Index(t => t.Produce_Id);
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.FANC_FinancialLoan", "Produce_Id", "dbo.FANC_Produce");
+            DropForeignKey("dbo.FANC_FinancialLoan", "Produce_Id", "dbo.PROD_Produce");
             DropForeignKey("dbo.FANC_FinancialItem", "FinancialLoanId", "dbo.FANC_FinancialLoan");
             DropForeignKey("dbo.FANC_Vehicle", "FinanceId", "dbo.FANC_Finance");
-            DropForeignKey("dbo.FANC_Finance", "Produce_Id", "dbo.FANC_Produce");
+            DropForeignKey("dbo.FANC_Finance", "Produce_Id", "dbo.PROD_Produce");
             DropForeignKey("dbo.FANC_FinancialItem", "FinanceId", "dbo.FANC_Finance");
             DropForeignKey("dbo.FANC_FinanceExtension", "FinanceId", "dbo.FANC_Finance");
             DropForeignKey("dbo.FANC_Finance", "CreateOf_Id", "dbo.CRET_Partner");

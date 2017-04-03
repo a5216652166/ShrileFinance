@@ -1,33 +1,11 @@
 namespace Data.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ProduceModel : DbMigration
+    public partial class PartnerModel : DbMigration
     {
         public override void Up()
         {
-            CreateTable(
-                "dbo.FANC_Produce",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        ProduceType = c.Byte(nullable: false),
-                        Code = c.String(nullable: false),
-                        TimeLimit = c.Int(nullable: false),
-                        Interval = c.Int(nullable: false),
-                        Poundage = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        MarginRate = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        MonthRate = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        ChannelRate = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        SalesmanRate = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        InterestRate = c.Decimal(nullable: false, precision: 18, scale: 4),
-                        LeaseType = c.Byte(nullable: false),
-                        RepayPrincipals = c.String(nullable: false),
-                        CreatedDate = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
             CreateTable(
                 "dbo.CRET_Partner",
                 c => new
@@ -82,14 +60,14 @@ namespace Data.Migrations
                     })
                 .PrimaryKey(t => new { t.PartnerId, t.ProduceId })
                 .ForeignKey("dbo.CRET_Partner", t => t.PartnerId, cascadeDelete: true)
-                .ForeignKey("dbo.FANC_Produce", t => t.ProduceId, cascadeDelete: true)
+                .ForeignKey("dbo.PROD_Produce", t => t.ProduceId, cascadeDelete: true)
                 .Index(t => t.PartnerId)
                 .Index(t => t.ProduceId);
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.CRET_PartnerProduce", "ProduceId", "dbo.FANC_Produce");
+            DropForeignKey("dbo.CRET_PartnerProduce", "ProduceId", "dbo.PROD_Produce");
             DropForeignKey("dbo.CRET_PartnerProduce", "PartnerId", "dbo.CRET_Partner");
             DropForeignKey("dbo.CRET_PartnerApprover", "ApproverId", "dbo.AspNetUsers");
             DropForeignKey("dbo.CRET_PartnerApprover", "PartnerId", "dbo.CRET_Partner");
@@ -105,7 +83,6 @@ namespace Data.Migrations
             DropTable("dbo.CRET_PartnerApprover");
             DropTable("dbo.CRET_PartnerAccount");
             DropTable("dbo.CRET_Partner");
-            DropTable("dbo.FANC_Produce");
         }
     }
 }

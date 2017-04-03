@@ -75,17 +75,21 @@
     <Compile Include="Migrations\201703310302154_CreditInvestigations.Designer.cs">
       <DependentUpon>201703310302154_CreditInvestigations.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703310304557_OtherModel.cs" />
-    <Compile Include="Migrations\201703310304557_OtherModel.Designer.cs">
-      <DependentUpon>201703310304557_OtherModel.cs</DependentUpon>
+    <Compile Include="Migrations\201704031256408_OtherModel.cs" />
+    <Compile Include="Migrations\201704031256408_OtherModel.Designer.cs">
+      <DependentUpon>201704031256408_OtherModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703310307000_ProduceModel.cs" />
-    <Compile Include="Migrations\201703310307000_ProduceModel.Designer.cs">
-      <DependentUpon>201703310307000_ProduceModel.cs</DependentUpon>
+    <Compile Include="Migrations\201704031259119_ProduceModel.cs" />
+    <Compile Include="Migrations\201704031259119_ProduceModel.Designer.cs">
+      <DependentUpon>201704031259119_ProduceModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201703310310252_FinanceModel.cs" />
-    <Compile Include="Migrations\201703310310252_FinanceModel.Designer.cs">
-      <DependentUpon>201703310310252_FinanceModel.cs</DependentUpon>
+    <Compile Include="Migrations\201704031317167_PartnerModel.cs" />
+    <Compile Include="Migrations\201704031317167_PartnerModel.Designer.cs">
+      <DependentUpon>201704031317167_PartnerModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704031318247_FinanceModel.cs" />
+    <Compile Include="Migrations\201704031318247_FinanceModel.Designer.cs">
+      <DependentUpon>201704031318247_FinanceModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -169,6 +173,7 @@
     <Compile Include="ModelConfigurations\ProcessConfigurations\NodeConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\PartnerConfiguration.cs" />
     <Compile Include="ModelConfigurations\LoanConfigurations\PledgeGuarantyContractConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Produce\PrincipalRatioConfiguration.cs" />
     <Compile Include="ModelConfigurations\Produce\ProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\TypeConfigurationExtensions.cs" />
     <Compile Include="ModelConfigurations\AppUserConfiguration.cs" />
@@ -208,14 +213,17 @@
     <EmbeddedResource Include="Migrations\201703310302154_CreditInvestigations.resx">
       <DependentUpon>201703310302154_CreditInvestigations.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703310304557_OtherModel.resx">
-      <DependentUpon>201703310304557_OtherModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704031256408_OtherModel.resx">
+      <DependentUpon>201704031256408_OtherModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703310307000_ProduceModel.resx">
-      <DependentUpon>201703310307000_ProduceModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704031259119_ProduceModel.resx">
+      <DependentUpon>201704031259119_ProduceModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703310310252_FinanceModel.resx">
-      <DependentUpon>201703310310252_FinanceModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201704031317167_PartnerModel.resx">
+      <DependentUpon>201704031317167_PartnerModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704031318247_FinanceModel.resx">
+      <DependentUpon>201704031318247_FinanceModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
