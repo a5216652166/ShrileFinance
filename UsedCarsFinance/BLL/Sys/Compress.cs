@@ -62,12 +62,11 @@ namespace BLL.Sys
         /// <returns></returns>
         public Models.Sys.FileInfo Comperssing()
         {
-            string err;
             string zippath = zipfilepath + ".zip";
 
             Models.Sys.FileInfo comperssFile = new Models.Sys.FileInfo();
 
-            if (ZipFile(HttpContext.Current.Server.MapPath(zipfilepath), out err) == true)
+            if (ZipFile(HttpContext.Current.Server.MapPath(zipfilepath), out string err) == true)
             {
                 comperssFile.FilePath = zipfilepath;
                 comperssFile.ExtName = ".zip";
@@ -97,8 +96,10 @@ namespace BLL.Sys
                     byte[] buffer = new byte[4096];
                     foreach (string file in filenames)
                     {
-                        ZipEntry entry = new ZipEntry(System.IO.Path.GetFileName(file));
-                        entry.DateTime = DateTime.Now;
+                        var entry = new ZipEntry(Path.GetFileName(file))
+                        {
+                            DateTime = DateTime.Now
+                        };
                         s.PutNextEntry(entry);
                         using (FileStream fs = System.IO.File.OpenRead(file))
                         {
