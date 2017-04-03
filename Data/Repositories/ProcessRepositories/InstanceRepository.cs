@@ -5,7 +5,6 @@
     using System.Linq;
     using Core.Entities;
     using Core.Entities.Process;
-    using Core.Interfaces.Repositories;
     using Core.Interfaces.Repositories.ProcessRepositories;
     using X.PagedList;
 
@@ -15,28 +14,19 @@
         {
         }
 
-        IPagedList<Instance> IInstanceRepository.DoingPagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime)
+        public IPagedList<Instance> DoingPagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime)
         {
             var instances = default(IQueryable<Instance>);
 
-            // 管理员
-            if (currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
-            {
-                instances = GetAll(m => m.RootKey != null && m.RootKey != Guid.Empty && m.Status == InstanceStatusEnum.完成);
-            }
-            else
-            {
-                // 筛选 1.状态为正常
-                //      2.当前用户的角色可处理的节点
-                //      3.该实例限定于角色而非用户
-                //      4.该实例RootKey存在
-                instances = GetAll(
-                    m =>
+            // 筛选 1.状态为正常
+            //      2.当前用户的角色可处理的节点
+            //      3.该实例限定于角色而非用户
+            //      4.该实例RootKey存在
+            instances = GetAll(m =>
                 m.Status == InstanceStatusEnum.正常
                 && (m.CurrentNode.RoleId == currentUser.RoleId)
                 && (m.CurrentUserId == null || m.CurrentUserId == currentUser.Id)
                 && (m.RootKey != null && m.RootKey != Guid.Empty));
-            }
 
             // 标题模糊搜索
             instances = FiterForTitle(instances, searchString);
@@ -60,20 +50,10 @@
             return instances.ToPagedList(page, size);
         }
 
-        IPagedList<Instance> IInstanceRepository.DonePagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime, InstanceStatusEnum? status)
+        public IPagedList<Instance> DonePagedList(AppUser currentUser, string searchString, int page, int size, Guid? flowId, Guid? currentNodeId, DateTime? beginTime, DateTime? endTime, InstanceStatusEnum? status)
         {
             // 筛选 1.获取当前用户处理过的流程
-            var instances = default(IQueryable<Instance>);
-
-            // 管理员
-            if (currentUser.RoleId == "BC42BEE1-05A4-E611-80C5-507B9DE4A488")
-            {
-                instances = GetAll(m => m.RootKey != null && m.RootKey != Guid.Empty);
-            }
-            else
-            {
-                instances = GetAll(m => m.Logs.Any(n => n.ProcessUserId == currentUser.Id));
-            }
+            var instances = GetAll(m => m.Logs.Any(n => n.ProcessUserId == currentUser.Id));
 
             // 标题模糊搜索
             instances = FiterForTitle(instances, searchString);
@@ -99,15 +79,6 @@
             // 分页查询
             return instances.ToPagedList(page, size);
         }
-
-        ////public override Instance Get(Guid key)
-        ////{
-        ////    var instance = base.Get(key);
-
-        ////    instance.GetProcessType(instance.FlowId);
-
-        ////    return instance;
-        ////}
 
         private IQueryable<Instance> FiterForTitle(IQueryable<Instance> refSource, string searchString)
         {

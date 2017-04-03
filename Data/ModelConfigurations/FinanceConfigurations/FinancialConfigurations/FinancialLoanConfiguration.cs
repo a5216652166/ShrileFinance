@@ -1,6 +1,7 @@
 ﻿namespace Data.ModelConfigurations.FinanceConfigurations.FinancialConfigurations
 {
     using System.Data.Entity.ModelConfiguration;
+    using System.ComponentModel.DataAnnotations.Schema;
     using Core.Entities.Finance.Financial;
 
     public class FinancialLoanConfiguration : EntityTypeConfiguration<FinancialLoan>
@@ -8,6 +9,7 @@
         public FinancialLoanConfiguration()
         {
             HasKey(m => m.Id);
+            Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(m => m.LoanNum).IsRequired().HasMaxLength(20);
             Property(m => m.LoanDate).IsRequired();
