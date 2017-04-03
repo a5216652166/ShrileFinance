@@ -158,7 +158,7 @@
     <Content Include="Finance\FinancialLoan\LoanEdit.html" />
     <Content Include="Finance\FinancialLoan\LoanList.html" />
     <Content Include="Finance\Produce\ProduceEdit.html" />
-    <Content Include="Finance\Produce\ProduceList.html" />
+    <Content Include="Scripts\finance.js" />
     <Content Include="Statistics\LoanCount.html" />
     <Content Include="Finance\FinanceApproval.html" />
     <Content Include="Finance\Unused\FinanceCustomer.html" />
@@ -900,7 +900,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />
-    <Compile Include="Controllers\Finance\Financial\ProduceController.cs" />
     <Compile Include="Controllers\Finance\ImageUploadController.cs" />
     <Compile Include="Controllers\Finance\Vehicle\VehiclePriseController.cs" />
     <Compile Include="Controllers\Loan\CreditController.cs" />
@@ -912,7 +911,6 @@
     <Compile Include="Controllers\Statistics\StatisticsController.cs" />
     <Compile Include="Controllers\Finance\FinanceAuidtController.cs" />
     <Compile Include="Controllers\Process\InstanceController.cs" />
-    <Compile Include="Controllers\Produce\FinancingProjectController.cs" />
     <Compile Include="Controllers\Produce\ProduceController.cs" />
     <Compile Include="Controllers\Sys\DraftController.cs" />
     <Compile Include="Controllers\Sys\FileController.cs" />

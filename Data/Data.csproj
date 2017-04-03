@@ -137,7 +137,6 @@
     <Compile Include="ModelConfigurations\CustomerConfigurations\StockholderConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialItemConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialLoanConfiguration.cs" />
-    <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\ProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\ActionConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\ApplicantConfiguration.cs" />
     <Compile Include="ModelConfigurations\CreditInvestigationConfigurations\SegmentConfigurations\BorrowMessageConfigurations\ConcernConfigurations\BigEventSegmentConfiguration.cs" />
@@ -170,6 +169,7 @@
     <Compile Include="ModelConfigurations\ProcessConfigurations\NodeConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\PartnerConfigurations\PartnerConfiguration.cs" />
     <Compile Include="ModelConfigurations\LoanConfigurations\PledgeGuarantyContractConfiguration.cs" />
+    <Compile Include="ModelConfigurations\Produce\ProduceConfiguration.cs" />
     <Compile Include="ModelConfigurations\TypeConfigurationExtensions.cs" />
     <Compile Include="ModelConfigurations\AppUserConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinanceConfiguration\VehicleConfigration.cs" />
@@ -181,7 +181,6 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinancialItemRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinancialRepositories\FinancialLoanRepository.cs" />
-    <Compile Include="Repositories\FinanceRepositories\FinancialRepositories\ProduceRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\ContractRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\CreditContractRespostiory.cs" />
     <Compile Include="Repositories\DatagramRepositories\DatagramFileRepository.cs" />
@@ -197,6 +196,7 @@
     <Compile Include="Repositories\DatagramRepositories\TraceRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinanceRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\PartnerRepositories\PartnerRepository.cs" />
+    <Compile Include="Repositories\Produce\ProduceRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703310214560_IdentityModel.resx">

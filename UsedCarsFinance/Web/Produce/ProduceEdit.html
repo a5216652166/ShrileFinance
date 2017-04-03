@@ -1,451 +1,451 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>产品维护</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>产品管理</title>
+	<link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+	<link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+	<link href="../Content/form-bootstrap.css" rel="stylesheet" />
+	<script src="../Scripts/jquery/jquery.js"></script>
+	<script src="../Scripts/easyui/jquery.easyui.js"></script>
+	<script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script src="../Scripts/usedcars.js"></script>
+	<script>
+		uc.form = new UCForm(".container");
 
-    <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
-    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
-    <link href="../Content/form-bootstrap.css" rel="stylesheet" />
-    <script src="../Scripts/jquery/jquery.js"></script>
-    <script src="../Scripts/easyui/jquery.easyui.js"></script>
-    <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script src="../Scripts/usedcars.js"></script>
-    <script>
-        // 判断datagrid中行是否可编辑
-        var editIndex = undefined;
-        var query = uc.GetParams();
+		var editIndex = undefined;
+		var query = uc.GetParams();
 
-        uc.form = new UCForm(".container");
+		$(function () {
+			Init();
+		});
 
-        $(function () {
-            Init();
-        });
+		function Init() {
 
-        function Init() {
+			if (query.method == "mod" || query.method == "view") {
+				if (query.method == "mod") {
+					$("#Code").textbox("readonly", true)
+				}
+				if (query.method == "view") {
+					$("#save").linkbutton("disable");
 
-            if (query.method == "mod" || query.method == "view") {
-                if (query.method == "mod") {
-                    $("#Code").textbox("readonly",true)
-                }
-                if (query.method == "view") {
-                    $("#save").linkbutton("disable");
+					uc.form.DisableForm();
+				}
+				uc.form.LoadForm({
+					params: { id: query.ProduceId },
+					url: "../api/Produce/Get"
+				});
+				$("input[name=Id]").val(query.ProduceId);
+				$.ajax({
+					async: true,
+					type: "Get",
+					data: { id: query.ProduceId },
+					url: "../api/Produce/Get",
+					success: function (data) {
+						var financing = $("#Financing").datagrid("getRows");
+						var poundage = $("#Poundage").datagrid("getRows");
+						$(".container").form("load", data);
+						//该部分代码还需要优化调整，等功能点做完之后在优化
+						//加载时候给融资项赋值
+						for (var i = 0; i < data.FinancingItems.length; i++) {
+							if (data.FinancingItems[i].FinancingProject.IsFinancing == true) {
+								for (var j = 0; j < financing.length; j++) {
+									if (data.FinancingItems[i].FinancingProjectId == financing[j].FinancingProjectId) {
+										financing[j].Money = data.FinancingItems[i].Money;
+										financing[j].IsEdit = data.FinancingItems[i].IsEdit;
+										financing[j].IsFinancing = data.FinancingItems[i].FinancingProject.IsFinancing;
+										//$("#Financing").datagrid("updateRow", financing[j]);
+										//$("#Financing").datagrid("selectRow", j);
+									}
+								}
+							}
+						}
+						$("#Financing").datagrid("loadData", financing);
+						//将该产品对应的融资项进行选中操作
+						for (var i = 0; i < data.FinancingItems.length; i++) {
+							if (data.FinancingItems[i].FinancingProject.IsFinancing == true) {
+								for (var j = 0; j < financing.length; j++) {
+									if (data.FinancingItems[i].FinancingProjectId == financing[j].FinancingProjectId) {
+										$("#Financing").datagrid("selectRow", j);
+									}
+								}
+							}
+						}
+						//加载时候给手续费金额赋值
+						for (var i = 0; i < data.FinancingItems.length; i++) {
+							if (data.FinancingItems[i].FinancingProject.IsFinancing == false) {
+								for (var j = 0; j < poundage.length; j++) {
+									if (data.FinancingItems[i].FinancingProjectId == poundage[j].FinancingProjectId) {
+										poundage[j].Money = data.FinancingItems[i].Money;
+										poundage[j].IsEdit = data.FinancingItems[i].IsEdit;
+										poundage[j].IsFinancing = data.FinancingItems[i].FinancingProject.IsFinancing;
+									}
+								}
+							}
+						}
+						$("#Poundage").datagrid("loadData", poundage);
+						//将该产品对应的手续费项进行选中操作
+						for (var i = 0; i < data.FinancingItems.length; i++) {
+							if (data.FinancingItems[i].FinancingProject.IsFinancing == false) {
+								for (var j = 0; j < poundage.length; j++) {
+									if (data.FinancingItems[i].FinancingProjectId == poundage[j].FinancingProjectId) {
+										$("#Poundage").datagrid("selectRow", j);
+									}
+								}
+							}
+						}
+					}
+				});
 
-                    uc.form.DisableForm();
-                }
-                uc.form.LoadForm({
-                    params: { id: query.ProduceId },
-                    url: "../api/Produce/Get"
-                });
-                $("input[name=Id]").val(query.ProduceId);
-                $.ajax({
-                    async: true,
-                    type: "Get",
-                    data: { id: query.ProduceId },
-                    url: "../api/Produce/Get",
-                    success: function (data) {
-                        var financing = $("#Financing").datagrid("getRows");
-                        var poundage = $("#Poundage").datagrid("getRows");
-                        $(".container").form("load", data);
-                        //该部分代码还需要优化调整，等功能点做完之后在优化
-                        //加载时候给融资项赋值
-                        for (var i = 0 ; i < data.FinancingItems.length; i++) {
-                            if (data.FinancingItems[i].FinancingProject.IsFinancing == true) {
-                                for (var j = 0; j < financing.length; j++) {
-                                    if (data.FinancingItems[i].FinancingProjectId == financing[j].FinancingProjectId) {
-                                        financing[j].Money = data.FinancingItems[i].Money;
-                                        financing[j].IsEdit = data.FinancingItems[i].IsEdit;
-                                        financing[j].IsFinancing = data.FinancingItems[i].FinancingProject.IsFinancing;
-                                        //$("#Financing").datagrid("updateRow", financing[j]);
-                                        //$("#Financing").datagrid("selectRow", j);
-                                    }
-                                }
-                            }
-                        }
-                        $("#Financing").datagrid("loadData", financing);
-                        //将该产品对应的融资项进行选中操作
-                        for (var i = 0 ; i < data.FinancingItems.length; i++) {
-                            if (data.FinancingItems[i].FinancingProject.IsFinancing == true) {
-                                for (var j = 0; j < financing.length; j++) {
-                                    if (data.FinancingItems[i].FinancingProjectId == financing[j].FinancingProjectId) {
-                                        $("#Financing").datagrid("selectRow", j);
-                                    }
-                                }
-                            }
-                        }
-                        //加载时候给手续费金额赋值
-                        for (var i = 0 ; i < data.FinancingItems.length; i++) {
-                            if (data.FinancingItems[i].FinancingProject.IsFinancing == false) {
-                                for (var j = 0; j < poundage.length; j++) {
-                                    if (data.FinancingItems[i].FinancingProjectId == poundage[j].FinancingProjectId) {
-                                        poundage[j].Money = data.FinancingItems[i].Money;
-                                        poundage[j].IsEdit = data.FinancingItems[i].IsEdit;
-                                        poundage[j].IsFinancing = data.FinancingItems[i].FinancingProject.IsFinancing;
-                                    }
-                                }
-                            }
-                        }
-                        $("#Poundage").datagrid("loadData", poundage);
-                        //将该产品对应的手续费项进行选中操作
-                        for (var i = 0 ; i < data.FinancingItems.length; i++) {
-                            if (data.FinancingItems[i].FinancingProject.IsFinancing == false) {
-                                for (var j = 0; j < poundage.length; j++) {
-                                    if (data.FinancingItems[i].FinancingProjectId == poundage[j].FinancingProjectId) {
-                                        $("#Poundage").datagrid("selectRow", j);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
+			}
+		}
 
-            }
-        }
+		var disction;
 
-        var disction;
+		function toUppers() {
+			disction = true;
 
-        function toUppers() {
-            disction = true;
+			var fin = $("#Financing").datagrid("getSelected");
+			if (fin != null) {
+				if (fin.Name != "裸车价") {
+					top.$.messager.show({ msg: "融资项中必须要有裸车价！" });
+					return disction = false;
+				}
+			}
+			else {
+				top.$.messager.show({ msg: "融资项中必须要有裸车价！" });
+				return disction = false;
+			}
 
-            var fin = $("#Financing").datagrid("getSelected");
-            if (fin != null) {
-                if (fin.Name != "裸车价") {
-                    top.$.messager.show({ msg: "融资项中必须要有裸车价！" });
-                    return disction = false;
-                }
-            }
-            else {
-                top.$.messager.show({ msg: "融资项中必须要有裸车价！" });
-                return disction = false;
-            }
-          
-            var CodeUpper = $("input[name='Code']").val().toUpperCase();
-            var ProduceId = $("input[name='Id']").val();
-            $("input[name='Code']").val(CodeUpper);
-            $.ajax({
-                async: false,
-                type: "Get",
-                url: "../api/Produce/GetAll",
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        if (CodeUpper == data[i].Code && (ProduceId == "" || ProduceId != data[i].Id)) {
-                            top.$.messager.show({ msg: "产品代码重复！" });
-                            return disction = false;
-                        }
-                    }
-                }
-            });
-        }
-        //用于提交数据时候改变是否融资项和是否可编辑状态“是”改为true "否"改为false
-        function ChangeStatus(datagridId) {
-            var datarows = $("#" + datagridId).datagrid("getRows");
-            for (var i = 0 ; i < datarows.length; i++) {
-                if (datarows[i]["IsFinancing"] == "是") {
-                    datarows[i]["IsFinancing"] = true;
-                }
-                else {
-                    datarows[i]["IsFinancing"] = false;
-                }
-                if (datarows[i]["IsEdit"] == "是") {
-                    datarows[i]["IsEdit"] = true;
-                }
-                else {
-                    datarows[i]["IsEdit"] = false;
-                }
-            }
-        }
+			var CodeUpper = $("input[name='Code']").val().toUpperCase();
+			var ProduceId = $("input[name='Id']").val();
+			$("input[name='Code']").val(CodeUpper);
+			$.ajax({
+				async: false,
+				type: "Get",
+				url: "../api/Produce/GetAll",
+				success: function (data) {
+					for (var i = 0; i < data.length; i++) {
+						if (CodeUpper == data[i].Code && (ProduceId == "" || ProduceId != data[i].Id)) {
+							top.$.messager.show({ msg: "产品代码重复！" });
+							return disction = false;
+						}
+					}
+				}
+			});
+		}
+		//用于提交数据时候改变是否融资项和是否可编辑状态“是”改为true "否"改为false
+		function ChangeStatus(datagridId) {
+			var datarows = $("#" + datagridId).datagrid("getRows");
+			for (var i = 0; i < datarows.length; i++) {
+				if (datarows[i]["IsFinancing"] == "是") {
+					datarows[i]["IsFinancing"] = true;
+				}
+				else {
+					datarows[i]["IsFinancing"] = false;
+				}
+				if (datarows[i]["IsEdit"] == "是") {
+					datarows[i]["IsEdit"] = true;
+				}
+				else {
+					datarows[i]["IsEdit"] = false;
+				}
+			}
+		}
 
-        function Submit() {
-            var url;
-            var min = parseInt($("input[textboxname = MinFinancingRatio]").textbox("getValue"));
-            var max = parseInt($("input[textboxname = MaxFinancingRatio]").textbox("getValue"));
+		function Submit() {
+			var url;
+			var min = parseInt($("input[textboxname = MinFinancingRatio]").textbox("getValue"));
+			var max = parseInt($("input[textboxname = MaxFinancingRatio]").textbox("getValue"));
 
-            if ($("#CustomerBailRatio").val() > 100) {
-                top.$.messager.show({ msg: "客户保证金比例必须小于100！" });
-                return false;
-            }
-            if ($("#FinalRatio").val() > 100) {
-                top.$.messager.show({ msg: "尾款比例必须小于100！" });
-                return false;
-            }
-          
-            if (min != "" && max != "" && max < min) {
-                $("input[textboxname = MaxFinancingRatio]").textbox("setValue", "")
-                top.$.messager.show({ msg: "融资比例下限必须小于融资比例上限！" });
-                return false
-            }
-            toUppers();
+			if ($("#CustomerBailRatio").val() > 100) {
+				top.$.messager.show({ msg: "客户保证金比例必须小于100！" });
+				return false;
+			}
+			if ($("#FinalRatio").val() > 100) {
+				top.$.messager.show({ msg: "尾款比例必须小于100！" });
+				return false;
+			}
 
-            if (disction) {
-            var produceInfo = $(".container").serializeJson();
-                ChangeStatus("Poundage");
-                ChangeStatus("Financing");
-                produceInfo["Poundage"] = $('#Poundage').datagrid('getChecked');
-                produceInfo["FinancingItems"] = ($('#Financing').datagrid('getChecked'));
+			if (min != "" && max != "" && max < min) {
+				$("input[textboxname = MaxFinancingRatio]").textbox("setValue", "")
+				top.$.messager.show({ msg: "融资比例下限必须小于融资比例上限！" });
+				return false
+			}
+			toUppers();
 
-                //保存前将datagrid中的编辑状态的行结束编辑，数据保存在datagrid中
-                $('#Poundage').datagrid('getEditingRowIndexs');
-                $('#Financing').datagrid('getEditingRowIndexs');
+			if (disction) {
+				var produceInfo = $(".container").serializeJson();
+				ChangeStatus("Poundage");
+				ChangeStatus("Financing");
+				produceInfo["Poundage"] = $('#Poundage').datagrid('getChecked');
+				produceInfo["FinancingItems"] = ($('#Financing').datagrid('getChecked'));
 
-                if (query.method == "mod") {
-                    url = "../api/Produce/Modify";
-                }
-                else if (query.method == "add") {
-                    url = "../api/Produce/Create";
-                }
+				//保存前将datagrid中的编辑状态的行结束编辑，数据保存在datagrid中
+				$('#Poundage').datagrid('getEditingRowIndexs');
+				$('#Financing').datagrid('getEditingRowIndexs');
 
-                uc.form.Submit({
-                    method: "POST",
-                    url: url,
-                    data: produceInfo
-                });
-            }
-        }
+				if (query.method == "mod") {
+					url = "../api/Produce/Modify";
+				}
+				else if (query.method == "add") {
+					url = "../api/Produce/Create";
+				}
 
-        $.extend($.fn.datagrid.methods, {
-            getEditingRowIndexs: function (jq) {
-                var id = $(jq).attr("id");
-                var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
-                var indexs = [];
-                rows.each(function (i, rows) {
-                    accept(id)
-                });
-            }
-        });
+				uc.form.Submit({
+					method: "POST",
+					url: url,
+					data: produceInfo
+				});
+			}
+		}
 
-        function onChange() {
-            var min = parseInt($("input[textboxname = MinFinancingRatio]").textbox("getValue"));
-            var max = parseInt($("input[textboxname = MaxFinancingRatio]").textbox("getValue"));
-            if (min != "" && max != "" && max < min) {
-                $("input[textboxname = MaxFinancingRatio]").textbox("setValue", "")
-                top.$.messager.show({ msg: "融资比例下限必须小于融资比例上限！" });
-                return false
-            }
-        }
+		$.extend($.fn.datagrid.methods, {
+			getEditingRowIndexs: function (jq) {
+				var id = $(jq).attr("id");
+				var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
+				var indexs = [];
+				rows.each(function (i, rows) {
+					accept(id)
+				});
+			}
+		});
 
-        //双击编辑行
-        function onEditor(index, field, value) {
-            $('#Poundage').datagrid('getEditingRowIndexs');
-            $('#Financing').datagrid('getEditingRowIndexs');
+		function onChange() {
+			var min = parseInt($("input[textboxname = MinFinancingRatio]").textbox("getValue"));
+			var max = parseInt($("input[textboxname = MaxFinancingRatio]").textbox("getValue"));
+			if (min != "" && max != "" && max < min) {
+				$("input[textboxname = MaxFinancingRatio]").textbox("setValue", "")
+				top.$.messager.show({ msg: "融资比例下限必须小于融资比例上限！" });
+				return false
+			}
+		}
 
-            if (editIndex != index) {
-                if (endEditing(this.id)) {
-                    $('#' + this.id).datagrid('selectRow', index)
-							.datagrid('beginEdit', index);
-                    var ed = $('#' + this.id).datagrid('getEditor', { index: index, field: field });
-                    if (ed != null) {
-                        $(ed.target).focus();
-                        editIndex = index;
-                    }
-                } else {
-                    $('#' + this.id).datagrid('selectRow', editIndex);
-                }
-            }
-        }
+		//双击编辑行
+		function onEditor(index, field, value) {
+			$('#Poundage').datagrid('getEditingRowIndexs');
+			$('#Financing').datagrid('getEditingRowIndexs');
 
-        //键盘enter键
-        document.onkeydown = function (event) {
-            var e = event || window.event || arguments.callee.caller.arguments[0];
-            if (e && e.keyCode == 13) { // enter 键
-                var id = $(e.target).parents(".panel.datagrid").find(".easyui-datagrid").attr("id")
-                accept(id);
-            }
-        };
+			if (editIndex != index) {
+				if (endEditing(this.id)) {
+					$('#' + this.id).datagrid('selectRow', index)
+						.datagrid('beginEdit', index);
+					var ed = $('#' + this.id).datagrid('getEditor', { index: index, field: field });
+					if (ed != null) {
+						$(ed.target).focus();
+						editIndex = index;
+					}
+				} else {
+					$('#' + this.id).datagrid('selectRow', editIndex);
+				}
+			}
+		}
 
-        //结束编辑状态
-        function endEditing(id) {
-            if (editIndex == undefined) { return true }
+		//键盘enter键
+		document.onkeydown = function (event) {
+			var e = event || window.event || arguments.callee.caller.arguments[0];
 
-            if ($('#' + id).datagrid('validateRow', editIndex)) {
-                var ed = $('#' + id).datagrid('getEditors', editIndex);
-                var money = $(ed[0].target).val();
-                var isFinancing = $(ed[1].target).val();
-                var isEdit = $(ed[2].target).val();
-                $('#' + id).datagrid('getRows')[editIndex]['Money'] = money;
-                $('#' + id).datagrid('getRows')[editIndex]['IsFinancing'] = isFinancing;
-                $('#' + id).datagrid('getRows')[editIndex]['IsEdit'] = isEdit;
-                $('#' + id).datagrid('endEdit', editIndex);
-                editIndex = undefined;
-                return true;
-            } else {
-                return false;
-            }
-        }
+			// enter 键
+			if (e && e.keyCode == 13) {
+				var id = $(e.target).parents(".panel.datagrid").find(".easyui-datagrid").attr("id")
+				accept(id);
+			}
+		};
 
-        //结束编辑状态后保存数据在datagrid
-        function accept(id) {
-            if (endEditing(id)) {
-                $('#' + id).datagrid('acceptChanges');
-            }
-        }
+		//结束编辑状态
+		function endEditing(id) {
+			if (editIndex == undefined) { return true }
 
-        function LoadFilter(data) {
-            var value = {
-                total: data.total,
-                rows: []
-            };
-            if (data.length > 0) {
-                for (var i = 0 ; i < data.length; i++) {
-                    if (data[i].IsFinancing == false){
-                        data[i].IsFinancing = "否"
-                    }
-                    else {
-                        data[i].IsFinancing = "是"
-                    }
-                    if (data[i].IsEdit == false){
-                        data[i].IsEdit = "否"
-                    }
-                    else {
-                        data[i].IsEdit = "是"
-                    }
-                    value.rows[i] = data[i];
-                }
-                return value;
-            }
-            else {
-                value.total = 0;
-                value.rows = [];
-                return value;
-            }
-        }
-        function OnAfterEdit(index, row) {
-            row.editing = false;
-            $('#Poundage').datagrid('refreshRow', index);
-        }
+			if ($('#' + id).datagrid('validateRow', editIndex)) {
+				var ed = $('#' + id).datagrid('getEditors', editIndex);
+				var money = $(ed[0].target).val();
+				var isFinancing = $(ed[1].target).val();
+				var isEdit = $(ed[2].target).val();
+				$('#' + id).datagrid('getRows')[editIndex]['Money'] = money;
+				$('#' + id).datagrid('getRows')[editIndex]['IsFinancing'] = isFinancing;
+				$('#' + id).datagrid('getRows')[editIndex]['IsEdit'] = isEdit;
+				$('#' + id).datagrid('endEdit', editIndex);
+				editIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
 
-    </script>
+		//结束编辑状态后保存数据在datagrid
+		function accept(id) {
+			if (endEditing(id)) {
+				$('#' + id).datagrid('acceptChanges');
+			}
+		}
+
+		function LoadFilter(data) {
+			var value = {
+				total: data.total,
+				rows: []
+			};
+			if (data.length > 0) {
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].IsFinancing == false) {
+						data[i].IsFinancing = "否"
+					}
+					else {
+						data[i].IsFinancing = "是"
+					}
+					if (data[i].IsEdit == false) {
+						data[i].IsEdit = "否"
+					}
+					else {
+						data[i].IsEdit = "是"
+					}
+					value.rows[i] = data[i];
+				}
+				return value;
+			}
+			else {
+				value.total = 0;
+				value.rows = [];
+				return value;
+			}
+		}
+		function OnAfterEdit(index, row) {
+			row.editing = false;
+			$('#Poundage').datagrid('refreshRow', index);
+		}
+
+	</script>
 </head>
 <body>
-    <form class="container">
-        <fieldset>
-            <legend>产品信息</legend>
+	<form class="container">
+		<fieldset>
+			<legend>产品信息</legend>
 
-            <div class="hidden">
-                <input name="Id" type="hidden" />
-            </div>
+			<div class="hidden">
+				<input name="Id" type="hidden" />
+			</div>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>产品代码:</label>
-                    <input name="Code" id="Code" class="easyui-textbox" data-options="required:true,validType:'length[0,100]'" />
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>产品代码:</label>
+					<input name="Code" id="Code" class="easyui-textbox" data-options="required:true,validType:'length[0,100]'" />
+				</div>
 
-                <div class="col-6">
-                    <label>产品名称:</label>
-                    <input name="Name" class="easyui-textbox" data-options="required:true,validType:'length[0,100]'" />
-                </div>
-            </div>
+				<div class="col-6">
+					<label>产品名称:</label>
+					<input name="Name" class="easyui-textbox" data-options="required:true,validType:'length[0,100]'" />
+				</div>
+			</div>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>名义利率（年）:</label>
-                    <input id="InterestRate" name="InterestRate" class="easyui-textbox" data-options="required:true,validType:'Price'" /><span class="unit">%</span>
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>名义利率（年）:</label>
+					<input id="InterestRate" name="InterestRate" class="easyui-textbox" data-options="required:true,validType:'Price'" /><span class="unit">%</span>
+				</div>
 
-                <div class="col-6">
-                    <label>费率（年）:</label>
-                    <input id="CostRate" name="CostRate" class="easyui-textbox" data-options="required:true,validType:'Price'" /><span class="unit">%</span>
-                </div>
-            </div>
+				<div class="col-6">
+					<label>费率（年）:</label>
+					<input id="CostRate" name="CostRate" class="easyui-textbox" data-options="required:true,validType:'Price'" /><span class="unit">%</span>
+				</div>
+			</div>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>还款方式:</label>
-                    <select name="RepaymentMethod" class="easyui-combobox" data-options="required:true,editable:false">
-                        <option value="1">等额本息</option>
-                        <option value="2">月供提前付</option>
-                        <option value="3">一次性付息</option>
-                    </select>
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>还款方式:</label>
+					<select name="RepaymentMethod" class="easyui-combobox" data-options="required:true,editable:false">
+						<option value="1">等额本息</option>
+						<option value="2">月供提前付</option>
+						<option value="3">一次性付息</option>
+					</select>
+				</div>
 
-                <div class="col-6">
-                    <label>融资比例区间:</label>
-                    <input name="MinFinancingRatio" class="easyui-textbox" style="width:190px;" data-options="required:true,onChange:onChange,validType:'Price'" />
-                    <span style="display:inline-block;width:22px; text-align:center;">-</span>
-                    <input name="MaxFinancingRatio" class="easyui-textbox" style="width:190px;" data-options="required:true,onChange:onChange,validType:'Price'" />
-                    <span class="unit">%</span>
-                </div>
-            </div>
+				<div class="col-6">
+					<label>融资比例区间:</label>
+					<input name="MinFinancingRatio" class="easyui-textbox" style="width:190px;" data-options="required:true,onChange:onChange,validType:'Price'" />
+					<span style="display:inline-block;width:22px; text-align:center;">-</span>
+					<input name="MaxFinancingRatio" class="easyui-textbox" style="width:190px;" data-options="required:true,onChange:onChange,validType:'Price'" />
+					<span class="unit">%</span>
+				</div>
+			</div>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>融资期限:</label>
-                    <input name="FinancingPeriods" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">月</span>
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>融资期限:</label>
+					<input name="FinancingPeriods" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">月</span>
+				</div>
 
-                <div class="col-6">
-                    <label>还款间隔:</label>
-                    <input name="RepaymentInterval" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">月</span>
-                </div>
-            </div>
+				<div class="col-6">
+					<label>还款间隔:</label>
+					<input name="RepaymentInterval" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">月</span>
+				</div>
+			</div>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>客户保证金比例:</label>
-                    <input name="CustomerBailRatio" id="CustomerBailRatio" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">%</span>
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>客户保证金比例:</label>
+					<input name="CustomerBailRatio" id="CustomerBailRatio" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">%</span>
+				</div>
 
-                <div class="col-6">
-                    <label>尾款比例:</label>
-                    <input name="FinalRatio" id="FinalRatio" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">%</span>
-                </div>
-            </div>
+				<div class="col-6">
+					<label>尾款比例:</label>
+					<input name="FinalRatio" id="FinalRatio" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">%</span>
+				</div>
+			</div>
 
-            <div class="row">
-                <label>手续费项目:</label>
-                <table id="Poundage" class="easyui-datagrid" data-options="height: 230,rownumbers: true, method: 'GET',url: '../api/FinancingProject/GetByIsFinancing',
+			<div class="row">
+				<label>手续费项目:</label>
+				<table id="Poundage" class="easyui-datagrid" data-options="height: 230,rownumbers: true, method: 'GET',url: '../api/FinancingProject/GetByIsFinancing',
                        loadMsg: '正在加载，请稍候...',
                        queryParams:{isFinancing:false},
                        onDblClickCell:onEditor,
                        loadFilter :LoadFilter,
                        ">
-                    <thead>
-                        <tr>
-                            <th data-options="field:'ck',checkbox:true"></th>
-                            <th data-options="field:'FinancingProjectId',hidden:true">Id</th>
-                            <th data-options="field:'Name',width:200,align:'center'">名称</th>
-                            <th data-options="field:'Money',width:200,align:'center',editor:{type:'text',options:{required:true}}">价格</th>
-                            <th data-options="field:'IsFinancing',hidden:true,width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否是融资项</th>
-                            <th data-options="field:'IsEdit',width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否可编辑</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+					<thead>
+						<tr>
+							<th data-options="field:'ck',checkbox:true"></th>
+							<th data-options="field:'FinancingProjectId',hidden:true">Id</th>
+							<th data-options="field:'Name',width:200,align:'center'">名称</th>
+							<th data-options="field:'Money',width:200,align:'center',editor:{type:'text',options:{required:true}}">价格</th>
+							<th data-options="field:'IsFinancing',hidden:true,width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否是融资项</th>
+							<th data-options="field:'IsEdit',width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否可编辑</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
 
-            <!--新增放款信息-->
-            <div class="row">
-                <label>融资项目:</label>
-                <table id="Financing" class="easyui-datagrid" data-options="height: 230,rownumbers: true, method: 'GET',url: '../api/FinancingProject/GetByIsFinancing',
+			<!--新增放款信息-->
+			<div class="row">
+				<label>融资项目:</label>
+				<table id="Financing" class="easyui-datagrid" data-options="height: 230,rownumbers: true, method: 'GET',url: '../api/FinancingProject/GetByIsFinancing',
                        loadMsg: '正在加载，请稍候...',
                        queryParams:{isFinancing:true},
                        onDblClickCell:onEditor,
                        loadFilter :LoadFilter,
                        ">
-                    <thead>
-                        <tr>
-                            <th data-options="field:'ck',checkbox:true"></th>
-                            <th data-options="field:'FinancingProjectId',hidden:true">Id</th>
-                            <th data-options="field:'Name',width:200,align:'center'">名称</th>
-                            <th data-options="field:'Money',width:200,align:'center',editor:{type:'text',options:{required:true}}">价格</th>
-                            <th data-options="field:'IsFinancing',width:120,hidden:true,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否是融资项</th>
-                            <th data-options="field:'IsEdit',width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否可编辑</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+					<thead>
+						<tr>
+							<th data-options="field:'ck',checkbox:true"></th>
+							<th data-options="field:'FinancingProjectId',hidden:true">Id</th>
+							<th data-options="field:'Name',width:200,align:'center'">名称</th>
+							<th data-options="field:'Money',width:200,align:'center',editor:{type:'text',options:{required:true}}">价格</th>
+							<th data-options="field:'IsFinancing',width:120,hidden:true,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否是融资项</th>
+							<th data-options="field:'IsEdit',width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否可编辑</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
 
-            <div class="row">
-                <div class="col-12">
-                    <label>描述:</label>
-                    <input name="Remarks" class="easyui-textbox" data-options="multiline:true,height:66,width:900,validType:'length[0,200]'" />
-                </div>
-            </div>
-        </fieldset>
+			<div class="row">
+				<div class="col-12">
+					<label>描述:</label>
+					<input name="Remarks" class="easyui-textbox" data-options="multiline:true,height:66,width:900,validType:'length[0,200]'" />
+				</div>
+			</div>
+		</fieldset>
 
-        <div id="btn">
-            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',onClick:Submit">保存</a>
-            <a id="back" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-redo',onClick:uc.form.Cancel">返回</a>
-        </div>
-    </form>
+		<div id="btn">
+			<a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',onClick:Submit">保存</a>
+			<a id="back" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-redo',onClick:uc.form.Cancel">返回</a>
+		</div>
+	</form>
 </body>
 </html>

@@ -12,9 +12,7 @@
     {
         TEntity Get(Guid key);
 
-        IQueryable<TEntity> GetAll();
-
-        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
+        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null);
 
         IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize);
 
@@ -23,7 +21,5 @@
         void Modify(TEntity entity);
 
         void Remove(TEntity entity);
-
-        void RemoveOldEntity(IEnumerable<TEntity> entities);
     }
 }

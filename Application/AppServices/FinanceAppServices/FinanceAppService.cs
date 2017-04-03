@@ -13,9 +13,9 @@
     using Core.Entities.Finance.Partners;
     using Core.Entities.Identity;
     using Core.Interfaces.Repositories.FinanceRepositories;
-    using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using Core.Interfaces.Repositories.LoanRepositories;
     using Core.Interfaces.Repositories.ProcessRepositories;
+    using Core.Produce;
     using Data.PDF;
     using Infrastructure.PDF;
     using ViewModels.FinanceViewModels;
@@ -99,7 +99,7 @@
                 return bytes;
             }
 
-            return pair;            
+            return pair;
         }
 
 
@@ -333,7 +333,7 @@
                 CustomerBankCard = finance.FinanceExtension.CustomerBankCard,
                 CustomerBankName = finance.FinanceExtension.CustomerBankName,
                 OnePayInterest = finance.OnePayInterest,
-                Payment = Math.Round(Convert.ToDouble(finance.Principal * finance.OncePayMonths / finance.Produce.TimeLimit), 2),
+                Payment = Math.Round(Convert.ToDouble(finance.Principal * finance.OncePayMonths / finance.Produce.Periods), 2),
             };
         }
 
@@ -618,7 +618,7 @@
             operationReportViewModel = PartialMapper(refObj: finance, outObj: operationReportViewModel, array: array);
 
             // 客户保证金比例
-            operationReportViewModel.CustomerBailRatio = finance.Produce.MarginRate;
+            operationReportViewModel.CustomerBailRatio = finance.Produce.CustomerBailRatio;
 
             // 融资项
             operationReportViewModel.FinancingItems = GetFinancingItemsOrCosts(finance);

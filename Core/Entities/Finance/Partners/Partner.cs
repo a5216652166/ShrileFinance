@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Core.Entities.Finance.Financial;
+    using Core.Produce;
     using Interfaces;
 
     public class Partner : Entity, IAggregateRoot

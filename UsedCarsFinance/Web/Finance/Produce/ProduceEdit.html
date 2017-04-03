@@ -10,158 +10,77 @@
 	<script src="../../Scripts/easyui/jquery.easyui.js"></script>
 	<script src="../../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script src="../../Scripts/usedcars.js"></script>
-	<style>
-		td > .textbox[style*="height: 22px;"] { height: 22px !important; }
-		td > .textbox[style*="height: 22px;"] > .textbox-text { padding: 0px 4px !important; font-size: 12px !important; line-height: 1.42857143; }
-	</style>
-	<script type="text/javascript">
-		var query = uc.GetParams();
-
+	<script src="../../Scripts/finance.js"></script>
+	<script>
 		uc.form = new UCForm(".container");
 
-		$(function () {
-			Init();
-		});
+		$(PageLoaded);
 
-		function Init() {
+		function PageLoaded() {
+			var query = uc.GetParams();
+
 			if (query.method == "mod" || query.method == "view") {
-				$.ajax({
-					async: true,
-					type: "GET",
-					data: { produceId: query.ProduceId },
-					url: "../../api/NewProduce/Get",
-					success: function (data) {
-						LoadData(data);
-					}
+				uc.form.LoadForm({
+					url: "../api/Produce/Get",
+					params: { id: query.Id },
+					onLoadSuccess: DataLoad
 				});
 
 				if (query.method == "mod") {
-					$("form.container fieldset#Base>legend").text("产品编辑");
-					$("#Code").textbox("readonly", true)
-				}
-				if (query.method == "view") {
-					$("form.container fieldset#Base>legend").text("产品详情");
-
+					$(".textbox-f[textboxname=Code]").textbox("readonly", true)
+				} else if (query.method == "view") {
 					$("#save").linkbutton("disable");
+					$("#principal_ratios_tb .easyui-linkbutton").linkbutton("disable");
 
-					Disabled("fieldset")
-
-					$("form.container fieldset#RepayPrincipals div#RepayPrincipal_tb>a>span").hide();
-				}
-			}
-			else {
-				$("form.container fieldset#Base>legend").text("产品录入");
-			}
-
-			// 禁用
-			function Disabled(selector) {
-				selector = selector || "fieldset";
-
-				$(selector).attr("disabled", "disabled");
-
-				$(selector).find(".easyui-combobox").combobox("disable");
-
-
-				if ($(selector).hasClass(".easyui-combobox")) {
-					$(selector).combobox("disable");
+					uc.form.Disabled();
 				}
 			}
 		}
 
-		function LoadData(data) {
-			// 加载基础信息
-			$("form.container fieldset#Base").form('load', data);
+		function Submit() {
+			if (!DataVaildate()) {
+				var data = DataBuild();
 
-			// 加载 偿还本金
-			var repayPrincipals = [];
-			$(data.RepayPrincipal).each(function (i, e) {
-				var tempRepay = {};
-				tempRepay.YearNum = "第" + (i + 1) + "年";
-				tempRepay.PrincipalRate = e;
-				tempRepay.MonthCoefficient = CalcPayment(e, 12);
-
-				repayPrincipals.push(tempRepay);
-			});
-
-			$("form.container fieldset#RepayPrincipals table#RepayPrincipal_dg").datagrid('loadData', repayPrincipals);
+				uc.form.Submit({
+					method: "auto",
+					data: data
+				});
+			}
 		}
 
-		function BuildData() {
-			var data = $("form.container fieldset#Base").serializeJson();
+		function DataLoad(data) {
+			$("#principal_ratios").datagrid("loadData", data.PrincipalRatios);
 
-			data.RepayPrincipal = [];
+			ResetPaymentFactors();
+		}
 
-			var repay = $("form.container fieldset#RepayPrincipals table#RepayPrincipal_dg").datagrid("getRows");
+		function DataBuild() {
+			var data = $("#produce_info").serializeJson();
 
-			$(repay).each(function (i, e) {
-				data.RepayPrincipal.push(parseFloat(e.PrincipalRate));
-			});
+			data.PrincipalRatios = $("#principal_ratios").datagrid("getRows");
 
 			return data;
 		}
 
-		function ValidData() {
-			var valid = $("form.container").form('validate');
+		function DataVaildate() {
+			var ratios = $("#principal_ratios").datagrid("getRows");
 
-			if (valid == false) {
-				$.messager.show({ msg: "请填写完必填项！" });
-
-				return valid;
-			}
-
-			var data = BuildData();
-			data.cal = 0;
-
-			$(data.RepayPrincipal).each(function (i, e) {
-				data.cal += parseInt(e * 100);
+			var sumRatio = 0;
+			$(ratios).each(function (i, item) {
+				sumRatio += item.Ratio;
 			});
 
-			valid = valid && (data.cal / 100 == 100);
-
-			if (valid == false) {
+			if (sumRatio !== 100) {
 				$.messager.show({ msg: "偿还本金比例之和应为100%！" });
 
-				return valid;
+				return false;
 			}
 
-			return valid;
-		}
-
-		function Submit() {
-			if (ValidData() == false) {
-				return;
-			}
-
-			var url = "../../api/NewProduce/";
-
-			if (query.method == "add") {
-				url += "Create";
-			}
-			else if (query.method == "mod") {
-				url += "Modify";
-			}
-
-			var data = BuildData();
-
-			$.ajax({
-				async: false,
-				type: 'POST',
-				data: data,
-				url: url,
-				statusCode: {
-					200: function (data) {
-						uc.form.Cancel();
-						top.$.messager.show({ msg: "提交成功" });
-					},
-					400: function (data) {
-						top.$.messager.show({ msg: data.responseJSON.Message });
-					}
-				}
-			});
+			return true;
 		}
 	</script>
 
-	<script type="text/javascript">
+	<script>
 		$.extend($.fn.validatebox.defaults.rules, {
 			Money: {
 				validator: function (value) {
@@ -234,26 +153,10 @@
 			}
 		});
 	</script>
-	<script>
-		function PMT(rate, nper, pv, fv, type) {
-			/*
-			rate - interest rate per month
-			nper - number of periods (months)
-			pv - present value
-			fv - future value (residual value)
-			type - payments occur at the start(0) / end(1) of the period
-			*/
-			fv = fv || 0;
-			type = type || 0;
-
-			pmt = (rate * (pv * Math.pow((rate + 1), nper) + fv)) / ((rate * type + 1) * (Math.pow((rate + 1), nper) - 1));
-			return pmt;
-		}
-	</script>
 </head>
 <body>
 	<form class="container">
-		<fieldset id="Base">
+		<fieldset id="produce_info">
 			<legend>产品信息</legend>
 
 			<div class="hidden">
@@ -262,121 +165,177 @@
 
 			<div class="row">
 				<div class="col-6">
-					<label>代码:</label>
-					<input name="Code" class="easyui-textbox" data-options="required:true,value:'',validType:['length[0,100]','AN']" />
+					<label>产品代码:</label>
+					<input name="Code" class="easyui-textbox" data-options="required:true,validType:['length[0,80]','AN']" />
 				</div>
-
-				<div class="col-6">
-					<label>名义利率:</label>
-					<input name="InterestRate" class="easyui-textbox" data-options="required:true,value:'0',validType:['Rate'],onChange:InterestRateChanged" />
-					<unit>%</unit>
-				</div>
-
 				<div class="col-6">
 					<label>产品类型:</label>
-					<input name="ProduceType" class="easyui-combobox" data-options="required:true,editable:false,
-                           valueField: 'value',
-		                   textField: 'text',
-                           data:[
-                           {value:'1',text:'纯分期'},
-                           {value:'2',text:'保证金加三期月供提前付'},
-                           {value:'3',text:'均匀贷'},
-                           {value:'4',text:'低息贷'},
-                           {value:'5',text:'保证金加分期'}
-                           ]
-                    " />
+					<select name="ProduceType" class="easyui-combobox" data-options="required:true,editable:false,valueField: 'ProduceType', textField: 'ProduceType'">
+						<option>纯分期</option>
+						<option>均匀贷</option>
+						<option>低息贷</option>
+						<option>保证金 + 分期</option>
+						<option>保证金 + 三期月供提前付</option>
+					</select>
 				</div>
+			</div>
 
+			<div class="row">
 				<div class="col-6">
-					<label>租赁方式:</label>
-					<input name="LeaseType" class="easyui-combobox" data-options="required:true,value:'',editable:false,
-                           valueField: 'value',
-		                   textField: 'text',
-                           data:[{value:'1',text:'回租'},{value:'2',text:'直租'}]
-                    " />
+					<label>月利率:</label>
+					<input id="rate" name="Rate" class="easyui-numberbox" data-options="required:true,precision:2,validType:'Rate',onChange:RateChanged" />
+					<unit>%</unit>
 				</div>
-
 				<div class="col-6">
-					<label>期限:</label>
-					<input name="TimeLimit" class="easyui-textbox" data-options="required:true,value:'',validType:['Integer','TimeLimit'],onChange:ChangeTimeLimit" />
-					<unit>月</unit>
+					<label>年利率:</label>
+					<input name="RateYear" class="easyui-textbox" data-options="validType:'Rate',onChange:RateYearChanged" />
+					<unit>%</unit>
 				</div>
+			</div>
 
+			<div class="row">
 				<div class="col-6">
-					<label>间隔:</label>
-					<input name="Interval" class="easyui-textbox" data-options="required:true,value:'1',validType:['Integer','length[0,6]']" />
-					<unit>月</unit>
+					<label>还款期限:</label>
+					<input id="periods" name="Periods" class="easyui-textbox" data-options="required:true,validType:'Integer',onChange:PeriodsChanged" />
+					<unit>期</unit>
 				</div>
+				<div class="col-6">
+					<label>月供先付期数:</label>
+					<input name="PeriodsPerpayment" class="easyui-textbox" data-options="required:true,value:'0',validType:'Integer'" />
+					<unit>期</unit>
+				</div>
+			</div>
 
+			<div class="row">
 				<div class="col-6">
 					<label>保证金:</label>
-					<input name="MarginRate" class="easyui-textbox" data-options="required:true,value:'',validType:['Money','length[0,5]','Ratio']" />
+					<input name="CustomerBailRatio" class="easyui-textbox" data-options="required:true,value:'0',validType:'Ratio'" />
 					<unit>%</unit>
 				</div>
-
 				<div class="col-6">
 					<label>手续费:</label>
-					<input name="Poundage" class="easyui-textbox" data-options="required:true,value:'',validType:['Money']" />
-					<unit>元</unit>
+					<input name="CustomerCostRatio" class="easyui-textbox" data-options="required:true,value:'0',validType:'Ratio'" />
+					<unit>%</unit>
 				</div>
+			</div>
 
+			<div class="row">
 				<div class="col-6">
 					<label>渠道返点:</label>
-					<input name="ChannelRate" class="easyui-textbox" data-options="required:true,value:'0',validType:['Money','length[0,5]','Ratio']" />
+					<input name="PartnersCommissionRatio" class="easyui-textbox" data-options="required:true,value:'0',validType:'Ratio'" />
 					<unit>%</unit>
 				</div>
-
 				<div class="col-6">
 					<label>员工提成:</label>
-					<input name="SalesmanRate" class="easyui-textbox" data-options="required:true,value:'0',validType:['Money','length[0,5]','Ratio']" />
+					<input name="EmployeeCommissionRatio" class="easyui-textbox" data-options="required:true,value:'0',validType:'Ratio'" />
 					<unit>%</unit>
 				</div>
+			</div>
 
+			<div class="row">
 				<div class="col-6">
 					<label>月费率:</label>
-					<input name="MonthRate" class="easyui-textbox" data-options="required:true,value:'0',validType:['Money','length[0,5]','Ratio'],onChange:LoadYearRate" />
+					<input name="CostRate" class="easyui-textbox" data-options="validType:'Rate',onChange:CostRateChanged" />
 					<unit>%</unit>
 				</div>
-
 				<div class="col-6">
 					<label>年费率:</label>
-					<input id="yearRate" class="easyui-textbox" data-options="required:true,value:'0',readonly:true,validType:['Money','length[0,5]','YearRate']" />
+					<input name="CostRateYear" class="easyui-textbox" data-options="readonly:true" />
 					<unit>%</unit>
 				</div>
 			</div>
 			<script>
-				function InterestRateChanged() {
-					var rate = $(this).textbox("getValue");
+				// 获取月利率
+				function getRate() {
+					var rate = $("#rate").textbox("getValue");
 
-					var ratios = $("#RepayPrincipal_dg").datagrid("getRows");
-					$(ratios).each(function (i, item) {
-						item.MonthCoefficient = CalcPayment(item.PrincipalRate, 12);
-					});
-
-					$("#RepayPrincipal_dg").datagrid("loadData", ratios);
+					return parseFloat(rate) / 100;
 				}
-				function ChangeTimeLimit() {
-					var months = $("form.container fieldset#Base input[textboxname=TimeLimit]").textbox('getValue');
 
-					if (!months) {
-						return false;
+				function RateChanged(newValue, oldValue) {
+					var rate = newValue;
+
+					// 设置年利率
+					var rateofyear = RateMTY(rate);
+					$(".textbox-f[textboxname=RateYear]").textbox("initValue", rateofyear);
+
+					// 重设月供系数
+					ResetPaymentFactors();
+				}
+
+				function RateYearChanged(newValue, oldValue) {
+					var rate = newValue;
+
+					// 设置月利率
+					var rateofmonth = RateYTM(rate);
+					$("#rate").textbox("setValue", rateofmonth);
+				}
+
+				function PeriodsChanged(newValue, oldValue) {
+					var nperiods = parseInt(newValue);
+					var operiods = parseInt(oldValue);
+
+					if (!nperiods) {
+						return true;
 					}
 
-					var years = Math.ceil(months / 12);
+					var nyears = Math.ceil(nperiods / 12);
 
-					var rows = $("#RepayPrincipal_dg").datagrid("getRows");
-					if (rows.length == years) {
-						return false;
+					if (nyears == Math.ceil(operiods / 12)) {
+						return true;
 					}
 
-					// 移除所有行
-					RemoveAllRepayPrincipal();
+					SetPrincipalRatios(nyears);
+				}
 
+				function CostRateChanged(newValue, oldValue) {
+					var rate = newValue;
+
+					// 设置年费率
+					var rateofyear = RateMTY(rate);
+					$(".textbox-f[textboxname=CostRateYear]").textbox("initValue", rateofyear);
+				}
+			</script>
+		</fieldset>
+
+		<fieldset id="produce_principal_ratios">
+			<legend>本金比例分配</legend>
+
+			<table id="principal_ratios" class="easyui-datagrid" data-options="
+				   singleSelect: true,
+                   rownumbers: true,
+                   toolbar: '#principal_ratios_tb',
+                   onDblClickRow: onEdit,
+                   onEndEdit: onEndEdit
+                   ">
+				<thead>
+					<tr>
+						<th data-options="field:'Title',width:260,align:'center',formatter:titleFormatter">期次</th>
+						<th data-options="field:'Ratio',width:260,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:true,
+                                validType:'Ratio'
+                            }
+                        }">偿还本金比例（%）</th>
+						<th data-options="field:'Factor',width:260,align:'center'">月供系数</th>
+					</tr>
+				</thead>
+			</table>
+
+			<div id="principal_ratios_tb">
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true,onClick:changeRatios">设置</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:acceptRatios">确定</a>
+			</div>
+
+			<script>
+				// 设置融资比例
+				function SetPrincipalRatios(years) {
 					var sumRatio = 10000;
 					var perRatio = Math.floor(sumRatio / years);
 					var fstRatio = (sumRatio - (perRatio * years) + perRatio);
 
-					sumRatio /= 100;
 					perRatio /= 100;
 					fstRatio /= 100;
 
@@ -385,66 +344,47 @@
 						ratios.push(perRatio);
 					}
 
-					$(ratios).each(function (i, ratio) {
-						AppendRepayPrincipal(i + 1, ratio);
-						AcceptRepayPrincipal();
+					ratios = $(ratios).map(function (i, ratio) {
+						return {
+							Period: i + 1,
+							Ratio: ratio
+						};
 					});
+
+					$("#principal_ratios").datagrid("loadData", ratios);
+
+					ResetPaymentFactors();
 				}
-				function LoadYearRate(value) {
-					var yearRate = 0;
 
-					if ($("form.container fieldset#Base input[textboxname=MonthRate]").textbox("isValid")) {
-						yearRate = Math.round(value * 100) * 12 / 100;
-					}
+				// 重设月供系数
+				function ResetPaymentFactors() {
+					var rate = getRate();
 
-					$("form.container fieldset#Base input#yearRate").textbox("setValue", yearRate);
+					var ratios = $("#principal_ratios").datagrid("getRows");
+					$(ratios).each(function (i, item) {
+						item.Factor = CalculatePaymentFactor(rate, item.Ratio);
+					});
+
+					$("#principal_ratios").datagrid("loadData", ratios)
 				}
-			</script>
-		</fieldset>
 
-		<fieldset id="RepayPrincipals">
-			<legend>比例分配</legend>
-			<table id="RepayPrincipal_dg" class="easyui-datagrid" data-options="singleSelect: true,
-                   rownumbers: true,
-                   toolbar: '#RepayPrincipal_tb',
-                   onDblClickRow: onEdit,
-                   onEndEdit: onEndEdit
-                   ">
-				<thead>
-					<tr>
-						<th data-options="field:'Id',hidden:true"></th>
-						<th data-options="field:'YearNum',width:260,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                readonly:true
-                            }
-                        }">年</th>
-						<th data-options="field:'PrincipalRate',width:260,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:true,
-                                validType:'Money'
-                            }
-                        }">偿还本金比例（%）</th>
-						<th data-options="field:'MonthCoefficient',width:260,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                readonly:true
-                            }
-                        }">月供系数</th>
-					</tr>
-				</thead>
-			</table>
+				// 计算月供系数
+				function CalculatePaymentFactor(rate, ratio) {
+					var principal = 10000;
+					var periods = 12;
 
-			<div id="RepayPrincipal_tb" style="display:none">
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true,onClick:ModifyRepayPrincipal">修改</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:AcceptRepayPrincipal">确定</a>
-			</div>
+					var pv = 10000 * (parseFloat(ratio) / 100);
+					var payment = PMT(rate, periods, pv);
 
-			<script>
+					payment = (Math.round(payment * 100) / 100) || 0;
+
+					return payment;
+				}
+
+				function titleFormatter(value, row, index) {
+					return "第" + row.Period + "年";
+				}
+
 				var editIndex = undefined;
 
 				function endEditing() {
@@ -452,88 +392,73 @@
 						return true;
 					}
 
-					if ($("#RepayPrincipal_dg").datagrid("validateRow", editIndex)) {
-						$("#RepayPrincipal_dg").datagrid("endEdit", editIndex);
-
-						editIndex = editIndex;
-
+					if ($("#principal_ratios").datagrid("validateRow", editIndex)) {
+						$("#principal_ratios").datagrid("endEdit", editIndex);
+						editIndex = undefined;
 						return true;
 					}
 					else {
-						top.$.messager.show({ msg: '请填写完正在编辑的融资项' });
-
 						return false;
 					}
 				}
 
 				function onEdit(index) {
+					if (editIndex == index) { return; }
+
 					// 禁用状态下，阻止编辑
-					if ($("form.container fieldset#RepayPrincipals").attr("disabled") == "disabled") {
+					if ($("#produce_principal_ratios").attr("disabled") == "disabled") {
 						return false;
 					}
 
 					if (endEditing()) {
-						$("#RepayPrincipal_dg").datagrid("beginEdit", index);
+						$("#principal_ratios").datagrid('selectRow', index)
+							.datagrid("beginEdit", index);
+
+						var ed = $('#principal_ratios').datagrid('getEditor', { index: index, field: "Ratio" });
+						if (ed) {
+							($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+						}
 
 						editIndex = index;
 					}
 					else {
 						setTimeout(function () {
-							$("#RepayPrincipal_dg").datagrid("selectRow", editIndex);
+							$("#principal_ratios").datagrid("selectRow", editIndex);
 						}, 0);
 					}
 				}
 
 				function onEndEdit(index, row) {
-					row.MonthCoefficient = CalcPayment(row.PrincipalRate, 12);
+					var rate = getRate();
+
+					row.Factor = CalculatePaymentFactor(rate, row.Ratio);
 				}
 
-				function AppendRepayPrincipal(i, rate) {
-					if (endEditing()) {
-						$("#RepayPrincipal_dg").datagrid("appendRow", {
-							YearNum: '第' + i + '年',
-							PrincipalRate: rate
-						});
-
-						editIndex = $("#RepayPrincipal_dg").datagrid("getRows").length - 1;
-
-						$("#RepayPrincipal_dg").datagrid("selectRow", editIndex)
-							.datagrid("beginEdit", editIndex);
-					}
-				}
-
-				function ModifyRepayPrincipal() {
-					var row = $("#RepayPrincipal_dg").datagrid("getSelected");
-					var index = $("#RepayPrincipal_dg").datagrid("getRowIndex", row);
+				function changeRatios() {
+					var row = $("#principal_ratios").datagrid("getSelected");
+					var index = $("#principal_ratios").datagrid("getRowIndex", row);
 
 					if (index >= 0) {
 						onEdit(index);
 					}
 				}
 
-				function AcceptRepayPrincipal() {
+				function acceptRatios() {
 					if (endEditing()) {
-						$("#RepayPrincipal_dg").datagrid("acceptChanges");
+						$("#principal_ratios").datagrid("acceptChanges");
 					}
 				}
 
-				function RemoveAllRepayPrincipal() {
-					var count = $("#RepayPrincipal_dg").datagrid("getRows").length;
+				document.onkeydown = function (event) {
+					var e = event || window.event || arguments.callee.caller.arguments[0];
 
-					for (var i = 0; i < count; i++) {
-						$("#RepayPrincipal_dg").datagrid("deleteRow", 0);
+					// enter 键
+					if (e && e.keyCode == 13) {
+						if (editIndex) {
+							acceptRatios();
+						}
 					}
-				}
-
-				function CalcPayment(ratio, months) {
-					var rate = (parseFloat($("input[textboxname=InterestRate]").textbox("getValue")) / 12) / 100;
-					var nper = parseInt(months / ($("input[textboxname=Interval]").textbox("getValue") || 1));
-					var pv = 10000 * parseFloat(ratio) / 100;
-
-					var payment = PMT(rate, nper, pv);
-
-					return (Math.round(payment * 100) / 100);
-				}
+				};
 			</script>
 		</fieldset>
 

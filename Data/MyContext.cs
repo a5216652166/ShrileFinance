@@ -80,8 +80,8 @@
                 .Add(new DatagramFileConfiguration())
                 .Add(new DatagramConfiguration())
                 .Add(new RecordConfiguration())
+                .Add(new SegmentConfiguration())
                 .Add(new TraceConfiguration())
-                .Add(new System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Core.Entities.CreditInvestigation.Segment.Segment>().ToTable("CIDG_Segment"))
                 .Add(new BigEventSegmentConfiguration())
                 .Add(new ConcernBaseSegmentConfiguration())
                 .Add(new LitigationSegmentConfiguration())
@@ -122,7 +122,7 @@
 
             // Produce And Partner Configurations
             modelBuilder.Configurations
-                .Add(new ProduceConfiguration())
+                .Add(new ModelConfigurations.Produce.ProduceConfiguration())
                 .Add(new PartnerConfiguration());
 
             // Finance Configurations

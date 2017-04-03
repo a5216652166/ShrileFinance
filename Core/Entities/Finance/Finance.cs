@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
+    using Core.Produce;
     using Interfaces;
 
     public class Finance : Entity, IAggregateRoot, IProcessable
