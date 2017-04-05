@@ -15,6 +15,11 @@
         public Guid? Id { get; set; }
 
         /// <summary>
+        /// 产品标识
+        /// </summary>
+        public Guid ProduceId { get; set; }
+
+        /// <summary>
         /// 厂商指导价
         /// </summary>
         public decimal ManufacturerGuidePrice { get; set; }

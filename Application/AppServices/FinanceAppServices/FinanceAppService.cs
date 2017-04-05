@@ -202,7 +202,7 @@
             finance.CreateBy = userManager.CurrentUser();
             finance.CreateOf = partnerRepository.GetByUser(userManager.CurrentUser());
 
-            finance.Produce = produceRepository.Get(value.Produce.Id);
+            finance.Produce = produceRepository.Get(value.ProduceId);
 
             financeRepository.Create(finance);
             financeRepository.Commit();
@@ -237,6 +237,7 @@
 
             new UpdateBind().Bind(finance.Applicant, model.Applicant);
 
+            finance.Produce = produceRepository.Get(model.ProduceId);
             finance.CreateBy = userManager.CurrentUser();
             finance.CreateOf = partnerRepository.GetByUser(userManager.CurrentUser());
             financeRepository.Modify(finance);

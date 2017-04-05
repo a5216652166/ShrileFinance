@@ -54,12 +54,10 @@
 	<script type="text/javascript">
 		uc.form = new UCForm(".container");
 
-		$(function () {
-			Init();
-		});
+		$(pageLoad);
 
 		// 初始化
-		function Init() {
+		function pageLoad() {
 			// 初始化基本信息
 			BaseInit();
 
@@ -67,9 +65,8 @@
 				uc.form.DisableForm();
 			}
 
-			if (parent.flow.RootKey != undefined) {
+			if (parent.flow.RootKey) {
 				$.ajax({
-					async: false,
 					data: { Id: parent.flow.RootKey },
 					type: "GET",
 					url: "../api/FinanceAuidt/Get",
@@ -82,8 +79,6 @@
 			}
 			else {
 				$.ajax({
-					async: false,
-					data: {},
 					type: "GET",
 					url: "../api/FinanceAuidt/GetParentAndUser",
 					statusCode: {
@@ -95,8 +90,6 @@
 					}
 				});
 			}
-
-			////AutoSwitchProperties(false);
 		}
 
 		//构建数据
@@ -137,7 +130,7 @@
 			data.Produce = dataBuildProduce();
 
 			// 构建融资项信息
-			data.FinancialItem = BuildFinanceItemData();
+			data.FinancialItem = dataBuildFinanceItems();
 
 			return data;
 		}
@@ -151,7 +144,7 @@
 
 		// 数据加载
 		function LoadData(data) {
-			if (data == undefined || data == null) {
+			if (!data) {
 				return false;
 			}
 
@@ -164,7 +157,10 @@
 			dataLoadProduce(data.Produce);
 
 			// 加载融资项信息
-			LoadFinanceItemInfo(data.FinancialItem);
+			LoadFinanceItemInfo({
+				FinanceItems: data.FinanceItems,
+				SelfPrincipal: data.SelfPrincipal
+			});
 
 			//加载联系人
 			LoadApplicant(data.Applicant);
@@ -586,91 +582,102 @@
 			<input id="ac-2" class="ac-1" name="accordion-1" type="radio" />
 			<label for="ac-2" class="ac">租赁信息</label>
 			<article class="produce">
-				<fieldset id="financeItem">
+				<fieldset id="finance_item" style="margin-bottom:0px;padding:0 20px">
 					<legend>融资项</legend>
-					<table id="financeItem_dg" class="easyui-datagrid" data-options="singleSelect: true,
-                               rownumbers: true,
-                               toolbar: '#financeItem_tb',
-                               onDblClickRow: onEdit,
-                               onEndEdit: onEndEdit,
-                               rowStyler: financeItemStyler
-                               ">
+					<table id="finance_item_dg" class="easyui-datagrid" data-options="
+						height:200,
+						singleSelect: true,
+						rownumbers: true,
+						toolbar: '#finance_item_dg_tb',
+						onDblClickRow: onEdit,
+						onEndEdit: onEndEdit
+						">
 						<thead>
 							<tr>
-								<th data-options="field:'Id',hidden:true"></th>
-								<th data-options="field:'Name',width:160,align:'center',
-                        editor:{
-                            type:'combobox',
-                            options:{
-                                required:true,
-                                validType:'',
-                                valueField:'text',
-                                textField:'text',
-                                data:[
-                                {'text':'车价'},
-                                {'text':'购置税'},
-                                {'text':'车船税'},
-                                {'text':'GPS费用'}
-                                ]
-                            }
-                        }">项目名称</th>
-
-								<th data-options="field:'FinancialAmount',width:140,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:true,
-                                validType:'Money'
-                            }
-                        }">融资额（元）</th>
-
-								<th data-options="field:'Principal',width:140,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:'Money'
-                            }
-                        }">融资本金（元）</th>
-
-								<th data-options="field:'Rate',width:140,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:'Rate'
-                            }
-                        }">税率（%）</th>
-
-								<th data-options="field:'VATamount',width:140,align:'center',
-                            editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:'Money'
-                            },
-                        }">增值税进项税额（元）</th>
-
-								<th data-options="field:'InvoiceAmount',width:140,align:'center',
-                            editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:'Money'
-                            },
-                        }">发票金额（元）</th>
+								<th data-options="field:'Name',width:400,align:'center',
+								editor:{
+									type:'combobox',
+									options:{
+										required:true,
+										valueField:'text',
+										textField:'text',
+										data:[
+											{'text':'裸车价'},
+											{'text':'购置税'},
+											{'text':'商业险 + 交强险'},
+											{'text':'车船税'},
+											{'text':'延保'},
+											{'text':'保养'},
+											{'text':'GPS'},
+											{'text':'装饰装潢'}
+										]
+									}
+								}">项目</th>
+								<th data-options="field:'Principal',width:400,align:'center',
+								editor:{
+									type:'textbox',
+									options:{
+										required:true,
+										validType:'Price'
+									}
+								}">融资额（元）</th>
 							</tr>
 						</thead>
 					</table>
 
-					<div id="financeItem_tb" style="display:none">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:AppendfinanceItem">添加</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true,onClick:ModifyfinanceItem">修改</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:RemovefinanceItem">移除</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:AcceptfinanceItem">确定</a>
+					<div id="finance_item_dg_tb">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:appendFinanceItem">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true,onClick:changeFinanceItem">修改</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:removeFinanceItem">移除</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:acceptFinanceItem">确定</a>
 					</div>
 
-					<script type="text/javascript">
+					<div class="row">
+						<div class="col-6">
+							<label>客户自付金额:</label>
+							<input id="SelfPrincipal" class="easyui-textbox" required data-options="value:0,validType:'Price',onChange:CalculateTotalPrincipal" />
+							<unit>元</unit>
+						</div>
+
+						<div class="col-6">
+							<label>融资总额:</label>
+							<input id="TotalPrincipal" class="easyui-textbox" readonly />
+							<unit>元</unit>
+						</div>
+					</div>
+
+					<script>
+						function dataBuildFinanceItems() {
+							var rows = $("#finance_item_dg").datagrid("getRows");
+							var selfPrincipal = $("#SelfPrincipal").textbox("getValue");
+
+							return {
+								FinanceItems: $(rows).map(function (i, e) {
+									return e;
+								}),
+								SelfPrincipal: selfPrincipal
+							};
+						}
+
+						function loadDataFinanceItems(data) {
+							$("#finance_item_dg").datagrid("loadData", data.FinanceItems);
+							$("#SelfPrincipal").textbox("setValue", data.SelfPrincipal);
+						}
+
+						function CalculateTotalPrincipal() {
+							var totalPrincipal = 0;
+
+							$($("#finance_item_dg").datagrid("getRows")).each(function (i, e) {
+								totalPrincipal += parseFloat(e.Principal);
+							});
+
+							var selfPrincipal = $("#SelfPrincipal").textbox("getValue");
+
+							totalPrincipal -= parseFloat(selfPrincipal);
+
+							$("#TotalPrincipal").textbox("setValue", totalPrincipal);
+						}
+
 						var editIndex = undefined;
 
 						function endEditing() {
@@ -678,34 +685,38 @@
 								return true;
 							}
 
-							if ($("#financeItem_dg").datagrid("validateRow", editIndex)) {
-								$("#financeItem_dg").datagrid("endEdit", editIndex);
-
-								editIndex = editIndex;
-
+							if ($("#finance_item_dg").datagrid("validateRow", editIndex)) {
+								$("#finance_item_dg").datagrid("endEdit", editIndex);
+								editIndex = undefined;
 								return true;
 							}
 							else {
-								top.$.messager.show({ msg: '请填写完正在编辑的融资项' });
-
 								return false;
 							}
 						}
 
-						function onEdit(index) {
+						function onEdit(index, field) {
+							if (editIndex == index) { return; }
+
 							// 禁用状态下，阻止编辑
-							if ($("form.container fieldset#financeItem").attr("disabled") == "disabled") {
+							if ($("#finance_item").attr("disabled") == "disabled") {
 								return false;
 							}
 
 							if (endEditing()) {
-								$("#financeItem_dg").datagrid("beginEdit", index);
+								$("#finance_item_dg").datagrid("selectRow", index)
+									.datagrid("beginEdit", index);
+
+								var ed = $("#finance_item_dg").datagrid("getEditor", { index: index, field: field || "Ratio" });
+								if (ed) {
+									($(ed.target).data("textbox") ? $(ed.target).textbox("textbox") : $(ed.target)).focus();
+								}
 
 								editIndex = index;
 							}
 							else {
 								setTimeout(function () {
-									$("#financeItem_dg").datagrid("selectRow", editIndex);
+									$("#finance_item_dg").datagrid("selectRow", editIndex);
 								}, 0);
 							}
 						}
@@ -713,133 +724,58 @@
 						function onEndEdit(index, row) {
 						}
 
-						function AppendfinanceItem() {
+						function appendFinanceItem() {
 							if (endEditing()) {
-								$("#financeItem_dg").datagrid("appendRow", {
-									Name: '',
-									Principal: '',
-									FinancialAmount: '',
-									Rate: '',
-									VATamount: '',
-									InvoiceAmount: ''
-								});
+								$("#finance_item_dg").datagrid("appendRow", {});
 
-								editIndex = $("#financeItem_dg").datagrid("getRows").length - 1;
+								editIndex = $("#finance_item_dg").datagrid("getRows").length - 1;
 
-								$("#financeItem_dg").datagrid("selectRow", editIndex)
+								$("#finance_item_dg").datagrid("selectRow", editIndex)
 									.datagrid("beginEdit", editIndex);
 							}
 						}
 
-						function ModifyfinanceItem() {
-							var row = $("#financeItem_dg").datagrid("getSelected");
-							var index = $("#financeItem_dg").datagrid("getRowIndex", row);
+						function changeFinanceItem() {
+							var row = $("#finance_item_dg").datagrid("getSelected");
+							var index = $("#finance_item_dg").datagrid("getRowIndex", row);
 
 							if (index >= 0) {
 								onEdit(index);
 							}
 						}
 
-						function RemovefinanceItem() {
+						function removeFinanceItem() {
+							var row = $("#finance_item_dg").datagrid("getSelected");
+							var index = $("#finance_item_dg").datagrid("getRowIndex", row);
+
+							if (!(index >= 0)) {
+								return false;
+							}
+
+							$("#finance_item_dg").datagrid("deleteRow", index);
+
 							editIndex = undefined;
-
-							if ($("#financeItem_dg").datagrid('getRows').length == 0) {
-								return;
-							}
-
-							var row = $("#financeItem_dg").datagrid("getSelected");
-							var index = $("#financeItem_dg").datagrid("getRowIndex", row);
-
-							$("#financeItem_dg").datagrid("deleteRow", index);
-
-							// 加载融资总额
-							LoanTotalFinancialAmount();
+							CalculateTotalPrincipal();
 						}
 
-						function AcceptfinanceItem() {
+						function acceptFinanceItem() {
 							if (endEditing()) {
+								$("#finance_item_dg").datagrid("acceptChanges");
 
-								$("#financeItem_dg").datagrid("acceptChanges");
-
-								if ($("#financeItem_dg").datagrid('getRows').length > 0) {
-									// 加载融资总额
-									LoanTotalFinancialAmount();
-								}
+								CalculateTotalPrincipal();
 							}
 						}
 
-						function financeItemStyler(index, row) {
-						}
-					</script>
+						document.onkeydown = function (event) {
+							var e = event || window.event || arguments.callee.caller.arguments[0];
 
-					<div class="row" style="display:none">
-						<div class="col-6"></div>
-						<div class="col-6">
-							<label>融资总额:</label>
-							<input class="easyui-textbox" id="TotalFinancialAmount" data-options="readonly:false,value:'',required:true,validType:['Money'] " />
-							<unit>元</unit>
-							<script type="text/javascript">
-								// 加载融资总额
-								function LoanTotalFinancialAmount() {
-									var produceLessType = $('form fieldset#produce input#produceLeaseType').val();
-									var AmountArray = [];
-
-									$($("#financeItem_dg").datagrid('getRows')).each(function (i, e) {
-										if (produceLessType == "回租") {
-											AmountArray.push(e.FinancialAmount == undefined ? 0 : e.FinancialAmount);
-										}
-										else {
-											AmountArray.push(e.Principal == undefined ? 0 : e.Principal);
-										}
-									});
-
-									if (IsArray(AmountArray) == true) {
-										if (AmountArray.length == 0) {
-											$("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', false).textbox('setValue', '');
-										}
-										else {
-											$("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', true).textbox('setValue', '');
-
-											var total = 0;
-
-											$(AmountArray).each(function (i, e) {
-												if (isNaN(parseFloat(e)) == false) {
-													total += parseFloat(e) * 100;
-												}
-											});
-
-											total = total / 100;
-
-											$("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', total);
-										}
-									}
-
-									function IsArray(obj) {
-										return Object.prototype.toString.call(obj) === '[object Array]';
-									}
+							// enter 键
+							if (e && e.keyCode == 13) {
+								if (editIndex != undefined) {
+									acceptFinanceItem();
 								}
-							</script>
-						</div>
-					</div>
-
-					<script>
-
-								// 构建融资项信息数据
-								function BuildFinanceItemData() {
-									var data = $("form fieldset#financeItem table#financeItem_dg").datagrid('getRows');
-
-									return data;
-								}
-								// 加载融资项信息(参数：data）
-								function LoadFinanceItemInfo(data) {
-									if (data == undefined || data == null) {
-										return false;
-									}
-
-									$("form fieldset#financeItem table#financeItem_dg").datagrid('loadData', data);
-
-									LoanTotalFinancialAmount();
-								}
+							}
+						};
 					</script>
 				</fieldset>
 
@@ -916,7 +852,7 @@
 						<div class="col-12">
 							<label>月供系数:</label>
 
-							<table id="principal_ratios" class="easyui-datagrid" data-options="singleSelect: true, rownumbers: true">
+							<table id="principal_ratios" class="easyui-datagrid" data-options="height:152, singleSelect: true, rownumbers: true">
 								<thead>
 									<tr>
 										<th data-options="field:'Title',width:260,align:'center',formatter:titleFormatter">期次</th>
@@ -969,57 +905,57 @@
 					</div>
 
 					<script>
-								// 构建产品信息数据
-								function dataBuildProduce() {
-									return {
-										ProduceId: $("#produce input[name=ProduceId]").val()
-									};
-								}
+						// 构建产品信息数据
+						function dataBuildProduce() {
+							return {
+								ProduceId: $("#produce input[name=ProduceId]").val()
+							};
+						}
 
-								// 加载产品信息(参数：data）
-								function dataLoadProduce(data) {
-									if (!data) {
-										return false;
-									}
+						// 加载产品信息(参数：data）
+						function dataLoadProduce(data) {
+							if (!data) {
+								return false;
+							}
 
-									$("#produce").form("load", data);
+							$("#produce").form("load", data);
 
-									$("#principal_ratios").datagrid("loadData", data.PrincipalRatios);
-								}
+							$("#principal_ratios").datagrid("loadData", data.PrincipalRatios);
+						}
 
-								// 选择产品
-								function ShowProduceList() {
-									$("#produce_dialog").dialog('open');
+						// 选择产品
+						function ShowProduceList() {
+							$("#produce_dialog").dialog('open');
 
-									$("#produce_dialog").panel({ top: $(document).scrollTop() + Math.abs(($(window).height() - 300) * 0.5) });
-								}
+							$("#produce_dialog").panel({ top: $(document).scrollTop() + Math.abs(($(window).height() - 300) * 0.5) });
+						}
 
-								// principal_ratios
-								function titleFormatter(value, row, index) {
-									return "第" + row.Period + "年";
-								}
+						// principal_ratios
+						function titleFormatter(value, row, index) {
+							return "第" + row.Period + "年";
+						}
 
-								// ProduceGrid
-								var produceGrid = new UCGrid("#dg");
+						// ProduceGrid
+						var produceGrid = new UCGrid("#dg");
 
-								// 产品筛选
-								function SetProduceFilters(param) {
-									param.searchString = $("#produceSearchString").textbox("getValue");
-								}
+						// 产品筛选
+						function SetProduceFilters(param) {
+							param.searchString = $("#produceSearchString").textbox("getValue");
+						}
 
-								// 选择产品
-								function SelectProduce() {
-									var row = $("#produce_dg").datagrid("getSelected");
+						// 选择产品
+						function SelectProduce() {
+							var row = $("#produce_dg").datagrid("getSelected");
 
-									if (row) {
-										dataLoadProduce(row);
+							if (row) {
+								dataLoadProduce(row);
 
-										$("#produce_dialog").dialog('close');
-									}
-									else {
-										$.messager.show({ msg: "请选中一行!" });
-									}
-								}
+								$("#produce_dialog").dialog('close');
+							}
+							else {
+								$.messager.show({ msg: "请选中一行!" });
+							}
+						}
 					</script>
 				</fieldset>
 			</article>
