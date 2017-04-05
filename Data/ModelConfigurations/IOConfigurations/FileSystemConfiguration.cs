@@ -1,5 +1,6 @@
 ﻿namespace Data.ModelConfigurations.IOConfigurations
 {
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
     using Core.Entities.IO;
 
@@ -8,6 +9,7 @@
         public FileSystemConfiguration()
         {
             HasKey(m => m.Id);
+            Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(m => m.Name).IsRequired().HasMaxLength(36);
             Property(m => m.OldName).IsRequired().HasMaxLength(100);

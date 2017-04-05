@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
     using Core.Entities.Finance.Financial;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
@@ -47,10 +46,5 @@
         /// 融资项
         /// </summary>
         public IEnumerable<FinancialItemViewModel> FinancialItem { get; set; } = new HashSet<FinancialItemViewModel>();
-
-        /// <summary>
-        /// 产品
-        /// </summary>
-        public ProduceViewModel NewProduce { get; set; }
     }
 }

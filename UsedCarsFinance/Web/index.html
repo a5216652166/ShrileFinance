@@ -27,16 +27,12 @@
         <h1>晟融国际融资业务系统</h1>
         <div>
             <ul>
-                <li style="position:relative;text-align:center;padding:0;" onclick=PromptClick() ><span id="message" class="spanPostion">0</span><img src="Process/Img/信封1.png" style="text-align:center" /></li>
-                <li>欢迎您，<span id="role_name"></span>：<span id="user_name"></span></li>
-                <li><a id="myinfo" href="javascript:void(0);" onclick="myinfo()">我的信息</a></li>
+                <li>
+					欢迎您，<span id="role_name"></span>：
+					<a id="user_name" href="javascript:void(0);" onclick="myinfo()"></a>
+				</li>
                 <li><a id="logout" href="javascript:void(0);" onclick="logout()">退出</a></li>
             </ul>
-        </div>
-
-        <div>
-            <input id="user_id" type="hidden" />
-            <input id="role_id" type="hidden" />
         </div>
     </div>
 

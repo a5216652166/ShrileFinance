@@ -37,7 +37,7 @@
 
             return Ok(new
             {
-                rows = list,
+                rows = list.OrderBy(m => m.Username),
                 total = list.TotalItemCount
             });
         }
@@ -76,21 +76,39 @@
                 return BadRequest(ModelState);
             }
 
+            if (accountAppService.CheckUsername(model.Username))
+            {
+                return BadRequest("用户名已存在");
+            }
+
+            var result = default(IdentityResult);
+
             try
             {
-                var result = await accountAppService.CreateUserAsync(model);
-
-                if (!result.Succeeded)
-                {
-                    return GetErrorResult(result);
-                }
-
-                return Ok();
+                result = await accountAppService.CreateUserAsync(model);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+
+            return Ok();
+
+            ////try
+            ////{
+            ////    result = await accountAppService.CreateUserAsync(model);
+
+            ////    if (!result.Succeeded)
+            ////    {
+            ////        return GetErrorResult(result);
+            ////    }
+
+            ////    return Ok();
+            ////}
+            ////catch (Exception ex)
+            ////{
+            ////    return BadRequest(ex.Message);
+            ////}
         }
 
         /// <summary>
@@ -314,6 +332,11 @@
         [HttpPost]
         public IHttpActionResult PermissionEdit(MenuPermissionsInfo model)
         {
+            if (string.IsNullOrEmpty(model.RoleId))
+            {
+                return BadRequest("角色不能为空.");
+            }
+
             BLL.User.Permissions menuPermissions = new BLL.User.Permissions();
 
             return menuPermissions.MenuPermissionEdit(model) ? (IHttpActionResult)Ok() : BadRequest("保存失败");

@@ -14,7 +14,7 @@
 
             Property(m => m.LoanPrincipal).HasMaxLength(20);
 
-            Property(m => m.CreditAccountName).HasMaxLength(20);
+            Property(m => m.CreditAccountName).HasMaxLength(null);
 
             Property(m => m.CreditBankName).HasMaxLength(40);
 

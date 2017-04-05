@@ -1,7 +1,6 @@
 ﻿namespace Data.Repositories
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
@@ -14,51 +13,62 @@
     public abstract class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : Entity, IAggregateRoot
     {
-        private readonly DbContext context;
-
         protected BaseRepository(MyContext context)
         {
-            this.context = context;
+            Context = context;
+            Entities = context.Set<TEntity>();
         }
 
-        protected DbContext Context => context;
+        protected DbContext Context { get; private set; }
 
-        private DbSet<TEntity> Entities => context.Set<TEntity>();
+        protected DbSet<TEntity> Entities { get; private set; }
 
-        void IRepository<TEntity>.Modify(TEntity entity) =>
-           Context.Entry(entity).State = EntityState.Modified;
+        public virtual IQueryable<TEntity> GetAll(
+            Expression<Func<TEntity, bool>> predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        {
+            IQueryable<TEntity> query = Entities;
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            return query;
+        }
 
         public virtual TEntity Get(Guid key)
         {
-            if (key == Guid.Empty)
-            {
-                return default(TEntity);
-            }
-
-            return Entities?.FindAsync(key).Result;
+            return Entities.Find(key);
         }
-
-        public virtual IQueryable<TEntity> GetAll() =>
-            Filter(Entities);
-
-        public virtual IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate) =>
-            Filter(Entities.Where(predicate));
-
-        public virtual IPagedList<TEntity> PagedList(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize) =>
-            GetAll(predicate).OrderByDescending(m => m.Id).ToPagedList(pageNumber, pageSize);
 
         public virtual Guid Create(TEntity entity)
         {
-            if (entity.Id == Guid.Empty)
-            {
-                entity.Id = Guid.NewGuid();
-            }
+            Entities.Add(entity);
 
-            return Entities.Add(entity).Id;
+            return entity.Id;
         }
 
-        public virtual void Remove(TEntity entity) =>
-            Context.Entry(entity).State = EntityState.Deleted;
+        public virtual void Modify(TEntity entity)
+        {
+            Entities.Attach(entity);
+            Context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public virtual void Remove(TEntity entity)
+        {
+            if (Context.Entry(entity).State == EntityState.Deleted)
+            {
+                Entities.Attach(entity);
+            }
+
+            Entities.Remove(entity);
+        }
 
         public virtual int Commit()
         {
@@ -67,33 +77,9 @@
             return Context.SaveChanges();
         }
 
-        void IRepository<TEntity>.RemoveOldEntity(IEnumerable<TEntity> entities)
+        protected IPagedList<TEntity> ToPagedList(IQueryable<TEntity> superset, int pageNumber, int pageSize)
         {
-            foreach (var item in entities)
-            {
-                context.Entry(item).State = EntityState.Deleted;
-            }
-        }
-
-        private IQueryable<TEntity> Filter(IQueryable<TEntity> entities)
-        {
-            var entitieList = new List<TEntity>();
-
-            if (entities != null && entities.Count() > 0)
-            {
-                foreach (var item in entities)
-                {
-                    entitieList.Add(item);
-
-                    ////// 如果实现了IProcessable接口，且Hidden属性值为true，则过滤该条数据
-                    ////if (item is IProcessable && ((IProcessable)item).Hidden == HiddenEnum.审核中)
-                    ////{
-                    ////    entitieList.Remove(item);
-                    ////}
-                }
-            }
-
-            return entitieList.AsQueryable();
+            return superset.ToPagedList(pageNumber, pageSize);
         }
 
         private void ValidCommit()
@@ -108,11 +94,11 @@
                 {
                     foreach (var error in errorEntity.ValidationErrors)
                     {
-                        errorBuild.Append(error.PropertyName + "\t" + error.ErrorMessage + "\r\n");
+                        errorBuild.AppendLine($"{error.PropertyName}\t{error.ErrorMessage}");
                     }
                 }
 
-                throw new ArgumentOutOfRangeException(errorBuild.ToString());
+                throw new ArgumentException(errorBuild.ToString());
             }
         }
     }

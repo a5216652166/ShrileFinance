@@ -60,7 +60,7 @@
         public void FinanceApply()
         {
             // 获取数据
-            var finance = GetData<FinanceApplyViewModel>("57DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var finance = GetData<FinanceApplyViewModel>("10DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             // 创建或修改
             if (finance.Id.HasValue)
@@ -84,19 +84,10 @@
         public void FinanceAudit()
         {
             // 获取融资审核数据
-            var financeAudit = GetData<FinanceAuidtViewModel>("58DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var financeAudit = GetData<FinanceAuidtViewModel>("12DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             // 创建融资审核
             financeAppService.EditFinanceAuidt(financeAudit);
-
-            ////// 获取信审数据
-            ////var financeCreditExmine = GetData<CreditExamineViewModel>("59DC5FCF-18A4-E611-80C5-507B9DE4A488");
-
-            ////// 创建信审
-            ////financeAppService.EditCreditExamine(financeCreditExmine);
-
-            ////// 修改信审审核人
-            ////financeAppService.SetApprover(financeAudit.FinanceId);
         }
 
         /// <summary>
@@ -105,13 +96,10 @@
         public void FinanceReaudit()
         {
             // 获取融资审核数据
-            var financeAudit = GetData<FinanceAuidtViewModel>("58DC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var financeAudit = GetData<FinanceAuidtViewModel>("12DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             // 修改融资审核
             financeAppService.EditFinanceAuidt(financeAudit);
-
-            ////// 修改信审审核人
-            ////financeAppService.SetApprover(financeAudit.FinanceId);
         }
 
         /// <summary>
@@ -120,7 +108,7 @@
         public void FinanceOperation()
         {
             // 获取数据
-            var finance = GetData<OperationViewModel>("5ADC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var finance = GetData<OperationViewModel>("13DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             // 创建或修改
             financeAppService.EditOperation(finance);
@@ -132,14 +120,14 @@
         public void FinanceCustomer()
         {
             // 获取数据
-            var finance = GetData<OperationViewModel>("5ADC5FCF-18A4-E611-80C5-507B9DE4A488");
+            var finance = GetData<OperationViewModel>("13DC5FCF-18A4-E611-80C5-507B9DE4A488");
 
             // 创建或修改
             financeAppService.EditOperation(finance);
 
             // 执行合同的生成
-            string path = @"~\upload\PDF\";
-            financeAppService.CreateLeaseInfoPdf(finance.FinanceId, path);
+            ////string path = @"~\upload\PDF\";
+            ////financeAppService.CreateLeaseInfoPdf(finance.FinanceId, path);
         }
 
         /// <summary>

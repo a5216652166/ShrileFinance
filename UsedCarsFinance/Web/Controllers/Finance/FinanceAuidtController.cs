@@ -16,7 +16,7 @@
         /// Initializes a new instance of the <see cref="FinanceAuidtController" /> class.
         /// </summary>
         /// <param name="financeAppService">融资仓储</param>
-        public FinanceAuidtController(FinanceAppService financeAppService ,PartnerAppService partnerAppService)
+        public FinanceAuidtController(FinanceAppService financeAppService, PartnerAppService partnerAppService)
         {
             this.financeAppService = financeAppService;
             this.partnerAppService = partnerAppService;
@@ -59,9 +59,9 @@
         }
 
         [HttpGet]
-        public IHttpActionResult GetPageList( string Search)
+        public IHttpActionResult GetPageList(string searchString)
         {
-            var list = partnerAppService.GetPageListByPartner(Search);
+            var list = partnerAppService.GetListByPartner(searchString);
 
             return Ok(list);
         }
@@ -105,7 +105,7 @@
         public IHttpActionResult GetContract(Guid id)
         {
             var finance = financeAppService.Get(id);
-           
+
             return Ok(finance.Contact);
         }
 
@@ -125,9 +125,9 @@
             {
                 Directory.CreateDirectory(fullpath);
             }
-            string oldPath = HttpContext.Current.Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString())+ "\\Contracts\\";
+            string oldPath = HttpContext.Current.Server.MapPath(System.Web.HttpContext.Current.Request.ApplicationPath.ToString()) + "\\Contracts\\";
 
-            var result =financeAppService.CreateLeaseInfoPdf(Id, fullpath);
+            var result = financeAppService.CreateLeaseInfoPdf(Id, fullpath);
             return Ok(result);
         }
 

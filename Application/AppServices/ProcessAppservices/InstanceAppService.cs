@@ -132,8 +132,21 @@
                 case ActionAllocationEnum.指定:
                     if (instance.ProcessType == ProcessTypeEnum.融资)
                     {
-                        var partner = financeRepository.Get(instance.RootKey.Value).CreateOf;
-                        user = partner.Approvers.Single(m => m.RoleId == action.Transfer.RoleId);
+                        // 若流转至总经理，直接设置用户为null;
+                        var presidentRoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488";
+                        if (action.Transfer.RoleId.Equals(presidentRoleId) == false)
+                        {
+                            var partner = financeRepository.Get(instance.RootKey.Value).CreateOf;
+
+                            user = partner.Approvers.SingleOrDefault(m => m.RoleId == action.Transfer.RoleId);
+
+                            user = user ?? partner.Accounts.SingleOrDefault(m => m.RoleId == action.Transfer.RoleId);
+
+                            if (user == default(AppUser) || user.LockoutEnabled)
+                            {
+                                throw new AppException(message: $"合作商{partner.Name}不存在正常启用的{action.Transfer.Role.Name}");
+                            }
+                        }
                     }
                     else if (action.TransferId != null)
                     {
@@ -158,10 +171,6 @@
                     break;
                 case ActionAllocationEnum.无:
                     user = null;
-                    break;
-                case ActionAllocationEnum.渠道经理:
-                    var partner1 = partnerRepository.GetByUser(CurrentUser);
-                    user = partner1.Accounts.First(m => m.RoleId == action.Transfer.RoleId);
                     break;
                 default:
                     throw new InvalidOperationAppException("创建寻找用户策略失败!");
@@ -334,6 +343,7 @@
             var instance = instanceReopsitory.Get(instanceId);
 
             var nodeForms = formRepository.GetByNode(instance.CurrentNodeId.Value)
+                .OrderBy(m => m.Form.Sort)
                 .Select(m => new FormViewModel
                 {
                     Id = m.FormId,

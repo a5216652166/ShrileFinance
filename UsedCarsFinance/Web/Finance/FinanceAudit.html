@@ -29,58 +29,11 @@
         // LoadData方法
         function LoadData(data) {
             if (data) {
-                // 融资比例限制
-                if (data.MinFinancingRatio != undefined && data.MaxFinancingRatio != undefined) {
-                    var radio = [];
-                    radio.push(data.MinFinancingRatio);
-                    radio.push(data.MaxFinancingRatio);
-                    // 验证扩展(融资比例限制)
-                    $.extend($.fn.validatebox.defaults.rules, {
-                        AratioLimit: {
-                            validator: function (value, param) {
-                                return parseFloat(value) >= param[0] && parseFloat(value) <= param[1];
-                            },
-                            message: '融资比例介于' + data.MinFinancingRatio + '%至' + data.MaxFinancingRatio + '%之间，请修改建议融资金额或裸车价'
-                        },
-                        FratioLimit: {
-                            validator: function (value, param) {
-                                return parseFloat(value) >= param[0] && parseFloat(value) <= param[1];
-                            },
-                            message: '融资比例介于' + data.MinFinancingRatio + '%至' + data.MaxFinancingRatio + '%之间，请修改审批融资金额或裸车价'
-                        }
-                    });
-
-                    // 建议融资比例添加验证
-                    $("input[textboxname = 'AdviceRatio']").textbox({ validType: ["AratioLimit[" + radio + "]"] });
-
-                    // 审批融资比例添加验证
-                    $("input[textboxname = 'ApprovalRatio']").textbox({ validType: ["FratioLimit[" + radio + "]"] });
-                }
-
-                //// 建议融资金额与审批融资金额 单位转换
-                //if (data.AdviceMoney != undefined) {
-                //    data.AdviceMoney /= 10000;
-
-                //    if (/^\d+(\.\d{1,1}$)/.test(data.AdviceMoney.toString()))
-                //    {
-                //        data.AdviceMoney += '0';
-                //    }
-                //}
-                //if (data.ApprovalMoney != undefined) {
-                //    data.ApprovalMoney /= 10000;
-
-                //    if (/^\d+(\.\d{1,1}$)/.test(data.ApprovalMoney.toString())) {
-                //        data.ApprovalMoney += '0';
-                //    }
-                //}
-                
                 // 加载融资审核基本信息
                 FieldsetLoadDateFactory("FinanceAudit", 'text', data)
 
                 // 加载融资项
-                if ($("fieldset[name=FinancingItems]>div.row>div")[0] == undefined) {
-                    LoadFinancingItem(data.FinancingItems);
-                }
+                $("fieldset#financeItem table#financeItem_dg").datagrid("loadData", data.FinancialItem);
 
                 if (query.state == 0) {
                     // 禁用所有
@@ -91,10 +44,7 @@
                     $("fieldset[name=FinanceAudit]>input[name=IsReview]").val('false');
                 }
                 else if (query.state == 2) {
-                    // 复审
-
-                    // 禁用融资项及设置复审标签
-                    Disabled($("fieldset[name=FinancingItems]"));
+                    // 复审   设置复审标签
                     $("fieldset[name=FinanceAudit]>input[name=IsReview]").val('true');
                 }
             }
@@ -113,31 +63,6 @@
         function BuildData() {
             // 序列化融资审核
             var value = $("fieldset[name=FinanceAudit]").serializeJson();
-
-            //// 建议融资金额与审批融资金额 单位转换
-            //value.AdviceMoney *= 10000;
-            //value.ApprovalMoney *= 10000;
-
-            if (value.FinanceId.length == 0) {
-                value.FinanceId = '683B6AB9-1CA7-E611-80C5-507B9DE4A488';
-            }
-
-            // 序列化融资项
-            value.FinancingItems = [];
-            $('fieldset[name=FinancingItems]>div.row>div').each(function (i, e) {
-                var FinancingItem = {};
-                FinancingItem.Key = $(e).find("input[name=Id]").val();
-                FinancingItem.Value = {};
-                FinancingItem.Value.Key = $(e).find("label").text();
-                FinancingItem.Value.Value = $(e).find("input[textboxname=Money]").textbox('getValue');
-
-                //if (FinancingItem.Value.Key == "裸车价")
-                //{
-                //    FinancingItem.Value.Value *= 10000;
-                //}
-
-                value.FinancingItems.push(FinancingItem);
-            });
 
             return value;
         }
@@ -165,112 +90,87 @@
             });
         }
 
-        // 加载融资项
-        function LoadFinancingItem(dataKV) {
-            if (dataKV == null) {
-                return;
-            }
-
-            // 显示融资项
-            $("fieldset[name=FinancingItems]").show();
-
-            // 从模版中获取控件及拼装
-            $(dataKV).each(function (i, e) {
-                var context = $("fieldset[name=FinancingItems]>template[name=templateUnit]").html();
-                if (context) {
-                    $("fieldset[name=FinancingItems]>div.row").append(context);
-
-                    var div = $("fieldset[name=FinancingItems]>div.row>div:last");
-                    div.addClass('col-6');
-
-                    // 解析控件
-                    $.parser.parse(div);
-
-                    // 设置属性
-                    div.find("label").text(e.Value.Key+"：");
-                    div.find("input[name=Id]").val(e.Key);
-                    div.find("input[textboxname=Money]").textbox({
-                        readonly: false,
-                        required: true,
-                        validType: ['Money']
-                    });
-
-                    // 裸车价
-                    if ($.inArray(e.Value.Key, ["裸车价"]) != -1) {
-                        div.attr("name", "NakedCar")
-                        //div.find("span[name=unit]").text("万元");
-                        div.find("input[textboxname=Money]").textbox({
-                            readonly: false,
-                            required: true,
-                            validType: ['Money'],
-                            onChange: SetRatio
-                        });
-                        //if (e.Value.Value != undefined)
-                        //{
-                        //    e.Value.Value /= 10000;
-
-                        //    if (/^\d+(\.\d{1,1}$)/.test(e.Value.Value.toString())) {
-                        //        e.Value.Value += '0';
-                        //    }
-                        //}
-                    }
-
-                    // 金额赋值
-                    div.find("input[textboxname=Money]").textbox('setValue', e.Value.Value);
-                }
-            });
-        }
-
-        // 设置融资比例
-        function SetRatio() {
-            if ($("fieldset[name=FinancingItems] div[name=NakedCar]>input")[1] == undefined) {
-                return
-            }
-
-            // 获取裸车价
-            var NakedCarPrice = $("fieldset[name=FinancingItems] div[name=NakedCar]>input[textboxname=Money]").textbox('getValue');
-
-            if (NakedCarPrice == undefined || NakedCarPrice.length == 0 || isNaN(NakedCarPrice) || NakedCarPrice <= 0) {
-                // 融资比例赋值
-                $("fieldset[name=FinanceAudit] input[textboxname*=Ratio]").textbox("setValue", '');
-
-                return;
-            }
-
-            // 获取建议融资金额
-            var AdviceMoney = $("fieldset[name=FinanceAudit] input[textboxname=AdviceMoney]").textbox("getValue");
-
-            if (AdviceMoney != undefined && AdviceMoney.length > 0) {
-
-                // 建议融资比例赋值
-                $("fieldset[name=FinanceAudit] input[textboxname=AdviceRatio]").textbox("setValue", parseInt(100 * parseFloat(AdviceMoney) / parseFloat(NakedCarPrice)));
-            }
-
+        // 设置月供额度
+        function SetMonthPay() {
             // 获取审批融资金额
             var ApprovalMoney = $("fieldset[name=FinanceAudit] input[textboxname=ApprovalMoney]").textbox("getValue");
 
-            if (ApprovalMoney != undefined && ApprovalMoney.length > 0) {
-                // 审批融资比例赋值
-                $("fieldset[name=FinanceAudit] input[textboxname=ApprovalRatio]").textbox("setValue", parseInt(100 * parseFloat(ApprovalMoney) / NakedCarPrice));
-            }
+
         }
     </script>
 </head>
 <body>
     <form class="container" name="FinanceAudit">
-        <fieldset name="FinancingItems" style="display:none;">
+        <fieldset id="financeItem">
             <legend>融资项</legend>
-            <div class="row">
-            </div>
+            <table id="financeItem_dg" class="easyui-datagrid" data-options="singleSelect: true, rownumbers: true ">
+                <thead>
+                    <tr>
+                        <th data-options="field:'Id',hidden:true"></th>
+                        <th data-options="field:'Name',width:160,align:'center',
+                        editor:{
+                            type:'combobox',
+                            options:{
+                                required:true,
+                                validType:'',
+                                valueField:'text',
+                                textField:'text',
+                                data:[
+                                {'text':'车价'},
+                                {'text':'购置税'},
+                                {'text':'车船税'},
+                                {'text':'GPS费用'}
+                                ]
+                            }
+                        }">项目名称</th>
 
-            <template name="templateUnit">
-                <div class="">
-                    <label></label>
-                    <input name="Id" type="hidden" value="" />
-                    <input name="Money" class="easyui-textbox" />
-                    <span name="unit">元</span>
-                </div>
-            </template>
+                        <th data-options="field:'FinancialAmount',width:140,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:true,
+                                validType:''
+                            }
+                        }">融资额（元）</th>
+
+                        <th data-options="field:'Principal',width:140,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:''
+                            }
+                        }">融资本金（元）</th>
+
+                        <th data-options="field:'Rate',width:140,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:''
+                            }
+                        }">税率（%）</th>
+
+                        <th data-options="field:'VATamount',width:140,align:'center',
+                            editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:''
+                            },
+                        }">增值税进项税额（元）</th>
+
+                        <th data-options="field:'InvoiceAmount',width:140,align:'center',
+                            editor:{
+                            type:'textbox',
+                            options:{
+                                required:false,
+                                validType:''
+                            },
+                        }">发票金额（元）</th>
+                    </tr>
+                </thead>
+            </table>
         </fieldset>
 
         <fieldset name="FinanceAudit">
@@ -282,33 +182,25 @@
             <div class="row">
                 <div class="col-6">
                     <label>建议融资金额：</label>
-                    <input name="AdviceMoney" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetRatio" />
+                    <input name="AdviceMoney" class="easyui-textbox" data-options="required:true,validType:'Money' " />
                     <span><!--万元-->元</span>
                 </div>
-                <div class="col-6">
-                    <label>建议融资比例：</label>
-                    <input name="AdviceRatio" class="easyui-textbox" data-options="readonly:true" />
-                    <span>%</span>
-                </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-6">
                     <label>审批融资金额：</label>
-                    <input name="ApprovalMoney" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetRatio" />
+                    <input name="ApprovalMoney" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetMonthPay" />
                     <span><!--万元-->元</span>
                 </div>
-                <div class="col-6">
-                    <label>审批融资比例：</label>
-                    <input name="ApprovalRatio" class="easyui-textbox" data-options="readonly:true" />
-                    <span>%</span>
-                </div>
-            </div>
-
-            <div class="row">
+                
                 <div class="col-6">
                     <label>月供额度：</label>
-                    <input name="Payment" class="easyui-textbox" data-options="readonly:false,required:true,validType:'Money'" />
+                    <input name="Payment" class="easyui-textbox" data-options="readonly:true,required:false " />
+                    <span>元</span>
+                </div>
+
+                <div class="col-6">
+                    <label>手续费：</label>
+                    <input name="Poundage" class="easyui-textbox" data-options="readonly:false,required:true,validType:'Money'" />
                     <span>元</span>
                 </div>
 
@@ -319,9 +211,9 @@
                 </div>
 
                 <div class="col-6">
-                    <label>手续费：</label>
-                    <input name="Poundage" class="easyui-textbox" data-options="readonly:false,required:true,validType:'Money'" />
-                    <span>元</span>
+                    <label>车辆销售指导价：</label>
+                    <input id="VehicleSalePrise" class="easyui-textbox" data-options="readonly:true,value:'0'" />
+                    <span>万元</span>
                 </div>
             </div>
         </fieldset>

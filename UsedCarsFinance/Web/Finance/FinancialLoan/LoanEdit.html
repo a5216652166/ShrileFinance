@@ -247,7 +247,7 @@
                        valueField:'Key',
                        textField:'Value',
                        method:'GET',
-                       url:'../../api/NewProduce/Options',
+                       url:'../../api/Produce/Options',
                        editable:false,
                        onSelect:SelectProduce
                        " />
@@ -259,7 +259,7 @@
                                     async: false,
                                     type: 'GET',
                                     data: { produceId: record.Key },
-                                    url: '../../api/NewProduce/Get',
+                                    url: '../../api/Produce/Get',
                                     success: function (data) {
                                         LoadProduceShower(data);
                                     }
@@ -737,7 +737,7 @@
                                 async: false,
                                 type: 'GET',
                                 data: { produceId: produceId, pV: pV },
-                                url: '../../api/NewProduce/LoadRepayTable',
+                                url: '../../api/Produce/LoadRepayTable',
                                 statusCode: {
                                     200: function (data) {
                                         LoadRepayInfo(data);

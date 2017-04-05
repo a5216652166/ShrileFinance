@@ -81,9 +81,6 @@
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
     <Compile Include="Entities\Finance\Financial\FinancialItem.cs" />
     <Compile Include="Entities\Finance\Financial\FinancialLoan.cs" />
-    <Compile Include="Entities\Finance\Financial\Produce.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="Entities\Finance\Financial\RepayTable.cs" />
     <Compile Include="Entities\Process\ProcessTempData.cs" />
     <Compile Include="Entities\Process\ProcessTypeEnum.cs" />
@@ -94,10 +91,15 @@
     <Compile Include="Interfaces\Repositories\DatagramRepositories\IDatagramFileRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinancialItemRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\FinancialRepositories\IFinancialLoanRepository.cs" />
-    <Compile Include="Interfaces\Repositories\FinanceRepositories\FinancialRepositories\IProduceRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFileSystemRepository.cs" />
     <Compile Include="Interfaces\Repositories\LoanRepositories\IPaymentHistoryRepository.cs" />
     <Compile Include="Interfaces\Repositories\ProcessRepositories\IProcessTempDataRepository.cs" />
+    <Compile Include="Produce\IPaymentCalculator.cs" />
+    <Compile Include="Produce\IProduceRepository.cs" />
+    <Compile Include="Produce\PaymentEqualsCalculator.cs" />
+    <Compile Include="Produce\PrincipalEqualsCalculator.cs" />
+    <Compile Include="Produce\PrincipalRatio.cs" />
+    <Compile Include="Produce\Produce.cs" />
     <Compile Include="Services\CreditInvestigation\DatagramFactoryService.cs" />
     <Compile Include="Entities\CreditInvestigation\Datagram\UnusedDatagram.cs" />
     <Compile Include="Entities\CreditInvestigation\Record\OrganizationRecords\BigEventRecord.cs" />

@@ -3,10 +3,9 @@
     using System;
     using System.Collections.Generic;
     using AccountViewModels;
+    using Application.Produce.ProduceViewModels;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
     using Application.ViewModels.PartnerViewModels;
-    using Core.Entities.Finance;
 
     public class FinanceApplyViewModel : IEntityViewModel
     {

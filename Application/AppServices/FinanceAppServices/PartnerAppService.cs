@@ -4,15 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels.ProduceViewModels;
     using AutoMapper;
     using Core.Entities;
-    using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using Core.Entities.Identity;
-    using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using Core.Interfaces.Repositories.ProcessRepositories;
+    using Core.Produce;
     using Microsoft.AspNet.Identity;
+    using Produce.ProduceViewModels;
     using ViewModels.AccountViewModels;
     using ViewModels.PartnerViewModels;
     using X.PagedList;
@@ -44,6 +43,8 @@
             var partner = repository.Get(key);
 
             var model = Mapper.Map<PartnerViewModel>(partner);
+
+            model.Approvers = partner.Approvers.Select(m => m.Id);
 
             foreach (var item in model.Accounts)
             {
@@ -182,18 +183,17 @@
             return models;
         }
 
-        public IEnumerable<ProduceListViewModel> GetPageListByPartner(string serach)
+        public IEnumerable<ProduceViewModel> GetListByPartner(string serach)
         {
-            var produces = default(IEnumerable<Produce>);
-
-            produces = repository.GetByUser(userManager.CurrentUser()).Produces;
+            var partner = repository.GetByUser(userManager.CurrentUser());
+            var produces = partner.Produces.AsEnumerable();
 
             if (!string.IsNullOrEmpty(serach))
             {
                 produces = produces.Where(m => m.Code.Contains(serach));
             }
 
-            return Mapper.Map<IEnumerable<ProduceListViewModel>>(produces);
+            return Mapper.Map<IEnumerable<ProduceViewModel>>(produces);
         }
     }
 }

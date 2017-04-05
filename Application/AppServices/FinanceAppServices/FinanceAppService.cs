@@ -6,6 +6,8 @@
     using System.Data.SqlClient;
     using System.IO;
     using System.Linq;
+    using Application.AppServices.VehicleAppservices;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using AutoMapper;
     using Core.Entities;
     using Core.Entities.Finance;
@@ -13,9 +15,9 @@
     using Core.Entities.Finance.Partners;
     using Core.Entities.Identity;
     using Core.Interfaces.Repositories.FinanceRepositories;
-    using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
     using Core.Interfaces.Repositories.LoanRepositories;
     using Core.Interfaces.Repositories.ProcessRepositories;
+    using Core.Produce;
     using Data.PDF;
     using Infrastructure.PDF;
     using ViewModels.FinanceViewModels;
@@ -32,6 +34,7 @@
         private readonly IContractRepository contractRepository;
         private readonly IPartnerRepository partnerRepository;
         private readonly IProduceRepository produceRepository;
+        private readonly VehicleAppService vehicleAppService;
 
         public FinanceAppService(
             IFinanceRepository financeRepository,
@@ -39,7 +42,8 @@
             AppRoleManager roleManager,
             IContractRepository contractRepository,
             IPartnerRepository partnerRepository,
-            IProduceRepository produceRepository)
+            IProduceRepository produceRepository,
+            VehicleAppService vehicleAppService)
         {
             this.financeRepository = financeRepository;
             this.userManager = userManager;
@@ -47,6 +51,7 @@
             this.contractRepository = contractRepository;
             this.partnerRepository = partnerRepository;
             this.produceRepository = produceRepository;
+            this.vehicleAppService = vehicleAppService;
         }
 
         public KeyValuePair<string, byte[]> DownLoadApproval(Guid financeId)
@@ -182,6 +187,10 @@
             return bytes;
         }
 
+        /// <summary>
+        /// 创建
+        /// </summary>
+        /// <param name="value">视图</param>
         public void Create(FinanceApplyViewModel value)
         {
             var finance = Mapper.Map<Finance>(value);
@@ -193,7 +202,7 @@
             finance.CreateBy = userManager.CurrentUser();
             finance.CreateOf = partnerRepository.GetByUser(userManager.CurrentUser());
 
-            finance.Produce = produceRepository.Get(value.Produce.Id.Value);
+            finance.Produce = produceRepository.Get(value.Produce.Id);
 
             financeRepository.Create(finance);
             financeRepository.Commit();
@@ -201,10 +210,15 @@
             value.Id = finance.Id;
         }
 
+        /// <summary>
+        /// 获取合作商和用户
+        /// </summary>
+        /// <returns></returns>
         public PartnerAndUser GetPartnerAndUser()
         {
-            AppUser user = userManager.CurrentUser();
-            Partner partner = partnerRepository.GetByUser(userManager.CurrentUser());
+            var user = userManager.CurrentUser();
+            var partner = partnerRepository.GetByUser(userManager.CurrentUser());
+
             return new PartnerAndUser()
             {
                 PartnerName = partner.Name,
@@ -412,173 +426,9 @@
                 CustomerBankCard = finance.FinanceExtension.CustomerBankCard,
                 CustomerBankName = finance.FinanceExtension.CustomerBankName,
                 OnePayInterest = finance.OnePayInterest,
-                Payment = Math.Round(Convert.ToDouble(finance.Principal * finance.OncePayMonths / finance.Produce.TimeLimit), 2),
+                Payment = Math.Round(Convert.ToDouble(finance.Principal * finance.OncePayMonths / finance.Produce.Periods), 2),
             };
         }
-
-        /////// <summary>
-        /////// 通过融资标识获取信审ViewModel
-        /////// </summary>
-        /////// <param name="financeId">融资标识</param>
-        /////// <returns>信审ViewModel</returns>
-        ////public CreditExamineViewModel GetCreditExamineByFinanceId(Guid financeId)
-        ////{
-        ////    ////if (financeId == null)
-        ////    ////{
-        ////    ////    return null;
-        ////    ////}
-
-        ////    ////// 获取融资实体
-        ////    ////var finance = repository.Get(financeId);
-
-        ////    ////if (finance == null)
-        ////    ////{
-        ////    ////    return null;
-        ////    ////}
-
-        ////    ////// 当前用户
-        ////    ////var curentUser = userManager.CurrentUser();
-
-        ////    ////if (curentUser == null)
-        ////    ////{
-        ////    ////    return null;
-        ////    ////}
-
-        ////    ////////finance.CreditExamine = finance.CreditExamine ?? new CreditExamine();
-
-        ////    ////////// 实体转ViewModel
-        ////    ////////var creditExamineReportViewModel = Mapper.Map<CreditExamineViewModel>(finance.CreditExamine);
-
-        ////    ////// 融资标识
-        ////    ////creditExamineReportViewModel.FinanceId = finance.Id;
-
-        ////    ////// 婚姻状况
-        ////    ////creditExamineReportViewModel.MarriageState = finance.Applicant.ToList().Find(m => m.Type == Applicant.TypeEnum.主要申请人).MaritalStatus;
-
-        ////    ////////// 保证金
-        ////    ////////if (!string.IsNullOrEmpty(finance.CreditExamine.Margin))
-        ////    ////////{
-        ////    ////////    var array = finance.CreditExamine.Margin.Split('-');
-        ////    ////////    creditExamineReportViewModel.Margin1 = array[0];
-        ////    ////////    creditExamineReportViewModel.Margin2 = array[1];
-        ////    ////////}
-
-        ////    ////////// 产品编号
-        ////    ////////creditExamineReportViewModel.ProductNumber = finance.Produce.Code;
-
-        ////    ////////// 产品详解
-        ////    ////////creditExamineReportViewModel.ProductExplain = finance.Produce.Code;
-
-        ////    ////////// 产品种类
-        ////    ////////creditExamineReportViewModel.ProductCategorie = finance.Vehicle.BusinessType.ToString();
-
-        ////    ////// 承租人
-        ////    ////var lessee = finance.Applicant.ToList().Find(m => m.Type == Applicant.TypeEnum.主要申请人);
-        ////    ////////creditExamineReportViewModel.LesseeName = lessee.Name;
-        ////    ////////creditExamineReportViewModel.LesseeIdCard = lessee.IdentityType.Equals("身份证") ? lessee.Identity : null;
-        ////    ////////creditExamineReportViewModel.LesseeMobile = lessee.Mobile;
-
-        ////    ////// 共借人(最多一个)
-        ////    ////var commonBorrwer = finance.Applicant.ToList().Find(m => m.Type == Applicant.TypeEnum.共同申请人) ?? new Applicant() { Name = string.Empty };
-        ////    ////////creditExamineReportViewModel.CommonBorrwerName = commonBorrwer.Name;
-
-        ////    ////// 保证人
-        ////    ////////creditExamineReportViewModel.Guarantor = from applicant
-        ////    ////                                         in finance.Applicant.ToList().FindAll(m => m.Type == Applicant.TypeEnum.担保人)
-        ////    ////                                         select applicant.Name;
-
-        ////    ////// 当前角色
-        ////    ////var curentRole = roleManager.FindByIdAsync(curentUser.RoleId).Result;
-
-        ////    ////if (curentRole != null)
-        ////    ////{
-        ////    ////    ////var trialUser = finance.CreditExamine.TrialUser ?? new AppUser();
-        ////    ////    ////var reviewUser = finance.CreditExamine.ReviewUser ?? new AppUser();
-        ////    ////    ////var approveUser = finance.CreditExamine.ApproveUser ?? new AppUser();
-        ////    ////    ////var finalUser = finance.CreditExamine.FinalUser ?? new AppUser();
-
-        ////    ////    ////creditExamineReportViewModel.TrialPerson = new KeyValuePair<string, string>(trialUser.Id, trialUser.Name);
-        ////    ////    ////creditExamineReportViewModel.ReviewPerson = new KeyValuePair<string, string>(reviewUser.Id, reviewUser.Name);
-        ////    ////    ////creditExamineReportViewModel.ApprovePerson = new KeyValuePair<string, string>(approveUser.Id, approveUser.Name);
-        ////    ////    ////creditExamineReportViewModel.FinalPerson = new KeyValuePair<string, string>(finalUser.Id, finalUser.Name);
-
-        ////    ////    if (curentRole.Name.Equals("初审员"))
-        ////    ////    {
-        ////    ////        creditExamineReportViewModel.TrialPerson = new KeyValuePair<string, string>(curentUser.Id, curentUser.Name);
-        ////    ////    }
-
-        ////    ////    if (curentRole.Name.Equals("复审员"))
-        ////    ////    {
-        ////    ////        creditExamineReportViewModel.ReviewPerson = new KeyValuePair<string, string>(curentUser.Id, curentUser.Name);
-        ////    ////    }
-
-        ////    ////    if (curentRole.Name.Equals("总经理"))
-        ////    ////    {
-        ////    ////        creditExamineReportViewModel.ApprovePerson = new KeyValuePair<string, string>(curentUser.Id, curentUser.Name);
-        ////    ////        creditExamineReportViewModel.FinalPerson = new KeyValuePair<string, string>(curentUser.Id, curentUser.Name);
-        ////    ////    }
-        ////    ////}
-
-        ////    return null;
-        ////}
-
-        /////// <summary>
-        /////// 编辑信审报告
-        /////// </summary>
-        /////// <param name="value">信审ViewModel</param>
-        ////public void EditCreditExamine(CreditExamineViewModel value)
-        ////{
-        ////    if (value == null || value.FinanceId == null)
-        ////    {
-        ////        return;
-        ////    }
-
-        ////    // 获取该信审对应的融资实体
-        ////    var finance = repository.Get(value.FinanceId);
-
-        ////    if (finance == null)
-        ////    {
-        ////        return;
-        ////    }
-
-        ////    ////finance.CreditExamine = finance.CreditExamine ?? new CreditExamine();
-
-        ////    ////// 信审ViewModel转信审实体，更新信审
-        ////    ////Mapper.Map(value, finance.CreditExamine);
-
-        ////    ////// 保证金
-        ////    ////finance.CreditExamine.Margin = value.Margin1 + "-" + value.Margin2;
-
-        ////    repository.Modify(finance);
-        ////}
-
-        /////// <summary>
-        /////// 信审报告设置审批人
-        /////// </summary>
-        /////// <param name="financeId">融资标识</param>
-        ////public void SetApprover(Guid financeId)
-        ////{
-        ////    var currentUser = userManager.CurrentUser();
-        ////    var finance = repository.Get(financeId);
-
-        ////    ////switch (currentUser.RoleId)
-        ////    ////{
-        ////    ////    case "BD42BEE1-05A4-E611-80C5-507B9DE4A488":
-        ////    ////        finance.CreditExamine.TrialUser = currentUser;
-        ////    ////        break;
-        ////    ////    case "BE42BEE1-05A4-E611-80C5-507B9DE4A488":
-        ////    ////        finance.CreditExamine.ReviewUser = currentUser;
-        ////    ////        break;
-        ////    ////    case "C242BEE1-05A4-E611-80C5-507B9DE4A488":
-        ////    ////        finance.CreditExamine.ApproveUser = currentUser;
-        ////    ////        finance.CreditExamine.FinalUser = currentUser;
-        ////    ////        break;
-        ////    ////    default:
-        ////    ////        break;
-        ////    ////}
-
-        ////    repository.Modify(finance);
-        ////}
 
         /// <summary>
         /// 通过融资标识获取融资审核ViewModel
@@ -587,18 +437,8 @@
         /// <returns>融资审核ViewModel</returns>
         public FinanceAuidtViewModel GetFinanceAuidtByFinanceId(Guid financeId)
         {
-            if (financeId == null)
-            {
-                return null;
-            }
-
             // 获取融资实体
             var finance = financeRepository.Get(financeId);
-
-            if (finance == null)
-            {
-                return null;
-            }
 
             // 实体转ViewModel
             var financeAuditViewModel = new FinanceAuidtViewModel()
@@ -606,24 +446,23 @@
                 // 融资标识
                 FinanceId = finance.Id,
 
+                // 融资项
+                FinancialItem = Mapper.Map<IEnumerable<FinancialItemViewModel>>(finance.FinancialItem),
+
                 // 厂商指导价
                 ManufacturerGuidePrice = finance.Vehicle.ManufacturerGuidePrice,
 
-                // 融资项（Id、<Name_Maney>）
-                FinancingItems = GetFinancingItemsOrCosts(finance)
+
+                ////// 车辆销售指导价
+                ////VehicleSalePrise = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.MakeCode,finance.Vehicle.FamilyCode).Result.Sale.Poor.Max,
             };
 
             // 部分映射
-            var array = new string[] { "AdviceMoney", "AdviceRatio", "ApprovalMoney", "ApprovalRatio", "Payment", "Poundage" };
+            var array = new string[] { nameof(finance.AdviceMoney), nameof(finance.AdviceRatio), nameof(finance.ApprovalMoney), nameof(finance.ApprovalRatio), nameof(finance.Payment), nameof(finance.Poundage) };
+
             financeAuditViewModel = PartialMapper(refObj: finance, outObj: financeAuditViewModel, array: array);
 
-            if (financeAuditViewModel.Poundage == null)
-            {
-                financeAuditViewModel.Poundage = decimal.Parse("0.00");
-            }
-
-            // 映射 融资比例区间
-            financeAuditViewModel = PartialMapper(refObj: finance.Produce, outObj: financeAuditViewModel, array: new string[] { "MinFinancingRatio", "MaxFinancingRatio" });
+            financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerBailRatio;
 
             return financeAuditViewModel;
         }
@@ -634,29 +473,12 @@
         /// <param name="value">融资审核ViewModel</param>
         public void EditFinanceAuidt(FinanceAuidtViewModel value)
         {
-            if (value == null || value.FinanceId == null)
-            {
-                return;
-            }
-
             // 获取该融资审核对应的融资实体
             var finance = financeRepository.Get(value.FinanceId);
 
-            if (finance == null)
-            {
-                return;
-            }
-
-            // 建议融资金额、建议融资比例、审批融资金额、审批融资比例、月供额度、手续费
-            var array = new string[] { "AdviceMoney", "AdviceRatio", "ApprovalMoney", "ApprovalRatio", "Payment", "Poundage" };
+            // 建议融资金额、审批融资金额、月供额度、手续费
+            var array = new string[] { nameof(finance.AdviceMoney), nameof(finance.ApprovalMoney), nameof(finance.Payment), nameof(finance.Poundage) };
             finance = PartialMapper(refObj: value, outObj: finance, array: array);
-
-            // 初审 修改融资项各金额
-            if (!value.IsReview)
-            {
-                // 修改融资项各金额
-                // finance.FinancialItem = EditFinanceAuidts(financingItems: finance.FinancialItem, financingItemCollection: value.FinancingItems);
-            }
 
             financeRepository.Modify(finance);
         }
@@ -668,18 +490,8 @@
         /// <returns>运营ViewModel</returns>
         public OperationViewModel GetOperationByFinanceId(Guid financeId)
         {
-            if (financeId == null)
-            {
-                return null;
-            }
-
             // 获取信审报告实体
             var finance = financeRepository.Get(financeId);
-
-            if (finance == null)
-            {
-                return null;
-            }
 
             // 实体转ViewModel
             var operationReportViewModel = Mapper.Map<OperationViewModel>(finance.FinanceExtension) ?? new OperationViewModel();
@@ -692,21 +504,18 @@
             // 实际用款额
             operationReportViewModel.ActualAmount = finance.Principal;
 
-            // 选择还款日、保证金、首次租金支付日期、一次性付息、
-            var array = new string[] { "RepaymentDate", "Bail", "RepayRentDate", "OnePayInterest" };
+            // 选择还款日、保证金、首次租金支付日期、一次性付息
+            var array = new string[] { nameof(finance.RepaymentDate), nameof(finance.Bail), nameof(finance.RepayRentDate), nameof(finance.OnePayInterest) };
             operationReportViewModel = PartialMapper(refObj: finance, outObj: operationReportViewModel, array: array);
 
             // 客户保证金比例
-            operationReportViewModel.CustomerBailRatio = finance.Produce.MarginRate;
+            operationReportViewModel.CustomerBailRatio = finance.Produce.CustomerBailRatio;
 
             // 融资项
-            operationReportViewModel.FinancingItems = GetFinancingItemsOrCosts(finance);
-
-            // 手续费
-            operationReportViewModel.FinanceCosts = GetFinancingItemsOrCosts(finance, false);
+            operationReportViewModel.FinancialItem = Mapper.Map<IEnumerable<FinancialItemViewModel>>(finance.FinancialItem);
 
             // 车辆补充信息
-            var array1 = new string[] { "RegisterDate", "RunningMiles", "FactoryDate", "BusinessType", "PlateNo", "FrameNo", "EngineNo", "RegisterCity", "Condition" };
+            var array1 = new string[] { nameof(finance.Vehicle.RegisterDate), nameof(finance.Vehicle.RunningMiles), nameof(finance.Vehicle.FactoryDate), nameof(finance.Vehicle.BusinessType), nameof(finance.Vehicle.PlateNo), nameof(finance.Vehicle.FrameNo), nameof(finance.Vehicle.EngineNo), nameof(finance.Vehicle.RegisterCity), nameof(finance.Vehicle.Condition) };
             operationReportViewModel = PartialMapper(refObj: finance.Vehicle, outObj: operationReportViewModel, array: array1);
 
             return operationReportViewModel;
@@ -718,18 +527,8 @@
         /// <param name="value">运营ViewModel</param>
         public void EditOperation(OperationViewModel value)
         {
-            if (value == null || value.FinanceId == null || !(new string[] { "Customer", "Channel" }).Contains(value.LoanPrincipal))
-            {
-                return;
-            }
-
             // 获取该信审对应的融资实体
             var finance = financeRepository.Get(value.FinanceId);
-
-            if (finance == null)
-            {
-                return;
-            }
 
             finance.FinanceExtension = finance.FinanceExtension ?? new FinanceExtension();
 
@@ -738,18 +537,17 @@
             if (value.NodeType.Equals("Customer"))
             {
                 // 还款信息
-                var customerArray = new string[] { "CustomerAccountName", "CustomerBankName", "CustomerBankCard" };
+                var customerArray = new string[] { nameof(value.CustomerAccountName), nameof(value.CustomerBankName), nameof(value.CustomerBankCard) };
                 finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: customerArray);
 
-                if (!value.LoanPrincipal.Equals("Channel"))
-                {
-                    // 放款信息
-                    var creditArray = new string[] { "CreditAccountName", "CreditBankName", "CreditBankCard" };
-                    finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: creditArray);
-                }
+                // 放款信息
+                finance.FinanceExtension.CreditAccountName = value.CreditAccountName;
+
+                ////var creditArray = new string[] { nameof(value.CreditAccountName), nameof(value.CreditBankName), nameof(value.CreditBankCard) };
+                ////finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: creditArray);
 
                 // 车辆补充信息
-                var array1 = new string[] { "RegisterDate", "RunningMiles", "FactoryDate", "BusinessType", "PlateNo", "FrameNo", "EngineNo", "RegisterCity", "Condition" };
+                var array1 = new string[] { nameof(value.RegisterDate), nameof(value.RunningMiles), nameof(value.FactoryDate), nameof(value.BusinessType), nameof(value.PlateNo), nameof(value.FrameNo), nameof(value.EngineNo), nameof(value.RegisterCity), nameof(value.Condition) };
                 finance.Vehicle = PartialMapper(refObj: value, outObj: finance.Vehicle, array: array1);
             }
             else
@@ -764,13 +562,10 @@
                 finance.FinanceExtension.ContactJson = value.ContactJson;
 
                 // 选择还款日、首次租金支付日期、保证金、先付月供、一次性付息、实际用款额
-                finance = PartialMapper(refObj: value, outObj: finance, array: new string[] { "RepaymentDate", "RepayRentDate", "Bail", "Payment", "OnePayInterest" });
+                finance = PartialMapper(refObj: value, outObj: finance, array: new string[] { nameof(value.RepaymentDate), nameof(value.RepayRentDate), nameof(value.Bail), nameof(value.PayMonthly), nameof(value.OnePayInterest) });
 
                 // 放款账户、放款账户开户行、放款账户卡号
-                if (value.LoanPrincipal.Equals("Channel"))
-                {
-                    finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: new string[] { "CreditAccountName", "CreditBankName", "CreditBankCard" });
-                }
+                finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: new string[] { "CreditAccountName", "CreditBankName", "CreditBankCard" });
             }
 
             financeRepository.Modify(finance);

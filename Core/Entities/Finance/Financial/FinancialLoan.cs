@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Core.Exceptions;
     using Core.Interfaces;
+    using Core.Produce;
 
     public enum LoanDateEnum : byte
     {
@@ -31,42 +32,42 @@
         /// <summary>
         /// 放款编号
         /// </summary>
-        public string LoanNum { get;  set; }
+        public string LoanNum { get; set; }
 
         /// <summary>
         /// 放款日期
         /// </summary>
-        public DateTime LoanDate { get;  set; }
+        public DateTime LoanDate { get; set; }
 
         /// <summary>
         /// 还款日
         /// </summary>
-        public LoanDateEnum RepayDate { get;  set; }
+        public LoanDateEnum RepayDate { get; set; }
 
         /// <summary>
         /// 放款状态
         /// </summary>
-        public StateEnum State { get;  set; }
+        public StateEnum State { get; set; }
 
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreatedDate { get;  set; }
+        public DateTime CreatedDate { get; set; }
 
         /// <summary>
         /// 融资总额
         /// </summary>
-        public decimal FinancialAmounts { get;  set; }
+        public decimal FinancialAmounts { get; set; }
 
         /// <summary>
         /// 融资项
         /// </summary>
-        public virtual ICollection<FinancialItem> FinancialItem { get;  set; } = new HashSet<FinancialItem>();
+        public virtual ICollection<FinancialItem> FinancialItem { get; set; } = new HashSet<FinancialItem>();
 
         /// <summary>
         /// 产品
         /// </summary>
-        public virtual Produce NewProduce { get;  set; }
+        public virtual Produce Produce { get; set; }
 
         /// <summary>
         /// 还款计划表
@@ -80,11 +81,11 @@
         {
             var exception = default(Exception);
 
-            if (NewProduce == null)
+            if (Produce == null)
             {
                 exception = new ArgumentNullAppException(message: "产品引用为空！");
             }
-            else if (NewProduce.LeaseType == LeaseTypeEnum.直租 && FinancialItem.Count == 0)
+            else if (FinancialItem.Count == 0)
             {
                 exception = new ArgumentNullAppException(message: "融资项为空！");
             }

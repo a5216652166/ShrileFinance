@@ -34,9 +34,11 @@
       <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Collection, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.Collection.3.0.0\lib\net45\AutoMapper.Collection.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -93,7 +95,6 @@
   <ItemGroup>
     <Compile Include="AppServices\FileSystemAppServices\FileSystemAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\FinancialLoanAppService.cs" />
-    <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\ProduceAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\CreditContractAppService.cs" />
     <Compile Include="AppServices\ProcessAppservices\DraftAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinanceAppService.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="AppServices\ProcessAppservices\ProcessScriptAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\LoanAppService.cs" />
     <Compile Include="AppServices\VehicleAppservices\VehicleAppService.cs" />
+    <Compile Include="Mappings\BindModelToProduceMappingProfile.cs" />
     <Compile Include="Mappings\DomainToCreditInvestigationProfile.cs" />
     <Compile Include="Mappings\FinanceDomainToCreditInvestigationProfile.cs" />
     <Compile Include="Mappings\FinanceViewModelToDomainMappingProfile.cs" />
@@ -113,9 +115,13 @@
     <Compile Include="AppServices\ProcessAppservices\InstanceAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\OrganizationAppService.cs" />
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
+    <Compile Include="Mappings\ProduceToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="AppServices\ProcessAppservices\ProcessTempDataAppService.cs" />
-    <Compile Include="AppServices\FinanceAppServices\ProduceAppService.cs" />
+    <Compile Include="Produce\ProduceAppService.cs" />
+    <Compile Include="Produce\ProduceViewModels\PrincipalRatioViewModel.cs" />
+    <Compile Include="Produce\ProduceViewModels\ProduceBindModel.cs" />
+    <Compile Include="Produce\ProduceViewModels\ProduceViewModel.cs" />
     <Compile Include="Startup\Startup.Autofac.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -141,8 +147,6 @@
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\FinancialLoanViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\LoanViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\RepayTableViewModel.cs" />
-    <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\ProduceListViewModel.cs" />
-    <Compile Include="ViewModels\FinanceViewModels\ProduceViewModels\ProduceViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\OperationViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\PartnerAndUser.cs" />
     <Compile Include="ViewModels\HiddenEnum.cs" />

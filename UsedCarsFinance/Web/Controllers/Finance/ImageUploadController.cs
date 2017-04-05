@@ -4,14 +4,24 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using Application;
+    using global::Infrastructure.Http;
     using Models.Sys;
     using Sys;
 
     public class ImageUploadController : ApiController
     {
         private static readonly BLL.Finance.ImageUpload ImageUploadInstance = new BLL.Finance.ImageUpload();
+
+        private readonly FinanceAppService financeAppService;
+
+        public ImageUploadController(FinanceAppService financeAppService)
+        {
+            this.financeAppService = financeAppService;
+        }
 
         /// <summary>
         /// 获取融资id所有文件
@@ -126,6 +136,26 @@
             HttpResponseMessage response = new FileController().GetDownloadResponse(compressFile);
 
             return response;
+        }
+
+        /// <summary>
+        /// 下载单身证明
+        /// </summary>
+        /// <param name="financeId">融资标识</param>
+        /// <returns>单身证明</returns>
+        [HttpGet]
+        public HttpResponseMessage DownloadSignle(Guid financeId)
+        {
+            var file = financeAppService.DownloadSignle(financeId);
+
+            try
+            {
+                return HttpHelper.Download(file);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NoContent, ex);
+            }
         }
     }
 }

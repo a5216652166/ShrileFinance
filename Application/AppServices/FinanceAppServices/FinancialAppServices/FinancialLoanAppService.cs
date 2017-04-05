@@ -7,6 +7,7 @@
     using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories.FinanceRepositories;
     using Core.Interfaces.Repositories.FinanceRepositories.FinancialRepositories;
+    using Core.Produce;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using X.PagedList;
 
@@ -49,7 +50,7 @@
         {
             var entity = Mapper.Map<FinancialLoan>(model);
 
-            entity.NewProduce = produceRepository.Get(model.NewProduce.Id.Value);
+            // entity.Produce = produceRepository.Get(model.Produce.Id.Value);
 
             entity.AllowCreatedDate();
 
@@ -99,11 +100,15 @@
 
             Mapper.Map(model, entity);
 
-            entity.NewProduce = produceRepository.Get(model.NewProduce.Id.Value);
+            // entity.Produce = produceRepository.Get(model.Produce.Id.Value);
 
             var removeFinancialItems = UpdateBind.BindCollection(entity.FinancialItem, model.FinancialItem);
 
-            financialItemRepository.RemoveOldEntity(removeFinancialItems);
+
+            foreach (var remove in removeFinancialItems)
+            {
+                financialItemRepository.Remove(remove);
+            }
 
             entity.Valid();
 
@@ -133,14 +138,14 @@
 
         private void DistinguishProduceLeaseType(FinancialLoan entity, FinancialLoanViewModel model)
         {
-            if (entity.NewProduce.LeaseType == LeaseTypeEnum.回租)
-            {
-                entity.FinancialAmounts = model.FinancialAmounts;
-            }
-            else
-            {
+            ////if (entity.Produce.LeaseType == LeaseTypeEnum.回租)
+            ////{
+            ////    entity.FinancialAmounts = model.FinancialAmounts;
+            ////}
+            ////else
+            ////{
                 entity.FinancialAmounts = entity.FinancialItem.Sum(m => m.FinancialAmount);
-            }
+            ////}
         }
     }
 }

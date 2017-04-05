@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using Core.Entities.Vehicle;
 
     /// <summary>
@@ -16,14 +17,9 @@
         public Guid FinanceId { get; set; }
 
         /// <summary>
-        /// 融资项（Id、(Name、Maney)）
+        /// 融资产品项
         /// </summary>
-        public ICollection<KeyValuePair<Guid, KeyValuePair<string, decimal?>>> FinancingItems { get; set; }
-
-        /// <summary>
-        /// 融资项（Id、(Name、Maney)）
-        /// </summary>
-        public ICollection<KeyValuePair<Guid, KeyValuePair<string, decimal?>>> FinanceCosts { get; set; }
+        public virtual IEnumerable<FinancialItemViewModel> FinancialItem { get; set; }
 
         /// <summary>
         /// 选择还款日

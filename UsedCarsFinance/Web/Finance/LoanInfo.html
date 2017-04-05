@@ -42,6 +42,10 @@
                 statusCode: {
                     200: function (data) {
                         uc.form.Load(data);
+
+                        if (data.CreditAccountName) {
+                            $("table#account_dg").datagrid("loadData", JSON.parse(data.CreditAccountName));
+                        }
                     }
                 }
             });
@@ -93,28 +97,59 @@
         <!--收还款人信息-->
         <fieldset id="BankAccount">
             <!--收款人-->
-            <legend>收款人信息</legend>
+            <legend>放款信息</legend>
+            <table id="account_dg" class="easyui-datagrid" data-options="singleSelect: true ">
+                <thead>
+                    <tr>
+                        <th data-options="field:'LoanPrincipal',width:150,
+                                    formatter:function(value,row){
+                                        return row.Role;
+                                    },
+                                    editor:{
+                                        type:'combobox',
+                                        options:{
+						                    editable:false,
+                                            required:true,
+                                            data:[
+                                                {'value':'客户','text':'客户'},
+                                                {'value':'合作商','text':'合作商'}
+                                            ]
+                                        }
+                                    }">放款主体</th>
+                        <th data-options="field:'CreditAccountName',width:200,
+                                        editor:{
+                                            type:'textbox',
+                                            options:{
+                                                required:true,
+                                                readonly:false,
+                                                validType:'',
+                                                delay:800
+                                               }
+                                    }">放款账户</th>
+                        <th data-options="field:'CreditBankName',width:200,
+                                    editor:{
+                                        type:'textbox',
+                                        options:{
+                                            required:true
+                                        }
+                                    }">开户行</th>
+                        <th data-options="field:'CreditBankCard',width:400,
+                                        editor:{
+                                            type:'textbox',
+                                            options:{
+                                                required:true,
+                                                validType:['Integer','length[19,19]']
+                                            }
+                                        }">卡号</th>
+                    </tr>
+                </thead>
+            </table>
             <div class="row">
-                <div class="col-6">
-                    <label>收款账户:</label>
-                    <input name="CreditAccountName" class="easyui-textbox" data-options="readonly:true" />
-                </div>
-
-                <div class="col-6">
-                    <label>开户行:</label>
-                    <input name="CreditBankName" class="easyui-textbox" data-options="readonly:true" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-6">
-                    <label>卡号:</label>
-                    <input name="CreditBankCard" class="easyui-textbox" data-options="readonly:true" />
-                </div>
+                <div class="col-6"></div>
             </div>
 
             <!--还款人-->
-            <legend>还款人信息</legend>
+            <legend>还款信息</legend>
             <div class="row">
                 <div class="col-6">
                     <label>还款用户:</label>

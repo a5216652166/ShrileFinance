@@ -5,10 +5,10 @@
     using Core.Entities.CreditInvestigation;
     using Core.Entities.Customers.Enterprise;
     using Core.Entities.Finance;
-    using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using Core.Entities.Process;
     using Core.Entities.Vehicle;
+    using Core.Produce;
     using ViewModels.AccountViewModels;
     using ViewModels.CreditInvesitigation.TraceViewModels;
     using ViewModels.FinanceViewModels;

@@ -1,451 +1,394 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>产品维护</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>产品管理</title>
+	<link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+	<link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+	<link href="../Content/form-bootstrap.css" rel="stylesheet" />
+	<script src="../Scripts/jquery/jquery.js"></script>
+	<script src="../Scripts/easyui/jquery.easyui.js"></script>
+	<script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script src="../Scripts/usedcars.js"></script>
+	<script src="../Scripts/finance.js"></script>
+	<script>
+		uc.form = new UCForm(".container");
 
-    <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
-    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
-    <link href="../Content/form-bootstrap.css" rel="stylesheet" />
-    <script src="../Scripts/jquery/jquery.js"></script>
-    <script src="../Scripts/easyui/jquery.easyui.js"></script>
-    <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script src="../Scripts/usedcars.js"></script>
-    <script>
-        // 判断datagrid中行是否可编辑
-        var editIndex = undefined;
-        var query = uc.GetParams();
+		$(PageLoaded);
 
-        uc.form = new UCForm(".container");
+		function PageLoaded() {
+			var query = uc.GetParams();
 
-        $(function () {
-            Init();
-        });
+			if (query.method == "mod" || query.method == "view") {
+				uc.form.LoadForm({
+					url: "../api/Produce/Get",
+					params: { id: query.Id },
+					onLoad: DataLoad
+				});
 
-        function Init() {
+				if (query.method == "mod") {
+					$(".textbox-f[textboxname=Code]").textbox("readonly", true)
+				} else if (query.method == "view") {
+					$("#save").linkbutton("disable");
+					$("#principal_ratios_tb .easyui-linkbutton").linkbutton("disable");
 
-            if (query.method == "mod" || query.method == "view") {
-                if (query.method == "mod") {
-                    $("#Code").textbox("readonly",true)
-                }
-                if (query.method == "view") {
-                    $("#save").linkbutton("disable");
+					uc.form.DisableForm();
+				}
+			}
+		}
 
-                    uc.form.DisableForm();
-                }
-                uc.form.LoadForm({
-                    params: { id: query.ProduceId },
-                    url: "../api/Produce/Get"
-                });
-                $("input[name=Id]").val(query.ProduceId);
-                $.ajax({
-                    async: true,
-                    type: "Get",
-                    data: { id: query.ProduceId },
-                    url: "../api/Produce/Get",
-                    success: function (data) {
-                        var financing = $("#Financing").datagrid("getRows");
-                        var poundage = $("#Poundage").datagrid("getRows");
-                        $(".container").form("load", data);
-                        //该部分代码还需要优化调整，等功能点做完之后在优化
-                        //加载时候给融资项赋值
-                        for (var i = 0 ; i < data.FinancingItems.length; i++) {
-                            if (data.FinancingItems[i].FinancingProject.IsFinancing == true) {
-                                for (var j = 0; j < financing.length; j++) {
-                                    if (data.FinancingItems[i].FinancingProjectId == financing[j].FinancingProjectId) {
-                                        financing[j].Money = data.FinancingItems[i].Money;
-                                        financing[j].IsEdit = data.FinancingItems[i].IsEdit;
-                                        financing[j].IsFinancing = data.FinancingItems[i].FinancingProject.IsFinancing;
-                                        //$("#Financing").datagrid("updateRow", financing[j]);
-                                        //$("#Financing").datagrid("selectRow", j);
-                                    }
-                                }
-                            }
-                        }
-                        $("#Financing").datagrid("loadData", financing);
-                        //将该产品对应的融资项进行选中操作
-                        for (var i = 0 ; i < data.FinancingItems.length; i++) {
-                            if (data.FinancingItems[i].FinancingProject.IsFinancing == true) {
-                                for (var j = 0; j < financing.length; j++) {
-                                    if (data.FinancingItems[i].FinancingProjectId == financing[j].FinancingProjectId) {
-                                        $("#Financing").datagrid("selectRow", j);
-                                    }
-                                }
-                            }
-                        }
-                        //加载时候给手续费金额赋值
-                        for (var i = 0 ; i < data.FinancingItems.length; i++) {
-                            if (data.FinancingItems[i].FinancingProject.IsFinancing == false) {
-                                for (var j = 0; j < poundage.length; j++) {
-                                    if (data.FinancingItems[i].FinancingProjectId == poundage[j].FinancingProjectId) {
-                                        poundage[j].Money = data.FinancingItems[i].Money;
-                                        poundage[j].IsEdit = data.FinancingItems[i].IsEdit;
-                                        poundage[j].IsFinancing = data.FinancingItems[i].FinancingProject.IsFinancing;
-                                    }
-                                }
-                            }
-                        }
-                        $("#Poundage").datagrid("loadData", poundage);
-                        //将该产品对应的手续费项进行选中操作
-                        for (var i = 0 ; i < data.FinancingItems.length; i++) {
-                            if (data.FinancingItems[i].FinancingProject.IsFinancing == false) {
-                                for (var j = 0; j < poundage.length; j++) {
-                                    if (data.FinancingItems[i].FinancingProjectId == poundage[j].FinancingProjectId) {
-                                        $("#Poundage").datagrid("selectRow", j);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
+		function Submit() {
+			if (DataVaildate()) {
+				var data = DataBuild();
 
-            }
-        }
+				uc.form.Submit({
+					url: "../api/Produce",
+					method: "auto",
+					data: data,
+					statusCode: {
+						200: function (data) {
+							top.$.messager.show({ msg: "保存成功！" });
 
-        var disction;
+							uc.form.Cancel();
+						},
+						400: uc.E400
+					}
+				});
+			}
+		}
 
-        function toUppers() {
-            disction = true;
+		function DataLoad(data) {
+			uc.form.Load(data);
 
-            var fin = $("#Financing").datagrid("getSelected");
-            if (fin != null) {
-                if (fin.Name != "裸车价") {
-                    top.$.messager.show({ msg: "融资项中必须要有裸车价！" });
-                    return disction = false;
-                }
-            }
-            else {
-                top.$.messager.show({ msg: "融资项中必须要有裸车价！" });
-                return disction = false;
-            }
-          
-            var CodeUpper = $("input[name='Code']").val().toUpperCase();
-            var ProduceId = $("input[name='Id']").val();
-            $("input[name='Code']").val(CodeUpper);
-            $.ajax({
-                async: false,
-                type: "Get",
-                url: "../api/Produce/GetAll",
-                success: function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        if (CodeUpper == data[i].Code && (ProduceId == "" || ProduceId != data[i].Id)) {
-                            top.$.messager.show({ msg: "产品代码重复！" });
-                            return disction = false;
-                        }
-                    }
-                }
-            });
-        }
-        //用于提交数据时候改变是否融资项和是否可编辑状态“是”改为true "否"改为false
-        function ChangeStatus(datagridId) {
-            var datarows = $("#" + datagridId).datagrid("getRows");
-            for (var i = 0 ; i < datarows.length; i++) {
-                if (datarows[i]["IsFinancing"] == "是") {
-                    datarows[i]["IsFinancing"] = true;
-                }
-                else {
-                    datarows[i]["IsFinancing"] = false;
-                }
-                if (datarows[i]["IsEdit"] == "是") {
-                    datarows[i]["IsEdit"] = true;
-                }
-                else {
-                    datarows[i]["IsEdit"] = false;
-                }
-            }
-        }
+			$("#principal_ratios").datagrid("loadData", data.PrincipalRatios);
 
-        function Submit() {
-            var url;
-            var min = parseInt($("input[textboxname = MinFinancingRatio]").textbox("getValue"));
-            var max = parseInt($("input[textboxname = MaxFinancingRatio]").textbox("getValue"));
+			ResetPaymentFactors();
+		}
 
-            if ($("#CustomerBailRatio").val() > 100) {
-                top.$.messager.show({ msg: "客户保证金比例必须小于100！" });
-                return false;
-            }
-            if ($("#FinalRatio").val() > 100) {
-                top.$.messager.show({ msg: "尾款比例必须小于100！" });
-                return false;
-            }
-          
-            if (min != "" && max != "" && max < min) {
-                $("input[textboxname = MaxFinancingRatio]").textbox("setValue", "")
-                top.$.messager.show({ msg: "融资比例下限必须小于融资比例上限！" });
-                return false
-            }
-            toUppers();
+		function DataBuild() {
+			var data = $("#produce_info").serializeJson();
 
-            if (disction) {
-            var produceInfo = $(".container").serializeJson();
-                ChangeStatus("Poundage");
-                ChangeStatus("Financing");
-                produceInfo["Poundage"] = $('#Poundage').datagrid('getChecked');
-                produceInfo["FinancingItems"] = ($('#Financing').datagrid('getChecked'));
+			data.PrincipalRatios = $("#principal_ratios").datagrid("getRows");
 
-                //保存前将datagrid中的编辑状态的行结束编辑，数据保存在datagrid中
-                $('#Poundage').datagrid('getEditingRowIndexs');
-                $('#Financing').datagrid('getEditingRowIndexs');
+			return data;
+		}
 
-                if (query.method == "mod") {
-                    url = "../api/Produce/Modify";
-                }
-                else if (query.method == "add") {
-                    url = "../api/Produce/Create";
-                }
+		function DataVaildate() {
+			endEditing();
 
-                uc.form.Submit({
-                    method: "POST",
-                    url: url,
-                    data: produceInfo
-                });
-            }
-        }
+			var ratios = $("#principal_ratios").datagrid("getRows");
 
-        $.extend($.fn.datagrid.methods, {
-            getEditingRowIndexs: function (jq) {
-                var id = $(jq).attr("id");
-                var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
-                var indexs = [];
-                rows.each(function (i, rows) {
-                    accept(id)
-                });
-            }
-        });
+			var sumRatio = 0;
+			$(ratios).each(function (i, item) {
+				sumRatio += parseFloat(item.Ratio);
+			});
 
-        function onChange() {
-            var min = parseInt($("input[textboxname = MinFinancingRatio]").textbox("getValue"));
-            var max = parseInt($("input[textboxname = MaxFinancingRatio]").textbox("getValue"));
-            if (min != "" && max != "" && max < min) {
-                $("input[textboxname = MaxFinancingRatio]").textbox("setValue", "")
-                top.$.messager.show({ msg: "融资比例下限必须小于融资比例上限！" });
-                return false
-            }
-        }
+			if (sumRatio !== 100) {
+				$.messager.show({ msg: "偿还本金比例之和应为100%！" });
 
-        //双击编辑行
-        function onEditor(index, field, value) {
-            $('#Poundage').datagrid('getEditingRowIndexs');
-            $('#Financing').datagrid('getEditingRowIndexs');
+				return false;
+			}
 
-            if (editIndex != index) {
-                if (endEditing(this.id)) {
-                    $('#' + this.id).datagrid('selectRow', index)
-							.datagrid('beginEdit', index);
-                    var ed = $('#' + this.id).datagrid('getEditor', { index: index, field: field });
-                    if (ed != null) {
-                        $(ed.target).focus();
-                        editIndex = index;
-                    }
-                } else {
-                    $('#' + this.id).datagrid('selectRow', editIndex);
-                }
-            }
-        }
-
-        //键盘enter键
-        document.onkeydown = function (event) {
-            var e = event || window.event || arguments.callee.caller.arguments[0];
-            if (e && e.keyCode == 13) { // enter 键
-                var id = $(e.target).parents(".panel.datagrid").find(".easyui-datagrid").attr("id")
-                accept(id);
-            }
-        };
-
-        //结束编辑状态
-        function endEditing(id) {
-            if (editIndex == undefined) { return true }
-
-            if ($('#' + id).datagrid('validateRow', editIndex)) {
-                var ed = $('#' + id).datagrid('getEditors', editIndex);
-                var money = $(ed[0].target).val();
-                var isFinancing = $(ed[1].target).val();
-                var isEdit = $(ed[2].target).val();
-                $('#' + id).datagrid('getRows')[editIndex]['Money'] = money;
-                $('#' + id).datagrid('getRows')[editIndex]['IsFinancing'] = isFinancing;
-                $('#' + id).datagrid('getRows')[editIndex]['IsEdit'] = isEdit;
-                $('#' + id).datagrid('endEdit', editIndex);
-                editIndex = undefined;
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        //结束编辑状态后保存数据在datagrid
-        function accept(id) {
-            if (endEditing(id)) {
-                $('#' + id).datagrid('acceptChanges');
-            }
-        }
-
-        function LoadFilter(data) {
-            var value = {
-                total: data.total,
-                rows: []
-            };
-            if (data.length > 0) {
-                for (var i = 0 ; i < data.length; i++) {
-                    if (data[i].IsFinancing == false){
-                        data[i].IsFinancing = "否"
-                    }
-                    else {
-                        data[i].IsFinancing = "是"
-                    }
-                    if (data[i].IsEdit == false){
-                        data[i].IsEdit = "否"
-                    }
-                    else {
-                        data[i].IsEdit = "是"
-                    }
-                    value.rows[i] = data[i];
-                }
-                return value;
-            }
-            else {
-                value.total = 0;
-                value.rows = [];
-                return value;
-            }
-        }
-        function OnAfterEdit(index, row) {
-            row.editing = false;
-            $('#Poundage').datagrid('refreshRow', index);
-        }
-
-    </script>
+			return true;
+		}
+	</script>
 </head>
 <body>
-    <form class="container">
-        <fieldset>
-            <legend>产品信息</legend>
+	<form class="container">
+		<fieldset id="produce_info">
+			<legend>产品信息</legend>
 
-            <div class="hidden">
-                <input name="Id" type="hidden" />
-            </div>
+			<div class="hidden">
+				<input name="Id" type="hidden" />
+			</div>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>产品代码:</label>
-                    <input name="Code" id="Code" class="easyui-textbox" data-options="required:true,validType:'length[0,100]'" />
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>产品代码:</label>
+					<input name="Code" class="easyui-textbox" data-options="required:true" />
+				</div>
+				<div class="col-6">
+					<label>产品类型:</label>
+					<select name="ProduceType" class="easyui-combobox" data-options="required:true,editable:false,valueField: 'ProduceType', textField: 'ProduceType'">
+						<option>纯分期</option>
+						<option>均匀贷</option>
+						<option>低息贷</option>
+						<option>保证金 + 分期</option>
+						<option>保证金 + 三期月供提前付</option>
+					</select>
+				</div>
+			</div>
 
-                <div class="col-6">
-                    <label>产品名称:</label>
-                    <input name="Name" class="easyui-textbox" data-options="required:true,validType:'length[0,100]'" />
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-6">
+					<label>年利率:</label>
+					<input id="rate" name="Rate" class="easyui-textbox" data-options="required:true,validType:'Rate',onChange:RateChanged" />
+					<unit>%</unit>
+				</div>
+			</div>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>名义利率（年）:</label>
-                    <input id="InterestRate" name="InterestRate" class="easyui-textbox" data-options="required:true,validType:'Price'" /><span class="unit">%</span>
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>还款期限:</label>
+					<input id="periods" name="Periods" class="easyui-textbox" data-options="required:true,validType:'Integer',onChange:PeriodsChanged" />
+					<unit>期</unit>
+				</div>
+				<div class="col-6">
+					<label>月供先付期数:</label>
+					<input name="PeriodsPerpayment" class="easyui-textbox" data-options="required:true,value:'0',validType:'Integer'" />
+					<unit>期</unit>
+				</div>
+			</div>
 
-                <div class="col-6">
-                    <label>费率（年）:</label>
-                    <input id="CostRate" name="CostRate" class="easyui-textbox" data-options="required:true,validType:'Price'" /><span class="unit">%</span>
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-6">
+					<label>保证金:</label>
+					<input name="CustomerBailRatio" class="easyui-textbox" data-options="required:true,value:'0',validType:'Ratio'" />
+					<unit>%</unit>
+				</div>
+				<div class="col-6">
+					<label>手续费:</label>
+					<input name="CustomerCostRatio" class="easyui-textbox" data-options="required:true,value:'0',validType:'Ratio'" />
+					<unit>%</unit>
+				</div>
+			</div>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>还款方式:</label>
-                    <select name="RepaymentMethod" class="easyui-combobox" data-options="required:true,editable:false">
-                        <option value="1">等额本息</option>
-                        <option value="2">月供提前付</option>
-                        <option value="3">一次性付息</option>
-                    </select>
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>渠道返点:</label>
+					<input name="PartnersCommissionRatio" class="easyui-textbox" data-options="required:true,value:'0',validType:'Ratio'" />
+					<unit>%</unit>
+				</div>
+				<div class="col-6">
+					<label>员工提成:</label>
+					<input name="EmployeeCommissionRatio" class="easyui-textbox" data-options="required:true,value:'0',validType:'Ratio'" />
+					<unit>%</unit>
+				</div>
+			</div>
 
-                <div class="col-6">
-                    <label>融资比例区间:</label>
-                    <input name="MinFinancingRatio" class="easyui-textbox" style="width:190px;" data-options="required:true,onChange:onChange,validType:'Price'" />
-                    <span style="display:inline-block;width:22px; text-align:center;">-</span>
-                    <input name="MaxFinancingRatio" class="easyui-textbox" style="width:190px;" data-options="required:true,onChange:onChange,validType:'Price'" />
-                    <span class="unit">%</span>
-                </div>
-            </div>
+			<div class="row">
+				<div class="col-6">
+					<label>月费率:</label>
+					<input name="CostRate" class="easyui-textbox" data-options="validType:'Rate',onChange:CostRateChanged" />
+					<unit>%</unit>
+				</div>
+				<div class="col-6">
+					<label>年费率:</label>
+					<input name="CostRateYear" class="easyui-textbox" data-options="readonly:true" />
+					<unit>%</unit>
+				</div>
+			</div>
+			<script>
+				// 获取月利率
+				function getRate() {
+					var rate = $("#rate").textbox("getValue");
 
-            <div class="row">
-                <div class="col-6">
-                    <label>融资期限:</label>
-                    <input name="FinancingPeriods" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">月</span>
-                </div>
+					return parseFloat(rate) / 1200;
+				}
 
-                <div class="col-6">
-                    <label>还款间隔:</label>
-                    <input name="RepaymentInterval" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">月</span>
-                </div>
-            </div>
+				function RateChanged(newValue, oldValue) {
+					//var rate = newValue;
 
-            <div class="row">
-                <div class="col-6">
-                    <label>客户保证金比例:</label>
-                    <input name="CustomerBailRatio" id="CustomerBailRatio" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">%</span>
-                </div>
+					// 重设月供系数
+					ResetPaymentFactors();
+				}
 
-                <div class="col-6">
-                    <label>尾款比例:</label>
-                    <input name="FinalRatio" id="FinalRatio" class="easyui-textbox" data-options="required:true,validType:'Integer'" /><span class="unit">%</span>
-                </div>
-            </div>
+				function PeriodsChanged(newValue, oldValue) {
+					var nperiods = parseInt(newValue);
+					var operiods = parseInt(oldValue);
 
-            <div class="row">
-                <label>手续费项目:</label>
-                <table id="Poundage" class="easyui-datagrid" data-options="height: 230,rownumbers: true, method: 'GET',url: '../api/FinancingProject/GetByIsFinancing',
-                       loadMsg: '正在加载，请稍候...',
-                       queryParams:{isFinancing:false},
-                       onDblClickCell:onEditor,
-                       loadFilter :LoadFilter,
-                       ">
-                    <thead>
-                        <tr>
-                            <th data-options="field:'ck',checkbox:true"></th>
-                            <th data-options="field:'FinancingProjectId',hidden:true">Id</th>
-                            <th data-options="field:'Name',width:200,align:'center'">名称</th>
-                            <th data-options="field:'Money',width:200,align:'center',editor:{type:'text',options:{required:true}}">价格</th>
-                            <th data-options="field:'IsFinancing',hidden:true,width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否是融资项</th>
-                            <th data-options="field:'IsEdit',width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否可编辑</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+					if (!nperiods) {
+						return true;
+					}
 
-            <!--新增放款信息-->
-            <div class="row">
-                <label>融资项目:</label>
-                <table id="Financing" class="easyui-datagrid" data-options="height: 230,rownumbers: true, method: 'GET',url: '../api/FinancingProject/GetByIsFinancing',
-                       loadMsg: '正在加载，请稍候...',
-                       queryParams:{isFinancing:true},
-                       onDblClickCell:onEditor,
-                       loadFilter :LoadFilter,
-                       ">
-                    <thead>
-                        <tr>
-                            <th data-options="field:'ck',checkbox:true"></th>
-                            <th data-options="field:'FinancingProjectId',hidden:true">Id</th>
-                            <th data-options="field:'Name',width:200,align:'center'">名称</th>
-                            <th data-options="field:'Money',width:200,align:'center',editor:{type:'text',options:{required:true}}">价格</th>
-                            <th data-options="field:'IsFinancing',width:120,hidden:true,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否是融资项</th>
-                            <th data-options="field:'IsEdit',width:120,align:'center',editor:{type:'checkbox',options:{required:true,on:'是',off:'否'}}">是否可编辑</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+					var nyears = Math.ceil(nperiods / 12);
 
-            <div class="row">
-                <div class="col-12">
-                    <label>描述:</label>
-                    <input name="Remarks" class="easyui-textbox" data-options="multiline:true,height:66,width:900,validType:'length[0,200]'" />
-                </div>
-            </div>
-        </fieldset>
+					if (nyears == Math.ceil(operiods / 12)) {
+						return true;
+					}
 
-        <div id="btn">
-            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',onClick:Submit">保存</a>
-            <a id="back" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-redo',onClick:uc.form.Cancel">返回</a>
-        </div>
-    </form>
+					SetPrincipalRatios(nyears);
+				}
+
+				function CostRateChanged(newValue, oldValue) {
+					var rate = newValue;
+
+					// 设置年费率
+					var rateofyear = RateMTY(rate);
+					rateofyear = Math.round(rateofyear * 100) / 100;
+					$(".textbox-f[textboxname=CostRateYear]").textbox("initValue", rateofyear);
+				}
+			</script>
+		</fieldset>
+
+		<fieldset id="produce_principal_ratios">
+			<legend>本金比例分配</legend>
+
+			<table id="principal_ratios" class="easyui-datagrid" data-options="
+				   singleSelect: true,
+                   rownumbers: true,
+                   toolbar: '#principal_ratios_tb',
+                   onDblClickRow: onEdit,
+                   onEndEdit: onEndEdit
+                   ">
+				<thead>
+					<tr>
+						<th data-options="field:'Title',width:260,align:'center',formatter:titleFormatter">期次</th>
+						<th data-options="field:'Ratio',width:260,align:'center',
+                        editor:{
+                            type:'textbox',
+                            options:{
+                                required:true,
+                                validType:'Ratio'
+                            }
+                        }">偿还本金比例（%）</th>
+						<th data-options="field:'Factor',width:260,align:'center'">月供系数</th>
+					</tr>
+				</thead>
+			</table>
+
+			<div id="principal_ratios_tb">
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true,onClick:changeRatios">设置</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:acceptRatios">确定</a>
+			</div>
+
+			<script>
+				// 设置融资比例
+				function SetPrincipalRatios(years) {
+					var sumRatio = 10000;
+					var perRatio = Math.floor(sumRatio / years);
+					var fstRatio = (sumRatio - (perRatio * years) + perRatio);
+
+					perRatio /= 100;
+					fstRatio /= 100;
+
+					var ratios = [fstRatio];
+					for (var i = 1; i < years; i++) {
+						ratios.push(perRatio);
+					}
+
+					ratios = $(ratios).map(function (i, ratio) {
+						return {
+							Period: i + 1,
+							Ratio: ratio
+						};
+					}).toArray();
+
+					$("#principal_ratios").datagrid("loadData", ratios);
+
+					ResetPaymentFactors();
+				}
+
+				// 重设月供系数
+				function ResetPaymentFactors() {
+					var rate = getRate();
+
+					var ratios = $("#principal_ratios").datagrid("getRows");
+					$(ratios).each(function (i, item) {
+						item.Factor = CalculatePaymentFactor(rate, item.Ratio);
+					});
+
+					$("#principal_ratios").datagrid("loadData", ratios)
+				}
+
+				// 计算月供系数
+				function CalculatePaymentFactor(rate, ratio) {
+					var principal = 10000;
+					var periods = 12;
+
+					var pv = 10000 * (parseFloat(ratio) / 100);
+					var payment = PMT(rate, periods, pv);
+
+					payment = (Math.round(payment * 100) / 100) || 0;
+
+					return payment;
+				}
+
+				function titleFormatter(value, row, index) {
+					return "第" + row.Period + "年";
+				}
+
+				var editIndex = undefined;
+
+				function endEditing() {
+					if (editIndex == undefined) {
+						return true;
+					}
+
+					if ($("#principal_ratios").datagrid("validateRow", editIndex)) {
+						$("#principal_ratios").datagrid("endEdit", editIndex);
+						editIndex = undefined;
+						return true;
+					}
+					else {
+						return false;
+					}
+				}
+
+				function onEdit(index) {
+					if (editIndex == index) { return; }
+
+					// 禁用状态下，阻止编辑
+					if ($("#produce_principal_ratios").attr("disabled") == "disabled") {
+						return false;
+					}
+
+					if (endEditing()) {
+						$("#principal_ratios").datagrid('selectRow', index)
+							.datagrid("beginEdit", index);
+
+						var ed = $('#principal_ratios').datagrid('getEditor', { index: index, field: "Ratio" });
+						if (ed) {
+							($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+						}
+
+						editIndex = index;
+					}
+					else {
+						setTimeout(function () {
+							$("#principal_ratios").datagrid("selectRow", editIndex);
+						}, 0);
+					}
+				}
+
+				function onEndEdit(index, row) {
+					var rate = getRate();
+
+					row.Factor = CalculatePaymentFactor(rate, row.Ratio);
+				}
+
+				function changeRatios() {
+					var row = $("#principal_ratios").datagrid("getSelected");
+					var index = $("#principal_ratios").datagrid("getRowIndex", row);
+
+					if (index >= 0) {
+						onEdit(index);
+					}
+				}
+
+				function acceptRatios() {
+					if (endEditing()) {
+						$("#principal_ratios").datagrid("acceptChanges");
+					}
+				}
+
+				document.onkeydown = function (event) {
+					var e = event || window.event || arguments.callee.caller.arguments[0];
+
+					// enter 键
+					if (e && e.keyCode == 13) {
+						if (editIndex != undefined) {
+							acceptRatios();
+						}
+					}
+				};
+			</script>
+		</fieldset>
+
+		<div id="btn">
+			<a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',onClick:Submit">保存</a>
+			<a id="back" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-redo',onClick:uc.form.Cancel">返回</a>
+		</div>
+	</form>
 </body>
 </html>
