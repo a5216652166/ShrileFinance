@@ -144,9 +144,9 @@
         /// <param name="financeId">融资标识</param>
         /// <returns>单身证明</returns>
         [HttpGet]
-        public HttpResponseMessage DownloadSignle(Guid financeId)
+        public HttpResponseMessage DownloadFiles(Guid financeId,int sign)
         {
-            var file = financeAppService.DownloadSignle(financeId);
+            var file = financeAppService.DownloadFiles(financeId, sign);
 
             try
             {
