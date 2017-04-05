@@ -81,9 +81,9 @@
         function DownloadSignle()
         {
             $.ajax({
-                data: { financeId: query.FinanceId },
+                data: { financeId: query.FinanceId, sign: 1},
                 type: 'POST',
-                url: '../api/PdfContract/DownloadSignle',
+                url: '../api/PdfContract/DownloadFiles',
                 statusCode: {
                     200: function (data) {
                         $.messager.show({ msg: "生成PDF成功！" });

@@ -26,9 +26,7 @@
         /// <returns></returns>
         [HttpGet]
         public Models.Sys.FileInfo GetPath(int fileId)
-        {
-            return new BLL.Sys.File().Get(fileId);
-        }
+            => new BLL.Sys.File().Get(fileId);
 
         /// <summary>
         /// 获取合同名称
@@ -55,9 +53,17 @@
         }
 
         [HttpGet][AllowAnonymous]
-        public HttpResponseMessage DownloadSignle(Guid financeId)
+        public HttpResponseMessage DownloadFiles(Guid financeId,int sign)
         {
-            var file = financeAppService.DownloadSignle(financeId);
+            var file=new KeyValuePair<string,byte[]>();
+            if (sign == 1)
+            {
+                file = financeAppService.DownloadSignle(financeId);
+            }
+            else if(sign==2)
+            {
+                file = financeAppService.DownLoadApproval(financeId);
+            }
 
             return HttpHelper.Download(file);
         }        
