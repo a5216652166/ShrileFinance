@@ -1,799 +1,604 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>融资申请</title>
-    <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
-    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
-    <link href="../Content/form-bootstrap.css" rel="stylesheet" />
-    <script src="../Scripts/jquery/jquery.js"></script>
-    <script src="../Scripts/easyui/jquery.easyui.js"></script>
-    <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script src="../Scripts/usedcars.js"></script>
-    <style>
-        .adddiv {
-            background-color: #afe3fa;
-            height: 30px;
-            width: 95%;
-            margin-left: 15px;
-        }
-        fieldset{
-            margin-top:20px;
-        }
-        legend{
-            font-size:18px;
-        }
-        .add {
-            margin-top: 2px;
-            margin-right: 10px;
-            float: right;
-            font-size: 20px;
-            text-decoration: none;
-        }
-
-        .minusdiv {
-            height: 30px;
-            width: 98%;
-        }
-        /**手风琴样式**/
-        .ac {
-            font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
-            padding: 2px 20px;
-            position: relative;
-            z-index: 20;
-            display: block;
-            height: 35px;
-            cursor: pointer;
-            color: #777;
-            text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
-            line-height: 33px;
-            font-size: 19px;
-            box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 1px 0px 0px 0px rgba(255,255,255,0.9) inset, 0px 2px 2px rgba(0,0,0,0.1);
-        }
-
-        .ac-1 + .ac,
-        .ac-1 + .ac:hover {
-            background: #b7f2ff;
-            color: #3d7489;
-        }
-
-        .ac:hover:after,
-        .ac-1:checked + .ac:hover:after {
-            content: '';
-            background: #c6e1ec;
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            right: 13px;
-            top: 7px;
-            background: url(images/arrow_down.png) no-repeat center center;
-        }
-
-        .ac-1:checked + .ac:hover:after {
-            background-image: url('images/arrow_up.png');
-        }
-
-        .ac-1 {
-            display: none;
-        }
-
-        article {
-            background: rgba(255, 255, 255, 0.5);
-            margin-top: -1px;
-            overflow: hidden;
-            height: 0px;
-            position: relative;
-            z-index: 10;
-            -webkit-transition: height 0.6s ease-in-out, box-shadow 0.6s linear;
-            -moz-transition: height 0.6s ease-in-out, box-shadow 0.6s linear;
-            -o-transition: height 0.6s ease-in-out, box-shadow 0.6s linear;
-            transition: height 0.6s ease-in-out, box-shadow 0.6s linear;
-        }
-
-        input:checked ~ article.Vehicle {
-            height: 1100px;
-        }
-
-        input:checked ~ article.produce {
-            height: 1420px;
-        }
-
-        input:checked ~ article.people {
-            height: auto;
-        }
-    </style>
-
-    <style>
-        td > .textbox[style*="height: 22px;"] {
-            height: 22px !important;
-        }
-
-            td > .textbox[style*="height: 22px;"] > .textbox-text {
-                padding: 0px 4px !important;
-                font-size: 12px !important;
-                line-height: 1.42857143;
-            }
-    </style>
-
-    <style type="text/css">
-        div.easyui-accordion div.panel div.accordion-header {
-            margin: 0 0;
-            padding: 0 0;
-            height: 35px;
-        }
-
-            div.easyui-accordion div.panel div.accordion-header div.panel-title {
-                margin: 0 10px;
-                padding: 0 0;
-                font-size: 15px;
-                line-height: 35px;
-            }
-    </style>
-
-    <script type="text/javascript">
-        uc.form = new UCForm(".container");
-
-        $(function () {
-            Init();
-        });
-
-        // 初始化
-        function Init() {
-            // 初始化基本信息
-            BaseInit();
-
-            if (uc.GetParams().state == 0) {
-                uc.form.DisableForm();
-            }
-
-            if (parent.flow.RootKey != undefined) {
-                $.ajax({
-                    async: false,
-                    data: { Id: parent.flow.RootKey },
-                    type: "GET",
-                    url: "../api/FinanceAuidt/Get",
-                    statusCode: {
-                        200: function (data) {
-                            LoadData(data);
-                        }
-                    }
-                });
-            }
-            else {
-                $.ajax({
-                    async: false,
-                    data: {},
-                    type: "GET",
-                    url: "../api/FinanceAuidt/GetParentAndUser",
-                    statusCode: {
-                        200: function (data) {
-                            $("#Phone").textbox("setValue", data.Phone)
-                            $("#UserName").textbox("setValue", data.UserName)
-                            $("#PartnerName").textbox("setValue", data.PartnerName)
-                        }
-                    }
-                });
-            }
-
-            ////AutoSwitchProperties(false);
-        }
-
-        //构建数据
-        function BuildData() {
-            var data = {};
-
-            data["Id"] = $("#financeId").val();
-
-            var ff = $(".container").find("article")
-            for (var i = 0; i < ff.length - 1; i++) {
-                temp = $(ff[i]).attr("class");
-                var fs = new Array();
-                var fieldset = $(ff[i]).children("fieldset");
-                data[temp] = $(fieldset[0]).serializeJson();
-            }
-
-            //申请人中由于包括自有住房和联系人部分嵌套的fieldset所以单独处理
-            var app = [];//用于存放联系人信息
-            var house = [];//用于存放自有住房信息
-            for (var i = 0; i < $(ff[ff.length - 1]).find("fieldset").length; i++) {
-                var findclass = $($(ff[ff.length - 1]).find("fieldset")[i]).attr("class");
-                if (findclass == "applicant") {
-                    app.push($($(ff[ff.length - 1]).find("fieldset")[i]).serializeJson());
-                }
-                else if (findclass == "house") {
-                    house.push($($(ff[ff.length - 1]).find("fieldset")[i]).serializeJson());
-                }
-            }
-
-            //将自有住房添加到主要申请人中
-            app[0]["OwnHouse"] = JSON.stringify(house);
-
-            //将主要申请人信息存放到数组中
-            data["Applicant"] = app;
-
-
-            // 构建产品信息
-            data.Produce = BuidProduceData();
-
-            // 构建融资项信息
-            data.FinancialItem = BuildFinanceItemData();
-
-            return data;
-        }
-
-        //验证数据
-        function ValidData() {
-            var valid = $(".container").form("validate");
-
-            return valid;
-        }
-
-        // 数据加载
-        function LoadData(data) {
-            if (data == undefined || data == null)
-            {
-                return false;
-            }
-
-            $("#financeId").val(data.Id);
-
-            // 加载基础信息
-            LoadBaseInfo(data);
-
-            // 加载产品信息
-            LoadProduceInfo(data.Produce);
-
-            // 加载融资项信息
-            LoadFinanceItemInfo(data.FinancialItem);
-
-            //加载联系人
-            LoadApplicant(data.Applicant);
-        }
-    </script>
-
-    <!-- 基本信息 -->
-    <script type="text/javascript">
-        // 初始化基本信息
-        function BaseInit() {
-            LoadBrand();
-
-            AutoSwitchProperties(true);
-        }
-
-        function LoadBaseInfo(data) {
-            if (data == undefined || data == null) {
-                return false;
-            }
-
-            // 加载合作商信息
-            if (data.CreateBy != undefined && data.CreateBy != undefined) {
-                $("#Phone").textbox("setValue", data.CreateBy.Phone)
-                $("#UserName").textbox("setValue", data.CreateBy.Name)
-                $("#PartnerName").textbox("setValue", data.CreateOf.Name)
-            }
-
-            // 加载车辆信息
-            $("#Vehicle").form("load", data.Vehicle);
-
-            if (data.Vehicle.MakeCode != "") {
-                $("select[comboname='MakeCode']").combobox("unselect", data.Vehicle.MakeCode).combobox("select", data.Vehicle.MakeCode);
-            }
-
-            if (data.Vehicle.FamilyCode != "") {
-                $("select[comboname='FamilyCode']").combobox("select", data.Vehicle.FamilyCode);
-            }
-
-            if (data.Vehicle.FamilyCode != "") {
-                $("select[comboname='VehicleKey']").combobox("select", data.Vehicle.VehicleKey);
-            }
-            $("#ManufacturerGuidePrice").textbox("setValue", data.Vehicle.ManufacturerGuidePrice);
-        }
-
-        // 加载汽车品牌
-        function LoadBrand() {
-            $.ajax({
-                async: false,
-                method: "GET",
-                url: '../api/CarHome/GetBrand',
-                statusCode: {
-                    200: function (data) {
-                        $("select[comboname='MakeCode']").combobox("loadData", data);
-                    }
-                }
-            });
-        }
-
-        // 车辆品牌
-        function SelectModel(record) {
-            $("select[comboname='FamilyCode']").combobox("clear");
-            $("select[comboname='VehicleKey']").combobox("clear");
-            $("input[textboxname='ManufacturerGuidePrice']").textbox("clear");
-            $("input[textboxname='Displacement']").textbox("clear");
-            $.ajax({
-                async: false,
-                data: { brandCode: record.value },
-                method: 'GET',
-                url: '../api/CarHome/GetSeries',
-                statusCode: { 200: function (data) { $("select[comboname='FamilyCode']").combobox("loadData", data); } }
-            });
-        }
-
-        // 车辆系列
-        function SelectCarConfigure(record) {
-            $("select[comboname='VehicleKey']").combobox("clear");
-            $("input[textboxname='ManufacturerGuidePrice']").textbox("clear");
-            $("input[textboxname='Displacement']").textbox("clear");
-
-            $.ajax({
-                async: false,
-                data: { brandCode: $("select[comboname='MakeCode']").combobox("getValue"), seriesCode: record.value },
-                method: 'GET',
-                url: '../api/CarHome/GetVehicle',
-                statusCode: { 200: function (data) { $("select[comboname='VehicleKey']").combobox("loadData", data); } }
-            });
-        }
-
-        // 加载车辆价格
-        function LoadVehiclePrice(vehicleKey) {
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: "../api/CarHome/GetPriceByVehicleID",
-                data: { vehicleKey: vehicleKey.value },
-                statusCode: {
-                    200: function (data) {
-                        $("input[textboxname=ManufacturerGuidePrice]").textbox("setValue", data.ManufacturerGuidePrice);
-                        $("input[textboxname=Displacement]").textbox("setValue", data.Displacement);
-                    }
-                }
-            });
-        }
-
-        // 车架号、上牌城市自动切换必填和非必填属性
-        function AutoSwitchProperties(re) {
-            if (re == true || re == false) {
-                $("input[textboxname=FrameNo]").textbox({ required: re });
-                $("input[textboxname=RegisterCity").textbox({ required: re });
-            }
-        }
-    </script>
-
-    <!-- 租赁信息 -->
-    <script type="text/javascript">
-        // 构建产品信息数据
-        function BuidProduceData() {
-            var data = {};
-
-            data.Id = $("form fieldset#produce input[name=Id]").val();
-
-            return data;
-        }
-
-        // 构建融资项信息数据
-        function BuildFinanceItemData()
-        {
-            var data = $("form fieldset#financeItem table#financeItem_dg").datagrid('getRows');
-
-            return data;
-        }
-
-        // 加载产品信息(参数：data）
-        function LoadProduceInfo(data) {
-            if (data == undefined || data == null)
-            {
-                return false;
-            }
-
-            $("fieldset#produce").form("load", data);
-
-            var repayPrincipals = [];
-
-            $(data.RepayPrincipal).each(function (i, e) {
-                var repay = {};
-                repay.YearNum = "第" + (i + 1) + "年";
-                repay.PrincipalRate = e;
-                repay.MonthCoefficient = 0;
-
-                repayPrincipals.push(repay);
-            });
-
-            $("fieldset#produce table#RepayPrincipal_dg").datagrid('loadData', repayPrincipals);
-        }
-
-        // 加载融资项信息(参数：data）
-        function LoadFinanceItemInfo(data) {
-            if (data == undefined || data == null) {
-                return false;
-            }
-
-            $("form fieldset#financeItem table#financeItem_dg").datagrid('loadData', data);
-
-            LoanTotalFinancialAmount();
-        }
-
-        // 选择产品
-        function CheckProduce() {
-            $("div#ProduceList_dialog").dialog('open');
-
-            $("div#ProduceList_dialog").panel({ top: $(document).scrollTop() + Math.abs(($(window).height() - 300) * 0.5) });
-
-            LoadProduceList();
-        }
-
-        // 加载产品列表
-        function LoadProduceList() {
-            var produces = [];
-
-            $.ajax({
-                async: false,
-                type: "GET",
-                url: "../api/Produce/GetPageList",
-                data: { Search: $("#ProductCodeOrName").textbox("getValue") },
-                statusCode: {
-                    200: function (data) {
-                        produces = data;
-                    },
-                    400: function (data) {
-                        top.$.messager.show({ msg: data.responseJSON.Message });
-                    }
-                }
-            });
-
-            $("table#ProduceList_dg").datagrid("loadData", produces);
-            return produces;
-        }
-
-        // button单击事件 (选择产品)
-        function ChooseProduce() {
-            var row = $("table#ProduceList_dg").datagrid("getSelected");
-
-            if (row) {
-                LoadProduceInfo(row);
-
-                $("div#ProduceList_dialog").dialog('close');
-            }
-            else {
-                $.messager.show({ msg: "请选中一行!" });
-            }
-        }
-    </script>
-
-    <!-- 申请人信息 -->
-    <script type="text/javascript">
-        var contents = 0;//联系人个数
-        var ownhouse = 0;//自有住房数
-        var guarantees = 0;//担保人个数
-        var joints = 0;//共同申请人个数
-
-        //加载联系人信息
-        function LoadApplicant(data) {
-            if (data == undefined || data == null)
-            {
-                return false;
-            }
-
-            for (var i = 0; i < data.length; i++) {
-                //主要申请人
-                if (data[i].Type == "1") {
-                    $("#mainapplicant").form("load", data[i]);
-                    if (data[i].OwnHouse.length > 0) {
-                        var house = $.parseJSON(data[i].OwnHouse);
-                        for (var j = 0; j < house.length; j++) {
-                            AddOwnHouse();
-                            $("#OwnHouse" + ownhouse).form("load", house[j]);
-                        }
-                    }
-                }
-                //共同申请人
-                else if (data[i].Type == "2") {
-                    AddJoint()
-                    $("#joint" + joints).form("load", data[i]);
-                }
-                //担保人
-                else if (data[i].Type == "3") {
-                    AddGuarantee()
-                    $("#guarantee" + guarantees).form("load", data[i]);
-                }
-                //联系人
-                else {
-                    AddContact();
-                    $("#contact" + contents).form("load", data[i]);
-                }
-            }
-
-            if (uc.GetParams().state == 0) {
-                $('*[btn="add"]').hide();
-            }
-        }
-
-        //当有自有住房时候追加
-        function AddOwnHouse() {
-            ownhouse++;
-            var template = document.querySelector("#ownHouseTemplate");
-            var clone = document.importNode(template.content, true);
-            $(clone.querySelectorAll("input[type=radio]")).each(function () {
-                this.name += "_" + ownhouse;
-            });
-            $(clone.querySelector("input[name=OwnHouseAddress]")).each(function () {
-                this.name += "_" + ownhouse;
-            });
-            $(clone.querySelector("input[name=OwnHouseSize]")).each(function () {
-                this.name += "_" + ownhouse;
-            });
-            $(clone.querySelector("input[name=OwnHouseRegisterDate]")).each(function () {
-                this.name += "_" + ownhouse;
-            });
-            $("#OwnHouseCount").textbox("setValue", ownhouse);
-            $('<fieldset>').attr({ "id": "OwnHouse" + ownhouse, "class": "house", "style": "margin:20px 0" }).append(clone).appendTo("#ownHouse")
-            $.parser.parse('#ownHouse');
-        }
-
-        //移除自有住房
-        function MinusOwnHouse(value) {
-            $(value).parent().parent().remove();
-            ownhouse--;
-            $("#OwnHouseCount").textbox("setValue", ownhouse);
-        }
-
-        //增加担保人
-        function AddGuarantee() {
-            guarantees++;
-            var template = document.querySelector("#GuaranteeTemplate");
-            var clone = document.importNode(template.content, true);
-            $('<fieldset>').attr({ "id": "guarantee" + guarantees, "class": "applicant", "style": "margin-left:20px" }).append(clone).appendTo("#GuaranteeContent")
-            $.parser.parse('#guarantee' + guarantees);
-        }
-
-        //增加联系人
-        function AddContact() {
-            contents++;
-            var template = document.querySelector("#contactTemplate");
-            var clone = document.importNode(template.content, true);
-            $('<fieldset>').attr({ "id": "contact" + contents, "class": "applicant", "style": "margin-left:20px" }).append(clone).appendTo("#ContactContent")
-            $.parser.parse('#contact' + contents);
-        }
-
-        //增加共同申请人
-        function AddJoint() {
-            if (joints < 1) {
-                joints++;
-                var template = document.querySelector("#jointTemplate");
-                var clone = document.importNode(template.content, true);
-                $('<fieldset>').attr({ "id": "joint" + joints, "class": "applicant", "style": "margin-left:20px" }).append(clone).appendTo("#JointContent")
-                $.parser.parse('#joint' + joints);
-            }
-            else {
-                $.messager.show({ msg: "共同申请人只能有一个!" });
-            }
-        }
-
-        //移除联系人
-        function MinusContacts(value, count) {
-            if (uc.GetParams().state != 0) {
-                if ($($(value).parents("fieldset")[1]).attr("id") == "joint") joints--;
-                if ($($(value).parents("fieldset")[1]).attr("id") == "Guarantee") guarantees--;
-                if ($($(value).parents("fieldset")[1]).attr("id") == "contacts") contents--;
-                $(value).parent().parent().remove();
-            }
-        }
-
-        //选择通讯地址类型时候加载单位地址和住宅地址
-        function CAType(s) {
-            if (s == 1) {
-                $("#ContactAddress").textbox('setValue', $("#LiveHouseAddress").textbox('getValue'));
-            }
-            if (s == 2) {
-                $("#ContactAddress").textbox('setValue', $("#OfficeAddress").textbox('getValue'));
-            }
-            $("#ContactAddress").textbox('readonly', true);//只读
-            rdCA = s;
-        }
-
-        // 婚姻状况
-        function ChooseMarital() {
-            var status = $(this).combobox("getValue");
-            if (status == 1) {
-                $("#wife").show();
-            }
-            else {
-                $("#wife").hide();
-            }
-        }
-
-        //设置当选中为夫妻时候自动加载信息
-        function RelationWithMaster() {
-            if ($(this).combobox("getValue") == "夫妻") {
-                $("#" + $(this).parents("fieldset")[0].id).find("div").find("#Name").textbox("setValue", $("#WifeName").textbox("getValue"));
-                $("#" + $(this).parents("fieldset")[0].id).find("div").find("#Mobile").textbox("setValue", $("#WifePhone").textbox("getValue"));
-                if ($(this).parents("fieldset")[1].id == "Guarantee" || $(this).parents("fieldset")[1].id == "joint") {
-                    $("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeName").textbox("setValue", $("#WifeOfficeName").textbox("getValue"));
-                    $("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeAddress").textbox("setValue", $("#WifeOfficeAddress").textbox("getValue"));
-                }
-            }
-            else {
-                $("#" + $(this).parents("fieldset")[0].id).find("div").find("#Name").textbox("setValue", "");
-                $("#" + $(this).parents("fieldset")[0].id).find("div").find("#Mobile").textbox("setValue", "");
-                if ($(this).parents("fieldset")[1].id == "Guarantee" || $(this).parents("fieldset")[1].id == "joint") {
-                    $("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeName").textbox("setValue", "");
-                    $("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeAddress").textbox("setValue", "");
-                }
-            }
-        }
-    </script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>融资申请</title>
+	<link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+	<link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+	<link href="../Content/form-bootstrap.css" rel="stylesheet" />
+	<script src="../Scripts/jquery/jquery.js"></script>
+	<script src="../Scripts/easyui/jquery.easyui.js"></script>
+	<script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script src="../Scripts/usedcars.js"></script>
+	<style>
+		.adddiv { background-color: #afe3fa; height: 30px; width: 95%; margin-left: 15px; }
+		fieldset { margin-top: 20px; }
+		legend { font-size: 18px; }
+		.add { margin-top: 2px; margin-right: 10px; float: right; font-size: 20px; text-decoration: none; }
+
+		.minusdiv { height: 30px; width: 98%; }
+		/**手风琴样式**/
+		.ac { font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif; padding: 2px 20px; position: relative; z-index: 20; display: block; height: 35px; cursor: pointer; color: #777; text-shadow: 1px 1px 1px rgba(255,255,255,0.8); line-height: 33px; font-size: 19px; box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 1px 0px 0px 0px rgba(255,255,255,0.9) inset, 0px 2px 2px rgba(0,0,0,0.1); }
+
+		.ac-1 + .ac,
+		.ac-1 + .ac:hover { background: #b7f2ff; color: #3d7489; }
+
+		.ac:hover:after,
+		.ac-1:checked + .ac:hover:after { content: ''; background: #c6e1ec; position: absolute; width: 24px; height: 24px; right: 13px; top: 7px; background: url(images/arrow_down.png) no-repeat center center; }
+
+		.ac-1:checked + .ac:hover:after { background-image: url('images/arrow_up.png'); }
+
+		.ac-1 { display: none; }
+
+		article { background: rgba(255, 255, 255, 0.5); margin-top: -1px; overflow: hidden; height: 0px; position: relative; z-index: 10; -webkit-transition: height 0.6s ease-in-out, box-shadow 0.6s linear; -moz-transition: height 0.6s ease-in-out, box-shadow 0.6s linear; -o-transition: height 0.6s ease-in-out, box-shadow 0.6s linear; transition: height 0.6s ease-in-out, box-shadow 0.6s linear; }
+
+		input:checked ~ article.Vehicle { height: 1100px; }
+
+		input:checked ~ article.produce { height: 1420px; }
+
+		input:checked ~ article.people { height: auto; }
+	</style>
+
+	<style>
+		td > .textbox[style*="height: 22px;"] { height: 22px !important; }
+
+		td > .textbox[style*="height: 22px;"] > .textbox-text { padding: 0px 4px !important; font-size: 12px !important; line-height: 1.42857143; }
+	</style>
+
+	<style type="text/css">
+		div.easyui-accordion div.panel div.accordion-header { margin: 0 0; padding: 0 0; height: 35px; }
+
+		div.easyui-accordion div.panel div.accordion-header div.panel-title { margin: 0 10px; padding: 0 0; font-size: 15px; line-height: 35px; }
+	</style>
+
+	<script type="text/javascript">
+		uc.form = new UCForm(".container");
+
+		$(function () {
+			Init();
+		});
+
+		// 初始化
+		function Init() {
+			// 初始化基本信息
+			BaseInit();
+
+			if (uc.GetParams().state == 0) {
+				uc.form.DisableForm();
+			}
+
+			if (parent.flow.RootKey != undefined) {
+				$.ajax({
+					async: false,
+					data: { Id: parent.flow.RootKey },
+					type: "GET",
+					url: "../api/FinanceAuidt/Get",
+					statusCode: {
+						200: function (data) {
+							LoadData(data);
+						}
+					}
+				});
+			}
+			else {
+				$.ajax({
+					async: false,
+					data: {},
+					type: "GET",
+					url: "../api/FinanceAuidt/GetParentAndUser",
+					statusCode: {
+						200: function (data) {
+							$("#Phone").textbox("setValue", data.Phone)
+							$("#UserName").textbox("setValue", data.UserName)
+							$("#PartnerName").textbox("setValue", data.PartnerName)
+						}
+					}
+				});
+			}
+
+			////AutoSwitchProperties(false);
+		}
+
+		//构建数据
+		function BuildData() {
+			var data = {};
+
+			data["Id"] = $("#financeId").val();
+
+			var ff = $(".container").find("article")
+			for (var i = 0; i < ff.length - 1; i++) {
+				temp = $(ff[i]).attr("class");
+				var fs = new Array();
+				var fieldset = $(ff[i]).children("fieldset");
+				data[temp] = $(fieldset[0]).serializeJson();
+			}
+
+			//申请人中由于包括自有住房和联系人部分嵌套的fieldset所以单独处理
+			var app = [];//用于存放联系人信息
+			var house = [];//用于存放自有住房信息
+			for (var i = 0; i < $(ff[ff.length - 1]).find("fieldset").length; i++) {
+				var findclass = $($(ff[ff.length - 1]).find("fieldset")[i]).attr("class");
+				if (findclass == "applicant") {
+					app.push($($(ff[ff.length - 1]).find("fieldset")[i]).serializeJson());
+				}
+				else if (findclass == "house") {
+					house.push($($(ff[ff.length - 1]).find("fieldset")[i]).serializeJson());
+				}
+			}
+
+			//将自有住房添加到主要申请人中
+			app[0]["OwnHouse"] = JSON.stringify(house);
+
+			//将主要申请人信息存放到数组中
+			data["Applicant"] = app;
+
+
+			// 构建产品信息
+			data.Produce = dataBuildProduce();
+
+			// 构建融资项信息
+			data.FinancialItem = BuildFinanceItemData();
+
+			return data;
+		}
+
+		//验证数据
+		function ValidData() {
+			var valid = $(".container").form("validate");
+
+			return valid;
+		}
+
+		// 数据加载
+		function LoadData(data) {
+			if (data == undefined || data == null) {
+				return false;
+			}
+
+			$("#financeId").val(data.Id);
+
+			// 加载基础信息
+			LoadBaseInfo(data);
+
+			// 加载产品信息
+			dataLoadProduce(data.Produce);
+
+			// 加载融资项信息
+			LoadFinanceItemInfo(data.FinancialItem);
+
+			//加载联系人
+			LoadApplicant(data.Applicant);
+		}
+	</script>
+
+	<!-- 基本信息 -->
+	<script type="text/javascript">
+		// 初始化基本信息
+		function BaseInit() {
+			LoadBrand();
+
+			AutoSwitchProperties(true);
+		}
+
+		function LoadBaseInfo(data) {
+			if (data == undefined || data == null) {
+				return false;
+			}
+
+			// 加载合作商信息
+			if (data.CreateBy != undefined && data.CreateBy != undefined) {
+				$("#Phone").textbox("setValue", data.CreateBy.Phone)
+				$("#UserName").textbox("setValue", data.CreateBy.Name)
+				$("#PartnerName").textbox("setValue", data.CreateOf.Name)
+			}
+
+			// 加载车辆信息
+			$("#Vehicle").form("load", data.Vehicle);
+
+			if (data.Vehicle.MakeCode != "") {
+				$("select[comboname='MakeCode']").combobox("unselect", data.Vehicle.MakeCode).combobox("select", data.Vehicle.MakeCode);
+			}
+
+			if (data.Vehicle.FamilyCode != "") {
+				$("select[comboname='FamilyCode']").combobox("select", data.Vehicle.FamilyCode);
+			}
+
+			if (data.Vehicle.FamilyCode != "") {
+				$("select[comboname='VehicleKey']").combobox("select", data.Vehicle.VehicleKey);
+			}
+			$("#ManufacturerGuidePrice").textbox("setValue", data.Vehicle.ManufacturerGuidePrice);
+		}
+
+		// 加载汽车品牌
+		function LoadBrand() {
+			$.ajax({
+				async: false,
+				method: "GET",
+				url: '../api/CarHome/GetBrand',
+				statusCode: {
+					200: function (data) {
+						$("select[comboname='MakeCode']").combobox("loadData", data);
+					}
+				}
+			});
+		}
+
+		// 车辆品牌
+		function SelectModel(record) {
+			$("select[comboname='FamilyCode']").combobox("clear");
+			$("select[comboname='VehicleKey']").combobox("clear");
+			$("input[textboxname='ManufacturerGuidePrice']").textbox("clear");
+			$("input[textboxname='Displacement']").textbox("clear");
+			$.ajax({
+				async: false,
+				data: { brandCode: record.value },
+				method: 'GET',
+				url: '../api/CarHome/GetSeries',
+				statusCode: { 200: function (data) { $("select[comboname='FamilyCode']").combobox("loadData", data); } }
+			});
+		}
+
+		// 车辆系列
+		function SelectCarConfigure(record) {
+			$("select[comboname='VehicleKey']").combobox("clear");
+			$("input[textboxname='ManufacturerGuidePrice']").textbox("clear");
+			$("input[textboxname='Displacement']").textbox("clear");
+
+			$.ajax({
+				async: false,
+				data: { brandCode: $("select[comboname='MakeCode']").combobox("getValue"), seriesCode: record.value },
+				method: 'GET',
+				url: '../api/CarHome/GetVehicle',
+				statusCode: { 200: function (data) { $("select[comboname='VehicleKey']").combobox("loadData", data); } }
+			});
+		}
+
+		// 加载车辆价格
+		function LoadVehiclePrice(vehicleKey) {
+			$.ajax({
+				async: false,
+				type: "GET",
+				url: "../api/CarHome/GetPriceByVehicleID",
+				data: { vehicleKey: vehicleKey.value },
+				statusCode: {
+					200: function (data) {
+						$("input[textboxname=ManufacturerGuidePrice]").textbox("setValue", data.ManufacturerGuidePrice);
+						$("input[textboxname=Displacement]").textbox("setValue", data.Displacement);
+					}
+				}
+			});
+		}
+
+		// 车架号、上牌城市自动切换必填和非必填属性
+		function AutoSwitchProperties(re) {
+			if (re == true || re == false) {
+				$("input[textboxname=FrameNo]").textbox({ required: re });
+				$("input[textboxname=RegisterCity").textbox({ required: re });
+			}
+		}
+	</script>
+
+
+	<!-- 申请人信息 -->
+	<script type="text/javascript">
+		var contents = 0;//联系人个数
+		var ownhouse = 0;//自有住房数
+		var guarantees = 0;//担保人个数
+		var joints = 0;//共同申请人个数
+
+		//加载联系人信息
+		function LoadApplicant(data) {
+			if (data == undefined || data == null) {
+				return false;
+			}
+
+			for (var i = 0; i < data.length; i++) {
+				//主要申请人
+				if (data[i].Type == "1") {
+					$("#mainapplicant").form("load", data[i]);
+					if (data[i].OwnHouse.length > 0) {
+						var house = $.parseJSON(data[i].OwnHouse);
+						for (var j = 0; j < house.length; j++) {
+							AddOwnHouse();
+							$("#OwnHouse" + ownhouse).form("load", house[j]);
+						}
+					}
+				}
+				//共同申请人
+				else if (data[i].Type == "2") {
+					AddJoint()
+					$("#joint" + joints).form("load", data[i]);
+				}
+				//担保人
+				else if (data[i].Type == "3") {
+					AddGuarantee()
+					$("#guarantee" + guarantees).form("load", data[i]);
+				}
+				//联系人
+				else {
+					AddContact();
+					$("#contact" + contents).form("load", data[i]);
+				}
+			}
+
+			if (uc.GetParams().state == 0) {
+				$('*[btn="add"]').hide();
+			}
+		}
+
+		//当有自有住房时候追加
+		function AddOwnHouse() {
+			ownhouse++;
+			var template = document.querySelector("#ownHouseTemplate");
+			var clone = document.importNode(template.content, true);
+			$(clone.querySelectorAll("input[type=radio]")).each(function () {
+				this.name += "_" + ownhouse;
+			});
+			$(clone.querySelector("input[name=OwnHouseAddress]")).each(function () {
+				this.name += "_" + ownhouse;
+			});
+			$(clone.querySelector("input[name=OwnHouseSize]")).each(function () {
+				this.name += "_" + ownhouse;
+			});
+			$(clone.querySelector("input[name=OwnHouseRegisterDate]")).each(function () {
+				this.name += "_" + ownhouse;
+			});
+			$("#OwnHouseCount").textbox("setValue", ownhouse);
+			$('<fieldset>').attr({ "id": "OwnHouse" + ownhouse, "class": "house", "style": "margin:20px 0" }).append(clone).appendTo("#ownHouse")
+			$.parser.parse('#ownHouse');
+		}
+
+		//移除自有住房
+		function MinusOwnHouse(value) {
+			$(value).parent().parent().remove();
+			ownhouse--;
+			$("#OwnHouseCount").textbox("setValue", ownhouse);
+		}
+
+		//增加担保人
+		function AddGuarantee() {
+			guarantees++;
+			var template = document.querySelector("#GuaranteeTemplate");
+			var clone = document.importNode(template.content, true);
+			$('<fieldset>').attr({ "id": "guarantee" + guarantees, "class": "applicant", "style": "margin-left:20px" }).append(clone).appendTo("#GuaranteeContent")
+			$.parser.parse('#guarantee' + guarantees);
+		}
+
+		//增加联系人
+		function AddContact() {
+			contents++;
+			var template = document.querySelector("#contactTemplate");
+			var clone = document.importNode(template.content, true);
+			$('<fieldset>').attr({ "id": "contact" + contents, "class": "applicant", "style": "margin-left:20px" }).append(clone).appendTo("#ContactContent")
+			$.parser.parse('#contact' + contents);
+		}
+
+		//增加共同申请人
+		function AddJoint() {
+			if (joints < 1) {
+				joints++;
+				var template = document.querySelector("#jointTemplate");
+				var clone = document.importNode(template.content, true);
+				$('<fieldset>').attr({ "id": "joint" + joints, "class": "applicant", "style": "margin-left:20px" }).append(clone).appendTo("#JointContent")
+				$.parser.parse('#joint' + joints);
+			}
+			else {
+				$.messager.show({ msg: "共同申请人只能有一个!" });
+			}
+		}
+
+		//移除联系人
+		function MinusContacts(value, count) {
+			if (uc.GetParams().state != 0) {
+				if ($($(value).parents("fieldset")[1]).attr("id") == "joint") joints--;
+				if ($($(value).parents("fieldset")[1]).attr("id") == "Guarantee") guarantees--;
+				if ($($(value).parents("fieldset")[1]).attr("id") == "contacts") contents--;
+				$(value).parent().parent().remove();
+			}
+		}
+
+		//选择通讯地址类型时候加载单位地址和住宅地址
+		function CAType(s) {
+			if (s == 1) {
+				$("#ContactAddress").textbox('setValue', $("#LiveHouseAddress").textbox('getValue'));
+			}
+			if (s == 2) {
+				$("#ContactAddress").textbox('setValue', $("#OfficeAddress").textbox('getValue'));
+			}
+			$("#ContactAddress").textbox('readonly', true);//只读
+			rdCA = s;
+		}
+
+		// 婚姻状况
+		function ChooseMarital() {
+			var status = $(this).combobox("getValue");
+			if (status == 1) {
+				$("#wife").show();
+			}
+			else {
+				$("#wife").hide();
+			}
+		}
+
+		//设置当选中为夫妻时候自动加载信息
+		function RelationWithMaster() {
+			if ($(this).combobox("getValue") == "夫妻") {
+				$("#" + $(this).parents("fieldset")[0].id).find("div").find("#Name").textbox("setValue", $("#WifeName").textbox("getValue"));
+				$("#" + $(this).parents("fieldset")[0].id).find("div").find("#Mobile").textbox("setValue", $("#WifePhone").textbox("getValue"));
+				if ($(this).parents("fieldset")[1].id == "Guarantee" || $(this).parents("fieldset")[1].id == "joint") {
+					$("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeName").textbox("setValue", $("#WifeOfficeName").textbox("getValue"));
+					$("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeAddress").textbox("setValue", $("#WifeOfficeAddress").textbox("getValue"));
+				}
+			}
+			else {
+				$("#" + $(this).parents("fieldset")[0].id).find("div").find("#Name").textbox("setValue", "");
+				$("#" + $(this).parents("fieldset")[0].id).find("div").find("#Mobile").textbox("setValue", "");
+				if ($(this).parents("fieldset")[1].id == "Guarantee" || $(this).parents("fieldset")[1].id == "joint") {
+					$("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeName").textbox("setValue", "");
+					$("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeAddress").textbox("setValue", "");
+				}
+			}
+		}
+	</script>
 </head>
 <body>
-    <form id="finance_ff" class="container">
-        <div class="hidden">
-            <input id="financeId" name="Id" type="hidden" />
-            <input type="hidden" id="InstanceId" name="InstanceId">
-            <input name="ProduceId" id="ProduceId" type="hidden" />
-        </div>
+	<form id="finance_ff" class="container">
+		<div class="hidden">
+			<input id="financeId" name="Id" type="hidden" />
+			<input type="hidden" id="InstanceId" name="InstanceId">
+		</div>
 
-        <!--<div class="easyui-accordion container" style="width:1020px;height:auto;border:none">
-            <div title="基本信息" data-options="" style="overflow:auto;padding:0px;">
-                <div>基本信息</div>
-            </div>
+		<div>
+			<input id="ac-1" class="ac-1" name="accordion-1" type="radio" checked />
+			<label for="ac-1" class="ac">基本信息</label>
+			<article class="Vehicle">
+				<fieldset id="Vehicle" style="margin-bottom:0px;padding-left:20px">
+					<input name="Id" id="VehicleId" type="hidden" />
+					<legend>合作商信息</legend>
+					<div class="row">
+						<div class="col-6">
+							<label>名称:</label>
+							<input name="PartnerName" id="PartnerName" class="easyui-textbox" readonly />
+						</div>
 
-            <div title="租赁信息" data-options="" style="overflow:auto;padding:0px;">
-                <div>租赁信息</div>
-            </div>
+						<div class="col-6">
+							<label>联系人:</label>
+							<input name="Name" id="UserName" class="easyui-textbox" readonly />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<label>电话:</label>
+							<input name="Phone" id="Phone" class="easyui-textbox" readonly />
+						</div>
+					</div>
 
-            <div title="申请人信息" data-options="" style="overflow:auto;padding:0px;">
-                <div>申请人信息</div>
-            </div>
-         </div>-->
+					<legend style="margin-top:25px;">车辆信息</legend>
+					<div class="row">
+						<div class="col-6">
+							<label>车辆品牌:</label>
+							<select name="MakeCode" id="MakeCode" class="easyui-combobox" data-options="onSelect:SelectModel,required:true,editable:false"></select>
+						</div>
 
-            <div>
-                <input id="ac-1" class="ac-1" name="accordion-1" type="radio" checked />
-                <label for="ac-1" class="ac">基本信息</label>
-                <article class="Vehicle">
-                    <fieldset id="Vehicle" style="margin-bottom:0px;padding-left:20px">
-                        <input name="Id" id="VehicleId" type="hidden" />
-                        <legend>合作商信息</legend>
-                        <div class="row">
-                            <div class="col-6">
-                                <label>名称:</label>
-                                <input name="PartnerName" id="PartnerName" class="easyui-textbox" readonly />
-                            </div>
+						<div class="col-6">
+							<label>车辆系列:</label>
+							<select name="FamilyCode" id="FamilyCode" class="easyui-combobox" data-options="onSelect:SelectCarConfigure,required:true,editable:false"></select>
+						</div>
+					</div>
 
-                            <div class="col-6">
-                                <label>联系人:</label>
-                                <input name="Name" id="UserName" class="easyui-textbox" readonly />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label>电话:</label>
-                                <input name="Phone" id="Phone" class="easyui-textbox" readonly />
-                            </div>
-                        </div>
+					<div class="row">
+						<div class="col-12">
+							<label>车辆车型:</label>
+							<select name="VehicleKey" id="VehicleKey" class="easyui-combobox" data-options="required:true,editable:false,onSelect:LoadVehiclePrice"></select>
+						</div>
+					</div>
 
-                        <legend style="margin-top:25px;">车辆信息</legend>
-                        <div class="row">
-                            <div class="col-6">
-                                <label>车辆品牌:</label>
-                                <select name="MakeCode" id="MakeCode" class="easyui-combobox" data-options="onSelect:SelectModel,required:true,editable:false"></select>
-                            </div>
+					<div class="row">
+						<div class="col-6">
+							<label>厂商指导价:</label>
+							<input name="ManufacturerGuidePrice" id="ManufacturerGuidePrice" class="easyui-textbox" data-options="validType:'Price'" />
+							<span class="unit">万元</span>
+						</div>
 
-                            <div class="col-6">
-                                <label>车辆系列:</label>
-                                <select name="FamilyCode" id="FamilyCode" class="easyui-combobox" data-options="onSelect:SelectCarConfigure,required:true,editable:false"></select>
-                            </div>
-                        </div>
+						<div class="col-6">
+							<label>排量:</label>
+							<input name="Displacement" class="easyui-textbox" readonly />
+						</div>
+					</div>
 
-                        <div class="row">
-                            <div class="col-12">
-                                <label>车辆车型:</label>
-                                <select name="VehicleKey" id="VehicleKey" class="easyui-combobox" data-options="required:true,editable:false,onSelect:LoadVehiclePrice"></select>
-                            </div>
-                        </div>
+					<legend style="margin-top:25px;">车辆补充信息</legend>
+					<div class="row">
+						<div class="col-6">
+							<label>业务类型:</label>
+							<select id="BusinessType" name="BusinessType" class="easyui-combobox" data-options="editable:false">
+								<option value="0">新车交易贷</option>
+								<option value="1">二手车交易贷</option>
+								<option value="2">车抵贷</option>
+								<option value="3">押车贷</option>
+								<option value="4">快速贷</option>
+								<option value="5">以租代购</option>
+							</select>
+						</div>
 
-                        <div class="row">
-                            <div class="col-6">
-                                <label>厂商指导价:</label>
-                                <input name="ManufacturerGuidePrice" id="ManufacturerGuidePrice" class="easyui-textbox" data-options="validType:'Price'" />
-                                <span class="unit">万元</span>
-                            </div>
+						<div class="col-6">
+							<label>车牌号:</label>
+							<input name="PlateNo" class="easyui-textbox" data-options="validType:'PlateNo'" />
+						</div>
 
-                            <div class="col-6">
-                                <label>排量:</label>
-                                <input name="Displacement" class="easyui-textbox" readonly />
-                            </div>
-                        </div>
+					</div>
 
-                        <legend style="margin-top:25px;">车辆补充信息</legend>
-                        <div class="row">
-                            <div class="col-6">
-                                <label>业务类型:</label>
-                                <select id="BusinessType" name="BusinessType" class="easyui-combobox" data-options="editable:false">
-                                    <option value="0">新车交易贷</option>
-                                    <option value="1">二手车交易贷</option>
-                                    <option value="2">车抵贷</option>
-                                    <option value="3">押车贷</option>
-                                    <option value="4">快速贷</option>
-                                    <option value="5">以租代购</option>
-                                </select>
-                            </div>
+					<div class="row">
+						<div class="col-6">
+							<label>车架号:</label>
+							<input name="FrameNo" class="easyui-textbox" data-options="validType:['AN','length[17,17]'],required:true" />
+						</div>
 
-                            <div class="col-6">
-                                <label>车牌号:</label>
-                                <input name="PlateNo" class="easyui-textbox" data-options="validType:'PlateNo'" />
-                            </div>
+						<div class="col-6">
+							<label>发动机号:</label>
+							<input name="EngineNo" class="easyui-textbox" />
+						</div>
+					</div>
 
-                        </div>
+					<div class="row">
+						<div class="col-6">
+							<label>车况:</label>
+							<select id="VehicleCondition" name="VehicleCondition" class="easyui-combobox" data-options="editable:false">
+								<option value="1">新车</option>
+								<option value="2">二手车</option>
+							</select>
+						</div>
 
-                        <div class="row">
-                            <div class="col-6">
-                                <label>车架号:</label>
-                                <input name="FrameNo" class="easyui-textbox" data-options="validType:['AN','length[17,17]'],required:true" />
-                            </div>
+						<div class="col-6">
+							<label>行驶里程:</label>
+							<input name="RunningMiles" class="easyui-textbox" data-options="validType:'Integer'" />
+							<span class="unit">公里</span>
+						</div>
+					</div>
 
-                            <div class="col-6">
-                                <label>发动机号:</label>
-                                <input name="EngineNo" class="easyui-textbox" />
-                            </div>
-                        </div>
+					<div class="row">
+						<div class="col-6">
+							<label>注册登记日期:</label>
+							<input name="RegisterDate" class="easyui-textbox" data-options="validType:'YearMonth'" />
+						</div>
 
-                        <div class="row">
-                            <div class="col-6">
-                                <label>车况:</label>
-                                <select id="VehicleCondition" name="VehicleCondition" class="easyui-combobox" data-options="editable:false">
-                                    <option value="1">新车</option>
-                                    <option value="2">二手车</option>
-                                </select>
-                            </div>
+						<div class="col-6">
+							<label>车辆出厂日期:</label>
+							<input name="FactoryDate" class="easyui-textbox" data-options="validType:'Date'" />
+						</div>
+					</div>
 
-                            <div class="col-6">
-                                <label>行驶里程:</label>
-                                <input name="RunningMiles" class="easyui-textbox" data-options="validType:'Integer'" />
-                                <span class="unit">公里</span>
-                            </div>
-                        </div>
+					<div class="row">
+						<div class="col-6">
+							<label>车辆上牌城市:</label>
+							<input name="RegisterCity" class="easyui-textbox" data-options="required:true" />
+						</div>
 
-                        <div class="row">
-                            <div class="col-6">
-                                <label>注册登记日期:</label>
-                                <input name="RegisterDate" class="easyui-textbox" data-options="validType:'YearMonth'" />
-                            </div>
+						<div class="col-6">
+							<label>车身颜色:</label>
+							<input name="Color" class="easyui-textbox" />
+						</div>
+					</div>
+				</fieldset>
+			</article>
+		</div>
 
-                            <div class="col-6">
-                                <label>车辆出厂日期:</label>
-                                <input name="FactoryDate" class="easyui-textbox" data-options="validType:'Date'" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>车辆上牌城市:</label>
-                                <input name="RegisterCity" class="easyui-textbox" data-options="required:true" />
-                            </div>
-
-                            <div class="col-6">
-                                <label>车身颜色:</label>
-                                <input name="Color" class="easyui-textbox" />
-                            </div>
-                        </div>
-                    </fieldset>
-                </article>
-            </div>
-
-            <div>
-                <input id="ac-2" class="ac-1" name="accordion-1" type="radio" />
-                <label for="ac-2" class="ac">租赁信息</label>
-                <article class="produce">
-                    <fieldset id="financeItem">
-                        <legend>融资项</legend>
-                        <table id="financeItem_dg" class="easyui-datagrid" data-options="singleSelect: true,
+		<div>
+			<input id="ac-2" class="ac-1" name="accordion-1" type="radio" />
+			<label for="ac-2" class="ac">租赁信息</label>
+			<article class="produce">
+				<fieldset id="financeItem">
+					<legend>融资项</legend>
+					<table id="financeItem_dg" class="easyui-datagrid" data-options="singleSelect: true,
                                rownumbers: true,
                                toolbar: '#financeItem_tb',
                                onDblClickRow: onEdit,
                                onEndEdit: onEndEdit,
                                rowStyler: financeItemStyler
                                ">
-                            <thead>
-                                <tr>
-                                    <th data-options="field:'Id',hidden:true"></th>
-                                    <th data-options="field:'Name',width:160,align:'center',
+						<thead>
+							<tr>
+								<th data-options="field:'Id',hidden:true"></th>
+								<th data-options="field:'Name',width:160,align:'center',
                         editor:{
                             type:'combobox',
                             options:{
@@ -810,7 +615,7 @@
                             }
                         }">项目名称</th>
 
-                                    <th data-options="field:'FinancialAmount',width:140,align:'center',
+								<th data-options="field:'FinancialAmount',width:140,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -819,7 +624,7 @@
                             }
                         }">融资额（元）</th>
 
-                                    <th data-options="field:'Principal',width:140,align:'center',
+								<th data-options="field:'Principal',width:140,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -828,7 +633,7 @@
                             }
                         }">融资本金（元）</th>
 
-                                    <th data-options="field:'Rate',width:140,align:'center',
+								<th data-options="field:'Rate',width:140,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -837,7 +642,7 @@
                             }
                         }">税率（%）</th>
 
-                                    <th data-options="field:'VATamount',width:140,align:'center',
+								<th data-options="field:'VATamount',width:140,align:'center',
                             editor:{
                             type:'textbox',
                             options:{
@@ -846,7 +651,7 @@
                             },
                         }">增值税进项税额（元）</th>
 
-                                    <th data-options="field:'InvoiceAmount',width:140,align:'center',
+								<th data-options="field:'InvoiceAmount',width:140,align:'center',
                             editor:{
                             type:'textbox',
                             options:{
@@ -854,947 +659,983 @@
                                 validType:'Money'
                             },
                         }">发票金额（元）</th>
-                                </tr>
-                            </thead>
-                        </table>
-
-                        <div id="financeItem_tb" style="display:none">
-                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:AppendfinanceItem">添加</a>
-                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true,onClick:ModifyfinanceItem">修改</a>
-                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:RemovefinanceItem">移除</a>
-                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:AcceptfinanceItem">确定</a>
-                        </div>
-
-                        <script type="text/javascript">
-                            var editIndex = undefined;
-
-                            function endEditing() {
-                                if (editIndex == undefined) {
-                                    return true;
-                                }
-
-                                if ($("#financeItem_dg").datagrid("validateRow", editIndex)) {
-                                    $("#financeItem_dg").datagrid("endEdit", editIndex);
-
-                                    editIndex = editIndex;
-
-                                    return true;
-                                }
-                                else {
-                                    top.$.messager.show({ msg: '请填写完正在编辑的融资项' });
-
-                                    return false;
-                                }
-                            }
-
-                            function onEdit(index) {
-                                // 禁用状态下，阻止编辑
-                                if ($("form.container fieldset#financeItem").attr("disabled") == "disabled") {
-                                    return false;
-                                }
-
-                                if (endEditing()) {
-                                    $("#financeItem_dg").datagrid("beginEdit", index);
-
-                                    editIndex = index;
-                                }
-                                else {
-                                    setTimeout(function () {
-                                        $("#financeItem_dg").datagrid("selectRow", editIndex);
-                                    }, 0);
-                                }
-                            }
-
-                            function onEndEdit(index, row) {
-                            }
-
-                            function AppendfinanceItem() {
-                                if (endEditing()) {
-                                    $("#financeItem_dg").datagrid("appendRow", {
-                                        Name: '',
-                                        Principal: '',
-                                        FinancialAmount: '',
-                                        Rate: '',
-                                        VATamount: '',
-                                        InvoiceAmount: ''
-                                    });
-
-                                    editIndex = $("#financeItem_dg").datagrid("getRows").length - 1;
-
-                                    $("#financeItem_dg").datagrid("selectRow", editIndex)
-                                        .datagrid("beginEdit", editIndex);
-                                }
-                            }
-
-                            function ModifyfinanceItem() {
-                                var row = $("#financeItem_dg").datagrid("getSelected");
-                                var index = $("#financeItem_dg").datagrid("getRowIndex", row);
-
-                                if (index >= 0) {
-                                    onEdit(index);
-                                }
-                            }
-
-                            function RemovefinanceItem() {
-                                editIndex = undefined;
-
-                                if ($("#financeItem_dg").datagrid('getRows').length == 0) {
-                                    return;
-                                }
-
-                                var row = $("#financeItem_dg").datagrid("getSelected");
-                                var index = $("#financeItem_dg").datagrid("getRowIndex", row);
-
-                                $("#financeItem_dg").datagrid("deleteRow", index);
-
-                                // 加载融资总额
-                                LoanTotalFinancialAmount();
-                            }
-
-                            function AcceptfinanceItem() {
-                                if (endEditing()) {
-
-                                    $("#financeItem_dg").datagrid("acceptChanges");
-
-                                    if ($("#financeItem_dg").datagrid('getRows').length > 0) {
-                                        // 加载融资总额
-                                        LoanTotalFinancialAmount();
-                                    }
-                                }
-                            }
-
-                            function financeItemStyler(index, row) {
-                            }
-                        </script>
-
-                        <div class="row" style="display:none">
-                            <div class="col-6"></div>
-                            <div class="col-6">
-                                <label>融资总额:</label>
-                                <input class="easyui-textbox" id="TotalFinancialAmount" data-options="readonly:false,value:'',required:true,validType:['Money'] " />
-                                <unit>元</unit>
-                                <script type="text/javascript">
-                                    // 加载融资总额
-                                    function LoanTotalFinancialAmount() {
-                                        var produceLessType = $('form fieldset#produce input#produceLeaseType').val();
-                                        var AmountArray = [];
-
-                                        $($("#financeItem_dg").datagrid('getRows')).each(function (i, e) {
-                                            if (produceLessType == "回租") {
-                                                AmountArray.push(e.FinancialAmount == undefined ? 0 : e.FinancialAmount);
-                                            }
-                                            else {
-                                                AmountArray.push(e.Principal == undefined ? 0 : e.Principal);
-                                            }
-                                        });
-
-                                        if (IsArray(AmountArray) == true) {
-                                            if (AmountArray.length == 0) {
-                                                $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', false).textbox('setValue', '');
-                                            }
-                                            else {
-                                                $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', true).textbox('setValue', '');
-
-                                                var total = 0;
-
-                                                $(AmountArray).each(function (i, e) {
-                                                    if (isNaN(parseFloat(e)) == false) {
-                                                        total += parseFloat(e) * 100;
-                                                    }
-                                                });
-
-                                                total = total / 100;
-
-                                                $("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', total);
-                                            }
-                                        }
-
-                                        function IsArray(obj) {
-                                            return Object.prototype.toString.call(obj) === '[object Array]';
-                                        }
-                                    }
-                                </script>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <fieldset id="produce" style="margin-bottom:0px;padding:0 20px">
-                        <legend>产品信息</legend>
-                        <div class="row">
-                            <input name="Id" type="hidden" />
-                            <div class="col-6">
-                                <label>产品代码:</label>
-                                <input id="Code" name="Code" class="easyui-textbox" required data-options="width:360,editable:false,value:''" />
-                                <a class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:CheckProduce">选择产品</a>
-                            </div>
-
-                            <div class="col-6">
-                                <label>名义利率:</label>
-                                <input name="InterestRate" class="easyui-textbox" data-options="required:false,value:'',readonly:true, " />
-                                <unit>%</unit>
-                            </div>
-
-                            <div class="col-6">
-                                <label>产品类型:</label>
-                                <input name="ProduceType" class="easyui-combobox" data-options="required:false,editable:false,readonly:true,
-                           valueField: 'value',
-		                   textField: 'text',
-                           data:[
-                           {value:'1',text:'纯分期'},
-                           {value:'2',text:'保证金加三期月供提前付'},
-                           {value:'3',text:'均匀贷'},
-                           {value:'4',text:'低息贷'},
-                           {value:'5',text:'保证金加分期'}
-                           ]
-                    " />
-                            </div>
-
-                            <div class="col-6">
-                                <label>租赁方式:</label>
-                                <input name="LeaseType" class="easyui-combobox" data-options="required:false,value:'',editable:false,readonly:true,
-                               valueField: 'value',
-		                       textField: 'text',
-                               data:[{value:'1',text:'回租'},{value:'2',text:'直租'}]
-                    " />
-                            </div>
-
-                            <div class="col-6">
-                                <label>期限:</label>
-                                <input name="TimeLimit" class="easyui-textbox" data-options="required:false,value:'',readonly:true," />
-                                <unit>月</unit>
-                            </div>
-
-                            <div class="col-6">
-                                <label>间隔:</label>
-                                <input name="Interval" class="easyui-textbox" data-options="required:false,value:'1',readonly:true," />
-                                <unit>月</unit>
-                            </div>
-
-                            <div class="col-6">
-                                <label>保证金:</label>
-                                <input name="MarginRate" class="easyui-textbox" data-options="required:false,value:'',readonly:true," />
-                                <unit>%</unit>
-                            </div>
-
-                            <div class="col-6">
-                                <label>手续费:</label>
-                                <input name="Poundage" class="easyui-textbox" data-options="required:false,readonly:true,readonly:true" />
-                                <unit>元</unit>
-                            </div>
-
-                            <div class="col-6">
-                                <label>渠道返点:</label>
-                                <input name="ChannelRate" class="easyui-textbox" data-options="required:false,value:'0',readonly:true" />
-                                <unit>%</unit>
-                            </div>
-
-                            <div class="col-6">
-                                <label>员工提成:</label>
-                                <input name="SalesmanRate" class="easyui-textbox" data-options="required:false,value:'0',readonly:true" />
-                                <unit>%</unit>
-                            </div>
-
-                            <div class="col-6">
-                                <label>月费率:</label>
-                                <input name="MonthRate" class="easyui-textbox" data-options="required:false,value:'0',readonly:true " />
-                                <unit>%</unit>
-
-                            </div>
-
-                            <div class="col-6">
-                                <label>年费率:</label>
-                                <input id="yearRate" class="easyui-textbox" data-options="required:false,value:'0',readonly:true" />
-                                <unit>%</unit>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <label>偿还本金:</label>
-                                <table id="RepayPrincipal_dg" class="easyui-datagrid" data-options="singleSelect: true,rownumbers: true">
-                                    <thead>
-                                        <tr>
-                                            <th data-options="field:'Id',hidden:true"></th>
-                                            <th data-options="field:'YearNum',width:260,align:'center',
-                                    editor:{
-                                        type:'textbox',
-                                        options:{
-                                            required:true,
-                                            validType:'',
-                                            readonly:true
-                                        }
-                                    }">年</th>
-                                            <th data-options="field:'PrincipalRate',width:260,align:'center',
-                                    editor:{
-                                        type:'textbox',
-                                        options:{
-                                            required:true,
-                                            validType:'Money'
-                                        }
-                                    }">偿还本金比例（%）</th>
-                                            <th data-options="field:'MonthCoefficient',width:260,align:'center',
-                                    editor:{
-                                        type:'textbox',
-                                        options:{
-                                            required:true,
-                                            validType:'Money',
-                                           editable:true
-                                        }
-                                    }">月供系数</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </fieldset>
-                </article>
-            </div>
-
-            <div>
-                <input id="ac-3" class="ac-1" name="accordion-1" type="radio" />
-                <label for="ac-3" class="ac">申请人信息</label>
-                <article class="people">
-                    <fieldset id="mainapplicant" class="applicant" style="margin-bottom:0px;padding-left:20px;padding-top:0px;">
-                        <div class="hidden">
-                            <input name="Type" type="hidden" value="1" />
-                            <input name="Id" type="hidden" />
-                        </div>
-                        <legend>主要申请人</legend>
-                        <div class="row">
-                            <div class="col-6">
-                                <label>姓名:</label>
-                                <input id="Name" name="Name" class="easyui-textbox" data-options="required:true" />
-                            </div>
-
-                            <div class="col-6">
-                                <label>性别:</label>
-                                <select id="Sex" name="Sex" class="easyui-combobox" data-options="editable:false">
-                                    <option value="男">男</option>
-                                    <option value="女">女</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>证件类型:</label>
-                                <select id="IdentityType" name="IdentityType" class="easyui-combobox" data-options="editable:false">
-                                    <option value="身份证">身份证</option>
-                                    <option value="居住证">居住证</option>
-                                    <option value="户口本">户口本</option>
-                                    <option value="机动车驾驶证">机动车驾驶证</option>
-                                    <option value="军官证">军官证</option>
-                                    <option value="签证">签证</option>
-                                    <option value="护照">护照</option>
-                                </select>
-                            </div>
-
-                            <div class="col-6">
-                                <label>证件号码:</label>
-                                <input id="Identity" name="Identity" class="easyui-textbox" data-options="required:true" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>婚姻状况:</label>
-                                <select id="MaritalStatus" name="MaritalStatus" class="easyui-combobox" data-options="editable:false,onSelect:ChooseMarital">
-                                    <option value="0">已婚</option>
-                                    <option value="1">离异</option>
-                                    <option value="2">单身</option>
-                                </select>
-                            </div>
-
-                            <div class="col-6">
-                                <label>手机:</label>
-                                <input id="Mobile" name="Mobile" class="easyui-textbox" data-options="validType:'Mobile',required:true" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>住宅电话:</label>
-                                <input id="Phone" name="Phone" class="easyui-textbox" data-options="validType:'PhoneOrMobile'" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <label>现居住地址:</label>
-                                <input id="LiveHouseAddress" name="LiveHouseAddress" class="easyui-textbox" data-options="width:895,required:true" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>户口所在地:</label>
-                                <input id="RegisteredAddress" name="RegisteredAddress" class="easyui-textbox" data-options="required:true" />
-                            </div>
-
-                            <div class="col-6">
-                                <label>单位名称:</label>
-                                <input id="OfficeName" name="OfficeName" class="easyui-textbox" data-options="required:true" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>部门:</label>
-                                <input id="Department" name="Department" class="easyui-textbox" />
-                            </div>
-
-                            <div class="col-6">
-                                <label>职位:</label>
-                                <input id="position" name="Position" class="easyui-textbox" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>行业:</label>
-                                <select id="IndustryType" name="IndustryType" class="easyui-combobox" data-options="editable:false">
-                                    <option>　</option>
-                                    <option value="农、林、牧、渔业">农、林、牧、渔业</option>
-                                    <option value="采掘业">采掘业</option>
-                                    <option value="制造业">制造业</option>
-                                    <option value="电力、燃气及水的产业和供应业">电力、燃气及水的产业和供应业</option>
-                                    <option value="建筑业">建筑业</option>
-                                    <option value="交通运输、仓储和邮政业">交通运输、仓储和邮政业</option>
-                                    <option value="信息传输、计算机服务和软件业">信息传输、计算机服务和软件业</option>
-                                    <option value="批发和零售业">批发和零售业</option>
-                                    <option value="住宿和餐饮业">住宿和餐饮业</option>
-                                    <option value="金融业">金融业</option>
-                                    <option value="房地产业">房地产业</option>
-                                    <option value="租赁和商务服务业">租赁和商务服务业</option>
-                                    <option value="科学研究、技术服务业和地质勘察业">科学研究、技术服务业和地质勘察业</option>
-                                    <option value="水利、环境和公共设施管理业">水利、环境和公共设施管理业</option>
-                                    <option value="居民服务和其他服务业">居民服务和其他服务业</option>
-                                    <option value="教育">教育</option>
-                                    <option value="生、社会保障和社会福利业">卫生、社会保障和社会福利业</option>
-                                    <option value="文化、体育和娱乐业">文化、体育和娱乐业</option>
-                                    <option value="公共管理和社会组织">公共管理和社会组织</option>
-                                </select>
-                            </div>
-
-                            <div class="col-6">
-                                <label>单位电话:</label>
-                                <input id="OfficePhone" name="OfficePhone" class="easyui-textbox" data-options="validType:'PhoneOrMobile'" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <label>单位地址:</label>
-                                <input id="OfficeAddress" name="OfficeAddress" class="easyui-textbox" data-options="required:true" />
-                            </div>
-                        </div>
-                        <div id="wife">
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>配偶姓名:</label>
-                                    <input id="WifeName" name="WifeName" class="easyui-textbox" />
-                                </div>
-
-                                <div class="col-6">
-                                    <label>配偶移动电话:</label>
-                                    <input id="WifePhone" name="WifePhone" class="easyui-textbox" data-options="validType:'Mobile'" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>配偶单位名称:</label>
-                                    <input id="WifeOfficeName" name="WifeOfficeName" class="easyui-textbox" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>配偶单位地址:</label>
-                                    <input id="WifeOfficeAddress" name="WifeOfficeAddress" class="easyui-textbox" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label>申请人月收入</label>
-                                <input id="TotalMonthlyIncome" name="TotalMonthlyIncome" class="easyui-textbox" data-options="validType:'Price',required:true" /><span class="unit">元</span>
-                            </div>
-                            <div class="col-6">
-                                <label>其他月收入:</label>
-                                <input id="OtherIncome" name="OtherIncome" class="easyui-textbox" data-options="validType:'Price',required:true" /><span class="unit">元</span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>家庭月收入:</label>
-                                <input id="HomeMonthlyIncome" name="HomeMonthlyIncome" class="easyui-textbox" data-options="validType:'Price',required:true" /><span class="unit">元</span>
-                            </div>
-
-                            <div class="col-6">
-                                <label>家庭月支出:</label>
-                                <input id="HomeMonthlyExpend" name="HomeMonthlyExpend" class="easyui-textbox" data-options="validType:'Price',required:true" /><span class="unit">元</span>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>申请人学历:</label>
-                                <select id="Degree" name="Degree" class="easyui-combobox" data-options="editable:false">
-                                    <option value="硕士及以上">硕士及以上</option>
-                                    <option value="本科">本科</option>
-                                    <option value="大专">大专</option>
-                                    <option value="高中">高中</option>
-                                    <option value="初中及以下">初中及以下</option>
-                                </select>
-                            </div>
-
-                            <div class="col-6">
-                                <label>供养人数:</label>
-                                <input id="FamilyNumber" name="FamilyNumber" class="easyui-textbox" data-options="validType:'Integer',required:true" /><span class="unit">人</span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <label>通讯地址:</label>
-                                <input id="ContactAddressType1" name="ContactAddressType" type="radio" class="easyui-validatebox" value="住宅" onclick="CAType(1)">住宅<span style="margin-right:20px;"> </span>
-                                <input id="ContactAddressType2" name="ContactAddressType" type="radio" class="easyui-validatebox" value="单位" onclick="CAType(2)">单位<span style="margin-right:20px;"> </span>
-                                <input id="ContactAddress" name="ContactAddress" class="easyui-textbox" data-options="width:760" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div btn="add" style="height: 30px;width: 95%; margin-left: 15px;">
-                                <span style="font-size:18px">自有住房</span>
-                                <a class="add" onclick="AddOwnHouse()">
-                                    <img src="images/add.png" />
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>自有住房套数:</label>
-                                <input id="OwnHouseCount" name="OwnHouseCount" class="easyui-textbox" readonly value="0">
-                            </div>
-                        </div>
-
-                        <div id="ownHouse"></div>
-
-                        <template id="ownHouseTemplate">
-                            <div btn="add" class="minusdiv">
-                                <a class="add" onclick="MinusOwnHouse(this)">
-                                    <img src="images/minus.png" />
-                                </a>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>自有住房类型:</label>
-                                    <input id="ownHouse1" name="OwnHouseType" type="radio" checked="checked" value="1" cl>自置（无按揭）
-                                    <input id="ownHouse2" name="OwnHouseType" type="radio" value="2">自置（有按揭）
-                                    <input id="ownHouse3" name="OwnHouseType" type="radio" value="3">其他
-                                </div>
-
-                                <div class="col-6">
-                                    <label>所有权:</label>
-                                    <input id="OwnerShip1" name="OwnerShip" type="radio" checked="checked" value="1">个人所有权
-                                    <input id="OwnerShip2" name="OwnerShip" type="radio" value="2">配偶所有权
-                                    <input id="OwnerShip3" name="OwnerShip" type="radio" value="3">夫妻共有
-                                    <input id="OwnerShip4" name="OwnerShip" type="radio" value="4">直系亲属所有
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>自有住房地址:</label>
-                                    <input id="ownHouseAddress" name="OwnHouseAddress" class="easyui-textbox" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>自有住房面积:</label>
-                                    <input id="ownHouseSize" name="OwnHouseSize" class="easyui-textbox" />
-                                    <span class="unit">㎡</span>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>自有住房登记日期:</label>
-                                    <input id="ownHouseRegisterDate" name="OwnHouseRegisterDate" class="easyui-textbox" data-options="validType:'Date'" />
-                                </div>
-                            </div>
-
-                            <div style="border-top: #00686b 1px dashed ;margin-top:10px;margin-bottom:25px;margin-right:40px">
-                            </div>
-                        </template>
-                    </fieldset>
-
-                    <fieldset id="joint">
-                        <legend>
-                            共同申请人
-                            <a btn="add" class="add" onclick="AddJoint()">
-                                <img src="images/add.png" />
-                            </a>
-                        </legend>
-
-                        <div id="JointContent"></div>
-                        <template id="jointTemplate">
-                            <div class="hidden">
-                                <input name="Type" type="hidden" value="2" />
-                                <input name="Id" type="hidden" />
-                            </div>
-
-                            <div btn="add" class="minusdiv">
-                                <a class="add" onclick="MinusContacts(this, joints)">
-                                    <img src="images/minus.png" />
-                                </a>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>与申请人关系:</label>
-                                    <select id="RelationWithMaster" name="RelationWithMaster" class="easyui-combobox" data-options="editable:false,onSelect:RelationWithMaster">
-                                        <option value="父母或子女">父母或子女</option>
-                                        <option value="兄弟姐妹">兄弟姐妹</option>
-                                        <option value="同事">同事</option>
-                                        <option value="同学">同学</option>
-                                        <option value="朋友">朋友</option>
-                                        <option value="夫妻">夫妻</option>
-                                        <option value="其他">其他</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>姓名:</label>
-                                    <input id="Name" name="Name" class="easyui-textbox" data-options="required:true" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>性别:</label>
-                                    <select id="Sex" name="Sex" class="easyui-combobox" data-options="editable:false">
-                                        <option value="男">男</option>
-                                        <option value="女">女</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>手机:</label>
-                                    <input id="Mobile" name="Mobile" class="easyui-textbox" data-options="validType:'Mobile',required:true" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>证件类型:</label>
-                                    <select id="IdentityType" name="IdentityType" class="easyui-combobox" data-options="editable:false">
-                                        <option value="身份证">身份证</option>
-                                        <option value="居住证">居住证</option>
-                                        <option value="户口本">户口本</option>
-                                        <option value="机动车驾驶证">机动车驾驶证</option>
-                                        <option value="军官证">军官证</option>
-                                        <option value="签证">签证</option>
-                                        <option value="护照">护照</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>证件号码:</label>
-                                    <input id="Identity" name="Identity" class="easyui-textbox" data-options="required:true" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>学历:</label>
-                                    <select id="Degree" name="Degree" class="easyui-combobox" data-options="editable:false">
-                                        <option value="硕士及以上">硕士及以上</option>
-                                        <option value="本科">本科</option>
-                                        <option value="大专">大专</option>
-                                        <option value="高中">高中</option>
-                                        <option value="初中及以下">初中及以下</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>单位名称:</label>
-                                    <input id="OfficeName" name="OfficeName" class="easyui-textbox" data-options="required:true" />
-                                </div>
-
-                                <div class="col-6">
-                                    <label>行业:</label>
-                                    <select id="IndustryType" name="IndustryType" class="easyui-combobox" data-options="editable:false">
-                                        <option value="农、林、牧、渔业">农、林、牧、渔业</option>
-                                        <option value="采掘业">采掘业</option>
-                                        <option value="制造业">制造业</option>
-                                        <option value="电力、燃气及水的产业和供应业">电力、燃气及水的产业和供应业</option>
-                                        <option value="建筑业">建筑业</option>
-                                        <option value="交通运输、仓储和邮政业">交通运输、仓储和邮政业</option>
-                                        <option value="信息传输、计算机服务和软件业">信息传输、计算机服务和软件业</option>
-                                        <option value="批发和零售业">批发和零售业</option>
-                                        <option value="住宿和餐饮业">住宿和餐饮业</option>
-                                        <option value="金融业">金融业</option>
-                                        <option value="房地产业">房地产业</option>
-                                        <option value="租赁和商务服务业">租赁和商务服务业</option>
-                                        <option value="科学研究、技术服务业和地质勘察业">科学研究、技术服务业和地质勘察业</option>
-                                        <option value="水利、环境和公共设施管理业">水利、环境和公共设施管理业</option>
-                                        <option value="居民服务和其他服务业">居民服务和其他服务业</option>
-                                        <option value="教育">教育</option>
-                                        <option value="生、社会保障和社会福利业">卫生、社会保障和社会福利业</option>
-                                        <option value="文化、体育和娱乐业">文化、体育和娱乐业</option>
-                                        <option value="公共管理和社会组织">公共管理和社会组织</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>单位地址:</label>
-                                    <input id="OfficeAddress" name="OfficeAddress" class="easyui-textbox" data-options="required:true" />
-                                </div>
-                            </div>
-                        </template>
-                    </fieldset>
-
-                    <fieldset id="Guarantee">
-                        <legend>
-                            担保人
-                            <a btn="add" class="add" onclick="AddGuarantee()">
-                                <img src="images/add.png" />
-                            </a>
-                        </legend>
-                        <div id="GuaranteeContent"></div>
-                        <template id="GuaranteeTemplate">
-
-                            <div class="hidden">
-                                <input name="Type" type="hidden" value="3" />
-                                <input name="Id" type="hidden" />
-                            </div>
-
-                            <div btn="add" class="minusdiv">
-                                <a class="add" onclick="MinusContacts(this, guarantees)">
-                                    <img src="images/minus.png" />
-                                </a>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>与申请人关系:</label>
-                                    <select id="RelationWithMaster" name="RelationWithMaster" class="easyui-combobox" style="width:408px" data-options="required:true,onSelect:RelationWithMaster">
-                                        <option value="父母或子女">父母或子女</option>
-                                        <option value="兄弟姐妹">兄弟姐妹</option>
-                                        <option value="同事">同事</option>
-                                        <option value="同学">同学</option>
-                                        <option value="朋友">朋友</option>
-                                        <option value="夫妻">夫妻</option>
-                                        <option value="其他">其他</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>姓名:</label>
-                                    <input id="Name" name="Name" class="easyui-textbox" data-options="required:true" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>性别:</label>
-                                    <select id="Sex" name="Sex" class="easyui-combobox" data-options="editable:false">
-                                        <option value="男">男</option>
-                                        <option value="女">女</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>手机:</label>
-                                    <input id="Mobile" name="Mobile" class="easyui-textbox" data-options="validType:'Mobile',required:true" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>证件类型:</label>
-                                    <select id="IdentityType" name="IdentityType" class="easyui-combobox" data-options="editable:false">
-                                        <option value="身份证">身份证</option>
-                                        <option value="居住证">居住证</option>
-                                        <option value="户口本">户口本</option>
-                                        <option value="机动车驾驶证">机动车驾驶证</option>
-                                        <option value="军官证">军官证</option>
-                                        <option value="签证">签证</option>
-                                        <option value="护照">护照</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>证件号码:</label>
-                                    <input id="Identity" name="Identity" class="easyui-textbox" data-options="required:true" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>学历:</label>
-                                    <select id="Degree" name="Degree" class="easyui-combobox" data-options="editable:false">
-                                        <option value="硕士及以上">硕士及以上</option>
-                                        <option value="本科">本科</option>
-                                        <option value="大专">大专</option>
-                                        <option value="高中">高中</option>
-                                        <option value="初中及以下">初中及以下</option>
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>单位名称:</label>
-                                    <input id="OfficeName" name="OfficeName" class="easyui-textbox" data-options="required:true" />
-                                </div>
-
-                                <div class="col-6">
-                                    <label>行业:</label>
-                                    <select id="IndustryType" name="IndustryType" class="easyui-combobox" data-options="editable:false">
-                                        <option value="农、林、牧、渔业">农、林、牧、渔业</option>
-                                        <option value="采掘业">采掘业</option>
-                                        <option value="制造业">制造业</option>
-                                        <option value="电力、燃气及水的产业和供应业">电力、燃气及水的产业和供应业</option>
-                                        <option value="建筑业">建筑业</option>
-                                        <option value="交通运输、仓储和邮政业">交通运输、仓储和邮政业</option>
-                                        <option value="信息传输、计算机服务和软件业">信息传输、计算机服务和软件业</option>
-                                        <option value="批发和零售业">批发和零售业</option>
-                                        <option value="住宿和餐饮业">住宿和餐饮业</option>
-                                        <option value="金融业">金融业</option>
-                                        <option value="房地产业">房地产业</option>
-                                        <option value="租赁和商务服务业">租赁和商务服务业</option>
-                                        <option value="科学研究、技术服务业和地质勘察业">科学研究、技术服务业和地质勘察业</option>
-                                        <option value="水利、环境和公共设施管理业">水利、环境和公共设施管理业</option>
-                                        <option value="居民服务和其他服务业">居民服务和其他服务业</option>
-                                        <option value="教育">教育</option>
-                                        <option value="生、社会保障和社会福利业">卫生、社会保障和社会福利业</option>
-                                        <option value="文化、体育和娱乐业">文化、体育和娱乐业</option>
-                                        <option value="公共管理和社会组织">公共管理和社会组织</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>单位地址:</label>
-                                    <input id="OfficeAddress" name="OfficeAddress" class="easyui-textbox" data-options="required:true" />
-                                </div>
-                            </div>
-                        </template>
-
-                    </fieldset>
-
-                    <fieldset id="contacts">
-                        <legend>
-                            联系人
-                            <a btn="add" class="add" onclick="AddContact()">
-                                <img src="images/add.png" />
-                            </a>
-                        </legend>
-
-                        <div id="ContactContent"></div>
-
-                        <template id="contactTemplate">
-                            <div class="hidden">
-                                <input name="Type" type="hidden" value="4" />
-                                <input name="Id" type="hidden" />
-                            </div>
-                            <div btn="add" class="minusdiv">
-                                <a class="add" onclick="MinusContacts(this, contacts)">
-                                    <img src="images/minus.png" />
-                                </a>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>与申请人关系:</label>
-                                    <select id="RelationWithMaster" name="RelationWithMaster" class="easyui-combobox" style="width:408px" data-options="required:true,onSelect:RelationWithMaster">
-                                        <option value="父母或子女">父母或子女</option>
-                                        <option value="兄弟姐妹">兄弟姐妹</option>
-                                        <option value="同事">同事</option>
-                                        <option value="同学">同学</option>
-                                        <option value="朋友">朋友</option>
-                                        <option value="夫妻">夫妻</option>
-                                        <option value="其他">其他</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>姓名:</label>
-                                    <input name="Name" id="Name" class="easyui-textbox" data-options="required:true" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <label>性别:</label>
-                                    <select id="sex" name="sex" class="easyui-combobox" style="width:408px" data-options="required:true">
-                                        <option value="男">男</option>
-                                        <option value="女">女</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-6">
-                                    <label>移动电话:</label>
-                                    <input name="Mobile" id="Mobile" class="easyui-textbox" data-options="validType:'Mobile',required:true" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>现居住地址:</label>
-                                    <input id="LiveHouseAddress" name="LiveHouseAddress" class="easyui-textbox" data-options="required:true" />
-                                </div>
-                            </div>
-                        </template>
-                    </fieldset>
-                </article>
-            </div>
-</form>
-
-    <!--产品详情-->
-    <div id="ProduceList_dialog" class="easyui-dialog" data-options="title:'产品详情',width:'60%',height:'480px',modal:true,closed:true">
-        <table id="ProduceList_dg" class="easyui-datagrid" data-options="height:400,toolbar:'#tb',rownumbers:true,
-             singleSelect: true,
-             loadMsg: '正在加载，请稍候...',
-             onDblClickCell:ChooseProduce,
-         ">
-            <thead>
-                <tr>
-                    <th data-options="field:'Id',hidden:true">Id</th>
-                    <th data-options="field:'Code',width:100,align:'center'">代码</th>
-                    <th data-options="field:'TimeLimit',width:120,align:'center'">期限</th>
-                    <th data-options="field:'InterestRate',width:200,align:'center'">名义利率（%）</th>
-                    <th data-options="field:'MarginRate',width:120,align:'center'">保证金（%）</th>
-                    <th data-options="field:'MonthRate',width:120,align:'center'">月费率（%）</th>
-                    <th data-options="field:'YearRate',width:120,align:'center'">年费率（%）</th>
-                    <th data-options="field:'ChannelRate',width:120,align:'center'">渠道返点（%）</th>
-                    <th data-options="field:'SalesmanRate',width:120,align:'center'">员工提成（%）</th>
-                    <th data-options="field:'LeaseType',width:120,align:'center'">租赁方式</th>
-                </tr>
-            </thead>
-        </table>
-
-        <div id="tb">
-            <div style="height:30px;">
-                <div style="height:30px; width:auto;">
-                    <input id="ProductCodeOrName" class="easyui-textbox" style="width: 200px;height:25px; margin-top:3px;" data-options="prompt:'请输入产品代码'" />
-                    <a id="search" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-search',onClick:LoadProduceList">搜索</a>
-                    <a id="add" class="easyui-linkbutton" href="javascript:void(0)" style="width: auto;height:25px; margin-top:3px;" data-options="iconCls:'icon-ok',onClick:ChooseProduce">选择产品</a>
-                </div>
-            </div>
-        </div>
-    </div>
+							</tr>
+						</thead>
+					</table>
+
+					<div id="financeItem_tb" style="display:none">
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:AppendfinanceItem">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true,onClick:ModifyfinanceItem">修改</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:RemovefinanceItem">移除</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:AcceptfinanceItem">确定</a>
+					</div>
+
+					<script type="text/javascript">
+						var editIndex = undefined;
+
+						function endEditing() {
+							if (editIndex == undefined) {
+								return true;
+							}
+
+							if ($("#financeItem_dg").datagrid("validateRow", editIndex)) {
+								$("#financeItem_dg").datagrid("endEdit", editIndex);
+
+								editIndex = editIndex;
+
+								return true;
+							}
+							else {
+								top.$.messager.show({ msg: '请填写完正在编辑的融资项' });
+
+								return false;
+							}
+						}
+
+						function onEdit(index) {
+							// 禁用状态下，阻止编辑
+							if ($("form.container fieldset#financeItem").attr("disabled") == "disabled") {
+								return false;
+							}
+
+							if (endEditing()) {
+								$("#financeItem_dg").datagrid("beginEdit", index);
+
+								editIndex = index;
+							}
+							else {
+								setTimeout(function () {
+									$("#financeItem_dg").datagrid("selectRow", editIndex);
+								}, 0);
+							}
+						}
+
+						function onEndEdit(index, row) {
+						}
+
+						function AppendfinanceItem() {
+							if (endEditing()) {
+								$("#financeItem_dg").datagrid("appendRow", {
+									Name: '',
+									Principal: '',
+									FinancialAmount: '',
+									Rate: '',
+									VATamount: '',
+									InvoiceAmount: ''
+								});
+
+								editIndex = $("#financeItem_dg").datagrid("getRows").length - 1;
+
+								$("#financeItem_dg").datagrid("selectRow", editIndex)
+									.datagrid("beginEdit", editIndex);
+							}
+						}
+
+						function ModifyfinanceItem() {
+							var row = $("#financeItem_dg").datagrid("getSelected");
+							var index = $("#financeItem_dg").datagrid("getRowIndex", row);
+
+							if (index >= 0) {
+								onEdit(index);
+							}
+						}
+
+						function RemovefinanceItem() {
+							editIndex = undefined;
+
+							if ($("#financeItem_dg").datagrid('getRows').length == 0) {
+								return;
+							}
+
+							var row = $("#financeItem_dg").datagrid("getSelected");
+							var index = $("#financeItem_dg").datagrid("getRowIndex", row);
+
+							$("#financeItem_dg").datagrid("deleteRow", index);
+
+							// 加载融资总额
+							LoanTotalFinancialAmount();
+						}
+
+						function AcceptfinanceItem() {
+							if (endEditing()) {
+
+								$("#financeItem_dg").datagrid("acceptChanges");
+
+								if ($("#financeItem_dg").datagrid('getRows').length > 0) {
+									// 加载融资总额
+									LoanTotalFinancialAmount();
+								}
+							}
+						}
+
+						function financeItemStyler(index, row) {
+						}
+					</script>
+
+					<div class="row" style="display:none">
+						<div class="col-6"></div>
+						<div class="col-6">
+							<label>融资总额:</label>
+							<input class="easyui-textbox" id="TotalFinancialAmount" data-options="readonly:false,value:'',required:true,validType:['Money'] " />
+							<unit>元</unit>
+							<script type="text/javascript">
+								// 加载融资总额
+								function LoanTotalFinancialAmount() {
+									var produceLessType = $('form fieldset#produce input#produceLeaseType').val();
+									var AmountArray = [];
+
+									$($("#financeItem_dg").datagrid('getRows')).each(function (i, e) {
+										if (produceLessType == "回租") {
+											AmountArray.push(e.FinancialAmount == undefined ? 0 : e.FinancialAmount);
+										}
+										else {
+											AmountArray.push(e.Principal == undefined ? 0 : e.Principal);
+										}
+									});
+
+									if (IsArray(AmountArray) == true) {
+										if (AmountArray.length == 0) {
+											$("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', false).textbox('setValue', '');
+										}
+										else {
+											$("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('readonly', true).textbox('setValue', '');
+
+											var total = 0;
+
+											$(AmountArray).each(function (i, e) {
+												if (isNaN(parseFloat(e)) == false) {
+													total += parseFloat(e) * 100;
+												}
+											});
+
+											total = total / 100;
+
+											$("form.container fieldset#financeItem input#TotalFinancialAmount").textbox('setValue', total);
+										}
+									}
+
+									function IsArray(obj) {
+										return Object.prototype.toString.call(obj) === '[object Array]';
+									}
+								}
+							</script>
+						</div>
+					</div>
+
+					<script>
+
+								// 构建融资项信息数据
+								function BuildFinanceItemData() {
+									var data = $("form fieldset#financeItem table#financeItem_dg").datagrid('getRows');
+
+									return data;
+								}
+								// 加载融资项信息(参数：data）
+								function LoadFinanceItemInfo(data) {
+									if (data == undefined || data == null) {
+										return false;
+									}
+
+									$("form fieldset#financeItem table#financeItem_dg").datagrid('loadData', data);
+
+									LoanTotalFinancialAmount();
+								}
+					</script>
+				</fieldset>
+
+				<fieldset id="produce" style="margin-bottom:0px;padding:0 20px">
+					<legend>产品信息</legend>
+
+					<div class="hidden">
+						<input name="ProduceId" type="hidden" />
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>产品代码:</label>
+							<input name="Code" class="easyui-textbox" required data-options="width:360, editable:false" />
+							<a class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ShowProduceList">选择产品</a>
+						</div>
+
+						<div class="col-6">
+							<label>产品类型:</label>
+							<input name="ProduceType" class="easyui-textbox" readonly />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>名义利率（年）:</label>
+							<input name="Rate" class="easyui-textbox" readonly />
+							<unit>%</unit>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>还款期限:</label>
+							<input name="Periods" class="easyui-textbox" readonly />
+							<unit>期</unit>
+						</div>
+
+						<div class="col-6">
+							<label>月供先付期数:</label>
+							<input name="PeriodsPerpayment" class="easyui-textbox" readonly />
+							<unit>期</unit>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>保证金:</label>
+							<input name="CustomerBailRatio" class="easyui-textbox" readonly />
+							<unit>%</unit>
+						</div>
+
+						<div class="col-6">
+							<label>手续费:</label>
+							<input name="CustomerCostRatio" class="easyui-textbox" readonly />
+							<unit>%</unit>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>月费率:</label>
+							<input name="CostRate" class="easyui-textbox" readonly />
+							<unit>%</unit>
+						</div>
+						<div class="col-6">
+							<label>年费率:</label>
+							<input name="CostRateYear" class="easyui-textbox" readonly />
+							<unit>%</unit>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+							<label>月供系数:</label>
+
+							<table id="principal_ratios" class="easyui-datagrid" data-options="singleSelect: true, rownumbers: true">
+								<thead>
+									<tr>
+										<th data-options="field:'Title',width:260,align:'center',formatter:titleFormatter">期次</th>
+										<th data-options="field:'Ratio',width:260,align:'center'">偿还本金比例（%）</th>
+										<th data-options="field:'Factor',width:260,align:'center'">月供系数</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+
+					<!--产品列表-->
+					<div id="produce_dialog" class="easyui-dialog" data-options="title:'产品详情',width:'60%',height:'480px',modal:true,closed:true">
+						<table id="produce_dg" class="easyui-datagrid" data-options="
+							height:460,
+							toolbar:'produce_dg_tb',
+							rownumbers:true,
+							singleSelect: true,
+							pagination: true,
+							method: 'GET',
+							url: '../api/Produce/PagedList',
+							loadMsg: '正在加载，请稍候...',
+							onBeforeLoad:SetProduceFilters,
+							onDblClickCell:SelectProduce,
+							">
+							<thead>
+								<tr>
+									<th data-options="field:'Code',width:200,align:'center'">产品代码</th>
+									<th data-options="field:'ProduceType',width:120,align:'center'">产品类型</th>
+									<th data-options="field:'Rate',width:120,align:'center'">名义利率（年）</th>
+									<th data-options="field:'Periods',width:120,align:'center'">融资期限</th>
+									<th data-options="field:'CustomerCostRatio',width:120,align:'center'">手续费（%）</th>
+									<th data-options="field:'CustomerBailRatio',width:120,align:'center'">保证金（%）</th>
+									<th data-options="field:'CostRate',width:120,align:'center'">费率（月）</th>
+									<th data-options="field:'PartnersCommissionRatio',width:120,align:'center'">渠道返点（%）</th>
+									<th data-options="field:'EmployeeCommissionRatio',width:120,align:'center'">员工提成（%）</th>
+								</tr>
+							</thead>
+						</table>
+
+						<div id="produce_dg_tb">
+							<div>
+								<div>
+									<input id="produceSearchString" class="easyui-textbox" data-options="prompt:'请输入产品代码'" />
+									<a id="search" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-search',onClick:produceGrid.Reload">搜索</a>
+									<a id="select" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-ok',onClick:SelectProduce">选择产品</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<script>
+								// 构建产品信息数据
+								function dataBuildProduce() {
+									return {
+										ProduceId: $("#produce input[name=ProduceId]").val()
+									};
+								}
+
+								// 加载产品信息(参数：data）
+								function dataLoadProduce(data) {
+									if (!data) {
+										return false;
+									}
+
+									$("#produce").form("load", data);
+
+									$("#principal_ratios").datagrid("loadData", data.PrincipalRatios);
+								}
+
+								// 选择产品
+								function ShowProduceList() {
+									$("#produce_dialog").dialog('open');
+
+									$("#produce_dialog").panel({ top: $(document).scrollTop() + Math.abs(($(window).height() - 300) * 0.5) });
+								}
+
+								// principal_ratios
+								function titleFormatter(value, row, index) {
+									return "第" + row.Period + "年";
+								}
+
+								// ProduceGrid
+								var produceGrid = new UCGrid("#dg");
+
+								// 产品筛选
+								function SetProduceFilters(param) {
+									param.searchString = $("#produceSearchString").textbox("getValue");
+								}
+
+								// 选择产品
+								function SelectProduce() {
+									var row = $("#produce_dg").datagrid("getSelected");
+
+									if (row) {
+										dataLoadProduce(row);
+
+										$("#produce_dialog").dialog('close');
+									}
+									else {
+										$.messager.show({ msg: "请选中一行!" });
+									}
+								}
+					</script>
+				</fieldset>
+			</article>
+		</div>
+
+		<div>
+			<input id="ac-3" class="ac-1" name="accordion-1" type="radio" />
+			<label for="ac-3" class="ac">申请人信息</label>
+			<article class="people">
+				<fieldset id="mainapplicant" class="applicant" style="margin-bottom:0px;padding-left:20px;padding-top:0px;">
+					<div class="hidden">
+						<input name="Type" type="hidden" value="1" />
+						<input name="Id" type="hidden" />
+					</div>
+					<legend>主要申请人</legend>
+					<div class="row">
+						<div class="col-6">
+							<label>姓名:</label>
+							<input id="Name" name="Name" class="easyui-textbox" data-options="required:true" />
+						</div>
+
+						<div class="col-6">
+							<label>性别:</label>
+							<select id="Sex" name="Sex" class="easyui-combobox" data-options="editable:false">
+								<option value="男">男</option>
+								<option value="女">女</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>证件类型:</label>
+							<select id="IdentityType" name="IdentityType" class="easyui-combobox" data-options="editable:false">
+								<option value="身份证">身份证</option>
+								<option value="居住证">居住证</option>
+								<option value="户口本">户口本</option>
+								<option value="机动车驾驶证">机动车驾驶证</option>
+								<option value="军官证">军官证</option>
+								<option value="签证">签证</option>
+								<option value="护照">护照</option>
+							</select>
+						</div>
+
+						<div class="col-6">
+							<label>证件号码:</label>
+							<input id="Identity" name="Identity" class="easyui-textbox" data-options="required:true" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>婚姻状况:</label>
+							<select id="MaritalStatus" name="MaritalStatus" class="easyui-combobox" data-options="editable:false,onSelect:ChooseMarital">
+								<option value="0">已婚</option>
+								<option value="1">离异</option>
+								<option value="2">单身</option>
+							</select>
+						</div>
+
+						<div class="col-6">
+							<label>手机:</label>
+							<input id="Mobile" name="Mobile" class="easyui-textbox" data-options="validType:'Mobile',required:true" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>住宅电话:</label>
+							<input id="Phone" name="Phone" class="easyui-textbox" data-options="validType:'PhoneOrMobile'" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+							<label>现居住地址:</label>
+							<input id="LiveHouseAddress" name="LiveHouseAddress" class="easyui-textbox" data-options="width:895,required:true" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>户口所在地:</label>
+							<input id="RegisteredAddress" name="RegisteredAddress" class="easyui-textbox" data-options="required:true" />
+						</div>
+
+						<div class="col-6">
+							<label>单位名称:</label>
+							<input id="OfficeName" name="OfficeName" class="easyui-textbox" data-options="required:true" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>部门:</label>
+							<input id="Department" name="Department" class="easyui-textbox" />
+						</div>
+
+						<div class="col-6">
+							<label>职位:</label>
+							<input id="position" name="Position" class="easyui-textbox" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>行业:</label>
+							<select id="IndustryType" name="IndustryType" class="easyui-combobox" data-options="editable:false">
+								<option>　</option>
+								<option value="农、林、牧、渔业">农、林、牧、渔业</option>
+								<option value="采掘业">采掘业</option>
+								<option value="制造业">制造业</option>
+								<option value="电力、燃气及水的产业和供应业">电力、燃气及水的产业和供应业</option>
+								<option value="建筑业">建筑业</option>
+								<option value="交通运输、仓储和邮政业">交通运输、仓储和邮政业</option>
+								<option value="信息传输、计算机服务和软件业">信息传输、计算机服务和软件业</option>
+								<option value="批发和零售业">批发和零售业</option>
+								<option value="住宿和餐饮业">住宿和餐饮业</option>
+								<option value="金融业">金融业</option>
+								<option value="房地产业">房地产业</option>
+								<option value="租赁和商务服务业">租赁和商务服务业</option>
+								<option value="科学研究、技术服务业和地质勘察业">科学研究、技术服务业和地质勘察业</option>
+								<option value="水利、环境和公共设施管理业">水利、环境和公共设施管理业</option>
+								<option value="居民服务和其他服务业">居民服务和其他服务业</option>
+								<option value="教育">教育</option>
+								<option value="生、社会保障和社会福利业">卫生、社会保障和社会福利业</option>
+								<option value="文化、体育和娱乐业">文化、体育和娱乐业</option>
+								<option value="公共管理和社会组织">公共管理和社会组织</option>
+							</select>
+						</div>
+
+						<div class="col-6">
+							<label>单位电话:</label>
+							<input id="OfficePhone" name="OfficePhone" class="easyui-textbox" data-options="validType:'PhoneOrMobile'" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+							<label>单位地址:</label>
+							<input id="OfficeAddress" name="OfficeAddress" class="easyui-textbox" data-options="required:true" />
+						</div>
+					</div>
+					<div id="wife">
+						<div class="row">
+							<div class="col-6">
+								<label>配偶姓名:</label>
+								<input id="WifeName" name="WifeName" class="easyui-textbox" />
+							</div>
+
+							<div class="col-6">
+								<label>配偶移动电话:</label>
+								<input id="WifePhone" name="WifePhone" class="easyui-textbox" data-options="validType:'Mobile'" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>配偶单位名称:</label>
+								<input id="WifeOfficeName" name="WifeOfficeName" class="easyui-textbox" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<label>配偶单位地址:</label>
+								<input id="WifeOfficeAddress" name="WifeOfficeAddress" class="easyui-textbox" />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<label>申请人月收入</label>
+							<input id="TotalMonthlyIncome" name="TotalMonthlyIncome" class="easyui-textbox" data-options="validType:'Price',required:true" /><span class="unit">元</span>
+						</div>
+						<div class="col-6">
+							<label>其他月收入:</label>
+							<input id="OtherIncome" name="OtherIncome" class="easyui-textbox" data-options="validType:'Price',required:true" /><span class="unit">元</span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>家庭月收入:</label>
+							<input id="HomeMonthlyIncome" name="HomeMonthlyIncome" class="easyui-textbox" data-options="validType:'Price',required:true" /><span class="unit">元</span>
+						</div>
+
+						<div class="col-6">
+							<label>家庭月支出:</label>
+							<input id="HomeMonthlyExpend" name="HomeMonthlyExpend" class="easyui-textbox" data-options="validType:'Price',required:true" /><span class="unit">元</span>
+						</div>
+
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>申请人学历:</label>
+							<select id="Degree" name="Degree" class="easyui-combobox" data-options="editable:false">
+								<option value="硕士及以上">硕士及以上</option>
+								<option value="本科">本科</option>
+								<option value="大专">大专</option>
+								<option value="高中">高中</option>
+								<option value="初中及以下">初中及以下</option>
+							</select>
+						</div>
+
+						<div class="col-6">
+							<label>供养人数:</label>
+							<input id="FamilyNumber" name="FamilyNumber" class="easyui-textbox" data-options="validType:'Integer',required:true" /><span class="unit">人</span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12">
+							<label>通讯地址:</label>
+							<input id="ContactAddressType1" name="ContactAddressType" type="radio" class="easyui-validatebox" value="住宅" onclick="CAType(1)">住宅<span style="margin-right:20px;"> </span>
+							<input id="ContactAddressType2" name="ContactAddressType" type="radio" class="easyui-validatebox" value="单位" onclick="CAType(2)">单位<span style="margin-right:20px;"> </span>
+							<input id="ContactAddress" name="ContactAddress" class="easyui-textbox" data-options="width:760" />
+						</div>
+					</div>
+
+					<div class="row">
+						<div btn="add" style="height: 30px;width: 95%; margin-left: 15px;">
+							<span style="font-size:18px">自有住房</span>
+							<a class="add" onclick="AddOwnHouse()">
+								<img src="images/add.png" />
+							</a>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<label>自有住房套数:</label>
+							<input id="OwnHouseCount" name="OwnHouseCount" class="easyui-textbox" readonly value="0">
+						</div>
+					</div>
+
+					<div id="ownHouse"></div>
+
+					<template id="ownHouseTemplate">
+						<div btn="add" class="minusdiv">
+							<a class="add" onclick="MinusOwnHouse(this)">
+								<img src="images/minus.png" />
+							</a>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>自有住房类型:</label>
+								<input id="ownHouse1" name="OwnHouseType" type="radio" checked="checked" value="1" cl>自置（无按揭）
+								<input id="ownHouse2" name="OwnHouseType" type="radio" value="2">自置（有按揭）
+								<input id="ownHouse3" name="OwnHouseType" type="radio" value="3">其他
+							</div>
+
+							<div class="col-6">
+								<label>所有权:</label>
+								<input id="OwnerShip1" name="OwnerShip" type="radio" checked="checked" value="1">个人所有权
+								<input id="OwnerShip2" name="OwnerShip" type="radio" value="2">配偶所有权
+								<input id="OwnerShip3" name="OwnerShip" type="radio" value="3">夫妻共有
+								<input id="OwnerShip4" name="OwnerShip" type="radio" value="4">直系亲属所有
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<label>自有住房地址:</label>
+								<input id="ownHouseAddress" name="OwnHouseAddress" class="easyui-textbox" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>自有住房面积:</label>
+								<input id="ownHouseSize" name="OwnHouseSize" class="easyui-textbox" />
+								<span class="unit">㎡</span>
+							</div>
+
+							<div class="col-6">
+								<label>自有住房登记日期:</label>
+								<input id="ownHouseRegisterDate" name="OwnHouseRegisterDate" class="easyui-textbox" data-options="validType:'Date'" />
+							</div>
+						</div>
+
+						<div style="border-top: #00686b 1px dashed ;margin-top:10px;margin-bottom:25px;margin-right:40px">
+						</div>
+					</template>
+				</fieldset>
+
+				<fieldset id="joint">
+					<legend>
+						共同申请人
+						<a btn="add" class="add" onclick="AddJoint()">
+							<img src="images/add.png" />
+						</a>
+					</legend>
+
+					<div id="JointContent"></div>
+					<template id="jointTemplate">
+						<div class="hidden">
+							<input name="Type" type="hidden" value="2" />
+							<input name="Id" type="hidden" />
+						</div>
+
+						<div btn="add" class="minusdiv">
+							<a class="add" onclick="MinusContacts(this, joints)">
+								<img src="images/minus.png" />
+							</a>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>与申请人关系:</label>
+								<select id="RelationWithMaster" name="RelationWithMaster" class="easyui-combobox" data-options="editable:false,onSelect:RelationWithMaster">
+									<option value="父母或子女">父母或子女</option>
+									<option value="兄弟姐妹">兄弟姐妹</option>
+									<option value="同事">同事</option>
+									<option value="同学">同学</option>
+									<option value="朋友">朋友</option>
+									<option value="夫妻">夫妻</option>
+									<option value="其他">其他</option>
+								</select>
+							</div>
+
+							<div class="col-6">
+								<label>姓名:</label>
+								<input id="Name" name="Name" class="easyui-textbox" data-options="required:true" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>性别:</label>
+								<select id="Sex" name="Sex" class="easyui-combobox" data-options="editable:false">
+									<option value="男">男</option>
+									<option value="女">女</option>
+								</select>
+							</div>
+
+							<div class="col-6">
+								<label>手机:</label>
+								<input id="Mobile" name="Mobile" class="easyui-textbox" data-options="validType:'Mobile',required:true" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>证件类型:</label>
+								<select id="IdentityType" name="IdentityType" class="easyui-combobox" data-options="editable:false">
+									<option value="身份证">身份证</option>
+									<option value="居住证">居住证</option>
+									<option value="户口本">户口本</option>
+									<option value="机动车驾驶证">机动车驾驶证</option>
+									<option value="军官证">军官证</option>
+									<option value="签证">签证</option>
+									<option value="护照">护照</option>
+								</select>
+							</div>
+
+							<div class="col-6">
+								<label>证件号码:</label>
+								<input id="Identity" name="Identity" class="easyui-textbox" data-options="required:true" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>学历:</label>
+								<select id="Degree" name="Degree" class="easyui-combobox" data-options="editable:false">
+									<option value="硕士及以上">硕士及以上</option>
+									<option value="本科">本科</option>
+									<option value="大专">大专</option>
+									<option value="高中">高中</option>
+									<option value="初中及以下">初中及以下</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>单位名称:</label>
+								<input id="OfficeName" name="OfficeName" class="easyui-textbox" data-options="required:true" />
+							</div>
+
+							<div class="col-6">
+								<label>行业:</label>
+								<select id="IndustryType" name="IndustryType" class="easyui-combobox" data-options="editable:false">
+									<option value="农、林、牧、渔业">农、林、牧、渔业</option>
+									<option value="采掘业">采掘业</option>
+									<option value="制造业">制造业</option>
+									<option value="电力、燃气及水的产业和供应业">电力、燃气及水的产业和供应业</option>
+									<option value="建筑业">建筑业</option>
+									<option value="交通运输、仓储和邮政业">交通运输、仓储和邮政业</option>
+									<option value="信息传输、计算机服务和软件业">信息传输、计算机服务和软件业</option>
+									<option value="批发和零售业">批发和零售业</option>
+									<option value="住宿和餐饮业">住宿和餐饮业</option>
+									<option value="金融业">金融业</option>
+									<option value="房地产业">房地产业</option>
+									<option value="租赁和商务服务业">租赁和商务服务业</option>
+									<option value="科学研究、技术服务业和地质勘察业">科学研究、技术服务业和地质勘察业</option>
+									<option value="水利、环境和公共设施管理业">水利、环境和公共设施管理业</option>
+									<option value="居民服务和其他服务业">居民服务和其他服务业</option>
+									<option value="教育">教育</option>
+									<option value="生、社会保障和社会福利业">卫生、社会保障和社会福利业</option>
+									<option value="文化、体育和娱乐业">文化、体育和娱乐业</option>
+									<option value="公共管理和社会组织">公共管理和社会组织</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<label>单位地址:</label>
+								<input id="OfficeAddress" name="OfficeAddress" class="easyui-textbox" data-options="required:true" />
+							</div>
+						</div>
+					</template>
+				</fieldset>
+
+				<fieldset id="Guarantee">
+					<legend>
+						担保人
+						<a btn="add" class="add" onclick="AddGuarantee()">
+							<img src="images/add.png" />
+						</a>
+					</legend>
+					<div id="GuaranteeContent"></div>
+					<template id="GuaranteeTemplate">
+
+						<div class="hidden">
+							<input name="Type" type="hidden" value="3" />
+							<input name="Id" type="hidden" />
+						</div>
+
+						<div btn="add" class="minusdiv">
+							<a class="add" onclick="MinusContacts(this, guarantees)">
+								<img src="images/minus.png" />
+							</a>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>与申请人关系:</label>
+								<select id="RelationWithMaster" name="RelationWithMaster" class="easyui-combobox" style="width:408px" data-options="required:true,onSelect:RelationWithMaster">
+									<option value="父母或子女">父母或子女</option>
+									<option value="兄弟姐妹">兄弟姐妹</option>
+									<option value="同事">同事</option>
+									<option value="同学">同学</option>
+									<option value="朋友">朋友</option>
+									<option value="夫妻">夫妻</option>
+									<option value="其他">其他</option>
+								</select>
+							</div>
+
+							<div class="col-6">
+								<label>姓名:</label>
+								<input id="Name" name="Name" class="easyui-textbox" data-options="required:true" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>性别:</label>
+								<select id="Sex" name="Sex" class="easyui-combobox" data-options="editable:false">
+									<option value="男">男</option>
+									<option value="女">女</option>
+								</select>
+							</div>
+
+							<div class="col-6">
+								<label>手机:</label>
+								<input id="Mobile" name="Mobile" class="easyui-textbox" data-options="validType:'Mobile',required:true" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>证件类型:</label>
+								<select id="IdentityType" name="IdentityType" class="easyui-combobox" data-options="editable:false">
+									<option value="身份证">身份证</option>
+									<option value="居住证">居住证</option>
+									<option value="户口本">户口本</option>
+									<option value="机动车驾驶证">机动车驾驶证</option>
+									<option value="军官证">军官证</option>
+									<option value="签证">签证</option>
+									<option value="护照">护照</option>
+								</select>
+							</div>
+
+							<div class="col-6">
+								<label>证件号码:</label>
+								<input id="Identity" name="Identity" class="easyui-textbox" data-options="required:true" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>学历:</label>
+								<select id="Degree" name="Degree" class="easyui-combobox" data-options="editable:false">
+									<option value="硕士及以上">硕士及以上</option>
+									<option value="本科">本科</option>
+									<option value="大专">大专</option>
+									<option value="高中">高中</option>
+									<option value="初中及以下">初中及以下</option>
+								</select>
+							</div>
+						</div>
+
+
+						<div class="row">
+							<div class="col-6">
+								<label>单位名称:</label>
+								<input id="OfficeName" name="OfficeName" class="easyui-textbox" data-options="required:true" />
+							</div>
+
+							<div class="col-6">
+								<label>行业:</label>
+								<select id="IndustryType" name="IndustryType" class="easyui-combobox" data-options="editable:false">
+									<option value="农、林、牧、渔业">农、林、牧、渔业</option>
+									<option value="采掘业">采掘业</option>
+									<option value="制造业">制造业</option>
+									<option value="电力、燃气及水的产业和供应业">电力、燃气及水的产业和供应业</option>
+									<option value="建筑业">建筑业</option>
+									<option value="交通运输、仓储和邮政业">交通运输、仓储和邮政业</option>
+									<option value="信息传输、计算机服务和软件业">信息传输、计算机服务和软件业</option>
+									<option value="批发和零售业">批发和零售业</option>
+									<option value="住宿和餐饮业">住宿和餐饮业</option>
+									<option value="金融业">金融业</option>
+									<option value="房地产业">房地产业</option>
+									<option value="租赁和商务服务业">租赁和商务服务业</option>
+									<option value="科学研究、技术服务业和地质勘察业">科学研究、技术服务业和地质勘察业</option>
+									<option value="水利、环境和公共设施管理业">水利、环境和公共设施管理业</option>
+									<option value="居民服务和其他服务业">居民服务和其他服务业</option>
+									<option value="教育">教育</option>
+									<option value="生、社会保障和社会福利业">卫生、社会保障和社会福利业</option>
+									<option value="文化、体育和娱乐业">文化、体育和娱乐业</option>
+									<option value="公共管理和社会组织">公共管理和社会组织</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<label>单位地址:</label>
+								<input id="OfficeAddress" name="OfficeAddress" class="easyui-textbox" data-options="required:true" />
+							</div>
+						</div>
+					</template>
+
+				</fieldset>
+
+				<fieldset id="contacts">
+					<legend>
+						联系人
+						<a btn="add" class="add" onclick="AddContact()">
+							<img src="images/add.png" />
+						</a>
+					</legend>
+
+					<div id="ContactContent"></div>
+
+					<template id="contactTemplate">
+						<div class="hidden">
+							<input name="Type" type="hidden" value="4" />
+							<input name="Id" type="hidden" />
+						</div>
+						<div btn="add" class="minusdiv">
+							<a class="add" onclick="MinusContacts(this, contacts)">
+								<img src="images/minus.png" />
+							</a>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>与申请人关系:</label>
+								<select id="RelationWithMaster" name="RelationWithMaster" class="easyui-combobox" style="width:408px" data-options="required:true,onSelect:RelationWithMaster">
+									<option value="父母或子女">父母或子女</option>
+									<option value="兄弟姐妹">兄弟姐妹</option>
+									<option value="同事">同事</option>
+									<option value="同学">同学</option>
+									<option value="朋友">朋友</option>
+									<option value="夫妻">夫妻</option>
+									<option value="其他">其他</option>
+								</select>
+							</div>
+
+							<div class="col-6">
+								<label>姓名:</label>
+								<input name="Name" id="Name" class="easyui-textbox" data-options="required:true" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<label>性别:</label>
+								<select id="sex" name="sex" class="easyui-combobox" style="width:408px" data-options="required:true">
+									<option value="男">男</option>
+									<option value="女">女</option>
+								</select>
+							</div>
+
+							<div class="col-6">
+								<label>移动电话:</label>
+								<input name="Mobile" id="Mobile" class="easyui-textbox" data-options="validType:'Mobile',required:true" />
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<label>现居住地址:</label>
+								<input id="LiveHouseAddress" name="LiveHouseAddress" class="easyui-textbox" data-options="required:true" />
+							</div>
+						</div>
+					</template>
+				</fieldset>
+			</article>
+		</div>
+	</form>
 </body>
 </html>
