@@ -5,9 +5,21 @@
     using System.Text;
     using Core.Entities.Vehicle;
     using Core.Exceptions;
+    using Data;
 
     public class VehicleAppService
     {
+        private readonly CarHomeContext context;
+
+        public VehicleAppService()
+        {
+            context = new CarHomeContext();
+        }
+
+
+        /////var result = context.Database.SqlQuery<string>("SELECT VehicleDesc FROM Vehicle WHERE VehicleKey = @p0", "abcd");
+
+
         public VehiclePrise.Rootobject PostToGetVehiclePrise(string vehicleCode, string seriesCode, string registerDate = "2015-01-01", string mile = "12", string pid = "110000", string cid = "110100")
         {
             ////string url = ConfigurationManager.AppSettings["VehiclePriceUrl"];

@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CarHomeContext.cs" />
     <Compile Include="Migrations\201703310214560_IdentityModel.cs" />
     <Compile Include="Migrations\201703310214560_IdentityModel.Designer.cs">
       <DependentUpon>201703310214560_IdentityModel.cs</DependentUpon>
