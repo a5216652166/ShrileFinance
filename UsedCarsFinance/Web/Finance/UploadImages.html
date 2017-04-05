@@ -80,19 +80,25 @@
         //下载单身证明
         function DownloadSignle()
         {
-            $.ajax({
-                data: { financeId: query.FinanceId, sign: 1},
-                type: 'POST',
-                url: '../api/PdfContract/DownloadFiles',
-                statusCode: {
-                    200: function (data) {
-                        $.messager.show({ msg: "生成PDF成功！" });
-                    },
-                    400: function () {
-                        $.messager.show({ msg: "下载失败！" });
-                    }
-                }
-            });
+            $("#downloadSignle").linkbutton("disable");
+            $("#downloadForm input[name=financeId]").val(query.FinanceId);
+            $("#downloadForm").submit();
+            $("#downloadSignle").linkbutton("enable");
+
+            //$.ajax({
+            //    data: { financeId: query.FinanceId, sign: 1},
+            //    type: 'GET',
+            //    url: '../api/ImageUpload/DownloadFiles',
+            //    statusCode: {
+            //        200: function (data) {
+
+            //            $.messager.show({ msg: "生成PDF成功！" });
+            //        },
+            //        400: function () {
+            //            $.messager.show({ msg: "下载失败！" });
+            //        }
+            //    }
+            //});
         }
 
         //验证数据
@@ -336,6 +342,12 @@
                 </tr>
             </table>
         </fieldset>
+    </div>
+    <div>
+        <form id="downloadForm" action="../api/ImageUpload/DownloadFiles" method="get" style="display:none">
+            <input name="financeId" />
+            <input name="sign" value="1"/>
+        </form>
     </div>
 </body>
 </html>
