@@ -71,7 +71,7 @@
             // 打开Word文档
             var doc = app.Documents.Open(ref copyWordPath, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
 
-            var replace = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll;
+            var replace = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll as object;
             foreach (var item in placeholder)
             {
                 app.Selection.Find.Replacement.ClearFormatting();
@@ -88,7 +88,7 @@
                 app.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
             }
 
-            var objWdPdf = Microsoft.Office.Interop.Word.WdExportFormat.wdExportFormatPDF;
+            var objWdPdf = Microsoft.Office.Interop.Word.WdExportFormat.wdExportFormatPDF as object;
 
             // 保存PDF文档
             doc.SaveAs(pdfPath, objWdPdf, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing);
