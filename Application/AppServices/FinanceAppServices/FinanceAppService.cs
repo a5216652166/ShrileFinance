@@ -104,7 +104,7 @@
             param.Add("[@人民币5@]", "             ");
             param.Add("[@金额5@]", "         ");
 
-            param.Add("[@融资期限@]", finance.Produce.TimeLimit.ToString());
+            param.Add("[@融资期限@]", finance.Produce.Periods.ToString());
             param.Add("[@人民币6@]", "             ");
             param.Add("[@金额6@]", "         ");
             param.Add("[@人民币7@]", "             ");
