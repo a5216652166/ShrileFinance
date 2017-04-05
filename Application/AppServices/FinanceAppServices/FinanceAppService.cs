@@ -12,7 +12,6 @@
     using Core.Entities;
     using Core.Entities.Finance;
     using Core.Entities.Finance.Financial;
-    using Core.Entities.Finance.Partners;
     using Core.Entities.Identity;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using Core.Interfaces.Repositories.LoanRepositories;
@@ -52,140 +51,25 @@
             this.partnerRepository = partnerRepository;
             this.produceRepository = produceRepository;
             this.vehicleAppService = vehicleAppService;
-        }
+        }       
 
-        public KeyValuePair<string, byte[]> DownLoadApproval(Guid financeId)
+        public KeyValuePair<string, byte[]> DownloadFiles(Guid financeId, int sign)
         {
-            var finance = financeRepository.Get(financeId);
-
-            var param = new Dictionary<string, string>();
-            var info = finance.Applicant.Where(m => m.Type == TypeEnum.担保人).ToArray();            
-
-            param.Add("【[@合同编号1@]】",string.Empty );
-            if (info.Length >= 1)
+            var file = default(KeyValuePair<string, byte[]>);
+            switch (sign)
             {
-                param.Add("[@保证人1@]",info[0].Name);
-                param.Add("【[@合同编号2@]】", string.Empty);
-                if (info.Length >= 2)
-                {
-                    param.Add("[@保证人2@]", info[1].Name);
-                    param.Add("【[@合同编号3@]】", string.Empty);
-                }
-            }
-            else
-            {
-                param.Add("【[@保证人1@]】", string.Empty);
-                param.Add("【[@合同编号2@]】", string.Empty);
-                param.Add("【[@保证人2@]】", string.Empty);
-                param.Add("【[@合同编号3@]】", string.Empty);
+                case 1:
+                    file = DownloadSignle(financeId);
+                    break;
+                case 2:
+                    file = DownLoadApproval(financeId);
+                    break;
+                default:
+                    throw new Core.Exceptions.ArgumentAppException("下载标识异常");
             }
 
-            param.Add("【[@合同编号4@]】", string.Empty);
-            param.Add("【[@还车条款@]】", string.Empty);
-
-            var applicant = finance.Applicant.Single(m => m.Type == TypeEnum.共同申请人);
-            var customer = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
-            param.Add("[@客户@]", customer.Name);
-            param.Add("[@承租人@]", applicant.Name);
-            param.Add("[@渠道商@]", finance.CreateOf.Name);
-            param.Add("[@所在区域@]", finance.CreateOf.ProxyArea);
-            param.Add("【[@抵押要求@]】", string.Empty);
-            param.Add("【[@上牌要求@]】", string.Empty);
-
-            var upper = new MoneyToUpper();
-            param.Add("[@人民币1@]", upper.RMBToUpper(finance.Financing == null ? 0 : finance.Financing.Value));
-            param.Add("[@金额1@]", Convert.ToString(finance.Financing == null ? 0 : finance.Financing.Value));
-            param.Add("[@人民币2@]", upper.RMBToUpper(finance.Poundage == null ? 0 : finance.Poundage.Value));
-            param.Add("[@金额2@]", Convert.ToString(finance.Poundage == null ? 0 : finance.Poundage.Value));
-            param.Add("[@人民币3@]", upper.RMBToUpper(finance.Bail == null ? 0 : finance.Bail.Value)); 
-            param.Add("[@金额3@]", Convert.ToString(finance.Bail == null ? 0 : finance.Bail.Value));
-            param.Add("[@人民币4@]", "             ");
-            param.Add("[@金额4@]", "         ");
-            param.Add("[@人民币5@]", "             ");
-            param.Add("[@金额5@]", "         ");
-
-            param.Add("[@融资期限@]", finance.Produce.Periods.ToString());
-            param.Add("[@人民币6@]", "             ");
-            param.Add("[@金额6@]", "         ");
-            param.Add("[@人民币7@]", "             ");
-            param.Add("[@金额7@]", "         ");
-            param.Add("[@人民币8@]", "             ");
-            param.Add("[@金额8@]", "         ");
-            param.Add("[@人民币9@]", "             ");
-            param.Add("[@金额9@]", "         ");
-            param.Add("[@人民币10@]", "             ");
-            param.Add("[@金额10@]", "         ");
-
-            var date = finance.RepayRentDate;
-
-            param.Add("[@年1@]", date.Value.Year.ToString());
-            param.Add("[@月1@]", date.Value.Month.ToString());
-            param.Add("[@日1@]", date.Value.Day.ToString());
-            param.Add("【[@年2@]】", string.Empty);
-            param.Add("【[@月2@]】", string.Empty);
-            param.Add("【[@日2@]】", string.Empty);
-            param.Add("[@产品大类@]", finance.Produce.ProduceType.ToString());
-            param.Add("[@产品代码@]",finance.Produce.Code );
-
-
-            var path = new WordToPDF().TransformWordToPDF(@"~\upload\PDF\", "Approval", param, "个人按揭客户审批通知书");
-            var pair = new KeyValuePair<string, byte[]>($"个人按揭客户审批通知书.pdf", GetFileBytes(path));
-
-            return pair;
-        }
-        
-        public KeyValuePair<string, byte[]> DownloadSignle(Guid financeId)
-        {
-            var finance = financeRepository.Get(financeId);
-
-            ////var finance = new Finance();
-            ////finance.Applicant = new List<Applicant>() { new Applicant() { Type = TypeEnum.主要申请人 } };
-
-            ////var ssss = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
-            ////ssss.Name = "钟洪伟";
-            ////ssss.Sex = "男";
-            ////ssss.LiveHouseAddress = "浙江省杭州市萧山区缤纷小区8幢3单元601";
-            ////ssss.IdentityType = "身份证";
-            ////ssss.Identity = "339116199907158354";
-
-            ////finance.CreateOf = new Partner();
-            ////finance.CreateOf.Name = "杭州西湖法拉利4S店";
-            ////finance.Vehicle = new Core.Entities.Vehicle.Vehicle();
-            ////finance.Vehicle.MakeCode = "法拉利";
-            ////finance.Vehicle.PlateNo = "浙A888AA";
-            ////finance.Vehicle.FrameNo = "1589654E756542A69";
-
-            var param = new Dictionary<string, string>();
-            var info = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
-            param.Add("[@姓名@]", info.Name);
-            param.Add("[@性别@]", info.Sex);
-            param.Add("[@住址@]", info.LiveHouseAddress);
-            param.Add("[@证件类型@]", info.IdentityType);
-            param.Add("[@证件号码@]", info.Identity);
-            param.Add("[@年@]", info.Identity.Substring(6, 4));
-            param.Add("[@月@]", info.Identity.Substring(10, 2));
-            param.Add("[@日@]", info.Identity.Substring(12, 2));
-            param.Add("[@合作商@]", finance.CreateOf.Name);
-            param.Add("[@品牌@]", finance.Vehicle.MakeCode);
-            param.Add("[@车牌号@]", finance.Vehicle.PlateNo);
-            param.Add("[@识别号@]", finance.Vehicle.FrameNo);
-
-            var path = new WordToPDF().TransformWordToPDF(@"~\upload\PDF\", "UnmarriedStatement", param, "单身证明书");
-            var pair = new KeyValuePair<string, byte[]>($"单身证明书.pdf", GetFileBytes(path));            
-
-            return pair;            
-        }
-
-        private byte[] GetFileBytes(string path)
-        {
-            var fi = new FileInfo(path);
-            var fs = fi.OpenRead();
-            var bytes = new byte[fs.Length];
-            fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
-            fs.Close();
-
-            return bytes;
-        }
+            return file;
+        }        
 
         /// <summary>
         /// 创建
@@ -453,7 +337,6 @@
                 // 厂商指导价
                 ManufacturerGuidePrice = finance.Vehicle.ManufacturerGuidePrice,
 
-
                 ////// 车辆销售指导价
                 ////VehicleSalePrise = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.MakeCode,finance.Vehicle.FamilyCode).Result.Sale.Poor.Max,
             };
@@ -641,6 +524,140 @@
                     });
 
             return outObj;
+        }
+
+        private KeyValuePair<string, byte[]> DownloadSignle(Guid financeId)
+        {
+            var finance = financeRepository.Get(financeId);
+
+            ////var finance = new Finance();
+            ////finance.Applicant = new List<Applicant>() { new Applicant() { Type = TypeEnum.主要申请人 } };
+
+            ////var ssss = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
+            ////ssss.Name = "钟洪伟";
+            ////ssss.Sex = "男";
+            ////ssss.LiveHouseAddress = "浙江省杭州市萧山区缤纷小区8幢3单元601";
+            ////ssss.IdentityType = "身份证";
+            ////ssss.Identity = "339116199907158354";
+
+            ////finance.CreateOf = new Partner();
+            ////finance.CreateOf.Name = "杭州西湖法拉利4S店";
+            ////finance.Vehicle = new Core.Entities.Vehicle.Vehicle();
+            ////finance.Vehicle.MakeCode = "法拉利";
+            ////finance.Vehicle.PlateNo = "浙A888AA";
+            ////finance.Vehicle.FrameNo = "1589654E756542A69";
+
+            var param = new Dictionary<string, string>();
+            var info = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
+            param.Add("[@姓名@]", info.Name);
+            param.Add("[@性别@]", info.Sex);
+            param.Add("[@住址@]", info.LiveHouseAddress);
+            param.Add("[@证件类型@]", info.IdentityType);
+            param.Add("[@证件号码@]", info.Identity);
+            param.Add("[@年@]", info.Identity.Substring(6, 4));
+            param.Add("[@月@]", info.Identity.Substring(10, 2));
+            param.Add("[@日@]", info.Identity.Substring(12, 2));
+            param.Add("[@合作商@]", finance.CreateOf.Name);
+
+            var car = new VehicleAppService();
+            param.Add("[@品牌@]", car.GetCarBrand(finance.Vehicle.VehicleKey));
+            param.Add("[@车牌号@]", finance.Vehicle.PlateNo);
+            param.Add("[@识别号@]", finance.Vehicle.FrameNo);
+
+            var path = new WordToPDF().TransformWordToPDF(@"~\upload\PDF\", "UnmarriedStatement", param, "单身证明书");
+            var pair = new KeyValuePair<string, byte[]>($"单身证明书.pdf", GetFileBytes(path));
+
+            return pair;
+        }
+
+        private KeyValuePair<string, byte[]> DownLoadApproval(Guid financeId)
+        {
+            var finance = financeRepository.Get(financeId);
+
+            var param = new Dictionary<string, string>();
+            var info = finance.Applicant.Where(m => m.Type == TypeEnum.担保人).ToArray();
+
+            param.Add("【[@合同编号1@]】", string.Empty);
+            if (info.Length >= 1)
+            {
+                param.Add("[@保证人1@]", info[0].Name);
+                param.Add("【[@合同编号2@]】", string.Empty);
+                if (info.Length >= 2)
+                {
+                    param.Add("[@保证人2@]", info[1].Name);
+                    param.Add("【[@合同编号3@]】", string.Empty);
+                }
+            }
+            else
+            {
+                param.Add("【[@保证人1@]】", string.Empty);
+                param.Add("【[@合同编号2@]】", string.Empty);
+                param.Add("【[@保证人2@]】", string.Empty);
+                param.Add("【[@合同编号3@]】", string.Empty);
+            }
+
+            param.Add("【[@合同编号4@]】", string.Empty);
+            param.Add("【[@还车条款@]】", string.Empty);
+
+            var applicant = finance.Applicant.Single(m => m.Type == TypeEnum.共同申请人);
+            var customer = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
+            param.Add("[@客户@]", customer.Name);
+            param.Add("[@承租人@]", applicant.Name);
+            param.Add("[@渠道商@]", finance.CreateOf.Name);
+            param.Add("[@所在区域@]", finance.CreateOf.ProxyArea);
+            param.Add("【[@抵押要求@]】", string.Empty);
+            param.Add("【[@上牌要求@]】", string.Empty);
+
+            var upper = new MoneyToUpper();
+            param.Add("[@人民币1@]", upper.RMBToUpper(finance.Financing == null ? 0 : finance.Financing.Value));
+            param.Add("[@金额1@]", Convert.ToString(finance.Financing == null ? 0 : finance.Financing.Value));
+            param.Add("[@人民币2@]", upper.RMBToUpper(finance.Poundage == null ? 0 : finance.Poundage.Value));
+            param.Add("[@金额2@]", Convert.ToString(finance.Poundage == null ? 0 : finance.Poundage.Value));
+            param.Add("[@人民币3@]", upper.RMBToUpper(finance.Bail == null ? 0 : finance.Bail.Value));
+            param.Add("[@金额3@]", Convert.ToString(finance.Bail == null ? 0 : finance.Bail.Value));
+            param.Add("[@人民币4@]", "             ");
+            param.Add("[@金额4@]", "         ");
+            param.Add("[@人民币5@]", "             ");
+            param.Add("[@金额5@]", "         ");
+
+            param.Add("[@融资期限@]", finance.Produce.Periods.ToString());
+            param.Add("[@人民币6@]", "             ");
+            param.Add("[@金额6@]", "         ");
+            param.Add("[@人民币7@]", "             ");
+            param.Add("[@金额7@]", "         ");
+            param.Add("[@人民币8@]", "             ");
+            param.Add("[@金额8@]", "         ");
+            param.Add("[@人民币9@]", "             ");
+            param.Add("[@金额9@]", "         ");
+            param.Add("[@人民币10@]", "             ");
+            param.Add("[@金额10@]", "         ");
+
+            var date = finance.RepayRentDate;
+
+            param.Add("[@年1@]", date.Value.Year.ToString());
+            param.Add("[@月1@]", date.Value.Month.ToString());
+            param.Add("[@日1@]", date.Value.Day.ToString());
+            param.Add("【[@年2@]】", string.Empty);
+            param.Add("【[@月2@]】", string.Empty);
+            param.Add("【[@日2@]】", string.Empty);
+            param.Add("[@产品大类@]", finance.Produce.ProduceType.ToString());
+            param.Add("[@产品代码@]", finance.Produce.Code);
+
+            var path = new WordToPDF().TransformWordToPDF(@"~\upload\PDF\", "Approval", param, "个人按揭客户审批通知书");
+            var pair = new KeyValuePair<string, byte[]>($"个人按揭客户审批通知书.pdf", GetFileBytes(path));
+
+            return pair;
+        }
+
+        private byte[] GetFileBytes(string path)
+        {
+            var fi = new FileInfo(path);
+            var fs = fi.OpenRead();
+            var bytes = new byte[fs.Length];
+            fs.Read(bytes, 0, Convert.ToInt32(fs.Length));
+            fs.Close();
+
+            return bytes;
         }
     }
 }

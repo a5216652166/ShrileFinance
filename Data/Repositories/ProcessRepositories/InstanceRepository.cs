@@ -73,8 +73,8 @@
             // 状态筛选
             instances = FiterForStatus(instances, status);
 
-            // 排序(处理时间降序)
-            instances = instances.OrderByDescending(m => m.ProcessTime);
+            // 排序(处理时间降序 暂时使用Id排序)
+            instances = instances.OrderByDescending(m => m.Id);
 
             // 分页查询
             return instances.ToPagedList(page, size);
