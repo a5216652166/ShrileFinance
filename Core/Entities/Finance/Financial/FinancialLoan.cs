@@ -62,7 +62,7 @@
         /// <summary>
         /// 融资项
         /// </summary>
-        public virtual ICollection<FinancialItem> FinancialItem { get; set; } = new HashSet<FinancialItem>();
+        public virtual ICollection<FinanceItem> FinancialItem { get; set; } = new HashSet<FinanceItem>();
 
         /// <summary>
         /// 产品

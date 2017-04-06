@@ -23,6 +23,8 @@
 
         public decimal CostRate { get; set; }
 
+        public decimal CostRateYear => Math.Round(CostRate * 12, 2);
+
         public decimal PartnersCommissionRatio { get; set; }
 
         public decimal EmployeeCommissionRatio { get; set; }

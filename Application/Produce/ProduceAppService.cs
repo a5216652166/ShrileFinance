@@ -59,6 +59,8 @@
 
             var entity = Mapper.Map<Produce>(model);
 
+            entity.SetPaymentFactor();
+
             repository.Create(entity);
             repository.Commit();
 
@@ -70,6 +72,8 @@
             var entity = repository.Get(model.Id.Value);
 
             Mapper.Map(model, entity);
+
+            entity.SetPaymentFactor();
 
             repository.Modify(entity);
             repository.Commit();

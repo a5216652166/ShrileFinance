@@ -10,21 +10,7 @@
 
         public decimal Ratio { get; private set; }
 
-        public decimal Factor
-        {
-            get
-            {
-                var rate = Produce.Rate;
-                var periods = 12;
-                var principal = 10000;
-
-                var pv = principal * (Ratio / 100);
-
-                var payment = PaymentEqualsCalculator.Payment(rate, periods, pv);
-
-                return Math.Round(payment, 2);
-            }
-        }
+        public decimal Factor { get; set; }
 
         public virtual Produce Produce { get; private set; }
     }

@@ -20,12 +20,12 @@
 
             CreateMap<Finance, FinanceApplyViewModel>()
                .ForMember(m => m.Contact, m => m.Ignore())
-               .ForMember(m => m.FinancialItem, m => m.MapFrom(o => o.FinancialItem))
+               .ForMember(m => m.FinanceItems, m => m.MapFrom(o => o.FinanceItems))
                .ForMember(m => m.CreateBy, m => m.MapFrom(o => o.CreateBy))
                .ForMember(m => m.CreateOf, m => m.MapFrom(o => o.CreateOf))
                .ForMember(m => m.Produce, m => m.MapFrom(o => o.Produce));
 
-            CreateMap<FinancialItem, FinancialItemViewModel>();
+            CreateMap<FinanceItem, FinanceItemViewModel>();
 
             CreateMap<FinancialLoan, FinancialLoanListViewModel>()
                 .ForMember(m => m.NewProduceCode, m => m.MapFrom(o => o.Produce.Code))

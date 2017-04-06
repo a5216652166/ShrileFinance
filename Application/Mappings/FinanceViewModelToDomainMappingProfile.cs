@@ -15,12 +15,12 @@
             CreateMap<FinanceApplyViewModel, Finance>()
                 .ForMember(m => m.Contact, m => m.Ignore())
                 .ForMember(m => m.Applicant, m => m.Ignore())
-                .ForMember(m => m.FinancialItem, m => m.Ignore())
+                .ForMember(m => m.FinanceItems, m => m.Ignore())
                 .ForMember(m => m.CreateBy, m => m.Ignore())
                 .ForMember(m => m.CreateOf, m => m.Ignore())
                 .ForMember(m => m.Produce, m => m.Ignore());
 
-            CreateMap<FinancialItemViewModel, FinancialItem>()
+            CreateMap<FinanceItemViewModel, FinanceItem>()
                 .ForMember(m => m.Id, m => m.MapFrom(o => AllowId(o.Id)));
 
             CreateMap<FinancialLoanViewModel, FinancialLoan>()

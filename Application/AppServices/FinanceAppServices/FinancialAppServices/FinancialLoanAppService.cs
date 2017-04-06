@@ -58,7 +58,7 @@
 
             foreach (var item in model.FinancialItem)
             {
-                entity.FinancialItem.Add(Mapper.Map<FinancialItem>(item));
+                entity.FinancialItem.Add(Mapper.Map<FinanceItem>(item));
             }
 
             entity.Valid();
@@ -144,7 +144,7 @@
             ////}
             ////else
             ////{
-                entity.FinancialAmounts = entity.FinancialItem.Sum(m => m.FinancialAmount);
+                entity.FinancialAmounts = entity.FinancialItem.Sum(m => m.Principal);
             ////}
         }
     }

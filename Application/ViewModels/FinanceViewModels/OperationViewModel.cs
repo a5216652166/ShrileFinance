@@ -19,7 +19,7 @@
         /// <summary>
         /// 融资产品项
         /// </summary>
-        public virtual IEnumerable<FinancialItemViewModel> FinancialItem { get; set; }
+        public virtual IEnumerable<FinanceItemViewModel> FinancialItem { get; set; }
 
         /// <summary>
         /// 选择还款日

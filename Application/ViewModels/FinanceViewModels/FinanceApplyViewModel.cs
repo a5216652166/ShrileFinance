@@ -15,6 +15,11 @@
         public Guid? Id { get; set; }
 
         /// <summary>
+        /// 产品标识
+        /// </summary>
+        public Guid ProduceId { get; set; }
+
+        /// <summary>
         /// 厂商指导价
         /// </summary>
         public decimal ManufacturerGuidePrice { get; set; }
@@ -38,6 +43,11 @@
         /// 月供先付期数
         /// </summary>
         public int? OncePayMonths { get; set; }
+
+        /// <summary>
+        /// 自付金额
+        /// </summary>
+        public decimal SelfPrincipal { get; set; }
 
         /// <summary>
         /// 创建者
@@ -72,6 +82,6 @@
         /// <summary>
         /// 融资产品项
         /// </summary>
-        public virtual IEnumerable<FinancialItemViewModel> FinancialItem { get; set; }
+        public virtual IEnumerable<FinanceItemViewModel> FinanceItems { get; set; }
     }
 }

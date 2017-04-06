@@ -2,7 +2,7 @@
 {
     using Core.Entities.Finance.Financial;
 
-    public interface IFinancialItemRepository : IRepository<FinancialItem>
+    public interface IFinancialItemRepository : IRepository<FinanceItem>
     {
     }
 }
