@@ -45,6 +45,11 @@
         public int? OncePayMonths { get; set; }
 
         /// <summary>
+        /// 自付金额
+        /// </summary>
+        public decimal SelfPrincipal { get; set; }
+
+        /// <summary>
         /// 创建者
         /// </summary>
         public UserViewModel CreateBy { get; set; }
@@ -77,6 +82,6 @@
         /// <summary>
         /// 融资产品项
         /// </summary>
-        public virtual IEnumerable<FinancialItemViewModel> FinancialItem { get; set; }
+        public virtual IEnumerable<FinanceItemViewModel> FinanceItems { get; set; }
     }
 }

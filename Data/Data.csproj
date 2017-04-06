@@ -92,6 +92,10 @@
     <Compile Include="Migrations\201704031318247_FinanceModel.Designer.cs">
       <DependentUpon>201704031318247_FinanceModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704051114521_Temp.cs" />
+    <Compile Include="Migrations\201704051114521_Temp.Designer.cs">
+      <DependentUpon>201704051114521_Temp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -225,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704031318247_FinanceModel.resx">
       <DependentUpon>201704031318247_FinanceModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704051114521_Temp.resx">
+      <DependentUpon>201704051114521_Temp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
