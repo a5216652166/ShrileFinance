@@ -66,6 +66,9 @@
                     ContactCheck = false;
                     $('fieldset[name=Contact] div[id=Contact_tb]').hide();
                     Disabled($('fieldset[name=Contact]'));
+
+                    $("#account_tb").hide();
+                    $("#account_tbl").hide();
                 }
                 else if (query.state == 1) {
                     // 运营
@@ -79,11 +82,16 @@
                 else if (query.state == 2) {
                     // 客户
                     LoadData_Cust(data);
+                    $("#account_tb").hide();
                 }
 
                 // 加载放款信息
                 if (data.CreditAccountName) {
                     $("table#account_dg").datagrid("loadData", JSON.parse(data.CreditAccountName));
+                }
+                // 加载还款信息
+                if (data.CustomerAccountName) {
+                    $("table#account_dgl").datagrid("loadData", JSON.parse(data.CustomerAccountName));
                 }
             }
         }
@@ -110,7 +118,8 @@
             value.FinanceId = $('fieldset[name=Operation]>input[name=FinanceId]').val();
 
             // 序列化还款信息
-            TraverseDateFactory(FieldsetSerializeFactory("CustomerBankInfo", "text"), value, false, null);
+            //TraverseDateFactory(FieldsetSerializeFactory("CustomerBankInfo", "text"), value, false, null);
+            value.CustomerAccountName = JSON.stringify($("table#account_dgl").datagrid("getRows"));
 
             // 序列化车辆信息
             TraverseDateFactory(FieldsetSerializeFactory("VehicleInfo", "text"), value, false, null);
@@ -240,30 +249,14 @@
         <input type="hidden" name="NodeType" value="Operation" placeholder="节点类型（运营/客户）" />
 
         <template id="Operation">
+
             <fieldset name="CreditBankInfo">
                 <legend>放款信息</legend>
-                <div class="row">
-                    <fieldset id="account_user">
-                        <table id="account_dg" class="easyui-datagrid" data-options="singleSelect: true,
+                <table id="account_dg" class="easyui-datagrid" data-options="singleSelect: true,
                             toolbar: '#account_tb', onClickCell: onClickCell, onEndEdit: onEndEdit">
-                            <thead>
-                                <tr>
-                                    <th data-options="field:'LoanPrincipal',width:150,
-                                    formatter:function(value,row){
-                                        return row.Role;
-                                    },
-                                    editor:{
-                                        type:'combobox',
-                                        options:{
-						                    editable:false,
-                                            required:true,
-                                            data:[
-                                                {'value':'客户','text':'客户'},
-                                                {'value':'合作商','text':'合作商'}
-                                            ]
-                                        }
-                                    }">放款主体</th>
-                                    <th data-options="field:'CreditAccountName',width:200,
+                    <thead>
+                        <tr>
+                            <th data-options="field:'CreditAccountName',width:200,
                                         editor:{
                                             type:'textbox',
                                             options:{
@@ -273,14 +266,14 @@
                                                 delay:800
                                                }
                                     }">放款账户</th>
-                                    <th data-options="field:'CreditBankName',width:200,
+                            <th data-options="field:'CreditBankName',width:200,
                                     editor:{
                                         type:'textbox',
                                         options:{
                                             required:true
                                         }
                                     }">开户行</th>
-                                    <th data-options="field:'CreditBankCard',width:400,
+                            <th data-options="field:'CreditBankCard',width:200,
                                         editor:{
                                             type:'textbox',
                                             options:{
@@ -288,86 +281,90 @@
                                                 validType:['Integer','length[19,19]']
                                             }
                                         }">卡号</th>
-                                </tr>
-                            </thead>
-                        </table>
-
-                        <div id="account_tb">
-                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:AppendAccount">添加</a>
-                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:RemoveAccount">移除</a>
-                            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:AcceptAccount">确定</a>
-                        </div>
-
-                        <script>
-                            var editIndex = undefined;
-                            function endEditing() {
-                                if (editIndex == undefined) { return true; }
-                                if ($("#account_dg").datagrid("validateRow", editIndex)) {
-                                    $("#account_dg").datagrid("endEdit", editIndex);
-                                    editIndex = undefined;
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                            function onClickCell(index, field) {
-                                if (editIndex != index) {
-                                    if (endEditing()) {
-                                        $("#account_dg").datagrid("selectRow", index)
-                                            .datagrid("beginEdit", index);
-                                        var ed = $("#account_dg").datagrid("getEditor", { index: index, field: field });
-                                        if (ed) {
-                                            ($(ed.target).data("textbox") ? $(ed.target).textbox("textbox") : $(ed.target)).focus();
-                                        }
-                                        editIndex = index;
-                                    } else {
-                                        setTimeout(function () {
-                                            $("#account_dg").datagrid("selectRow", editIndex);
-                                        }, 0);
-                                    }
-                                }
-                            }
-                            function onEndEdit(index, row) {
-                                //var ed = $(this).datagrid('getEditor', {
-                                //    index: index,
-                                //    field: 'Role'
-                                //});
-                                //row.RoleName = $(ed.target).combobox('getText');
-                            }
-                            function AppendAccount() {
-                                if (endEditing()) {
-                                    $("#account_dg").datagrid("appendRow", { Role: "客户" });
-                                    editIndex = $("#account_dg").datagrid("getRows").length - 1;
-
-                                    $("#account_dg").datagrid("selectRow", editIndex)
-                                        .datagrid("beginEdit", editIndex);
-
-                                    var ed = $("#account_dg").datagrid('getEditor', {
-                                        index: editIndex,
-                                        field: 'Username'
-                                    });
-                                    $(ed.target).textbox("readonly", false).textbox("enableValidation");
-                                }
-                            }
-                            function RemoveAccount() {
-                                if (editIndex == undefined) { return; }
-                                $("#account_dg").datagrid("cancelEdit", editIndex)
-                                    .datagrid("deleteRow", editIndex);
-                                editIndex = undefined;
-                            }
-                            function AcceptAccount() {
-                                if (endEditing()) {
-                                    $("#account_dg").datagrid("acceptChanges");
-                                }
-                            }
-                        </script>
-                    </fieldset>
+                            <th data-options="field:'CreditBankCard',width:100,
+                                        editor:{
+                                            type:'textbox',
+                                            options:{
+                                                required:true,
+                                                validType:''
+                                            }
+                                        }">金额</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div id="account_tb">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:AppendAccount">添加</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:RemoveAccount">移除</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:AcceptAccount">确定</a>
                 </div>
+                <script>
+                    var editIndex = undefined;
+                    function endEditing() {
+                        if (editIndex == undefined) { return true; }
+                        if ($("#account_dg").datagrid("validateRow", editIndex)) {
+                            $("#account_dg").datagrid("endEdit", editIndex);
+                            editIndex = undefined;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    function onClickCell(index, field) {
+                        if (editIndex != index) {
+                            if (endEditing()) {
+                                $("#account_dg").datagrid("selectRow", index)
+                                    .datagrid("beginEdit", index);
+                                var ed = $("#account_dg").datagrid("getEditor", { index: index, field: field });
+                                if (ed) {
+                                    ($(ed.target).data("textbox") ? $(ed.target).textbox("textbox") : $(ed.target)).focus();
+                                }
+                                editIndex = index;
+                            } else {
+                                setTimeout(function () {
+                                    $("#account_dg").datagrid("selectRow", editIndex);
+                                }, 0);
+                            }
+                        }
+                    }
+                    function onEndEdit(index, row) {
+                        //var ed = $(this).datagrid('getEditor', {
+                        //    index: index,
+                        //    field: 'Role'
+                        //});
+                        //row.RoleName = $(ed.target).combobox('getText');
+                    }
+                    function AppendAccount() {
+                        if (endEditing()) {
+                            $("#account_dg").datagrid("appendRow", { Role: "客户" });
+                            editIndex = $("#account_dg").datagrid("getRows").length - 1;
+
+                            $("#account_dg").datagrid("selectRow", editIndex)
+                                .datagrid("beginEdit", editIndex);
+
+                            var ed = $("#account_dg").datagrid('getEditor', {
+                                index: editIndex,
+                                field: 'Username'
+                            });
+                            $(ed.target).textbox("readonly", false).textbox("enableValidation");
+                        }
+                    }
+                    function RemoveAccount() {
+                        if (editIndex == undefined) { return; }
+                        $("#account_dg").datagrid("cancelEdit", editIndex)
+                            .datagrid("deleteRow", editIndex);
+                        editIndex = undefined;
+                    }
+                    function AcceptAccount() {
+                        if (endEditing()) {
+                            $("#account_dg").datagrid("acceptChanges");
+                        }
+                    }
+                </script>
             </fieldset>
 
             <fieldset name="CustomerBankInfo">
                 <legend>还款信息</legend>
-                <div class="row">
+                <!--<div class="row">
                     <div class="col-6">
                         <label>还款账户:</label>
                         <input name="CustomerAccountName" class="easyui-textbox" data-options="required:false,validType:'',value:'',readonly:false" />
@@ -410,7 +407,107 @@
                             <input name="CustomerBankCard" class="easyui-textbox" data-options="required:false,validType:['Integer','length[19,19]'],value:'',readonly:false" />
                         </div>
                     </template>
+                </div>-->
+                <table id="account_dgl" class="easyui-datagrid" data-options="singleSelect: true,
+                            toolbar: '#account_tbl', onClickCell: onClickCell, onEndEdit: onEndEdit">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'CustomerAccountName',width:200,
+                                        editor:{
+                                            type:'textbox',
+                                            options:{
+                                                required:true,
+                                                readonly:false,
+                                                validType:'',
+                                                delay:800
+                                               }
+                                    }">还款账户</th>
+                            <th data-options="field:'CustomerBankName',width:200,
+                                    editor:{
+                                        type:'textbox',
+                                        options:{
+                                            required:true
+                                        }
+                                    }">开户行</th>
+                            <th data-options="field:'CustomerBankCard',width:200,
+                                        editor:{
+                                            type:'textbox',
+                                            options:{
+                                                required:true,
+                                                validType:['Integer','length[19,19]']
+                                            }
+                                        }">卡号</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div id="account_tbl">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,onClick:AppendAccount1">添加</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true,onClick:RemoveAccount1">移除</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true,onClick:AcceptAccount1">确定</a>
                 </div>
+                <script>
+                    var editIndex1 = undefined;
+                    function endEditing1() {
+                        if (editIndex1 == undefined) { return true; }
+                        if ($("#account_dgl").datagrid("validateRow", editIndex1)) {
+                            $("#account_dgl").datagrid("endEdit", editIndex1);
+                            editIndex1 = undefined;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    function onClickCell1(index, field) {
+                        if (editIndex1 != index) {
+                            if (endEditing1()) {
+                                $("#account_dgl").datagrid("selectRow", index)
+                                    .datagrid("beginEdit", index);
+                                var ed = $("#account_dgl").datagrid("getEditor", { index: index, field: field });
+                                if (ed) {
+                                    ($(ed.target).data("textbox") ? $(ed.target).textbox("textbox") : $(ed.target)).focus();
+                                }
+                                editIndex1 = index;
+                            } else {
+                                setTimeout(function () {
+                                    $("#account_dgl").datagrid("selectRow", editIndex1);
+                                }, 0);
+                            }
+                        }
+                    }
+                    function onEndEdit1(index, row) {
+                        //var ed = $(this).datagrid('getEditor', {
+                        //    index: index,
+                        //    field: 'Role'
+                        //});
+                        //row.RoleName = $(ed.target).combobox('getText');
+                    }
+                    function AppendAccount1() {
+                        if (endEditing1()) {
+                            $("#account_dgl").datagrid("appendRow", { Role: "客户" });
+                            editIndex1 = $("#account_dgl").datagrid("getRows").length - 1;
+
+                            $("#account_dgl").datagrid("selectRow", editIndex1)
+                                .datagrid("beginEdit", editIndex1);
+
+                            var ed = $("#account_dgl").datagrid('getEditor', {
+                                index: editIndex1,
+                                field: 'Username'
+                            });
+                            $(ed.target).textbox("readonly", false).textbox("enableValidation");
+                        }
+                    }
+                    function RemoveAccount1() {
+                        if (editIndex1 == undefined) { return; }
+                        $("#account_dgl").datagrid("cancelEdit", editIndex1)
+                            .datagrid("deleteRow", editIndex1);
+                        editIndex1 = undefined;
+                    }
+                    function AcceptAccount1() {
+                        if (endEditing1()) {
+                            $("#account_dgl").datagrid("acceptChanges");
+                        }
+                    }
+                </script>
             </fieldset>
 
             <fieldset name="Operation">
@@ -430,14 +527,14 @@
                         <label>首次租金支付日期：</label>
                         <input name="RepayRentDate" class="easyui-datebox" data-options="required:true,validType:'',readonly:false,editable:false,width:410" />
                     </div>
-                    <div class="col-6">
+                    <!--<div class="col-6">
                         <label>实际用款额：</label>
                         <input name="ActualAmount" class="easyui-textbox" data-options="required:true,validType:'Money',readonly:false " />
-                        <span name="uint"><!--万元-->元</span>
+                        <span name="uint">元</span>
                     </div>
 
                     <div class="col-6">
-                        <label><!--先付月供：-->月供金额</label>
+                        <label>月供金额</label>
                         <input name="PayMonthly" class="easyui-textbox" data-options="required:true,validType:'Money',readonly:false" />
                         <span name="uint">元</span>
                     </div>
@@ -450,7 +547,7 @@
                         <label>保证金：</label>
                         <input name="Bail" class="easyui-textbox" data-options="required:false,validType:[],readonly:true" />
                         <span name="uint">元</span>
-                    </div>
+                    </div>-->
                 </div>
             </fieldset>
 
@@ -460,7 +557,7 @@
                     <div class="row">
                         <div class="col-6">
                             <label>车牌号:</label>
-                            <input name="PlateNo" class="easyui-textbox" data-options="validType:['PlateNo'],required:true" />
+                            <input name="PlateNo" class="easyui-textbox" data-options="validType:['PlateNo'],required:false" />
                         </div>
 
                         <div class="col-6">
@@ -470,28 +567,28 @@
 
                         <div class="col-6">
                             <label>发动机号:</label>
-                            <input name="EngineNo" class="easyui-textbox" data-options="validType:['AN','length[0,20]'],required:true" />
+                            <input name="EngineNo" class="easyui-textbox" data-options="validType:['AN','length[0,20]'],required:false" />
                         </div>
 
                         <div class="col-6">
                             <label>注册登记日期:</label>
-                            <input name="RegisterDate" class="easyui-textbox" data-options="validType:['YearMonth'],required:true" />
+                            <input name="RegisterDate" class="easyui-textbox" data-options="validType:['YearMonth'],required:false" />
                         </div>
 
                         <div class="col-6">
                             <label>行驶里程:</label>
-                            <input name="RunningMiles" class="easyui-textbox" data-options="validType:['Integer','length[0,9]'],required:true" />
+                            <input name="RunningMiles" class="easyui-textbox" data-options="validType:['Integer','length[0,9]'],required:false" />
                             <span class="unit">公里</span>
                         </div>
 
                         <div class="col-6">
                             <label>车辆出厂日期:</label>
-                            <input name="FactoryDate" class="easyui-datebox" data-options="validType:'Date',required:true,editable:false,width:410" />
+                            <input name="FactoryDate" class="easyui-datebox" data-options="validType:'Date',required:false,editable:false,width:410" />
                         </div>
 
                         <div class="col-6">
                             <label>业务类型:</label>
-                            <select name="BusinessType" class="easyui-combobox" data-options="editable:false,required:true,value:''">
+                            <select name="BusinessType" class="easyui-combobox" data-options="editable:false,required:false,value:''">
                                 <option value="1">以租代购</option>
                                 <option value="2">快速贷</option>
                                 <option value="3">押车贷</option>
@@ -538,14 +635,14 @@
                             }
                         }">项目名称</th>
 
-                            <th data-options="field:'FinancialAmount',width:140,align:'center',
+                            <!--<th data-options="field:'FinancialAmount',width:140,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
                                 required:true,
                                 validType:''
                             }
-                        }">融资额（元）</th>
+                        }">融资额（元）</th>-->
 
                             <th data-options="field:'Principal',width:140,align:'center',
                         editor:{
@@ -556,7 +653,7 @@
                             }
                         }">融资本金（元）</th>
 
-                            <th data-options="field:'Rate',width:140,align:'center',
+                            <!--<th data-options="field:'Rate',width:140,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -581,7 +678,7 @@
                                 required:false,
                                 validType:''
                             },
-                        }">发票金额（元）</th>
+                        }">发票金额（元）</th>-->
                         </tr>
                     </thead>
                 </table>

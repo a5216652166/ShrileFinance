@@ -429,12 +429,16 @@
 
             if (value.NodeType.Equals("Customer"))
             {
-                // 还款信息
-                var customerArray = new string[] { nameof(value.CustomerAccountName), nameof(value.CustomerBankName), nameof(value.CustomerBankCard) };
-                finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: customerArray);
+                ////// 还款信息
+                ////var customerArray = new string[] { nameof(value.CustomerAccountName), nameof(value.CustomerBankName), nameof(value.CustomerBankCard) };
+                ////finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: customerArray);
 
                 // 放款信息
                 finance.FinanceExtension.CreditAccountName = value.CreditAccountName;
+
+                // 还款信息
+                finance.FinanceExtension.CustomerAccountName = value.CustomerAccountName;
+
 
                 ////var creditArray = new string[] { nameof(value.CreditAccountName), nameof(value.CreditBankName), nameof(value.CreditBankCard) };
                 ////finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: creditArray);
@@ -607,10 +611,19 @@
             param.Add("【[@合同编号4@]】", string.Empty);
             param.Add("【[@还车条款@]】", string.Empty);
 
-            var applicant = finance.Applicant.Single(m => m.Type == TypeEnum.共同申请人);
+            var applicant = finance.Applicant.SingleOrDefault(m => m.Type == TypeEnum.共同申请人);
             var customer = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
             param.Add("[@客户@]", customer.Name);
-            param.Add("[@承租人@]", applicant.Name);
+
+            if (applicant == null)
+            {
+                param.Add("【[@承租人@]】", string.Empty);
+            }
+            else
+            {
+                param.Add("[@承租人@]", applicant.Name);
+            }
+
             param.Add("[@渠道商@]", finance.CreateOf.Name);
             param.Add("[@所在区域@]", finance.CreateOf.ProxyArea);
             param.Add("【[@抵押要求@]】", string.Empty);
