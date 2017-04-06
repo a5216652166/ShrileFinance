@@ -10,7 +10,7 @@
         [TestMethod]
         public void TestMethod1()
         {
-            var data = new WordToPDF().SingleWordToPDF();
+            ////var data = new WordToPDF().SingleWordToPDF();
             Assert.IsTrue(true);
         }
     }

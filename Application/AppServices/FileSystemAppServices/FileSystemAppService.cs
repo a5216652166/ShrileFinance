@@ -160,7 +160,7 @@
         /// <returns>文件</returns>
         public FileSystem CreatFile(byte[] buffer, string name, string extension, bool isTemp = false)
         {
-            if (buffer == null)
+            if (buffer == default(byte[]))
             {
                 throw new ArgumentNullException(nameof(buffer), "buffer为null");
             }
@@ -204,7 +204,7 @@
 
         private FileSystem ConvertToFileSystem<T>(T value, string name, string extension, bool isTemp = false)
         {
-            Stream stream = null;
+           var stream = default(Stream);
 
             if (value is HttpPostedFile)
             {
@@ -227,7 +227,7 @@
                 stream = new MemoryStream(value as byte[]);
             }
 
-            if (stream == null)
+            if (stream == default(Stream))
             {
                 throw new ArgumentNullException(nameof(stream), "不支持的类型:" + value.GetType().FullName);
             }
@@ -239,6 +239,8 @@
 
         private void SaveFileSystem(FileSystem fileSystem)
         {
+            fileSystem.Save();
+
             if (fileSystem.Id == Guid.Empty)
             {
                 repository.Create(fileSystem);
@@ -275,7 +277,7 @@
 
         private MemoryStream GetStreamFormFs(FileInfo fileInfo)
         {
-            MemoryStream ms = null;
+            var ms = default(MemoryStream);
 
             if (fileInfo != null)
             {
