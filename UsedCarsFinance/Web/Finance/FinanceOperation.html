@@ -77,7 +77,8 @@
                         // 合同全选
                         $('#Contact_dg').datagrid('selectAll')
                     }
-                    $("#account_tb1").hide();
+
+                    $("#account_tbl").hide();
                 }
                 else if (query.state == 2) {
                     // 客户
@@ -552,7 +553,7 @@
                     <thead>
                         <tr>
                             <th data-options="field:'Id',hidden:true"></th>
-                            <th data-options="field:'Name',width:360,align:'center',
+                            <th data-options="field:'Name',width:400,align:'center',
                         editor:{
                             type:'combobox',
                             options:{
@@ -568,7 +569,7 @@
                                 ]
                             }
                         }">项目名称</th>
-                            <th data-options="field:'Principal',width:360,align:'center',
+                            <th data-options="field:'Principal',width:400,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
