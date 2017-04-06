@@ -80,24 +80,14 @@
         public int? OncePayMonths { get; set; }
 
         /// <summary>
-        /// 建议融资金额
+        /// 保证金
         /// </summary>
-        public decimal? AdviceMoney { get; set; }
-
-        /// <summary>
-        /// 建议融资比例
-        /// </summary>
-        public decimal? AdviceRatio { get; set; }
+        public decimal? Margin { get; set; }
 
         /// <summary>
         /// 审批金额
         /// </summary>
         public decimal? ApprovalMoney { get; set; }
-
-        /// <summary>
-        /// 审批融资比例
-        /// </summary>
-        public decimal? ApprovalRatio { get; set; }
 
         /// <summary>
         /// 月供金额

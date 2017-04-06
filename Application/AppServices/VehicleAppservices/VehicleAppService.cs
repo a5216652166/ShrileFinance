@@ -1,10 +1,8 @@
 ﻿namespace Application.AppServices.VehicleAppservices
 {
     using System.Collections.Specialized;
-    using System.Configuration;
     using System.Text;
     using Core.Entities.Vehicle;
-    using Core.Exceptions;
     using Data;
 
     public class VehicleAppService
@@ -57,11 +55,11 @@
                 rb.Result.Buy.Good.Max = ob["Result"]["mxPrice"].ToString();
                 rb.Result.Buy.Poor.Min = ob["Result"]["lMinPrice"].ToString();
                 rb.Result.Buy.Poor.Max = ob["Result"]["lMaxPrice"].ToString();
-
-                return rb;
             }
 
-            throw new AppException(message: "接口返回数据无内容");
+            return rb;
+
+            ////throw new AppException(message: "接口返回数据无内容");
         }
     }
 }

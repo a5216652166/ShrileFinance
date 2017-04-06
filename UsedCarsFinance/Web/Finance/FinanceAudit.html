@@ -13,6 +13,7 @@
     <script src="../BankInfo/JS/validType.js"></script>
     <script src="Content/FinanceJs.js"></script>
     <script src="../Scripts/usedcars.js"></script>
+    <script src="../Scripts/finance.js"></script>
 
     <script type="text/javascript">
         var query = {};
@@ -21,7 +22,7 @@
             // 获取参数
             query.state = GetQueryString("state");
             query.FinanceId = parent.flow.RootKey;
-            
+
             // 初始化
             Init(query);
         });
@@ -30,10 +31,12 @@
         function LoadData(data) {
             if (data) {
                 // 加载融资审核基本信息
-                FieldsetLoadDateFactory("FinanceAudit", 'text', data)
+                FieldsetLoadDateFactory("FinanceAudit", 'text', data);
 
                 // 加载融资项
                 $("fieldset#financeItem table#financeItem_dg").datagrid("loadData", data.FinancialItem);
+
+                $("fieldset#financeItem input#SelfPrincipal").textbox('setValue', data.SelfPrincipal);
 
                 if (query.state == 0) {
                     // 禁用所有
@@ -93,9 +96,13 @@
         // 设置月供额度
         function SetMonthPay() {
             // 获取审批融资金额
-            var ApprovalMoney = $("fieldset[name=FinanceAudit] input[textboxname=ApprovalMoney]").textbox("getValue");
+            var approvalMoney = $("fieldset[name=FinanceAudit] input[textboxname=ApprovalMoney]").textbox("getValue") || 0;
+            var produceRateMonth = $("fieldset[name=FinanceAudit] input[name=ProduceRateMonth]").val() || 0;
+            var producePeriods = $("fieldset[name=FinanceAudit] input[name=ProducePeriods]").val() || 0;
 
+            var payment = PMT(produceRateMonth, producePeriods, -approvalMoney) || 0;
 
+            $("fieldset[name=FinanceAudit] input[textboxname=Payment]").textbox("setValue", payment);
         }
     </script>
 </head>
@@ -107,7 +114,7 @@
                 <thead>
                     <tr>
                         <th data-options="field:'Id',hidden:true"></th>
-                        <th data-options="field:'Name',width:160,align:'center',
+                        <th data-options="field:'Name',width:440,align:'center',
                         editor:{
                             type:'combobox',
                             options:{
@@ -124,16 +131,7 @@
                             }
                         }">项目名称</th>
 
-                        <th data-options="field:'FinancialAmount',width:140,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:true,
-                                validType:''
-                            }
-                        }">融资额（元）</th>
-
-                        <th data-options="field:'Principal',width:140,align:'center',
+                        <th data-options="field:'Principal',width:440,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -141,36 +139,38 @@
                                 validType:''
                             }
                         }">融资本金（元）</th>
-
-                        <th data-options="field:'Rate',width:140,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:''
-                            }
-                        }">税率（%）</th>
-
-                        <th data-options="field:'VATamount',width:140,align:'center',
-                            editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:''
-                            },
-                        }">增值税进项税额（元）</th>
-
-                        <th data-options="field:'InvoiceAmount',width:140,align:'center',
-                            editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:''
-                            },
-                        }">发票金额（元）</th>
                     </tr>
                 </thead>
             </table>
+
+            <div class="row">
+                <div class="col-6">
+                    <label>客户自付金额:</label>
+                    <input id="SelfPrincipal" class="easyui-textbox" required data-options="value:0,validType:'',onChange:calculateTotalPrincipal" />
+                    <unit>元</unit>
+                </div>
+
+                <div class="col-6">
+                    <label>融资总额:</label>
+                    <input id="TotalPrincipal" class="easyui-textbox" readonly />
+                    <unit>元</unit>
+                </div>
+                <script type="text/javascript">
+                    function calculateTotalPrincipal() {
+                        var totalPrincipal = 0;
+
+                        $($("#financeItem_dg").datagrid("getRows")).each(function (i, e) {
+                            totalPrincipal += parseFloat(e.Principal) || 0;
+                        });
+                        
+                        var selfPrincipal = $("#SelfPrincipal").textbox("getValue");
+
+                        totalPrincipal -= parseFloat(selfPrincipal) || 0;
+
+                        $("#TotalPrincipal").textbox("setValue", totalPrincipal);
+                    }
+                </script>
+            </div>
         </fieldset>
 
         <fieldset name="FinanceAudit">
@@ -179,19 +179,22 @@
             <input type="hidden" name="FinanceId" value="00000000-0000-0000-0000-000000000000" placeholder="融资标识" />
             <input type="hidden" name="IsReview" value="false" placeholder="是否为复审" />
 
+            <input type="hidden" name="ProduceRateMonth" value="0" placeholder="产品利率" />
+            <input type="hidden" name="ProducePeriods" value="0" placeholder="产品期限" />
+
             <div class="row">
-                <div class="col-6">
-                    <label>建议融资金额：</label>
-                    <input name="AdviceMoney" class="easyui-textbox" data-options="required:true,validType:'Money' " />
-                    <span><!--万元-->元</span>
-                </div>
-                
                 <div class="col-6">
                     <label>审批融资金额：</label>
                     <input name="ApprovalMoney" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetMonthPay" />
-                    <span><!--万元-->元</span>
+                    <span>元</span>
                 </div>
-                
+
+                <div class="col-6">
+                    <label>保证金：</label>
+                    <input name="Margin" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetMonthPay" />
+                    <span>元</span>
+                </div>
+
                 <div class="col-6">
                     <label>月供额度：</label>
                     <input name="Payment" class="easyui-textbox" data-options="readonly:true,required:false " />
@@ -205,15 +208,17 @@
                 </div>
 
                 <div class="col-6">
-                    <label>厂商指导价：</label>
+                    <label>车辆厂商指导价：</label>
                     <input name="ManufacturerGuidePrice" class="easyui-textbox" data-options="readonly:true,value:'0'" />
                     <span>万元</span>
                 </div>
 
                 <div class="col-6">
-                    <label>车辆销售指导价：</label>
-                    <input id="VehicleSalePrise" class="easyui-textbox" data-options="readonly:true,value:'0'" />
-                    <span>万元</span>
+                    <label>车辆销售指导价:</label>
+                    <input name="VehicleSalePriseMin" class="easyui-textbox" style="width:190px;" readonly />
+                    <span style="display:inline-block;width:22px; text-align:center;">-</span>
+                    <input name="VehicleSalePriseMax" class="easyui-textbox" style="width:190px;" readonly />
+                    <span class="unit">万元</span>
                 </div>
             </div>
         </fieldset>
