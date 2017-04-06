@@ -73,7 +73,7 @@
         /// </summary>
         public void Save()
         {
-            if (Stream == null)
+            if (Stream == default(MemoryStream))
             {
                 throw new ArgumentNullException(nameof(Stream), "流为null");
             }

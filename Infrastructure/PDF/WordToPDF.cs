@@ -3,17 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Web;
     using PDFPrint;
 
     public class WordToPDF
     {
-        public string SingleWordToPDF()
-        {
-            var param = BuildSingleParams();
-            string path = TransformWordToPDF(@"~\upload\PDF\", "kkk", param, "zhonghw");
-            return path;
-        }
-
         public Dictionary<string, string> BuildSingleParams()
         {
             // 构造数据，用于存放占位符数据
@@ -28,30 +22,40 @@
             return placeholder;
         }
 
-        public string TransformWordToPDF(string filePath, string fileName, Dictionary<string, string> param, string pdfName)
+        public string GetPath(string virtualPath)
         {
-            var path = new PathManager();
-
-            // 模板
-            ////object wordPath = path.GetTemplatePath() + fileName + ".docx";
-            var wordPath = @"D:\VS2017\git\ShrileFinance\UsedCarsFinance\Web\Contracts\" + fileName + ".docx";
-
-            // 拷贝模板路径
-            var copyWordPath = path.GetPath(filePath) + pdfName + ".docx" as object;
-            copyWordPath = @"D:\VS2017\git\ShrileFinance\UsedCarsFinance\Web\upload\PDF\" + pdfName + ".docx";
-            ////WordHelper wordHelp = new WordHelper();
-
-            // 判断该文件是否存在，存在就删除，否则同名文件生成会报错
-            if (File.Exists(copyWordPath.ToString()))
+            string fullpath = HttpContext.Current.Server.MapPath(virtualPath);
+            string directory = Directory.GetCurrentDirectory();
+            if (!Directory.Exists(fullpath))
             {
-                File.Delete(copyWordPath.ToString());
+                Directory.CreateDirectory(fullpath);
             }
 
-            File.Copy(wordPath.ToString(), copyWordPath.ToString());
+            return fullpath;
+        }
+
+        public string TransformWordToPDF(object filePath, string pdfPath, Dictionary<string, string> param)
+        {
+            ////var path = GetPath(filePath);
+            ////// 模板
+            ////var wordPath = path+"\\Template\\" + fileName + ".docx" as object;
+            ////var wordPath = @"D:\VS2017\git\ShrileFinance\UsedCarsFinance\Web\Contracts\" + fileName + ".docx";
+
+            // 拷贝模板路径
+            ////var copyWordPath = path + "\\Temps\\" + pdfName + ".docx" as object;
+            ////copyWordPath = @"D:\VS2017\git\ShrileFinance\UsedCarsFinance\Web\upload\PDF\" + pdfName + ".docx";
+            ////WordHelper wordHelp = new WordHelper();
+            // 判断该文件是否存在，存在就删除，否则同名文件生成会报错
+            ////if (File.Exists(copyWordPath.ToString()))
+            ////{
+            ////    File.Delete(copyWordPath.ToString());
+            ////}
+
+            ////File.Copy(wordPath.ToString(), copyWordPath.ToString());
 
             // 将要导出的pdf路径
-            var pdfPath = path.GetPath(filePath) + pdfName + ".pdf";
-            pdfPath = @"D:\VS2017\git\ShrileFinance\UsedCarsFinance\Web\upload\PDF\" + pdfName + ".pdf";
+            ////var pdfPath = filePath.Replace(".docx",".pdf");
+            ////pdfPath = @"D:\VS2017\git\ShrileFinance\UsedCarsFinance\Web\upload\PDF\" + pdfName + ".pdf";
 
             // 判断该文件是否存在，存在就删除，否则同名文件生成会报错
             if (File.Exists(pdfPath))
@@ -63,13 +67,13 @@
             var placeholder = param;
 
             // 创建word应用程序
-            var app = new Microsoft.Office.Interop.Word.Application();            
+            var app = new Microsoft.Office.Interop.Word.Application();
             app.Visible = false;
 
             var missing = System.Reflection.Missing.Value as object;
 
             // 打开Word文档
-            var doc = app.Documents.Open(ref copyWordPath, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
+            var doc = app.Documents.Open(ref filePath, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
 
             var replace = Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll as object;
             foreach (var item in placeholder)
@@ -95,7 +99,7 @@
             ////wordHelp.Close();
             doc.Close(ref missing, ref missing, ref missing);
             app.Quit(ref missing, ref missing, ref missing);
-            File.Delete(copyWordPath.ToString());            
+            ////File.Delete(copyWordPath.ToString());            
 
             return pdfPath;
         }
