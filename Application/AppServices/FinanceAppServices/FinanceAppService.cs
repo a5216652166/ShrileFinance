@@ -429,12 +429,16 @@
 
             if (value.NodeType.Equals("Customer"))
             {
-                // 还款信息
-                var customerArray = new string[] { nameof(value.CustomerAccountName), nameof(value.CustomerBankName), nameof(value.CustomerBankCard) };
-                finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: customerArray);
+                ////// 还款信息
+                ////var customerArray = new string[] { nameof(value.CustomerAccountName), nameof(value.CustomerBankName), nameof(value.CustomerBankCard) };
+                ////finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: customerArray);
 
                 // 放款信息
                 finance.FinanceExtension.CreditAccountName = value.CreditAccountName;
+
+                // 还款信息
+                finance.FinanceExtension.CustomerAccountName = value.CustomerAccountName;
+
 
                 ////var creditArray = new string[] { nameof(value.CreditAccountName), nameof(value.CreditBankName), nameof(value.CreditBankCard) };
                 ////finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: creditArray);

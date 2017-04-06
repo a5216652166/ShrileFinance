@@ -89,6 +89,10 @@
                 if (data.CreditAccountName) {
                     $("table#account_dg").datagrid("loadData", JSON.parse(data.CreditAccountName));
                 }
+                // 加载还款信息
+                if (data.CustomerAccountName) {
+                    $("table#account_dgl").datagrid("loadData", JSON.parse(data.CustomerAccountName));
+                }
             }
         }
 
@@ -114,7 +118,8 @@
             value.FinanceId = $('fieldset[name=Operation]>input[name=FinanceId]').val();
 
             // 序列化还款信息
-            TraverseDateFactory(FieldsetSerializeFactory("CustomerBankInfo", "text"), value, false, null);
+            //TraverseDateFactory(FieldsetSerializeFactory("CustomerBankInfo", "text"), value, false, null);
+            value.CustomerAccountName = JSON.stringify($("table#account_dgl").datagrid("getRows"));
 
             // 序列化车辆信息
             TraverseDateFactory(FieldsetSerializeFactory("VehicleInfo", "text"), value, false, null);
@@ -407,7 +412,7 @@
                             toolbar: '#account_tbl', onClickCell: onClickCell, onEndEdit: onEndEdit">
                     <thead>
                         <tr>
-                            <th data-options="field:'CreditAccountName',width:200,
+                            <th data-options="field:'CustomerAccountName',width:200,
                                         editor:{
                                             type:'textbox',
                                             options:{
@@ -417,14 +422,14 @@
                                                 delay:800
                                                }
                                     }">还款账户</th>
-                            <th data-options="field:'CreditBankName',width:200,
+                            <th data-options="field:'CustomerBankName',width:200,
                                     editor:{
                                         type:'textbox',
                                         options:{
                                             required:true
                                         }
                                     }">开户行</th>
-                            <th data-options="field:'CreditBankCard',width:200,
+                            <th data-options="field:'CustomerBankCard',width:200,
                                         editor:{
                                             type:'textbox',
                                             options:{
