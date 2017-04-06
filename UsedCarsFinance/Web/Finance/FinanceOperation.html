@@ -364,50 +364,6 @@
 
             <fieldset name="CustomerBankInfo">
                 <legend>还款信息</legend>
-                <!--<div class="row">
-                    <div class="col-6">
-                        <label>还款账户:</label>
-                        <input name="CustomerAccountName" class="easyui-textbox" data-options="required:false,validType:'',value:'',readonly:false" />
-                    </div>
-                    <div class="col-6">
-                        <label>开户行:</label>
-                        <input name="CustomerBankName" class="easyui-textbox" data-options="required:false,validType:'',value:'',readonly:false" />
-                    </div>
-                    <div class="col-6">
-                        <label>卡号:</label>
-                        <input name="CustomerBankCard" class="easyui-textbox" data-options="required:false,validType:['Integer','length[19,19]'],value:'',readonly:false" />
-                    </div>
-
-                    <template id="CustomerBankInfo">
-                        <div class="col-6">
-                            <label>还款账户:</label>
-                            <input name="CustomerAccountName" class="easyui-textbox" data-options="required:true,validType:'',value:''" />
-                        </div>
-                        <div class="col-6">
-                            <label>开户行:</label>
-                            <input name="CustomerBankName" class="easyui-textbox" data-options="required:true,validType:'',value:''" />
-                        </div>
-                        <div class="col-6">
-                            <label>卡号:</label>
-                            <input name="CustomerBankCard" class="easyui-textbox" data-options="required:true,validType:['Integer','length[19,19]'],value:''" />
-                        </div>
-                    </template>
-
-                    <template id="CustomerBankInfo_R">
-                        <div class="col-6">
-                            <label>还款账户:</label>
-                            <input name="CustomerAccountName" class="easyui-textbox" data-options="required:false,validType:'',value:'',readonly:false" />
-                        </div>
-                        <div class="col-6">
-                            <label>开户行:</label>
-                            <input name="CustomerBankName" class="easyui-textbox" data-options="required:false,validType:'',value:'',readonly:false" />
-                        </div>
-                        <div class="col-6">
-                            <label>卡号:</label>
-                            <input name="CustomerBankCard" class="easyui-textbox" data-options="required:false,validType:['Integer','length[19,19]'],value:'',readonly:false" />
-                        </div>
-                    </template>
-                </div>-->
                 <table id="account_dgl" class="easyui-datagrid" data-options="singleSelect: true,
                             toolbar: '#account_tbl', onClickCell: onClickCell, onEndEdit: onEndEdit">
                     <thead>
@@ -527,27 +483,6 @@
                         <label>首次租金支付日期：</label>
                         <input name="RepayRentDate" class="easyui-datebox" data-options="required:true,validType:'',readonly:false,editable:false,width:410" />
                     </div>
-                    <!--<div class="col-6">
-                        <label>实际用款额：</label>
-                        <input name="ActualAmount" class="easyui-textbox" data-options="required:true,validType:'Money',readonly:false " />
-                        <span name="uint">元</span>
-                    </div>
-
-                    <div class="col-6">
-                        <label>月供金额</label>
-                        <input name="PayMonthly" class="easyui-textbox" data-options="required:true,validType:'Money',readonly:false" />
-                        <span name="uint">元</span>
-                    </div>
-                    <div class="col-6">
-                        <label>一次性付息：</label>
-                        <input name="OnePayInterest" class="easyui-textbox" data-options="required:true,validType:'Money',readonly:false" />
-                        <span name="uint">元</span>
-                    </div>
-                    <div class="col-6">
-                        <label>保证金：</label>
-                        <input name="Bail" class="easyui-textbox" data-options="required:false,validType:[],readonly:true" />
-                        <span name="uint">元</span>
-                    </div>-->
                 </div>
             </fieldset>
 
@@ -618,7 +553,7 @@
                     <thead>
                         <tr>
                             <th data-options="field:'Id',hidden:true"></th>
-                            <th data-options="field:'Name',width:160,align:'center',
+                            <th data-options="field:'Name',width:360,align:'center',
                         editor:{
                             type:'combobox',
                             options:{
@@ -634,17 +569,7 @@
                                 ]
                             }
                         }">项目名称</th>
-
-                            <!--<th data-options="field:'FinancialAmount',width:140,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:true,
-                                validType:''
-                            }
-                        }">融资额（元）</th>-->
-
-                            <th data-options="field:'Principal',width:140,align:'center',
+                            <th data-options="field:'Principal',width:360,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -652,33 +577,6 @@
                                 validType:''
                             }
                         }">融资本金（元）</th>
-
-                            <!--<th data-options="field:'Rate',width:140,align:'center',
-                        editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:''
-                            }
-                        }">税率（%）</th>
-
-                            <th data-options="field:'VATamount',width:140,align:'center',
-                            editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:''
-                            },
-                        }">增值税进项税额（元）</th>
-
-                            <th data-options="field:'InvoiceAmount',width:140,align:'center',
-                            editor:{
-                            type:'textbox',
-                            options:{
-                                required:false,
-                                validType:''
-                            },
-                        }">发票金额（元）</th>-->
                         </tr>
                     </thead>
                 </table>

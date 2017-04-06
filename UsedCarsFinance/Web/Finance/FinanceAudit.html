@@ -191,14 +191,14 @@
                 </div>
 
                 <div class="col-6">
-                    <label>保证金：</label>
-                    <input name="Margin" class="easyui-textbox" data-options="required:true,validType:'Money' " />
+                    <label>月供额度：</label>
+                    <input name="Payment" class="easyui-textbox" data-options="readonly:true,required:false " />
                     <span>元</span>
                 </div>
 
                 <div class="col-6">
-                    <label>月供额度：</label>
-                    <input name="Payment" class="easyui-textbox" data-options="readonly:true,required:false " />
+                    <label>保证金：</label>
+                    <input name="Margin" class="easyui-textbox" data-options="required:true,validType:'Money' " />
                     <span>元</span>
                 </div>
 
@@ -209,17 +209,25 @@
                 </div>
 
                 <div class="col-6">
-                    <label>车辆厂商指导价：</label>
-                    <input name="ManufacturerGuidePrice" class="easyui-textbox" data-options="readonly:true,value:'0'" />
-                    <span>万元</span>
-                </div>
-
-                <div class="col-6">
                     <label>车辆销售指导价:</label>
                     <input name="VehicleSalePriseMin" class="easyui-textbox" style="width:190px;" readonly />
                     <span style="display:inline-block;width:22px; text-align:center;">-</span>
                     <input name="VehicleSalePriseMax" class="easyui-textbox" style="width:190px;" readonly />
                     <span class="unit">万元</span>
+                </div>
+
+                <div class="col-6">
+                    <label>车辆收购指导价:</label>
+                    <input name="VehicleBuyPriseMin" class="easyui-textbox" style="width:190px;" readonly />
+                    <span style="display:inline-block;width:22px; text-align:center;">-</span>
+                    <input name="VehicleBuyPriseMax" class="easyui-textbox" style="width:190px;" readonly />
+                    <span class="unit">万元</span>
+                </div>
+
+                <div class="col-6">
+                    <label>车辆厂商指导价：</label>
+                    <input name="ManufacturerGuidePrice" class="easyui-textbox" data-options="readonly:true,value:'0'" />
+                    <span>万元</span>
                 </div>
             </div>
         </fieldset>

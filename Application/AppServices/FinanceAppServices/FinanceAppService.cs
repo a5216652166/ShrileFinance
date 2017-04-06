@@ -310,7 +310,7 @@
                 CreditBankCard = finance.FinanceExtension.CreditBankCard,
                 CreditBankName = finance.FinanceExtension.CreditBankName,
                 CustomerAccountName = finance.FinanceExtension.CustomerAccountName,
-                CustomerBail = finance.Bail,
+                CustomerBail = finance.Margin,
                 CustomerBankCard = finance.FinanceExtension.CustomerBankCard,
                 CustomerBankName = finance.FinanceExtension.CustomerBankName,
                 OnePayInterest = finance.OnePayInterest,
@@ -328,7 +328,11 @@
             // 获取融资实体
             var finance = financeRepository.Get(financeId);
 
-            var vehiclePrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.VehicleKey, vehicleAppService.GetSeriesCode(finance.Vehicle.VehicleKey)).Result.Sale.Poor;
+            var seriesCode = vehicleAppService.GetSeriesCode(finance.Vehicle.VehicleKey) ?? string.Empty;
+
+            var vehicleSalePrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.VehicleKey, seriesCode).Result.Sale.Good;
+
+            var vehicleBuyPrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.VehicleKey, seriesCode).Result.Buy.Good;
 
             // 实体转ViewModel
             var financeAuditViewModel = new FinanceAuidtViewModel()
@@ -343,8 +347,12 @@
                 ManufacturerGuidePrice = finance.Vehicle.ManufacturerGuidePrice,
 
                 // 车辆销售指导价
-                VehicleSalePriseMin = vehiclePrice.Min,
-                VehicleSalePriseMax = vehiclePrice.Max,
+                VehicleSalePriseMin = vehicleSalePrice.Min,
+                VehicleSalePriseMax = vehicleSalePrice.Max,
+
+                // 车辆收购指导价
+                VehicleBuyPriseMin = vehicleBuyPrice.Min,
+                VehicleBuyPriseMax = vehicleBuyPrice.Max,
 
                 ProduceRateMonth = finance.Produce.RateMonth,
                 ProducePeriods = finance.Produce.Periods
@@ -372,6 +380,8 @@
             // 保证金、审批融资金额、月供额度、手续费
             var array = new string[] { nameof(value.Margin), nameof(value.ApprovalMoney), nameof(value.Payment), nameof(value.Poundage) };
             finance = PartialMapper(refObj: value, outObj: finance, array: array);
+
+            finance.Bail = finance.Margin;
 
             financeRepository.Modify(finance);
         }
