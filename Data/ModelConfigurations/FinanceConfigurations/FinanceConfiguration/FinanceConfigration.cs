@@ -21,10 +21,8 @@
             Property(m => m.Financing);
             Property(m => m.Poundage);
             Property(m => m.OncePayMonths);
-            Property(m => m.AdviceMoney);
-            Property(m => m.AdviceRatio);
+            Property(m => m.Margin);
             Property(m => m.ApprovalMoney);
-            Property(m => m.ApprovalRatio);
             Property(m => m.Payment);
             Property(m => m.RepayRentDate);
 

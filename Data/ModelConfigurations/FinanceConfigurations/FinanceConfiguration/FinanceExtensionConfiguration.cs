@@ -22,7 +22,7 @@
 
             Property(m => m.ContactJson).HasMaxLength(800);
 
-            Property(m => m.CustomerAccountName).HasMaxLength(40);
+            Property(m => m.CustomerAccountName).HasMaxLength(null);
 
             Property(m => m.CustomerBankName).HasMaxLength(40);
 

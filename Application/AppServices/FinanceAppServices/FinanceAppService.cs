@@ -328,6 +328,8 @@
             // 获取融资实体
             var finance = financeRepository.Get(financeId);
 
+            var vehiclePrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.VehicleKey, vehicleAppService.GetSeriesCode(finance.Vehicle.VehicleKey)).Result.Sale.Poor;
+
             // 实体转ViewModel
             var financeAuditViewModel = new FinanceAuidtViewModel()
             {
@@ -340,16 +342,20 @@
                 // 厂商指导价
                 ManufacturerGuidePrice = finance.Vehicle.ManufacturerGuidePrice,
 
-                ////// 车辆销售指导价
-                ////VehicleSalePrise = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.MakeCode,finance.Vehicle.FamilyCode).Result.Sale.Poor.Max,
+                // 车辆销售指导价
+                VehicleSalePriseMin = vehiclePrice.Min,
+                VehicleSalePriseMax = vehiclePrice.Max,
+
+                ProduceRateMonth = finance.Produce.RateMonth,
+                ProducePeriods = finance.Produce.Periods
             };
 
             // 部分映射
-            var array = new string[] { nameof(finance.AdviceMoney), nameof(finance.AdviceRatio), nameof(finance.ApprovalMoney), nameof(finance.ApprovalRatio), nameof(finance.Payment), nameof(finance.Poundage) };
+            var array = new string[] { nameof(finance.Margin), nameof(finance.ApprovalMoney), nameof(finance.Payment), nameof(finance.Poundage), nameof(finance.SelfPrincipal) };
 
             financeAuditViewModel = PartialMapper(refObj: finance, outObj: financeAuditViewModel, array: array);
 
-            financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerBailRatio;
+            financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerCostRatio * finance.FinanceItems.Sum(m => m.FinancialAmount);
 
             return financeAuditViewModel;
         }
@@ -363,8 +369,8 @@
             // 获取该融资审核对应的融资实体
             var finance = financeRepository.Get(value.FinanceId);
 
-            // 建议融资金额、审批融资金额、月供额度、手续费
-            var array = new string[] { nameof(finance.AdviceMoney), nameof(finance.ApprovalMoney), nameof(finance.Payment), nameof(finance.Poundage) };
+            // 保证金、审批融资金额、月供额度、手续费
+            var array = new string[] { nameof(value.Margin), nameof(value.ApprovalMoney), nameof(value.Payment), nameof(value.Poundage) };
             finance = PartialMapper(refObj: value, outObj: finance, array: array);
 
             financeRepository.Modify(finance);
@@ -423,12 +429,16 @@
 
             if (value.NodeType.Equals("Customer"))
             {
-                // 还款信息
-                var customerArray = new string[] { nameof(value.CustomerAccountName), nameof(value.CustomerBankName), nameof(value.CustomerBankCard) };
-                finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: customerArray);
+                ////// 还款信息
+                ////var customerArray = new string[] { nameof(value.CustomerAccountName), nameof(value.CustomerBankName), nameof(value.CustomerBankCard) };
+                ////finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: customerArray);
 
                 // 放款信息
                 finance.FinanceExtension.CreditAccountName = value.CreditAccountName;
+
+                // 还款信息
+                finance.FinanceExtension.CustomerAccountName = value.CustomerAccountName;
+
 
                 ////var creditArray = new string[] { nameof(value.CreditAccountName), nameof(value.CreditBankName), nameof(value.CreditBankCard) };
                 ////finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: creditArray);
@@ -459,24 +469,6 @@
 
             // 执行修改
             financeRepository.Commit();
-        }
-
-        /// <summary>
-        ///  获取融资项或手续费
-        /// </summary>
-        /// <param name="finance">融资实体</param>
-        /// <param name="isFinancing">是否为融资项</param>
-        /// <returns>融资项</returns>
-        private ICollection<KeyValuePair<Guid, KeyValuePair<string, decimal?>>> GetFinancingItemsOrCosts(Finance finance, bool isFinancing = true)
-        {
-            var financingItemsOrCosts = new List<KeyValuePair<Guid, KeyValuePair<string, decimal?>>>();
-
-            //// finance.FinancialItem.ToList().FindAll(m => m.IsFinancing == isFinancing).ForEach(item =>
-            ////  {
-            ////      financingItemsOrCosts.Add(new KeyValuePair<Guid, KeyValuePair<string, decimal?>>(item.Id, new KeyValuePair<string, decimal?>(item.Name, item.Money)));
-            ////  });
-
-            return financingItemsOrCosts;
         }
 
         /// <summary>
@@ -582,7 +574,7 @@
             var count = tempFile.Path.LastIndexOf("\\");
             var ss = tempFile.Path.Substring(0, count);
 
-            var path = wtp.TransformWordToPDF(wtp.GetPath(ss)+tempFile.Path.Substring(count,tempFile.Path.Length-count), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
+            var path = wtp.TransformWordToPDF(wtp.GetPath(ss) + tempFile.Path.Substring(count, tempFile.Path.Length - count), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
 
             var pdfFile = fileSystemAppService.CreatFile(path);
             var pair = new KeyValuePair<string, byte[]>(fileName, pdfFile.Stream.GetBuffer());
@@ -619,10 +611,19 @@
             param.Add("【[@合同编号4@]】", string.Empty);
             param.Add("【[@还车条款@]】", string.Empty);
 
-            var applicant = finance.Applicant.Single(m => m.Type == TypeEnum.共同申请人);
+            var applicant = finance.Applicant.SingleOrDefault(m => m.Type == TypeEnum.共同申请人);
             var customer = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
             param.Add("[@客户@]", customer.Name);
-            param.Add("[@承租人@]", applicant.Name);
+
+            if (applicant == null)
+            {
+                param.Add("【[@承租人@]】", string.Empty);
+            }
+            else
+            {
+                param.Add("[@承租人@]", applicant.Name);
+            }
+
             param.Add("[@渠道商@]", finance.CreateOf.Name);
             param.Add("[@所在区域@]", finance.CreateOf.ProxyArea);
             param.Add("【[@抵押要求@]】", string.Empty);
