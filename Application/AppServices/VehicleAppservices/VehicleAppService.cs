@@ -20,8 +20,13 @@
 
             return result.SingleAsync().Result; 
         }
-        
 
+        public string GetSeriesCode(string vehicleKey)
+        {
+            var result = context.Database.SqlQuery<string>("SELECT ss.SeriesCode FROM Sys_Vehicle AS sv LEFT JOIN Sys_Series AS ss ON sv.SeriesCode = ss.SeriesCode LEFT JOIN Sys_Brand AS sb ON sb.BrandCode = ss.BrandCode WHERE sv.VehicleCode = @p0", vehicleKey);
+
+            return result.SingleAsync().Result;
+        }
 
         public VehiclePrise.Rootobject PostToGetVehiclePrise(string vehicleCode, string seriesCode, string registerDate = "2015-01-01", string mile = "12", string pid = "110000", string cid = "110100")
         {

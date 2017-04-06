@@ -328,7 +328,7 @@
             // 获取融资实体
             var finance = financeRepository.Get(financeId);
 
-            var vehiclePrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.MakeCode, finance.Vehicle.FamilyCode).Result.Sale.Poor;
+            var vehiclePrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.VehicleKey, vehicleAppService.GetSeriesCode(finance.Vehicle.VehicleKey)).Result.Sale.Poor;
 
             // 实体转ViewModel
             var financeAuditViewModel = new FinanceAuidtViewModel()
