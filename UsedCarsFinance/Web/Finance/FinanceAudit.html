@@ -37,6 +37,7 @@
                 $("fieldset#financeItem table#financeItem_dg").datagrid("loadData", data.FinancialItem);
 
                 $("fieldset#financeItem input#SelfPrincipal").textbox('setValue', data.SelfPrincipal);
+                calculateTotalPrincipal();
 
                 if (query.state == 0) {
                     // 禁用所有
@@ -100,9 +101,9 @@
             var produceRateMonth = $("fieldset[name=FinanceAudit] input[name=ProduceRateMonth]").val() || 0;
             var producePeriods = $("fieldset[name=FinanceAudit] input[name=ProducePeriods]").val() || 0;
 
-            var payment = PMT(produceRateMonth, producePeriods, -approvalMoney) || 0;
+            var payment = PMT(parseFloat(produceRateMonth), parseFloat(producePeriods), parseFloat(approvalMoney)) || 0;
 
-            $("fieldset[name=FinanceAudit] input[textboxname=Payment]").textbox("setValue", Math.round(100 * payment,2)/100);
+            $("fieldset[name=FinanceAudit] input[textboxname=Payment]").textbox("setValue", Math.round(100 * payment, 2) / 100);
         }
     </script>
 </head>
@@ -146,7 +147,7 @@
             <div class="row">
                 <div class="col-6">
                     <label>客户自付金额:</label>
-                    <input id="SelfPrincipal" class="easyui-textbox" required data-options="value:0,validType:'',onChange:calculateTotalPrincipal" />
+                    <input id="SelfPrincipal" class="easyui-textbox" required data-options="value:'',validType:''" readonly />
                     <unit>元</unit>
                 </div>
 
@@ -162,7 +163,7 @@
                         $($("#financeItem_dg").datagrid("getRows")).each(function (i, e) {
                             totalPrincipal += parseFloat(e.Principal) || 0;
                         });
-                        
+
                         var selfPrincipal = $("#SelfPrincipal").textbox("getValue");
 
                         totalPrincipal -= parseFloat(selfPrincipal) || 0;
@@ -191,7 +192,7 @@
 
                 <div class="col-6">
                     <label>保证金：</label>
-                    <input name="Margin" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetMonthPay" />
+                    <input name="Margin" class="easyui-textbox" data-options="required:true,validType:'Money' " />
                     <span>元</span>
                 </div>
 
