@@ -449,7 +449,6 @@
                 // 还款信息
                 finance.FinanceExtension.CustomerAccountName = value.CustomerAccountName;
 
-
                 ////var creditArray = new string[] { nameof(value.CreditAccountName), nameof(value.CreditBankName), nameof(value.CreditBankCard) };
                 ////finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: creditArray);
 
@@ -559,14 +558,24 @@
             param.Add("[@住址@]", info.LiveHouseAddress);
             param.Add("[@证件类型@]", info.IdentityType);
             param.Add("[@证件号码@]", info.Identity);
-            param.Add("[@年@]", info.Identity.Substring(6, 4));
-            param.Add("[@月@]", info.Identity.Substring(10, 2));
-            param.Add("[@日@]", info.Identity.Substring(12, 2));
+            if (info.Identity.Length == 18)
+            {
+                param.Add("[@年@]", info.Identity.Substring(6, 4));
+                param.Add("[@月@]", info.Identity.Substring(10, 2));
+                param.Add("[@日@]", info.Identity.Substring(12, 2));
+            }
+            else
+            {
+                param.Add("[@年@]", string.Empty.PadLeft(4));
+                param.Add("[@月@]", string.Empty.PadLeft(2));
+                param.Add("[@日@]", string.Empty.PadLeft(2));
+            }
+
             param.Add("[@合作商@]", finance.CreateOf.Name);
 
             var car = new VehicleAppService();
             param.Add("[@品牌@]", car.GetCarBrand(finance.Vehicle.VehicleKey));
-            param.Add("[@车牌号@]", finance.Vehicle.PlateNo);
+            param.Add("[@车牌号@]", string.IsNullOrWhiteSpace(finance.Vehicle.PlateNo) ? string.Empty.PadLeft(8) : finance.Vehicle.PlateNo);
             param.Add("[@识别号@]", finance.Vehicle.FrameNo);
 
             var pair = CreatPDF("UnmarriedStatement.docx", "单身证明.pdf", param);
@@ -646,31 +655,31 @@
             param.Add("[@金额2@]", Convert.ToString(finance.Poundage == null ? 0 : finance.Poundage.Value));
             param.Add("[@人民币3@]", upper.RMBToUpper(finance.Bail == null ? 0 : finance.Bail.Value));
             param.Add("[@金额3@]", Convert.ToString(finance.Bail == null ? 0 : finance.Bail.Value));
-            param.Add("[@人民币4@]", "             ");
-            param.Add("[@金额4@]", "         ");
-            param.Add("[@人民币5@]", "             ");
-            param.Add("[@金额5@]", "         ");
+            param.Add("[@人民币4@]", string.Empty.PadLeft(12));
+            param.Add("[@金额4@]", string.Empty.PadLeft(8));
+            param.Add("[@人民币5@]", string.Empty.PadLeft(12));
+            param.Add("[@金额5@]", string.Empty.PadLeft(8));
 
             param.Add("[@融资期限@]", finance.Produce.Periods.ToString());
-            param.Add("[@人民币6@]", "             ");
-            param.Add("[@金额6@]", "         ");
-            param.Add("[@人民币7@]", "             ");
-            param.Add("[@金额7@]", "         ");
-            param.Add("[@人民币8@]", "             ");
-            param.Add("[@金额8@]", "         ");
-            param.Add("[@人民币9@]", "             ");
-            param.Add("[@金额9@]", "         ");
-            param.Add("[@人民币10@]", "             ");
-            param.Add("[@金额10@]", "         ");
+            param.Add("[@人民币6@]", string.Empty.PadLeft(12));
+            param.Add("[@金额6@]", string.Empty.PadLeft(8));
+            param.Add("[@人民币7@]", string.Empty.PadLeft(12));
+            param.Add("[@金额7@]", string.Empty.PadLeft(8));
+            param.Add("[@人民币8@]", string.Empty.PadLeft(12));
+            param.Add("[@金额8@]", string.Empty.PadLeft(8));
+            param.Add("[@人民币9@]", string.Empty.PadLeft(12));
+            param.Add("[@金额9@]", string.Empty.PadLeft(8));
+            param.Add("[@人民币10@]", string.Empty.PadLeft(12));
+            param.Add("[@金额10@]", string.Empty.PadLeft(8));
 
             var date = finance.RepayRentDate;
 
             param.Add("[@年1@]", date.Value.Year.ToString());
             param.Add("[@月1@]", date.Value.Month.ToString());
             param.Add("[@日1@]", date.Value.Day.ToString());
-            param.Add("【[@年2@]】", string.Empty);
-            param.Add("【[@月2@]】", string.Empty);
-            param.Add("【[@日2@]】", string.Empty);
+            param.Add("【[@年2@]】", string.Empty.PadLeft(4));
+            param.Add("【[@月2@]】", string.Empty.PadLeft(2));
+            param.Add("【[@日2@]】", string.Empty.PadLeft(2));
             param.Add("[@产品大类@]", finance.Produce.ProduceType.ToString());
             param.Add("[@产品代码@]", finance.Produce.Code);
 

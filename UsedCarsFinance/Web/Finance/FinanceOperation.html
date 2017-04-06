@@ -32,7 +32,6 @@
             // 获取参数
             query.state = GetQueryString("state");
             query.FinanceId = parent.flow.RootKey;
-            debugger
             // 初始化
             Init(query);
         });
@@ -78,6 +77,7 @@
                         // 合同全选
                         $('#Contact_dg').datagrid('selectAll')
                     }
+                    $("#account_tb1").hide();
                 }
                 else if (query.state == 2) {
                     // 客户
@@ -142,7 +142,6 @@
                 });
             }
             value.ContactJson = JSON.stringify(array);
-            debugger
             return value;
         }
     </script>
