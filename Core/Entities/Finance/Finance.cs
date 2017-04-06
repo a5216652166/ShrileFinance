@@ -105,6 +105,11 @@
         public decimal? Payment { get; set; }
 
         /// <summary>
+        /// 自付金额
+        /// </summary>
+        public decimal SelfPrincipal { get; private set; }
+
+        /// <summary>
         /// 首次租金支付日期
         /// </summary>
         public DateTime? RepayRentDate { get; set; }
@@ -147,7 +152,7 @@
         /// <summary>
         /// 融资对应产品的融资项
         /// </summary>
-        public virtual ICollection<FinancialItem> FinancialItem { get; set; }
+        public virtual ICollection<FinanceItem> FinanceItems { get; set; }
 
         /// <summary>
         /// 创建日期

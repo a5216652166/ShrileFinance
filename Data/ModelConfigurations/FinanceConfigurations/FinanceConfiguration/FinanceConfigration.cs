@@ -35,7 +35,7 @@
             HasOptional(m => m.Vehicle).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
 
             // 融资中对应的产品融资项
-            HasMany(m => m.FinancialItem).WithOptional().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
+            HasMany(m => m.FinanceItems).WithOptional().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
 
             // 联系人信息
             HasMany(m => m.Applicant).WithOptional().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();

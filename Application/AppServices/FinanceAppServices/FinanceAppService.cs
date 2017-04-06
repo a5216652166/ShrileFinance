@@ -79,7 +79,7 @@
         {
             var finance = Mapper.Map<Finance>(value);
 
-            finance.FinancialItem = Mapper.Map<ICollection<FinancialItem>>(value.FinancialItem);
+            finance.FinanceItems = Mapper.Map<ICollection<FinanceItem>>(value.FinanceItems);
 
             finance.Applicant = Mapper.Map<ICollection<Applicant>>(value.Applicant);
 
@@ -117,7 +117,7 @@
 
             Mapper.Map(model, finance);
 
-            new UpdateBind().Bind(finance.FinancialItem, model.FinancialItem);
+            new UpdateBind().Bind(finance.FinanceItems, model.FinanceItems);
 
             new UpdateBind().Bind(finance.Applicant, model.Applicant);
 
@@ -332,7 +332,7 @@
                 FinanceId = finance.Id,
 
                 // 融资项
-                FinancialItem = Mapper.Map<IEnumerable<FinancialItemViewModel>>(finance.FinancialItem),
+                FinancialItem = Mapper.Map<IEnumerable<FinanceItemViewModel>>(finance.FinanceItems),
 
                 // 厂商指导价
                 ManufacturerGuidePrice = finance.Vehicle.ManufacturerGuidePrice,
@@ -396,7 +396,7 @@
             operationReportViewModel.CustomerBailRatio = finance.Produce.CustomerBailRatio;
 
             // 融资项
-            operationReportViewModel.FinancialItem = Mapper.Map<IEnumerable<FinancialItemViewModel>>(finance.FinancialItem);
+            operationReportViewModel.FinancialItem = Mapper.Map<IEnumerable<FinanceItemViewModel>>(finance.FinanceItems);
 
             // 车辆补充信息
             var array1 = new string[] { nameof(finance.Vehicle.RegisterDate), nameof(finance.Vehicle.RunningMiles), nameof(finance.Vehicle.FactoryDate), nameof(finance.Vehicle.BusinessType), nameof(finance.Vehicle.PlateNo), nameof(finance.Vehicle.FrameNo), nameof(finance.Vehicle.EngineNo), nameof(finance.Vehicle.RegisterCity), nameof(finance.Vehicle.Condition) };

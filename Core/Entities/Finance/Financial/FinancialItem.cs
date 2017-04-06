@@ -5,26 +5,26 @@
     /// <summary>
     /// 融资项
     /// </summary>
-    public class FinancialItem : Entity, IAggregateRoot
+    public class FinanceItem : Entity, IAggregateRoot
     {
-        protected FinancialItem() : base()
+        protected FinanceItem() : base()
         {
         }
 
         /// <summary>
-        /// 项目名称
+        /// 项目
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
         /// 融资额
         /// </summary>
-        public decimal FinancialAmount { get; set; }
+        public decimal Principal { get; set; }
 
         /// <summary>
         /// 融资本金
         /// </summary>
-        public decimal? Principal { get; set; }
+        public decimal? FinancialAmount { get; set; }
 
         /// <summary>
         /// 税率

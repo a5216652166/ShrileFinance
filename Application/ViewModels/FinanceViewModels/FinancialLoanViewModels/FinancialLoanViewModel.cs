@@ -45,6 +45,6 @@
         /// <summary>
         /// 融资项
         /// </summary>
-        public IEnumerable<FinancialItemViewModel> FinancialItem { get; set; } = new HashSet<FinancialItemViewModel>();
+        public IEnumerable<FinanceItemViewModel> FinancialItem { get; set; } = new HashSet<FinanceItemViewModel>();
     }
 }
