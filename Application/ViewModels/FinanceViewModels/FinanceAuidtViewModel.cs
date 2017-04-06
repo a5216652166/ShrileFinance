@@ -25,15 +25,20 @@
         public decimal? ManufacturerGuidePrice { get; set; }
 
         /// <summary>
-        /// 车辆指导价
+        /// 车辆指导价(下限)
         /// </summary>
-        public string VehicleSalePrise { get; set; }
+        public string VehicleSalePriseMin { get; set; }
 
         /// <summary>
-        /// 建议融资金额
+        /// 车辆指导价(上限)
         /// </summary>
-        public decimal? AdviceMoney { get; set; }
-       
+        public string VehicleSalePriseMax { get; set; }
+
+        /// <summary>
+        /// 保证金
+        /// </summary>
+        public decimal? Margin { get; set; }
+
         /// <summary>
         /// 审批融资金额
         /// </summary>
@@ -48,6 +53,21 @@
         /// 手续费
         /// </summary>
         public decimal? Poundage { get; set; }
+
+        /// <summary>
+        /// 自付金额
+        /// </summary>
+        public decimal SelfPrincipal { get; set; }
+
+        /// <summary>
+        /// 产品利率
+        /// </summary>
+        public decimal ProduceRateMonth { get; set; }
+
+        /// <summary>
+        /// 产品期限
+        /// </summary>
+        public int ProducePeriods { get; set; }
 
         /// <summary>
         /// 是否为复审

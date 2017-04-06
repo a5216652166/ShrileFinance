@@ -157,7 +157,6 @@
     <Content Include="CreditInvestigation\CreditMessageManage.html" />
     <Content Include="Finance\FinancialLoan\LoanEdit.html" />
     <Content Include="Finance\FinancialLoan\LoanList.html" />
-    <Content Include="Finance\Produce\ProduceEdit.html" />
     <Content Include="Scripts\finance.js" />
     <Content Include="Finance\Unused\FinanceApproval.html" />
     <Content Include="Statistics\LoanCount.html" />
@@ -899,6 +898,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Finance\FinanceController.cs" />
     <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />
     <Compile Include="Controllers\Finance\ImageUploadController.cs" />
     <Compile Include="Controllers\Finance\OperationController.cs" />

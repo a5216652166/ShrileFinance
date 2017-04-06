@@ -430,20 +430,20 @@ $.extend($.fn.validatebox.defaults.rules, {
         message: '用户名已使用!'
     },
     // [否决的,使用 Price]
-    Money: {
-        validator: function (value) {
-            if (/^-?\d+\.\d{2}$/.test(value) || /^\d+$/.test(value)) {
-                if (value.length >= 2 && /^[0][0-9]*$/.test(value.substr(0, 2))) {
-                    return false;
-                }
+    ////Money: {
+    ////    validator: function (value) {
+    ////        if (/^-?\d+\.\d{2}$/.test(value) || /^\d+$/.test(value)) {
+    ////            if (value.length >= 2 && /^[0][0-9]*$/.test(value.substr(0, 2))) {
+    ////                return false;
+    ////            }
 
-                return true;
-            }
+    ////            return true;
+    ////        }
 
-            return false;
-        },
-        message: '请输入整数或两位小数！'
-    },
+    ////        return false;
+    ////    },
+    ////    message: '请输入整数或两位小数！'
+    ////},
     // [否决的, 使用 Ratio]
     ScaleRange: {
         validator: function (value, param) {

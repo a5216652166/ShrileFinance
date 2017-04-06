@@ -328,6 +328,8 @@
             // 获取融资实体
             var finance = financeRepository.Get(financeId);
 
+            var vehiclePrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.MakeCode, finance.Vehicle.FamilyCode).Result.Sale.Poor;
+
             // 实体转ViewModel
             var financeAuditViewModel = new FinanceAuidtViewModel()
             {
@@ -340,12 +342,16 @@
                 // 厂商指导价
                 ManufacturerGuidePrice = finance.Vehicle.ManufacturerGuidePrice,
 
-                ////// 车辆销售指导价
-                ////VehicleSalePrise = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.MakeCode,finance.Vehicle.FamilyCode).Result.Sale.Poor.Max,
+                // 车辆销售指导价
+                VehicleSalePriseMin = vehiclePrice.Min,
+                VehicleSalePriseMax = vehiclePrice.Max,
+
+                ProduceRateMonth = finance.Produce.RateMonth,
+                ProducePeriods = finance.Produce.Periods
             };
 
             // 部分映射
-            var array = new string[] { nameof(finance.AdviceMoney), nameof(finance.AdviceRatio), nameof(finance.ApprovalMoney), nameof(finance.ApprovalRatio), nameof(finance.Payment), nameof(finance.Poundage) };
+            var array = new string[] { nameof(finance.Margin), nameof(finance.ApprovalMoney), nameof(finance.Payment), nameof(finance.Poundage), nameof(finance.SelfPrincipal) };
 
             financeAuditViewModel = PartialMapper(refObj: finance, outObj: financeAuditViewModel, array: array);
 
@@ -363,8 +369,8 @@
             // 获取该融资审核对应的融资实体
             var finance = financeRepository.Get(value.FinanceId);
 
-            // 建议融资金额、审批融资金额、月供额度、手续费
-            var array = new string[] { nameof(finance.AdviceMoney), nameof(finance.ApprovalMoney), nameof(finance.Payment), nameof(finance.Poundage) };
+            // 保证金、审批融资金额、月供额度、手续费
+            var array = new string[] { nameof(value.Margin), nameof(value.ApprovalMoney), nameof(value.Payment), nameof(value.Poundage) };
             finance = PartialMapper(refObj: value, outObj: finance, array: array);
 
             financeRepository.Modify(finance);

@@ -63,6 +63,8 @@
 
 			if (uc.GetParams().state == 0) {
 				uc.form.DisableForm();
+
+				$("#finance_item_dg_tb").hide();
 			}
 
 			if (parent.flow.RootKey) {
@@ -870,7 +872,7 @@
 					<div id="produce_dialog" class="easyui-dialog" data-options="title:'产品详情',width:'60%',height:'480px',modal:true,closed:true">
 						<table id="produce_dg" class="easyui-datagrid" data-options="
 							height:460,
-							toolbar:'produce_dg_tb',
+							toolbar:'#produce_dg_tb',
 							rownumbers:true,
 							singleSelect: true,
 							pagination: true,
