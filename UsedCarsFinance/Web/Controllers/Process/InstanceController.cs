@@ -127,33 +127,5 @@
 
             return Ok(frame);
         }
-
-        /// <summary>
-        /// 流程作废处理
-        /// </summary>
-        /// <param name="instanceId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public  IHttpActionResult ProcessAbolish(Guid instanceId)
-        {
-            try
-            {
-                ////service.ProcessAbolish(instanceId);
-
-                return Ok();
-            }
-            catch (InvalidOperationAppException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        public IHttpActionResult DoingListCount()
-        {
-            var count = service.DoingListCount();
-
-            return Ok(count);
-        }
     }
 }
