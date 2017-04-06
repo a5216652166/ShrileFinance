@@ -57,8 +57,8 @@ function LoadFinanceList() {
         data: { financeId: query.FinanceId },
         url: "../api/Finance/Get",
         success: function (data) {
-            var getdata = data.Applicants;
-            for (var i = 0 ; i < data.Applicants.length; i++) {
+            var getdata = data.Applicant;
+            for (var i = 0 ; i < data.Applicant.length; i++) {
                 if (getdata[i].TypeDesc == "主要申请人") {
                     $("#MainApplicant").show();
                     $("#MainApplicant").find("input[name='ApplicantId']").val(getdata[i].ApplicantId)
@@ -71,7 +71,7 @@ function LoadFinanceList() {
                     GuaranteeCount++;
                     CopyTemp("Guarantee", GuaranteeCount, "担保人", getdata[i].ApplicantId);
                 }
-                if (data.Applicants[i].TypeDesc == "联系人") {
+                if (data.Applicant[i].TypeDesc == "联系人") {
                     ContactsConut++;
                     CopyTemp("Contacts", ContactsConut, "联系人", getdata[i].ApplicantId);
                 }

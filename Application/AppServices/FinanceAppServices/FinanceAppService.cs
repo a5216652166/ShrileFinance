@@ -34,6 +34,7 @@
         private readonly IPartnerRepository partnerRepository;
         private readonly IProduceRepository produceRepository;
         private readonly VehicleAppService vehicleAppService;
+        private readonly FileSystemAppService fileSystemAppService;
 
         public FinanceAppService(
             IFinanceRepository financeRepository,
@@ -42,7 +43,8 @@
             IContractRepository contractRepository,
             IPartnerRepository partnerRepository,
             IProduceRepository produceRepository,
-            VehicleAppService vehicleAppService)
+            VehicleAppService vehicleAppService,
+            FileSystemAppService fileSystemAppService)
         {
             this.financeRepository = financeRepository;
             this.userManager = userManager;
@@ -51,6 +53,7 @@
             this.partnerRepository = partnerRepository;
             this.produceRepository = produceRepository;
             this.vehicleAppService = vehicleAppService;
+            this.fileSystemAppService = fileSystemAppService;
         }
 
         public KeyValuePair<string, byte[]> DownloadFiles(Guid financeId, int sign)
@@ -570,8 +573,25 @@
             param.Add("[@车牌号@]", finance.Vehicle.PlateNo);
             param.Add("[@识别号@]", finance.Vehicle.FrameNo);
 
-            var path = new WordToPDF().TransformWordToPDF(@"~\upload\PDF\", "UnmarriedStatement", param, "单身证明书");
-            var pair = new KeyValuePair<string, byte[]>($"单身证明书.pdf", GetFileBytes(path));
+            var pair = CreatPDF("UnmarriedStatement.docx", "单身证明.pdf", param);
+
+            return pair;
+        }
+
+        private KeyValuePair<string, byte[]> CreatPDF(string templateName, string fileName, Dictionary<string, string> param)
+        {
+            var wtp = new WordToPDF();
+            var virtualPath = wtp.GetPath(@"~\Upload\");
+
+            var tempFile = fileSystemAppService.CreatFile(virtualPath + "Template\\" + templateName, true);
+
+            var count = tempFile.Path.LastIndexOf("\\");
+            var ss = tempFile.Path.Substring(0, count);
+
+            var path = wtp.TransformWordToPDF(wtp.GetPath(ss)+tempFile.Path.Substring(count,tempFile.Path.Length-count), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
+
+            var pdfFile = fileSystemAppService.CreatFile(path);
+            var pair = new KeyValuePair<string, byte[]>(fileName, pdfFile.Stream.GetBuffer());
 
             return pair;
         }
@@ -649,8 +669,7 @@
             param.Add("[@产品大类@]", finance.Produce.ProduceType.ToString());
             param.Add("[@产品代码@]", finance.Produce.Code);
 
-            var path = new WordToPDF().TransformWordToPDF(@"~\upload\PDF\", "Approval", param, "个人按揭客户审批通知书");
-            var pair = new KeyValuePair<string, byte[]>($"个人按揭客户审批通知书.pdf", GetFileBytes(path));
+            var pair = CreatPDF("Approval.docx", "个人按揭客户审批通知书.pdf", param);
 
             return pair;
         }
