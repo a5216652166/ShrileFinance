@@ -1,5 +1,6 @@
 ﻿namespace Application.Mappings
 {
+    using System;
     using AutoMapper;
     using Core.Produce;
 
@@ -16,7 +17,8 @@
                 .ForMember(d => d.EmployeeCommissionRatio, opt => opt.MapFrom(s => s.EmployeeCommissionRatio * 100));
 
             CreateMap<PrincipalRatio, Application.Produce.ProduceViewModels.PrincipalRatioViewModel>()
-                .ForMember(d => d.Ratio, opt => opt.MapFrom(s => s.Ratio * 100));
+                .ForMember(d => d.Ratio, opt => opt.MapFrom(s => s.Ratio * 100))
+                .ForMember(d => d.Factor, opt => opt.MapFrom(s => Math.Round(s.Factor, 2)));
         }
     }
 }

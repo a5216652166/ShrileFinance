@@ -73,7 +73,7 @@
         /// </summary>
         public void SetPaymentFactor()
         {
-            var ratios = PrincipalRatios.OrderBy(m => m.Period);
+            var ratios = PrincipalRatios.OrderBy(m => m.Period).ToList();
 
             if (ratios.Sum(m => m.Ratio) != 1)
             {
@@ -82,8 +82,9 @@
 
             var sameRatios = new List<PrincipalRatio>();
 
-            foreach (var currentRatio in ratios)
+            for (int i = 0; i < ratios.Count(); i++)
             {
+                var currentRatio = ratios[i];
                 var targetRatio = sameRatios.FirstOrDefault();
 
                 if (targetRatio == null)
@@ -95,7 +96,11 @@
                 if (targetRatio.Ratio == currentRatio.Ratio)
                 {
                     sameRatios.Add(currentRatio);
-                    continue;
+
+                    if (i != ratios.Count() - 1)
+                    {
+                        continue;
+                    }
                 }
 
                 // Set factor
