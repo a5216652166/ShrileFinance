@@ -25,14 +25,24 @@
         public decimal? ManufacturerGuidePrice { get; set; }
 
         /// <summary>
-        /// 车辆指导价(下限)
+        /// 车辆销售指导价(下限)
         /// </summary>
         public string VehicleSalePriseMin { get; set; }
 
         /// <summary>
-        /// 车辆指导价(上限)
+        /// 车辆销售指导价(上限)
         /// </summary>
         public string VehicleSalePriseMax { get; set; }
+
+        /// <summary>
+        /// 车辆收购指导价(下限)
+        /// </summary>
+        public string VehicleBuyPriseMin { get; set; }
+
+        /// <summary>
+        /// 车辆收购指导价(上限)
+        /// </summary>
+        public string VehicleBuyPriseMax { get; set; }
 
         /// <summary>
         /// 保证金
@@ -73,5 +83,8 @@
         /// 是否为复审
         /// </summary>
         public bool IsReview { get; set; }
+
+
+        
     }
 }
