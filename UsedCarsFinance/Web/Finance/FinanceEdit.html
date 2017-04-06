@@ -127,10 +127,10 @@
 
 
 			// 构建产品信息
-			data.Produce = dataBuildProduce();
+			data = $.extend(data, dataBuildProduce());
 
 			// 构建融资项信息
-			data.FinancialItem = dataBuildFinanceItems();
+			data = $.extend(data, dataBuildFinanceItems());
 
 			return data;
 		}
@@ -157,7 +157,7 @@
 			dataLoadProduce(data.Produce);
 
 			// 加载融资项信息
-			LoadFinanceItemInfo({
+			dataLoadFinanceItems({
 				FinanceItems: data.FinanceItems,
 				SelfPrincipal: data.SelfPrincipal
 			});
@@ -635,7 +635,7 @@
 					<div class="row">
 						<div class="col-6">
 							<label>客户自付金额:</label>
-							<input id="SelfPrincipal" class="easyui-textbox" required data-options="value:0,validType:'Price',onChange:CalculateTotalPrincipal" />
+							<input id="SelfPrincipal" class="easyui-textbox" required data-options="value:0,validType:'Price',onChange:calculateTotalPrincipal" />
 							<unit>元</unit>
 						</div>
 
@@ -654,26 +654,28 @@
 							return {
 								FinanceItems: $(rows).map(function (i, e) {
 									return e;
-								}),
+								}).toArray(),
 								SelfPrincipal: selfPrincipal
 							};
 						}
 
-						function loadDataFinanceItems(data) {
+						function dataLoadFinanceItems(data) {
 							$("#finance_item_dg").datagrid("loadData", data.FinanceItems);
 							$("#SelfPrincipal").textbox("setValue", data.SelfPrincipal);
+
+							calculateTotalPrincipal();
 						}
 
-						function CalculateTotalPrincipal() {
+						function calculateTotalPrincipal() {
 							var totalPrincipal = 0;
 
 							$($("#finance_item_dg").datagrid("getRows")).each(function (i, e) {
-								totalPrincipal += parseFloat(e.Principal);
+								totalPrincipal += parseFloat(e.Principal) || 0;
 							});
 
 							var selfPrincipal = $("#SelfPrincipal").textbox("getValue");
 
-							totalPrincipal -= parseFloat(selfPrincipal);
+							totalPrincipal -= parseFloat(selfPrincipal) || 0;
 
 							$("#TotalPrincipal").textbox("setValue", totalPrincipal);
 						}
@@ -755,14 +757,14 @@
 							$("#finance_item_dg").datagrid("deleteRow", index);
 
 							editIndex = undefined;
-							CalculateTotalPrincipal();
+							calculateTotalPrincipal();
 						}
 
 						function acceptFinanceItem() {
 							if (endEditing()) {
 								$("#finance_item_dg").datagrid("acceptChanges");
 
-								CalculateTotalPrincipal();
+								calculateTotalPrincipal();
 							}
 						}
 
