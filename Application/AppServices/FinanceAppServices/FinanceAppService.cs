@@ -355,7 +355,7 @@
 
             financeAuditViewModel = PartialMapper(refObj: finance, outObj: financeAuditViewModel, array: array);
 
-            financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerBailRatio;
+            financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerCostRatio * finance.FinanceItems.Sum(m => m.FinancialAmount);
 
             return financeAuditViewModel;
         }
@@ -468,24 +468,6 @@
         }
 
         /// <summary>
-        ///  获取融资项或手续费
-        /// </summary>
-        /// <param name="finance">融资实体</param>
-        /// <param name="isFinancing">是否为融资项</param>
-        /// <returns>融资项</returns>
-        private ICollection<KeyValuePair<Guid, KeyValuePair<string, decimal?>>> GetFinancingItemsOrCosts(Finance finance, bool isFinancing = true)
-        {
-            var financingItemsOrCosts = new List<KeyValuePair<Guid, KeyValuePair<string, decimal?>>>();
-
-            //// finance.FinancialItem.ToList().FindAll(m => m.IsFinancing == isFinancing).ForEach(item =>
-            ////  {
-            ////      financingItemsOrCosts.Add(new KeyValuePair<Guid, KeyValuePair<string, decimal?>>(item.Id, new KeyValuePair<string, decimal?>(item.Name, item.Money)));
-            ////  });
-
-            return financingItemsOrCosts;
-        }
-
-        /// <summary>
         /// 部分映射
         /// </summary>
         /// <typeparam name="refT">输入类型</typeparam>
@@ -588,7 +570,7 @@
             var count = tempFile.Path.LastIndexOf("\\");
             var ss = tempFile.Path.Substring(0, count);
 
-            var path = wtp.TransformWordToPDF(wtp.GetPath(ss)+tempFile.Path.Substring(count,tempFile.Path.Length-count), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
+            var path = wtp.TransformWordToPDF(wtp.GetPath(ss) + tempFile.Path.Substring(count, tempFile.Path.Length - count), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
 
             var pdfFile = fileSystemAppService.CreatFile(path);
             var pair = new KeyValuePair<string, byte[]>(fileName, pdfFile.Stream.GetBuffer());

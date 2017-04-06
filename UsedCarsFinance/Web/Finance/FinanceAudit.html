@@ -102,7 +102,7 @@
 
             var payment = PMT(produceRateMonth, producePeriods, -approvalMoney) || 0;
 
-            $("fieldset[name=FinanceAudit] input[textboxname=Payment]").textbox("setValue", payment);
+            $("fieldset[name=FinanceAudit] input[textboxname=Payment]").textbox("setValue", Math.round(100 * payment,2)/100);
         }
     </script>
 </head>
