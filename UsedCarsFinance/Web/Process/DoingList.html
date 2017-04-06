@@ -25,16 +25,10 @@
 
                 $("select#FlowType").next("span").hide();
                 $("select#FlowType").next().next("a#StartFlow").hide();
-                $("#abolish").hide();
             }
             else if (top.$("#role_name").text() == "管理员") {
-                $("#abolish").show();
-
                 // 隐藏“处理流程”
                 $("a#mod").hide();
-            }
-            else {
-                $("#abolish").hide();
             }
         });
 
@@ -64,10 +58,6 @@
             }
         }
 
-        function LoadSuccess(data) {
-            $.messager.show({ msg:"代办列表加载成功！" });
-        }
-
         function Process() {
             var url = "Process/Frame.html";
             var statusCode = "";
@@ -88,29 +78,6 @@
                 uc.ShowWindow("详情页", url);
             }
         }
-
-        function ProcessAbolish() {
-            var row = uc.grid.GetSelected();
-            
-            $.messager.confirm("操作提示", "您确定要作废该流程吗？", function (data) {
-                if (data) {
-                    if (row.Id) {
-                        $.ajax({
-                            method: "GET",
-                            data: { instanceId: row.Id },
-                            url: "../api/Instance/ProcessAbolish",
-                            statusCode: {
-                                200: function (data) {
-                                    $.messager.show({ msg: "处理成功." });
-                                    uc.grid.Reload();
-                                },
-                                400: uc.E400
-                            }
-                        });
-                    }
-                }
-            });
-        }
     </script>
 </head>
 
@@ -124,8 +91,7 @@
         pageList: [10,20,30,40,50],
         method: 'GET',
         url: '../api/Instance/DoingList',
-        onBeforeLoad: SetFilters,
-        onLoadSuccess:LoadSuccess,
+        onBeforeLoad: SetFilters
         loadMsg: '正在加载，请稍候...'
         ">
         <thead>
@@ -261,7 +227,6 @@
 
             </template>
             <a id="mod" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Process,iconCls:'icon-edit',plain:true">处理流程</a>
-            <a id="abolish" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ProcessAbolish,iconCls:'icon-edit',plain:true">作废</a>
         </div>
     </div>
 </body>
