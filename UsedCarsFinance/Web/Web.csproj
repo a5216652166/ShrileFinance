@@ -819,8 +819,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Contracts\FinancingLease.docx" />
-    <None Include="Properties\PublishProfiles\Local_Publish.pubxml" />
-    <None Include="Properties\PublishProfiles\newTest.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -965,6 +963,9 @@
       <Project>{78d8115d-9ca8-49c9-a2c1-02dc3c7ba828}</Project>
       <Name>Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
