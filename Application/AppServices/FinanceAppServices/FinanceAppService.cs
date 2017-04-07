@@ -649,31 +649,41 @@
             param.Add("【[@上牌要求@]】", string.Empty);
 
             var upper = new MoneyToUpper();
-            param.Add("[@人民币1@]", upper.RMBToUpper(finance.Financing == null ? 0 : finance.Financing.Value));
-            param.Add("[@金额1@]", Convert.ToString(finance.Financing == null ? 0 : finance.Financing.Value));
+            param.Add("[@人民币1@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
+            param.Add("[@金额1@]", Convert.ToString(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
             param.Add("[@人民币2@]", upper.RMBToUpper(finance.Poundage == null ? 0 : finance.Poundage.Value));
             param.Add("[@金额2@]", Convert.ToString(finance.Poundage == null ? 0 : finance.Poundage.Value));
-            param.Add("[@人民币3@]", upper.RMBToUpper(finance.Bail == null ? 0 : finance.Bail.Value));
-            param.Add("[@金额3@]", Convert.ToString(finance.Bail == null ? 0 : finance.Bail.Value));
+            param.Add("[@人民币3@]", upper.RMBToUpper(finance.Margin == null ? 0 : finance.Margin.Value));
+            param.Add("[@金额3@]", Convert.ToString(finance.Margin == null ? 0 : finance.Margin.Value));
             param.Add("[@人民币4@]", string.Empty.PadLeft(12));
             param.Add("[@金额4@]", string.Empty.PadLeft(8));
             param.Add("[@人民币5@]", string.Empty.PadLeft(12));
             param.Add("[@金额5@]", string.Empty.PadLeft(8));
 
+            var ratio = finance.Produce.PrincipalRatios.ToList();
+
+            for (int i = 0; i < ratio.Count; i++)
+            {
+                var value = Math.Round((finance.ApprovalMoney / 10000 * ratio[i].Factor).Value, 2);
+                param.Add($"[@人民币{i + 6}@]", upper.RMBToUpper(value));
+                param.Add($"[@金额{i + 6}@]", Convert.ToString(value));
+            }
+
             param.Add("[@融资期限@]", finance.Produce.Periods.ToString());
-            param.Add("[@人民币6@]", string.Empty.PadLeft(12));
-            param.Add("[@金额6@]", string.Empty.PadLeft(8));
-            param.Add("[@人民币7@]", string.Empty.PadLeft(12));
-            param.Add("[@金额7@]", string.Empty.PadLeft(8));
-            param.Add("[@人民币8@]", string.Empty.PadLeft(12));
-            param.Add("[@金额8@]", string.Empty.PadLeft(8));
-            param.Add("[@人民币9@]", string.Empty.PadLeft(12));
-            param.Add("[@金额9@]", string.Empty.PadLeft(8));
-            param.Add("[@人民币10@]", string.Empty.PadLeft(12));
-            param.Add("[@金额10@]", string.Empty.PadLeft(8));
+            ////param.Add("[@人民币6@]", string.Empty.PadLeft(12));
+            ////param.Add("[@金额6@]", string.Empty.PadLeft(8));
+            ////param.Add("[@人民币7@]", string.Empty.PadLeft(12));
+            ////param.Add("[@金额7@]", string.Empty.PadLeft(8));
+            ////param.Add("[@人民币8@]", string.Empty.PadLeft(12));
+            ////param.Add("[@金额8@]", string.Empty.PadLeft(8));
+            ////param.Add("[@人民币9@]", string.Empty.PadLeft(12));
+            ////param.Add("[@金额9@]", string.Empty.PadLeft(8));
+            ////param.Add("[@人民币10@]", string.Empty.PadLeft(12));
+            ////param.Add("[@金额10@]", string.Empty.PadLeft(8));
+
+            param.Add("[@还款日@]", Convert.ToString(finance.RepaymentDate == null ? 15 : finance.RepaymentDate.Value));
 
             var date = finance.RepayRentDate;
-
             param.Add("[@年1@]", date.Value.Year.ToString());
             param.Add("[@月1@]", date.Value.Month.ToString());
             param.Add("[@日1@]", date.Value.Day.ToString());
