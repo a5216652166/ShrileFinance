@@ -139,9 +139,16 @@
 
 		//验证数据
 		function ValidData() {
-			var valid = $(".container").form("validate");
 
-			return valid;
+			if (!$(".container").form("validate")) {
+				return false;
+			}
+
+			if (!endEditing()) {
+				return false;
+			}
+
+			return true;
 		}
 
 		// 数据加载
