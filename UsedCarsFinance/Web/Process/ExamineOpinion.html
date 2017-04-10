@@ -22,19 +22,43 @@
                 $("#InOpinion").datagrid("loadData", parent.flow.InnerOpinions);
             }
         });
+
+        // 显示意见详细
+        function ShowOpinion(value) {
+            $('div#ShowDialog p').text(value.name == 'undefined' ? '' : value.name);
+
+            $('div#ShowDialog').dialog({
+                title: '意见详情',
+                width: 800,
+                height: 600,
+                closed: true,
+                cache: false,
+                modal: true
+            });
+
+            $('div#ShowDialog').dialog('open');
+        }
+
+        function RowformaterForOpinion(value, row, index) {
+            if (!row.Opinion) {
+                return "<a>无</a>";
+            }
+
+            return "<a name=" + row.Opinion + " onclick='ShowOpinion(this)'>详细</a>";
+        }
     </script>
 </head>
 <body>
     <div class="container" id="Ex_div">
         <label>意见</label>
-        <table id="ExOpinion" class="easyui-datagrid" data-options="height:300">
+        <table id="ExOpinion" class="easyui-datagrid" data-options="height:300,singleSelect:true ">
             <thead>
                 <tr>
                     <th data-options="field:'ProcessUser',width:150,align:'center'">操作人</th>
                     <th data-options="field:'Node',width:150,align:'center'">节点</th>
                     <th data-options="field:'Action',width:150,align:'center'">操作</th>
                     <th data-options="field:'ProcessTime',width:150,align:'center'">时间</th>
-                    <th data-options="field:'Opinion',align:'center',width:330">意见</th>
+                    <th data-options="field:'Opinion',align:'center',width:330,formatter: RowformaterForOpinion">意见</th>
                 </tr>
             </thead>
         </table>
@@ -42,17 +66,20 @@
 
     <div class="container" id="In_div" style="display:none;">
         <label>内部意见</label>
-        <table id="InOpinion" class="easyui-datagrid" data-options="height:300">
+        <table id="InOpinion" class="easyui-datagrid" data-options="height:300,singleSelect:true ">
             <thead>
                 <tr>
                     <th data-options="field:'ProcessUser',width:150,align:'center'">操作人</th>
                     <th data-options="field:'Node',width:150,align:'center'">节点</th>
                     <th data-options="field:'Action',width:150,align:'center'">操作</th>
                     <th data-options="field:'ProcessTime',width:150,align:'center'">时间</th>
-                    <th data-options="field:'Opinion',align:'center',width:330">意见</th>
+                    <th data-options="field:'Opinion',align:'center',width:330,formatter: RowformaterForOpinion">意见</th>
                 </tr>
             </thead>
         </table>
+    </div>
+    <div id="ShowDialog">
+        <p></p>
     </div>
 </body>
 </html>

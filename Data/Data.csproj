@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201704051114521_Temp.Designer.cs">
       <DependentUpon>201704051114521_Temp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704100916390_Temp_1.cs" />
+    <Compile Include="Migrations\201704100916390_Temp_1.Designer.cs">
+      <DependentUpon>201704100916390_Temp_1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -232,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704051114521_Temp.resx">
       <DependentUpon>201704051114521_Temp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704100916390_Temp_1.resx">
+      <DependentUpon>201704100916390_Temp_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

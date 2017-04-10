@@ -17,6 +17,9 @@
 
         public string Content { get; set; }
 
+        /// <summary>
+        /// 审核意见
+        /// </summary>
         public AuditOpinion Opinion { get; set; }
 
         public virtual Instance Instance { get; set; }
