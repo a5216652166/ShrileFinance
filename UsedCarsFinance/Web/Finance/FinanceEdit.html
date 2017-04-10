@@ -10,6 +10,7 @@
 	<script src="../Scripts/easyui/jquery.easyui.js"></script>
 	<script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script src="../Scripts/usedcars.js"></script>
+	<script src="../Content/FinanceJs.js"></script>
 	<style>
 		.adddiv { background-color: #afe3fa; height: 30px; width: 95%; margin-left: 15px; }
 		fieldset { margin-top: 20px; }
@@ -63,6 +64,9 @@
 
 			if (uc.GetParams().state == 0) {
 				uc.form.DisableForm();
+
+                // 禁用产品选择按钮
+                $("#ProduceListButton").linkbutton("disable");
 
 				$("#finance_item_dg_tb").hide();
 			}
@@ -283,7 +287,6 @@
 		}
 	</script>
 
-
 	<!-- 申请人信息 -->
 	<script type="text/javascript">
 		var contents = 0;//联系人个数
@@ -443,7 +446,26 @@
 					$("#" + $(this).parents("fieldset")[0].id).find("div").find("#OfficeAddress").textbox("setValue", "");
 				}
 			}
-		}
+        }
+
+        // 证件类型onChange事件
+        function IdentityTypeChange(record)
+        {
+			debugger
+            $(this).parents("div.row").find("#Identity").textbox({ validType: ["length[0,18]"] });
+			debugger
+            if (record == "身份证")
+            {
+                $(this).parents("div.row").find("#Identity").textbox({ validType: ["IdCard"] });
+            }
+
+            debugger
+            var ttttt = $(this).parent("div.row").find("#Identity");
+            debugger
+            var ttsssttt = $(this).parent("div.row").find("#Identity");
+
+            debugger
+        }
 	</script>
 </head>
 <body>
@@ -801,7 +823,7 @@
 						<div class="col-6">
 							<label>产品代码:</label>
 							<input name="Code" class="easyui-textbox" required data-options="width:360, editable:false" />
-							<a class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ShowProduceList">选择产品</a>
+							<a id="ProduceListButton" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ShowProduceList">选择产品</a>
 						</div>
 
 						<div class="col-6">
@@ -1001,7 +1023,7 @@
 					<div class="row">
 						<div class="col-6">
 							<label>证件类型:</label>
-							<select id="IdentityType" name="IdentityType" class="easyui-combobox" data-options="editable:false">
+							<select id="IdentityType" name="IdentityType" class="easyui-combobox" data-options="value:'',required:true,editable:false,onChange:IdentityTypeChange">
 								<option value="身份证">身份证</option>
 								<option value="居住证">居住证</option>
 								<option value="户口本">户口本</option>
@@ -1014,7 +1036,7 @@
 
 						<div class="col-6">
 							<label>证件号码:</label>
-							<input id="Identity" name="Identity" class="easyui-textbox" data-options="required:true" />
+							<input id="Identity" name="Identity" class="easyui-textbox" data-options="required:true,validType:['IdCard']" />
 						</div>
 					</div>
 

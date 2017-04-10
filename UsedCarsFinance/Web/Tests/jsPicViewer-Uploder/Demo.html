@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="utf-8">
+    <title>图片查看器Demo</title>
+    <script src="Content/viewer/jquery.min.js"></script>
+
+    <script src="Content/viewer/viewer.min.js"></script>
+    <link rel="stylesheet" href="Content/viewer/viewer.min.css">
+
+    <script src="Content/easyui/jquery.easyui.js"></script>
+    <script src="Content/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <link href="Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <script src="Content/uploadify/jquery.uploadify.js"></script>
+    <link href="Content/uploadify/uploadify.css" rel="stylesheet" />
+
+    <script src="Content/JavaScripts/uploadFile.js"></script>
+    <script src="Content/JavaScripts/PictureViewer.js"></script>
+
+    <style type="text/css">
+        body {
+            width: 700px;
+            margin: 0 auto;
+            font-size: 0;
+        }
+
+        div#viewerContainer div {
+            float: left;
+        }
+
+            div#viewerContainer div img {
+                width: 100px;
+                height: 100px;
+            }
+
+        div#AddPic div img {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+            jsPicViewerUploderInit();
+        });
+
+        var viewer = null;
+
+        function jsPicViewerUploderInit() {
+            setTimeout(function () {
+                // 加载demo图片
+                LoadPic();
+
+                // 加载页面时，必须这句，不然上传框样式会有问题
+                //setTimeout(StartUploader(null,null), 10);
+
+                $("div#AddPic img").click(function () {
+                    $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
+                    StartUploader(null, null);
+                });
+            }, 100);
+        }
+
+        // 加载demo图片
+        function LoadPic() {
+            // 实例化图片查看器
+            viewer = InitPicViewer($("div#viewerContainer"));
+
+            var UrlArray = [];
+            for (var i = 1; i < 6; i++) {
+                UrlArray.push("Content/img/tibet-" + i + ".jpg");
+            }
+
+            var viewerContainer = $("div#viewerContainer");
+
+            PicViewerLoadPic(UrlArray, viewerContainer);
+        }
+
+        // 图片上传成功回调函数
+        function UploadSuccessInstance(file, data, response) {
+            data = JSON.parse(data);
+            //var s = LoadAllImages();
+            var files = GetFiles(data.referenceId);
+
+            if (files == null || files.length == 0) {
+                return false;
+            }
+
+            var UrlArray = [];
+            for (var i = 0; i < data.filesCount ; i++) {
+                UrlArray.push("../../" + files[i].path);
+            }
+
+            // 上传的图片加入viewer
+            PicViewerLoadPic(UrlArray, $("div#viewerContainer"));
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <div id="viewerContainer">
+            <template id="viewerContainer">
+                <div id="li"><img data-original="" src="" alt="" ondblclick=""></div>
+            </template>
+        </div>
+        <div id="AddPic">
+            <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" ondblclick="" /></div>
+        </div>
+
+        <!--上传控件-->
+        <div id="dd_upload" class="easyui-dialog" data-options="title:'上传附件',buttons:'#bb_upload',onClose:uploadFormClose,width:390,height:350,closed:true">
+            <div id="file_queue"></div>
+
+            <div id="bb_upload">
+                <span id="pic_area">
+                    <input type="file" id="pic_upload" name="pic_upload" />
+                    <a class="easyui-linkbutton" data-options="width:80" href="javascript:$('#pic_upload').uploadify('upload','*')">开始上传</a>
+                </span>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
