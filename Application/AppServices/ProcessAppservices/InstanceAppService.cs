@@ -140,7 +140,7 @@
 
                             user = partner.Approvers.SingleOrDefault(m => m.RoleId == action.Transfer.RoleId);
 
-                            user = user ?? partner.Accounts.SingleOrDefault(m => m.RoleId == action.Transfer.RoleId);
+                            user = user ?? partner.Accounts.FirstOrDefault(m => m.RoleId == action.Transfer.RoleId);
 
                             if (user == default(AppUser) || user.LockoutEnabled)
                             {
