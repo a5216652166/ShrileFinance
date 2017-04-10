@@ -143,5 +143,45 @@ $.extend($.fn.validatebox.defaults.rules, {
             return false;
         },
         message: '请输入整数、一位小数或两位小数！'
+    },
+    IdCard: {// 身份证号码校验
+        validator: function (value) {
+            var regResult = false;
+
+            // 15位身份证校验
+            regResult = /^[1-9][0-9]{5}[0-9]{2}(0[1-9]|1[0-2])((0[1-9])|((1|2)[0-9])|3[0-1])[0-9]{3}$/.test(value);
+            if (regResult) {
+                return true;
+            }
+
+            // 基础校验（前17位为数字,后1位为校验码）
+            regResult = /^[1-9][0-9]{5}[1-9][0-9]{3}(0[1-9]|1[0-2])((0[1-9])|((1|2)[0-9])|3[0-1])[0-9]{3}[0-9X]$/.test(value);
+
+            // 校验码 C18=MOD(∑Ci(i=1→17)×Wi,11)%11
+            if (regResult) {
+                var W = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
+
+                var C18 = 0;
+                $(W).each(function (index, itemValue) {
+                    C18 += parseInt(value[index]) * W[index];
+                });
+                C18 = (12 - C18 % 11) % 11;
+
+                // 校验  当C18的值为10时，校验码应用大写的拉丁字母X表示
+                if (C18 == 10) {
+                    regResult = value[17] == 'X';
+                }
+                else {
+                    regResult = parseInt(value[17]) == C18;
+                }
+            }
+
+            if (regResult) {
+                return true;
+            }
+
+            return false;
+        },
+        message: '身份证号码不合法'
     }
 });
