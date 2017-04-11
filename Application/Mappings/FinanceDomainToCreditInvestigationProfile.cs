@@ -2,9 +2,11 @@
 {
     using System.Linq;
     using Application.ViewModels.FinanceViewModels;
+    using Application.ViewModels.FinanceViewModels.BranchOfficeViewModels;
     using Application.ViewModels.PartnerViewModels;
     using AutoMapper;
     using Core.Entities.Finance;
+    using Core.Entities.Finance.BranchOffices;
     using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
@@ -33,6 +35,8 @@
 
             CreateMap<FinancialLoan, FinancialLoanViewModel>()
                 .ForMember(m => m.FinancialItem, m => m.MapFrom(o => o.FinancialItem.OrderBy(t => t.Name)));
+
+            CreateMap<BranchOffice, BranchOfficeViewModel>();
         }
     }
 }

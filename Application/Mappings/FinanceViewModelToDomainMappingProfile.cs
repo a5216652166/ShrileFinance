@@ -2,10 +2,11 @@
 {
     using System;
     using Application.ViewModels.FinanceViewModels;
+    using Application.ViewModels.FinanceViewModels.BranchOfficeViewModels;
     using AutoMapper;
     using Core.Entities.Finance;
+    using Core.Entities.Finance.BranchOffices;
     using Core.Entities.Finance.Financial;
-    using Core.Entities.Finance.Partners;
     using ViewModels.FinanceViewModels.FinancialLoanViewModels;
 
     public class FinanceViewModelToDomainMappingProfile : Profile
@@ -27,6 +28,9 @@
                 .ForMember(m => m.Id, m => m.MapFrom(o => AllowId(o.Id)))
                 .ForMember(m => m.CreatedDate, o => o.Ignore())
                 .ForMember(m => m.FinancialItem, o => o.Ignore());
+
+            CreateMap<BranchOfficeViewModel, BranchOffice>()
+                .ForMember(m => m.Id, m => m.Ignore());
         }
 
         private Guid AllowId(Guid? id)

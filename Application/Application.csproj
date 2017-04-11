@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\FileSystemAppServices\FileSystemAppService.cs" />
+    <Compile Include="AppServices\FinanceAppServices\BranchOfficeAppServices\BranchOfficeAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\FinancialLoanAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\CreditContractAppService.cs" />
     <Compile Include="AppServices\ProcessAppservices\DraftAppService.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="ViewModels\CreditInvesitigation\TraceViewModels\GenerateViewModel.cs" />
     <Compile Include="ViewModels\CreditInvesitigation\TraceViewModels\ModifyNameViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\ApplicationViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\BranchOfficeViewModels\BranchOfficeViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\ContractViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinanceApplyViewModel.cs" />

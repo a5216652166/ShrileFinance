@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\CreditInvestigation\DatagramFile\BorrowerDatagramFile.cs" />
+    <Compile Include="Entities\Finance\BranchOffices\BranchOffice.cs" />
     <Compile Include="Entities\Finance\Financial\FinancialItem.cs" />
     <Compile Include="Entities\Finance\Financial\FinancialLoan.cs" />
     <Compile Include="Entities\Finance\Financial\RepayTable.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Interfaces\IDeleteable.cs" />
     <Compile Include="Interfaces\IProcessable.cs" />
     <Compile Include="Interfaces\Repositories\DatagramRepositories\IDatagramFileRepository.cs" />
+    <Compile Include="Interfaces\Repositories\FinanceRepositories\BranchOfficeRepositories\IBranchOfficeRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\IFinancialItemRepository.cs" />
     <Compile Include="Interfaces\Repositories\FinanceRepositories\FinancialRepositories\IFinancialLoanRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFileSystemRepository.cs" />

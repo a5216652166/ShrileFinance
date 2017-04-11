@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>子公司维护</title>
+
+    <link href="../../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="../../Content/easyui/themes/icon.css" rel="stylesheet" />
+    <link href="../../Content/form-bootstrap.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery/jquery.js"></script>
+    <script src="../../Scripts/easyui/jquery.easyui.js"></script>
+    <script src="../../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="../../Scripts/usedcars.js"></script>
+    <style>
+        td > .textbox[style*="height: 22px;"] {
+            height: 22px !important;
+        }
+
+            td > .textbox[style*="height: 22px;"] > .textbox-text {
+                padding: 0px 4px !important;
+                font-size: 12px !important;
+                line-height: 1.42857143;
+            }
+    </style>
+
+    <script type="text/javascript">
+        var query = uc.GetParams();
+
+        uc.form = new UCForm(".container");
+
+        $(function () {
+            Init();
+        });
+
+        function Init() {
+            if (query.method == "mod" || query.method == "view") {
+                $("a#save").linkbutton("disable");
+
+                $.ajax({
+                    async: true,
+                    type: "Get",
+                    data: { id: query.Id },
+                    url: "../../api/BranchOffice/Get",
+                    success: function (data) {
+                        LoadData(data);
+                    }
+                });
+
+                $("a#save").linkbutton("enable");
+
+                if (query.method == "mod") {
+                    $("form.container fieldset#Base>legend").text("子公司信息编辑");
+                    $("#Code").textbox("readonly", true)
+                }
+                if (query.method == "view") {
+                    $("form.container fieldset#Base>legend").text("子公司信息详情");
+
+                    $("#save").linkbutton("disable");
+
+                    Disabled("fieldset")
+                }
+            }
+            else {
+                $("form.container fieldset#Base>legend").text("子公司信息录入");
+            }
+
+            // 禁用
+            function Disabled(selector) {
+                selector = selector || "fieldset";
+
+                $(selector).attr("disabled", "disabled");
+
+                $(selector).find(".easyui-combobox").combobox("disable");
+
+
+                if ($(selector).hasClass(".easyui-combobox")) {
+                    $(selector).combobox("disable");
+                }
+            }
+        }
+
+        function LoadData(data) {
+            $("form.container fieldset#Base").form('load', data);
+        }
+
+        function BuildData() {
+            var data = $("form.container fieldset#Base").serializeJson();
+            
+            return data;
+        }
+
+        function ValidData() {
+            var valid = $("form.container").form('validate');
+
+            if (valid == false) {
+                $.messager.show({ msg: "请填写完必填项！" });
+            }
+
+            return valid;
+        }
+
+        function Submit() {
+            if (ValidData() == false) {
+                return;
+            }
+
+            var url = "../../api/BranchOffice/";
+
+            if (query.method == "add") {
+                url += "Create";
+            }
+            else if (query.method == "mod") {
+                url += "Modify";
+            }
+
+            var data = BuildData();
+            debugger
+            $.ajax({
+                async: false,
+                type: 'POST',
+                data: data,
+                url: url,
+                statusCode: {
+                    200: function (data) {
+                        uc.form.Cancel();
+                        top.$.messager.show({ msg: "提交成功" });
+                    },
+                    400: function (data) {
+                        top.$.messager.show({ msg: data.responseJSON.Message });
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script type="text/javascript">
+        $.extend($.fn.validatebox.defaults.rules, {
+            Money: {
+                validator: function (value) {
+                    if (/^-?\d+\.\d{1}$/.test(value)) {
+                        return true;
+                    }
+
+                    if (/^-?\d+\.\d{2}$/.test(value) || /^-?\d+$/.test(value)) {
+                        if (value.length >= 2 && /^[0][0-9]*$/.test(value.substr(0, 2))) {
+                            return false;
+                        }
+
+                        return true;
+                    }
+
+                    return false;
+                },
+                message: '请输入整数、一位小数或两位小数！'
+            },
+            Rate: {
+                validator: function (value) {
+                    if (isNaN(value) == false) {
+                        if (value >= 0 && value <= 100)
+                            return true;
+                    }
+
+                    return false;
+                },
+                message: '比例区间[0,100]'
+            },
+            AN: {
+                validator: function (value) {
+                    return !/[\u4E00-\u9FA5\uF900-\uFA2D]/.test(value);
+                },
+                message: '只能输入字母或数字或字母数字组合'
+            },
+            Integer: {// 验证整数
+                validator: function (value) {
+                    return /^\d+$/.test(value);
+                },
+                message: '请输入整数'
+            }
+        });
+    </script>
+</head>
+<body>
+    <form class="container">
+        <fieldset id="Base">
+            <legend>子公司信息</legend>
+
+            <div class="hidden">
+                <input name="Id" type="hidden" />
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <label>名称:</label>
+                    <input class="easyui-textbox" name="Name" data-options="value:'',editable:true,required:true," />
+                </div>
+
+                <div class="col-6">
+                    <label>电话:</label>
+                    <input class="easyui-textbox" name="Phone" data-options="value:'',editable:true,required:true,validType:'PhoneOrMobile' " />
+                </div>
+
+                <div class="col-6">
+                    <label>传真:</label>
+                    <input class="easyui-textbox" name="Fax" data-options="value:'',editable:true,required:false," />
+                </div>
+
+                <div class="col-12">
+                    <label>地址:</label>
+                    <input class="easyui-textbox" name="Address" data-options="value:'',editable:true,required:true," />
+                </div>
+            </div>
+        </fieldset>
+
+        <div id="btn">
+            <a id="save" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-save',onClick:Submit">保存</a>
+            <a id="back" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-redo',onClick:uc.form.Cancel">返回</a>
+        </div>
+    </form>
+</body>
+</html>

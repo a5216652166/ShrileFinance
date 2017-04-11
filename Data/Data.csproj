@@ -148,6 +148,7 @@
     <Compile Include="ModelConfigurations\CustomerConfigurations\ParentConfigration.cs" />
     <Compile Include="ModelConfigurations\CustomerConfigurations\ProfitConfiguration.cs" />
     <Compile Include="ModelConfigurations\CustomerConfigurations\StockholderConfiguration.cs" />
+    <Compile Include="ModelConfigurations\FinanceConfigurations\BranchOfficeConfigurations\BranchOfficeConfigurations.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialItemConfiguration.cs" />
     <Compile Include="ModelConfigurations\FinanceConfigurations\FinancialConfigurations\FinancialLoanConfiguration.cs" />
     <Compile Include="ModelConfigurations\ProcessConfigurations\ActionConfiguration.cs" />
@@ -193,6 +194,7 @@
     </Compile>
     <Compile Include="Repositories\AppUserStore.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\FinanceRepositories\BranchOfficeRepositories\BranchOfficeRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinancialItemRepository.cs" />
     <Compile Include="Repositories\FinanceRepositories\FinancialRepositories\FinancialLoanRepository.cs" />
     <Compile Include="Repositories\LoanRepositories\ContractRepository.cs" />

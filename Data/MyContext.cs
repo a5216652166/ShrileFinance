@@ -2,6 +2,7 @@
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
+    using Data.ModelConfigurations.FinanceConfigurations.BranchOfficeConfigurations;
     using Microsoft.AspNet.Identity.EntityFramework;
     using ModelConfigurations;
     using ModelConfigurations.CreditInvestigationConfigurations;
@@ -137,7 +138,8 @@
                 .Add(new FinanceExtensionConfiguration())
                 .Add(new ContactConfiguration())
                 .Add(new FinancialLoanConfiguration())
-                .Add(new FinancialItemConfiguration());
+                .Add(new FinancialItemConfiguration())
+                .Add(new BranchOfficeConfigurations());
 
             base.OnModelCreating(modelBuilder);
         }

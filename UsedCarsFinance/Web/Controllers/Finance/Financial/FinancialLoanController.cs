@@ -32,15 +32,15 @@
         }
 
         [HttpPost]
-        public IHttpActionResult Create(FinancialLoanViewModel model)
+        public IHttpActionResult Add(FinancialLoanViewModel model)
         {
             financialLoanAppService.Create(model);
 
-            return Ok(model);
+            return Ok();
         }
 
         [HttpPost]
-        public IHttpActionResult Modify(FinancialLoanViewModel model)
+        public IHttpActionResult Edit(FinancialLoanViewModel model)
         {
             financialLoanAppService.Modify(model);
 

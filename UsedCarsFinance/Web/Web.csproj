@@ -181,6 +181,8 @@
     <Content Include="Account\UserInfo.html" />
     <Content Include="Borrowers\OrganizateChange.html" />
     <Content Include="CreditInvestigation\CreditMessageManage.html" />
+    <Content Include="Finance\BranchOffice\BranchOfficeEdit.html" />
+    <Content Include="Finance\BranchOffice\BranchOfficeList.html" />
     <Content Include="Finance\FinancialLoan\LoanEdit.html" />
     <Content Include="Finance\FinancialLoan\LoanList.html" />
     <Content Include="Scripts\finance.js" />
@@ -1245,6 +1247,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Finance\BranchOffice\BranchOfficeController.cs" />
     <Compile Include="Controllers\Finance\FinanceController.cs" />
     <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />
     <Compile Include="Controllers\Finance\ImageUploadController.cs" />
