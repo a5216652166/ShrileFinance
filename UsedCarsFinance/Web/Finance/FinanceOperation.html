@@ -187,7 +187,13 @@
                     FieldsetLoadDateFactory('Contact', 'table', JSON.parse(data.ContactJson));
                 }
                 else {
-                    var contactTempData = [{ Name: "融资租赁合同" }, { Name: "保证合同" }, { Name: "车辆抵押合同" }];
+                    var contactTempData = [
+                        { Name: "融资租赁合同" }, { Name: "保证合同" }, { Name: "车辆抵押合同" },
+                        { Name: "客户确认表" }, { Name: "建行授权书" }, { Name: "分期放款表" },
+                        { Name: "车辆交接声明" }, { Name: "扣款委托书" }, { Name: "未婚声明书" },
+                        { Name: "车辆处置声明书" }, { Name: "付款指示函" }, { Name: "收据" },
+                        { Name: "合格证照片" }, { Name: "车辆销售合同" }, { Name: "车辆照片" }
+                    ];
 
                     FieldsetLoadDateFactory('Contact', 'table', contactTempData);
                 }
