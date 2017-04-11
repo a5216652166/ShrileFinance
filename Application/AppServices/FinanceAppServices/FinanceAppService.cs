@@ -360,10 +360,10 @@
 
             // 部分映射
             var array = new string[] { nameof(finance.Margin), nameof(finance.ApprovalMargin), nameof(finance.ApprovalMoney), nameof(finance.Payment), nameof(finance.ApprovalPoundage), nameof(finance.Poundage), nameof(finance.SelfPrincipal) };
-
             financeAuditViewModel = PartialMapper(refObj: finance, outObj: financeAuditViewModel, array: array);
 
             financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerCostRatio * finance.FinanceItems.Sum(m => m.FinancialAmount);
+            financeAuditViewModel.Margin = financeAuditViewModel.Margin ?? finance.Produce.CustomerBailRatio*100;
 
             // 审批保证金、审批手续费设置默认值
             financeAuditViewModel.ApprovalMargin = financeAuditViewModel.ApprovalMargin ?? financeAuditViewModel.Margin;
@@ -425,6 +425,10 @@
             var array1 = new string[] { nameof(finance.Vehicle.RegisterDate), nameof(finance.Vehicle.RunningMiles), nameof(finance.Vehicle.FactoryDate), nameof(finance.Vehicle.BusinessType), nameof(finance.Vehicle.PlateNo), nameof(finance.Vehicle.FrameNo), nameof(finance.Vehicle.EngineNo), nameof(finance.Vehicle.RegisterCity), nameof(finance.Vehicle.Condition) };
             operationReportViewModel = PartialMapper(refObj: finance.Vehicle, outObj: operationReportViewModel, array: array1);
 
+            operationReportViewModel.LeaseMode = finance.LeaseMode;
+            operationReportViewModel.LeaseNo = finance.LeaseNo;
+            operationReportViewModel.RentPayableStartDate = finance.RentPayableStartDate;
+
             return operationReportViewModel;
         }
 
@@ -476,6 +480,11 @@
 
                 // 放款账户、放款账户开户行、放款账户卡号
                 finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: new string[] { "CreditAccountName", "CreditBankName", "CreditBankCard" });
+
+                //租赁方式、融资租赁合同编号、客户应付租金起始日期
+                finance = PartialMapper(refObj: value, outObj: finance, array: new string[] { nameof(value.LeaseMode), nameof(value.LeaseNo), nameof(value.RentPayableStartDate) });
+                //担保人名称1、担保合同编号1、担保人名称2、担保合同编号2
+                finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: new string[] { nameof(value.GuarantorName1), nameof(value.GuarantorNo1), nameof(value.GuarantorName2), nameof(value.GuarantorNo2) });
             }
 
             financeRepository.Modify(finance);

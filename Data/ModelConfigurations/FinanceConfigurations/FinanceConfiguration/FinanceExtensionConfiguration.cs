@@ -28,6 +28,11 @@
 
             Property(m => m.CustomerBankCard).HasMaxLength(40);
 
+            Property(m => m.GuarantorName1).HasMaxLength(20);
+            Property(m => m.GuarantorNo1).HasMaxLength(20);
+            Property(m => m.GuarantorName2).HasMaxLength(20);
+            Property(m => m.GuarantorNo2).HasMaxLength(20);
+
             ToTable("FANC_FinanceExtension");
         }
     }

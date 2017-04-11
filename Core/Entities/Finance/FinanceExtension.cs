@@ -44,5 +44,25 @@
         /// 还款账户卡号
         /// </summary>
         public string CustomerBankCard { get; set; }
+
+        /// <summary>
+        /// 担保人名称1
+        /// </summary>
+        public string GuarantorName1 { get; set; }
+
+        /// <summary>
+        /// 担保合同编号1
+        /// </summary>
+        public string GuarantorNo1 { get; set; }
+
+        /// <summary>
+        /// 担保人名称2
+        /// </summary>
+        public string GuarantorName2 { get; set; }
+
+        /// <summary>
+        /// 担保合同编号2
+        /// </summary>
+        public string GuarantorNo2 { get; set; }
     }
 }
