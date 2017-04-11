@@ -191,22 +191,22 @@
             <div class="row">
                 <div class="col-12">
                     <label>名称:</label>
-                    <input class="easyui-textbox" name="Name" data-options="value:'',editable:true,required:true," />
+                    <input class="easyui-textbox" name="Name" data-options="value:'',editable:true,required:true,validType:'length[0,60]' " />
                 </div>
 
                 <div class="col-6">
                     <label>电话:</label>
-                    <input class="easyui-textbox" name="Phone" data-options="value:'',editable:true,required:true,validType:'PhoneOrMobile' " />
+                    <input class="easyui-textbox" name="Phone" data-options="value:'',editable:true,required:true,validType:'PhoneOrMobile',validType:'length[0,20]' " />
                 </div>
 
                 <div class="col-6">
                     <label>传真:</label>
-                    <input class="easyui-textbox" name="Fax" data-options="value:'',editable:true,required:false," />
+                    <input class="easyui-textbox" name="Fax" data-options="value:'',editable:true,required:false,validType:'length[0,20]' " />
                 </div>
 
                 <div class="col-12">
                     <label>地址:</label>
-                    <input class="easyui-textbox" name="Address" data-options="value:'',editable:true,required:true," />
+                    <input class="easyui-textbox" name="Address" data-options="value:'',editable:true,required:true,validType:'length[0,100]' " />
                 </div>
             </div>
         </fieldset>

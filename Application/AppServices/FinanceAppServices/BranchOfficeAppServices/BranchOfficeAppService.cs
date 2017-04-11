@@ -1,12 +1,15 @@
 ﻿namespace Application.AppServices.FinanceAppServices.BranchOfficeAppServices
 {
     using System;
+    using System.Collections.Specialized;
+    using System.Linq;
     using Application.ViewModels.FinanceViewModels.BranchOfficeViewModels;
     using Core.Entities.Finance.BranchOffices;
     using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories.BranchOfficeRepositories;
     using X.PagedList;
     using static AutoMapper.Mapper;
+    using System.Collections.Generic;
 
     public class BranchOfficeAppService
     {
@@ -67,6 +70,18 @@
 
             branchOfficeRepository.Remove(entity);
             branchOfficeRepository.Commit();
+        }
+
+        public Dictionary<Guid, string> GetOption()
+        {
+            var options = new Dictionary<Guid, string>();
+
+            foreach (var item in branchOfficeRepository.GetAll().Select(m => new { m.Id, m.Name }))
+            {
+                options.Add(item.Id, item.Name);
+            }
+
+            return options;
         }
     }
 }

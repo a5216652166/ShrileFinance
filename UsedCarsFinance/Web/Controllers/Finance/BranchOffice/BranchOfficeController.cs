@@ -16,9 +16,9 @@
         }
 
         [HttpGet]
-        public IHttpActionResult PageList(string searchString, int page, int size)
+        public IHttpActionResult PageList(string searchString, int page, int rows)
         {
-            var list = branchOfficeAppService.PageList(searchString ?? string.Empty, page, size);
+            var list = branchOfficeAppService.PageList(searchString ?? string.Empty, page, rows);
 
             return Ok(new PagedListViewModel<BranchOfficeViewModel>(list));
         }
@@ -55,6 +55,14 @@
             branchOfficeAppService.Modify(model);
 
             return Ok();
+        }
+
+        [HttpGet]
+        public IHttpActionResult Option()
+        {
+            var option = branchOfficeAppService.GetOption();
+
+            return Ok(option);
         }
     }
 }

@@ -7,6 +7,18 @@ namespace Data.Migrations
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.FANC_BranchOffice",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                        Name = c.String(nullable: false, maxLength: 60),
+                        Address = c.String(nullable: false, maxLength: 100),
+                        Phone = c.String(nullable: false, maxLength: 20),
+                        Fax = c.String(maxLength: 20),
+                    })
+                .PrimaryKey(t => t.Id);
+            
             AddColumn("dbo.FANC_Finance", "LeaseMode", c => c.Byte(nullable: false));
             AddColumn("dbo.FANC_Finance", "LeaseNo", c => c.String(maxLength: 20));
             AddColumn("dbo.FANC_Finance", "RentPayableStartDate", c => c.DateTime());
@@ -33,6 +45,7 @@ namespace Data.Migrations
             DropColumn("dbo.FANC_Finance", "RentPayableStartDate");
             DropColumn("dbo.FANC_Finance", "LeaseNo");
             DropColumn("dbo.FANC_Finance", "LeaseMode");
+            DropTable("dbo.FANC_BranchOffice");
         }
     }
 }
