@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using Core.Entities.Vehicle;
+    using static Core.Entities.Finance.Finance;
 
     /// <summary>
     /// 运营
@@ -20,6 +21,45 @@
         /// 融资产品项
         /// </summary>
         public virtual IEnumerable<FinanceItemViewModel> FinancialItem { get; set; }
+
+        /// <summary>
+        /// 租赁方式
+        /// </summary>
+        [Required(ErrorMessage = "租赁方式 不可为空")]
+        public LeaseModeEnum? LeaseMode { get; set; }
+
+        /// <summary>
+        /// 融资租赁合同编号
+        /// </summary>
+        [Required(ErrorMessage = "融资租赁合同编号 不可为空")]
+        public string LeaseNo { get; set; }
+
+        /// <summary>
+        /// 担保人名称1
+        /// </summary>
+        public string GuarantorName1 { get; set; }
+
+        /// <summary>
+        /// 担保合同编号1
+        /// </summary>
+        public string GuarantorNo1 { get; set; }
+
+        /// <summary>
+        /// 担保人名称2
+        /// </summary>
+        public string GuarantorName2 { get; set; }
+
+        /// <summary>
+        /// 担保合同编号2
+        /// </summary>
+        public string GuarantorNo2 { get; set; }
+
+        /// <summary>
+        /// 客户应付租金起始日期
+        /// </summary>
+        [Required(ErrorMessage = "客户应付租金起始日期 不可为空")]
+        public DateTime? RentPayableStartDate { get; set; }
+
 
         /// <summary>
         /// 选择还款日

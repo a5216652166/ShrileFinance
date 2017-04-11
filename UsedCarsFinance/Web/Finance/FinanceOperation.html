@@ -478,6 +478,37 @@
                 <input type="hidden" name="CustomerBailRatio" value="0" placeholder="客户保证金比例" />
 
                 <div class="row">
+
+                    <div class="col-6">
+                        <label>租赁方式：</label>
+                        <select name="LeaseMode" class="easyui-combobox" data-options="required:true,validType:'',value:'',readonly:false,editable:false">
+                            <option value="1">直租</option>
+                            <option value="2">回租</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label>融资租赁合同编号:</label>
+                        <input name="LeaseNo" class="easyui-textbox" data-options="validType:'',required:true" />
+                    </div>
+
+                    <div class="col-6">
+                        <label>保证人名称1:</label>
+                        <input name="GuarantorName1" class="easyui-textbox" data-options="validType:'',required:false" />
+                    </div>
+                    <div class="col-6">
+                        <label>保证合同编号1:</label>
+                        <input name="GuarantorNo1" class="easyui-textbox" data-options="validType:'',required:false" />
+                    </div>
+
+                    <div class="col-6">
+                        <label>保证人名称2:</label>
+                        <input name="GuarantorName2" class="easyui-textbox" data-options="validType:'',required:false" />
+                    </div>
+                    <div class="col-6">
+                        <label>保证合同编号2:</label>
+                        <input name="GuarantorNo2" class="easyui-textbox" data-options="validType:'',required:false" />
+                    </div>
+
                     <div class="col-6">
                         <label>选择还款日：</label>
                         <select name="RepaymentDate" class="easyui-combobox" data-options="required:true,validType:'',value:'',readonly:false,editable:false">
@@ -488,6 +519,11 @@
                     <div class="col-6">
                         <label>首次租金支付日期：</label>
                         <input name="RepayRentDate" class="easyui-datebox" data-options="required:true,validType:'',readonly:false,editable:false,width:410" />
+                    </div>
+
+                    <div class="col-6">
+                        <label>客户应付租金起始日期：</label>
+                        <input name="RentPayableStartDate" class="easyui-datebox" data-options="required:true,validType:'',readonly:false,editable:false,width:410" />
                     </div>
                 </div>
             </fieldset>
@@ -590,7 +626,7 @@
 
             <fieldset name="Contact">
                 <legend>所需合同及文件资料</legend>
-                <table id="Contact_dg" class="easyui-datagrid" style="width:820px;" data-options="toolbar: '#Contact_tb',
+                <table id="Contact_dg" class="easyui-datagrid" style="width:820px;" data-options="
                            rownumbers:true,
                            onSelect:ContactSelect,
                            onUnselect:ContactUnselect,
@@ -607,11 +643,11 @@
                     </thead>
                 </table>
 
-                <div id="Contact_tb" style="height:30px;">
+                <!--<div id="Contact_tb" style="height:30px;">
                     <a id="Contact_add" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ContactAdd,iconCls:'icon-add',plain:true">添加</a>
                     <a id="Contact_del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ContactDelete,iconCls:'icon-remove',plain:true,disabled:true">删除</a>
                     <a id="Contact_Save" style="display:none" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ContactSave,iconCls:'icon-save',plain:true,disabled:true,">保存</a>
-                </div>
+                </div>-->
                 <script type="text/javascript">
                     // table onSelect事件
                     function ContactSelect(index, row) {

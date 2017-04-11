@@ -27,6 +27,10 @@
             Property(m => m.ApprovalMoney);
             Property(m => m.Payment);
             Property(m => m.RepayRentDate);
+            Property(m => m.LeaseMode);
+            Property(m => m.LeaseNo).HasMaxLength(20);
+            Property(m => m.RentPayableStartDate);
+
 
             ////// 信审报告
             ////HasOptional(m => m.CreditExamine).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
