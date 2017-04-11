@@ -10,7 +10,7 @@
 	<script src="../Scripts/easyui/jquery.easyui.js"></script>
 	<script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script src="../Scripts/usedcars.js"></script>
-	<script src="../Content/FinanceJs.js"></script>
+    <script src="Content/FinanceJs.js"></script>
 	<style>
 		.adddiv { background-color: #afe3fa; height: 30px; width: 95%; margin-left: 15px; }
 		fieldset { margin-top: 20px; }
@@ -185,8 +185,6 @@
 		// 初始化基本信息
 		function BaseInit() {
 			LoadBrand();
-
-			AutoSwitchProperties(true);
 		}
 
 		function LoadBaseInfo(data) {
@@ -557,7 +555,7 @@
 					<div class="row">
 						<div class="col-6">
 							<label>车架号:</label>
-							<input name="FrameNo" class="easyui-textbox" data-options="validType:['AN','length[17,17]'],required:true" />
+							<input name="FrameNo" class="easyui-textbox" data-options="validType:['AN','length[17,17]'],required:false" />
 						</div>
 
 						<div class="col-6">
@@ -832,7 +830,7 @@
 						</div>
 					</div>
 
-					<div class="row">
+					<div class="row" style="display:none">
 						<div class="col-6">
 							<label>名义利率（年）:</label>
 							<input name="Rate" class="easyui-textbox" readonly />
@@ -888,9 +886,9 @@
 							<table id="principal_ratios" class="easyui-datagrid" data-options="height:152, singleSelect: true, rownumbers: true">
 								<thead>
 									<tr>
-										<th data-options="field:'Title',width:260,align:'center',formatter:titleFormatter">期次</th>
-										<th data-options="field:'Ratio',width:260,align:'center'">偿还本金比例（%）</th>
-										<th data-options="field:'Factor',width:260,align:'center'">月供系数</th>
+										<th data-options="field:'Title',width:370,align:'center',formatter:titleFormatter">期次</th>
+										<th data-options="field:'Ratio',width:260,align:'center',hidden:true">偿还本金比例（%）</th>
+										<th data-options="field:'Factor',width:370,align:'center'">月供系数</th>
 									</tr>
 								</thead>
 							</table>
@@ -915,13 +913,13 @@
 								<tr>
 									<th data-options="field:'Code',width:200,align:'center'">产品代码</th>
 									<th data-options="field:'ProduceType',width:120,align:'center'">产品类型</th>
-									<th data-options="field:'Rate',width:120,align:'center'">名义利率（年）</th>
+									<th data-options="field:'Rate',width:120,align:'center',hidden:true">名义利率（年）</th>
 									<th data-options="field:'Periods',width:120,align:'center'">融资期限</th>
 									<th data-options="field:'CustomerCostRatio',width:120,align:'center'">手续费（%）</th>
 									<th data-options="field:'CustomerBailRatio',width:120,align:'center'">保证金（%）</th>
 									<th data-options="field:'CostRate',width:120,align:'center'">费率（月）</th>
-									<th data-options="field:'PartnersCommissionRatio',width:120,align:'center'">渠道返点（%）</th>
-									<th data-options="field:'EmployeeCommissionRatio',width:120,align:'center'">员工提成（%）</th>
+									<th data-options="field:'PartnersCommissionRatio',width:120,align:'center',hidden:true">渠道返点（%）</th>
+									<th data-options="field:'EmployeeCommissionRatio',width:120,align:'center',hidden:true">员工提成（%）</th>
 								</tr>
 							</thead>
 						</table>
