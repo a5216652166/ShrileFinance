@@ -37,7 +37,7 @@
                 $("fieldset#financeItem table#financeItem_dg").datagrid("loadData", data.FinancialItem);
 
                 $("fieldset#financeItem input#SelfPrincipal").textbox('setValue', data.SelfPrincipal);
-                CalculateTotalPrincipal();
+                calculateTotalPrincipal();
 
                 if (query.state == 0) {
                     // 禁用所有
@@ -157,7 +157,7 @@
                     <unit>元</unit>
                 </div>
                 <script type="text/javascript">
-                    function CalculateTotalPrincipal() {
+                    function calculateTotalPrincipal() {
                         var totalPrincipal = 0;
 
                         $($("#financeItem_dg").datagrid("getRows")).each(function (i, e) {
@@ -169,11 +169,6 @@
                         totalPrincipal -= parseFloat(selfPrincipal) || 0;
 
                         $("#TotalPrincipal").textbox("setValue", totalPrincipal);
-
-                        if ($("input[textboxname=ApprovalMoney]").textbox("getValue") == "")
-                        {
-                            $("input[textboxname=ApprovalMoney]").textbox("setValue", totalPrincipal);
-                        }
                     }
                 </script>
             </div>
@@ -190,7 +185,7 @@
 
             <div class="row">
                 <div class="col-6">
-                    <label>审批融资总额：</label>
+                    <label>审批融资金额：</label>
                     <input name="ApprovalMoney" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetMonthPay" />
                     <span>元</span>
                 </div>
@@ -203,25 +198,13 @@
 
                 <div class="col-6">
                     <label>保证金：</label>
-                    <input name="Margin" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money' " />
-                    <span>%</span>
-                </div>
-
-                <div class="col-6">
-                    <label>审批保证金：</label>
-                    <input name="ApprovalMargin" class="easyui-textbox" data-options="required:true,validType:'Money',value:'0' " />
+                    <input name="Margin" class="easyui-textbox" data-options="required:true,validType:'Money' " />
                     <span>%</span>
                 </div>
 
                 <div class="col-6">
                     <label>手续费：</label>
-                    <input name="Poundage" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money'" />
-                    <span>%</span>
-                </div>
-
-                <div class="col-6">
-                    <label>审批手续费：</label>
-                    <input name="ApprovalPoundage" class="easyui-textbox" data-options="readonly:false,required:true,validType:'Money',value:'0' " />
+                    <input name="Poundage" class="easyui-textbox" data-options="readonly:false,required:true,validType:'Money'" />
                     <span>%</span>
                 </div>
 

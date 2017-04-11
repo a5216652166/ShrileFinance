@@ -183,23 +183,5 @@ $.extend($.fn.validatebox.defaults.rules, {
             return false;
         },
         message: '身份证号码不合法'
-    },
-    Rate: {
-        validator: function (value) {
-            if (/^-?\d+\.\d{1}$/.test(value)) {
-                return true;
-            }
-
-            if (/^-?\d+\.\d{2}$/.test(value) || /^-?\d+$/.test(value)) {
-                if (value.length >= 2 && /^[0][0-9]*$/.test(value.substr(0, 2))) {
-                    return false;
-                }
-
-                return true;
-            }
-
-            return false;
-        },
-        message: '请输入整数、一位小数或两位小数！'
-    },
+    }
 });
