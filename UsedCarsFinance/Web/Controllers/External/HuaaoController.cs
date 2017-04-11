@@ -35,6 +35,7 @@
             var vehicle = vehicleService.Get(finance.Vehicle.VehicleKey);
 
             return Ok(new {
+                Id = finance.Id,
                 Make = vehicle.Make,
                 Series = vehicle.Series,
                 Vehicle = vehicle.Vehicle,
@@ -61,7 +62,7 @@
             return Ok(options.Select(m => new { value = m, text = m }));
         }
 
-        [HttpPost]
+        [HttpGet]
         public IHttpActionResult PayBail(Guid id)
         {
             service.PayBail(id);
@@ -69,7 +70,7 @@
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         public IHttpActionResult RevertBail(Guid id)
         {
             service.RevertBail(id);

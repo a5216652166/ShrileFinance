@@ -161,7 +161,7 @@
         public void PayBail()
         {
             // 表示已还清[伪逻辑]
-            BailPaid = (Principal ?? 0) * (Margin ?? 0);
+            BailPaid = (ApprovalMoney ?? 0) * (Margin ?? 0);
         }
 
         /// <summary>
