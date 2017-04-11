@@ -50,6 +50,11 @@
         public decimal? Margin { get; set; }
 
         /// <summary>
+        /// 审批保证金
+        /// </summary>
+        public decimal? ApprovalMargin { get; set; }
+        
+        /// <summary>
         /// 审批融资金额
         /// </summary>
         public decimal? ApprovalMoney { get; set; }
@@ -63,6 +68,11 @@
         /// 手续费
         /// </summary>
         public decimal? Poundage { get; set; }
+
+        /// <summary>
+        /// 审批手续费
+        /// </summary>
+        public decimal? ApprovalPoundage { get; set; }
 
         /// <summary>
         /// 自付金额
