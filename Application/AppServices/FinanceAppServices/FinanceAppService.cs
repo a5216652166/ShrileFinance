@@ -359,11 +359,15 @@
             };
 
             // 部分映射
-            var array = new string[] { nameof(finance.Margin), nameof(finance.ApprovalMoney), nameof(finance.Payment), nameof(finance.Poundage), nameof(finance.SelfPrincipal) };
+            var array = new string[] { nameof(finance.Margin), nameof(finance.ApprovalMargin), nameof(finance.ApprovalMoney), nameof(finance.Payment), nameof(finance.ApprovalPoundage), nameof(finance.Poundage), nameof(finance.SelfPrincipal) };
 
             financeAuditViewModel = PartialMapper(refObj: finance, outObj: financeAuditViewModel, array: array);
 
             financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerCostRatio * finance.FinanceItems.Sum(m => m.FinancialAmount);
+
+            // 审批保证金、审批手续费设置默认值
+            financeAuditViewModel.ApprovalMargin = financeAuditViewModel.ApprovalMargin ?? financeAuditViewModel.Margin;
+            financeAuditViewModel.ApprovalPoundage = financeAuditViewModel.ApprovalPoundage ?? financeAuditViewModel.Poundage;
 
             return financeAuditViewModel;
         }
@@ -378,7 +382,7 @@
             var finance = financeRepository.Get(value.FinanceId);
 
             // 保证金、审批融资金额、月供额度、手续费
-            var array = new string[] { nameof(value.Margin), nameof(value.ApprovalMoney), nameof(value.Payment), nameof(value.Poundage) };
+            var array = new string[] { nameof(value.Margin), nameof(value.ApprovalMargin), nameof(value.ApprovalMoney), nameof(value.Payment), nameof(value.Poundage), nameof(value.ApprovalPoundage) };
             finance = PartialMapper(refObj: value, outObj: finance, array: array);
 
             finance.Bail = finance.Margin;
