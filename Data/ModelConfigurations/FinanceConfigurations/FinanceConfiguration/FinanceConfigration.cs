@@ -20,8 +20,10 @@
             Property(m => m.DateCreated);
             Property(m => m.Financing);
             Property(m => m.Poundage);
+            Property(m => m.ApprovalPoundage);
             Property(m => m.OncePayMonths);
             Property(m => m.Margin);
+            Property(m => m.ApprovalMargin);
             Property(m => m.ApprovalMoney);
             Property(m => m.Payment);
             Property(m => m.RepayRentDate);
