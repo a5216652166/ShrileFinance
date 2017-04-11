@@ -93,6 +93,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\ExternalAppServices\HuaaoAppService.cs" />
     <Compile Include="AppServices\FileSystemAppServices\FileSystemAppService.cs" />
     <Compile Include="AppServices\FinanceAppServices\FinancialAppServices\FinancialLoanAppService.cs" />
     <Compile Include="AppServices\LoanAppServices\CreditContractAppService.cs" />

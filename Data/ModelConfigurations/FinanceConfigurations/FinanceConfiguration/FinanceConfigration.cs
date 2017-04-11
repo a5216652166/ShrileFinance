@@ -22,6 +22,7 @@
             Property(m => m.Poundage);
             Property(m => m.OncePayMonths);
             Property(m => m.Margin);
+            Property(m => m.BailPaid).HasPrecision(18, 8);
             Property(m => m.ApprovalMoney);
             Property(m => m.Payment);
             Property(m => m.RepayRentDate);

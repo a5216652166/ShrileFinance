@@ -85,6 +85,7 @@
     <Compile Include="Entities\Process\ProcessTempData.cs" />
     <Compile Include="Entities\Process\ProcessTypeEnum.cs" />
     <Compile Include="Entities\IO\FileSystem.cs" />
+    <Compile Include="Entities\Vehicle\VehicleModel.cs" />
     <Compile Include="Entities\Vehicle\VehiclePrise.cs" />
     <Compile Include="Interfaces\IDeleteable.cs" />
     <Compile Include="Interfaces\IProcessable.cs" />
