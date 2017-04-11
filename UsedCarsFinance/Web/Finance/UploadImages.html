@@ -77,30 +77,6 @@
             });
         }
 
-        //下载单身证明
-        function DownloadSignle()
-        {
-            $("#downloadSignle").linkbutton("disable");
-            $("#downloadForm input[name=financeId]").val(query.FinanceId);
-            $("#downloadForm").submit();
-            $("#downloadSignle").linkbutton("enable");
-
-            //$.ajax({
-            //    data: { financeId: query.FinanceId, sign: 1},
-            //    type: 'GET',
-            //    url: '../api/ImageUpload/DownloadFiles',
-            //    statusCode: {
-            //        200: function (data) {
-
-            //            $.messager.show({ msg: "生成PDF成功！" });
-            //        },
-            //        400: function () {
-            //            $.messager.show({ msg: "下载失败！" });
-            //        }
-            //    }
-            //});
-        }
-
         //验证数据
         function ValidData() {
             return true;
@@ -121,7 +97,7 @@
                 <a id="view" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:view,width:100">查看</a>
                 <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:del,width:100">删除</a>
                 <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:downLoadall,width:100">下载全部</a>
-                <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle,width:100">下载单身证明</a>
+                <!--<a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle,width:100">下载单身证明</a>-->
                 <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',width:100,onClick:Add">添加</a>
             </div>
             <div style="width:200px;height:25px; padding-top:40px;"><input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="checkall(this)"><label id="label1" style="width:30px;margin-top:2px;" for="cball">全选</label></div>
@@ -348,11 +324,11 @@
             </table>
         </fieldset>
     </div>
-    <div>
+    <!--<div>
         <form id="downloadForm" action="../api/ImageUpload/DownloadFiles" method="get" style="display:none">
             <input name="financeId" />
             <input name="sign" value="1"/>
         </form>
-    </div>
+    </div>-->
 </body>
 </html>
