@@ -19,6 +19,7 @@
     using Core.Interfaces.Repositories.ProcessRepositories;
     using Core.Produce;
     using Data.PDF;
+    using Infrastructure.JSON;
     using Infrastructure.PDF;
     using ViewModels.FinanceViewModels;
     using static Core.Entities.Finance.Applicant;
@@ -639,8 +640,8 @@
             param.Add("[@保证人2@]", string.IsNullOrWhiteSpace(finance.FinanceExtension.GuarantorName2) ? string.Empty.PadLeft(4) : finance.FinanceExtension.GuarantorName2);
             param.Add("[@合同编号3@]", string.IsNullOrWhiteSpace(finance.FinanceExtension.GuarantorNo2) ? string.Empty.PadLeft(4) : finance.FinanceExtension.GuarantorNo2);
 
-            param.Add("【[@合同编号4@]】", string.Empty);
-            param.Add("【[@还车条款@]】", string.Empty);
+            param.Add("【[@合同编号4@]】", finance.VehicleMortgageContractNo);
+            param.Add("【[@还车条款@]】", finance.VehicleClause.ToString());
 
             var applicant = finance.Applicant.SingleOrDefault(m => m.Type == TypeEnum.共同申请人);
             var customer = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
@@ -657,8 +658,9 @@
 
             param.Add("[@渠道商@]", finance.CreateOf.Name);
             param.Add("[@所在区域@]", finance.Vehicle.RegisterCity);
-            param.Add("【[@抵押要求@]】", string.Empty);
-            param.Add("【[@上牌要求@]】", string.Empty);
+            param.Add("【[@抵押要求@]】", finance.MortgageRequirements.ToString());
+            param.Add("【[@上牌要求@]】", finance.Registrant.ToString());
+            param.Add("【[@客户类型@]】", finance.Vehicle.BusinessType.ToString());
 
             var upper = new MoneyToUpper();
             param.Add("[@人民币1@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
@@ -704,6 +706,8 @@
             param.Add("【[@日2@]】", finance.RentPayableStartDate.Value.Day.ToString());
             param.Add("[@产品大类@]", finance.Produce.ProduceType.ToString());
             param.Add("[@产品代码@]", finance.Produce.Code);
+
+            //var list= JsonParseHelper.GetJObject( finance.FinanceExtension.ContactJson).Properties.
 
             var pair = CreatPDF("Approval.docx", "个人按揭客户审批通知书.pdf", param);
 
