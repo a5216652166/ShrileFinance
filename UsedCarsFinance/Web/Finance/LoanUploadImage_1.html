@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="utf-8">
+    <title>放款影像资料上传</title>
+    <script src="Content/viewer/jquery.min.js"></script>
+
+    <script src="Content/viewer/viewer.min.js"></script>
+    <link rel="stylesheet" href="Content/viewer/viewer.min.css">
+
+    <script src="Content/easyui/jquery.easyui.js"></script>
+    <script src="Content/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <link href="Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <script src="Content/uploadify/jquery.uploadify.js"></script>
+    <link href="Content/uploadify/uploadify.css" rel="stylesheet" />
+
+    <script src="Content/viewerUpload/uploadFile.js"></script>
+    <script src="Content/viewerUpload/PictureViewer.js"></script>
+
+    <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+    <link href="../Content/form-bootstrap.css" rel="stylesheet" />
+
+    <style type="text/css">
+        div#viewerContainer div {
+            float: left;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+        }
+
+        div#AddPic div img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+            jsPicViewerUploderInit();
+        });
+
+        var viewer = null;
+
+        function jsPicViewerUploderInit() {
+            setTimeout(function () {
+                // 实例化图片查看器
+                viewer = InitPicViewer($("div#viewerContainer_11"));
+
+                $("div#AddPic img").click(function () {
+                    $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
+                    StartUploader(null, null);
+                });
+            }, 100);
+        }
+
+        // 图片上传成功回调函数
+        function UploadSuccessInstance(file, data, response) {
+            data = JSON.parse(data);
+
+            var files = GetFiles(data.referenceId);
+
+            if (files == null || files.length == 0) {
+                return false;
+            }
+            debugger
+            var UrlArray = [];
+            for (var i = 0; i < data.filesCount; i++) {
+                var urlObj = {};
+                urlObj.Name = files[i].OldName + files[i].ExtName;
+                urlObj.Path = "..\\" + files[i].path;
+
+                UrlArray.push(urlObj);
+            }
+
+            // 上传的图片加入viewer
+            PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
+        }
+    </script>
+</head>
+<body>
+    <form class="container" tag="11">
+        <fieldset class="" style="float:none">
+            <legend>车辆类</legend>
+            <div class="container" style="">
+                <label style="font-size:15px">抵押登记后的车辆登记证书:</label>
+                <div id="viewerContainer_11">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',11)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed;margin-bottom:20px" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">新办理的行驶证:</label>
+                <div id="viewerContainer_12">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',12)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">建设银行卡:</label>
+                <div id="viewerContainer_13">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',13)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">客户面签视频及照片:</label>
+                <div id="viewerContainer_14">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',14)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">商业保险保单:</label>
+                <div id="viewerContainer_15">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',15)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+        </fieldset>
+
+        <fieldset class="" style="float:none">
+            <legend>合同类</legend>
+            <div class="container" style="">
+                <label style="font-size:15px">融资租赁合同:</label>
+                <div id="viewerContainer_21">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',21)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed;margin-bottom:20px" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">新办理的行驶证:</label>
+                <div id="viewerContainer_22">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',22)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">车辆抵押合同:</label>
+                <div id="viewerContainer_23">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',23)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">渠道保证合同:</label>
+                <div id="viewerContainer_24">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',24)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">付款指示函:</label>
+                <div id="viewerContainer_25">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',25)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">收据:</label>
+                <div id="viewerContainer_26">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',26)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">建行扣划款授权书:</label>
+                <div id="viewerContainer_27">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',27)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">还款计划表:</label>
+                <div id="viewerContainer_28">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',28)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">车辆买卖合同:</label>
+                <div id="viewerContainer_29">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',29)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">渠向经销商转账证明:</label>
+                <div id="viewerContainer_291">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',291)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+
+            <div class="container" style="">
+                <label style="font-size:15px">单身证明:</label>
+                <div id="viewerContainer_292">
+                </div>
+                <div>
+                    <div id="AddPic">
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',292)" /></div>
+                    </div>
+                </div>
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed ;" />
+            </div>
+        </fieldset>
+
+        <!--<div id="viewerContainer">
+            <template id="viewerContainer">
+                <div id="li" style="float:left"><img data-original="" src="" alt="" ondblclick="" style="margin-right:30px"><label style="text-align:center;display:block"></label></div>
+            </template>
+        </div>
+        <div id="AddPic">
+            <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" ondblclick="" /></div>
+        </div>-->
+        <!--上传控件-->
+        <div id="dd_upload" class="easyui-dialog" data-options="title:'上传附件',buttons:'#bb_upload',onClose:uploadFormClose,width:390,height:350,closed:true">
+            <div id="file_queue"></div>
+
+            <div id="bb_upload">
+                <span id="pic_area">
+                    <input type="file" id="pic_upload" name="pic_upload" />
+                    <a class="easyui-linkbutton" data-options="width:80" href="javascript:$('#pic_upload').uploadify('upload','*')">开始上传</a>
+                </span>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
