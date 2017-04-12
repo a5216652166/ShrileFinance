@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>子公司维护</title>
+    <title>分公司维护</title>
 
     <link href="../../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
     <link href="../../Content/easyui/themes/icon.css" rel="stylesheet" />
@@ -49,11 +49,11 @@
                 $("a#save").linkbutton("enable");
 
                 if (query.method == "mod") {
-                    $("form.container fieldset#Base>legend").text("子公司信息编辑");
+                    $("form.container fieldset#Base>legend").text("分公司信息编辑");
                     $("#Code").textbox("readonly", true)
                 }
                 if (query.method == "view") {
-                    $("form.container fieldset#Base>legend").text("子公司信息详情");
+                    $("form.container fieldset#Base>legend").text("分公司信息详情");
 
                     $("#save").linkbutton("disable");
 
@@ -61,7 +61,7 @@
                 }
             }
             else {
-                $("form.container fieldset#Base>legend").text("子公司信息录入");
+                $("form.container fieldset#Base>legend").text("分公司信息录入");
             }
 
             // 禁用
@@ -182,7 +182,7 @@
 <body>
     <form class="container">
         <fieldset id="Base">
-            <legend>子公司信息</legend>
+            <legend>分公司信息</legend>
 
             <div class="hidden">
                 <input name="Id" type="hidden" />
