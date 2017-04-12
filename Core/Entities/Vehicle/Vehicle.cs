@@ -131,7 +131,7 @@
         public ConditionEnum Condition { get; set; }
 
         /// <summary>
-        /// 业务种类
+        /// 业务类型
         /// </summary>
         public BusinessTypeEnum BusinessType { get; set; }
     }
