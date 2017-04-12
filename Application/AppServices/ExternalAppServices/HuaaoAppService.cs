@@ -28,16 +28,18 @@
         /// <returns></returns>
         public Finance GetFinance(string partnerName, string identity, string frameNo)
         {
-            var partners = partnerRepository
-                .GetAll(m => m.Name == partnerName)
-                .Select(m => m.Id)
-                .ToList();
-
-            var finance = financeRepository
+            var query = financeRepository
                 .GetAll(m =>
-                    m.CreateOf.Name == partnerName &&
+                    m.Bail != null &&
                     m.Applicant.Any(ma => ma.Identity == identity && ma.Type == Applicant.TypeEnum.主要申请人) &&
-                    m.Vehicle.FrameNo == frameNo)
+                    m.Vehicle.FrameNo == frameNo);
+
+            if (!string.IsNullOrEmpty(partnerName))
+            {
+                query.Where(m => m.CreateOf.Name == partnerName);
+            }
+
+            var finance = query
                 .OrderByDescending(m => m.Id)
                 .FirstOrDefault();
             

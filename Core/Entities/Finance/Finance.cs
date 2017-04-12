@@ -156,12 +156,21 @@
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         /// <summary>
+        /// 获取保证金
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetBail()
+        {
+            return (ApprovalMoney ?? 0) * (Margin ?? 0);
+        }
+
+        /// <summary>
         /// 保证金缴费
         /// </summary>
         public void PayBail()
         {
             // 表示已还清[伪逻辑]
-            BailPaid = (ApprovalMoney ?? 0) * (Margin ?? 0);
+            BailPaid = GetBail();
         }
 
         /// <summary>

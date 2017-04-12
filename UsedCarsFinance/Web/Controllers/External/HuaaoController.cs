@@ -41,7 +41,7 @@
                 Vehicle = vehicle.Vehicle,
                 ApplicantName = applicant.Name,
                 ApplicantPhone = applicant.Mobile,
-                Bail = finance.Bail
+                Bail = finance.GetBail()
             });
         }
 
