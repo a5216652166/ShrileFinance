@@ -20,19 +20,21 @@ function PicViewerLoadPic(UrlArray, viewerContainer) {
     if (Object.prototype.toString.call(UrlArray) === '[object Array]') {
         //var template = $("template#viewerContainer").html();
 
-        var template = '<div id="li"><img data-original="" src="" alt="" ondblclick=""></div>';
+        var template = '<div id="li"><img data-original="" src="" alt="" ondblclick=""><label style="text-align:center;display:block"></label></div>';
 
         $(UrlArray).each(function (i, e) {
             $(viewerContainer).append(template);
 
-            $(viewerContainer).find("div#li:last").find("img").attr("data-original", e.toString());
+            $(viewerContainer).find("div#li:last").find("img").attr("data-original", e.Path.toString());
 
-            $(viewerContainer).find("div#li:last").find("img").attr("src", e.toString());
+            $(viewerContainer).find("div#li:last").find("img").attr("src", e.Path.toString());
 
-            $(viewerContainer).find("div#li:last").find("img").attr("alt", "照片" + parseInt(parseInt(i) + 1));
+            $(viewerContainer).find("div#li:last").find("img").attr("alt", e.Name);
+
+            $(viewerContainer).find("div#li:last").find("label").text(e.Name);
 
             $(viewerContainer).find("div#li:last").find("img").dblclick(function () {
-                if (viewer != undefined && viewer != null) {
+                if (viewer) {
                     viewer.show();
                 }
             });
