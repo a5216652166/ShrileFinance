@@ -21,7 +21,7 @@
         body {
             width: 700px;
             margin: 0 auto;
-            font-size: 0;
+            font-size: 12px;
         }
 
         div#viewerContainer div {
@@ -68,7 +68,11 @@
 
             var UrlArray = [];
             for (var i = 1; i < 6; i++) {
-                UrlArray.push("Content/img/tibet-" + i + ".jpg");
+                var urlObj = {};
+                urlObj.Name = "tibet-" + i + ".jpg";
+                urlObj.Path = "Content/img/tibet-" + i + ".jpg";
+
+                UrlArray.push(urlObj);
             }
 
             var viewerContainer = $("div#viewerContainer");
@@ -85,10 +89,15 @@
             if (files == null || files.length == 0) {
                 return false;
             }
-
+            debugger
             var UrlArray = [];
-            for (var i = 0; i < data.filesCount ; i++) {
-                UrlArray.push("../../" + files[i].path);
+            for (var i = 0; i < data.filesCount; i++) {
+                var urlObj = {};
+                urlObj.Name = files[i].OldName + files[i].ExtName;
+                urlObj.Path = "..\\..\\" + files[i].path;
+
+                UrlArray.push(urlObj);
+                ///UrlArray.push("..\\..\\" + files[i].path);
             }
 
             // 上传的图片加入viewer
@@ -100,7 +109,7 @@
     <form>
         <div id="viewerContainer">
             <template id="viewerContainer">
-                <div id="li"><img data-original="" src="" alt="" ondblclick=""></div>
+                <div id="li"><img data-original="" src="" alt="" ondblclick=""><label style="text-align:center;display:block"></label></div>
             </template>
         </div>
         <div id="AddPic">
