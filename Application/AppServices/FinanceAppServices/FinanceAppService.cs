@@ -21,6 +21,7 @@
     using Data.PDF;
     using Infrastructure.JSON;
     using Infrastructure.PDF;
+    using Newtonsoft.Json.Linq;
     using ViewModels.FinanceViewModels;
     using static Core.Entities.Finance.Applicant;
 
@@ -493,7 +494,7 @@
                 finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: new string[] { "CreditAccountName", "CreditBankName", "CreditBankCard" });
 
                 ////租赁方式、融资租赁合同编号、客户应付租金起始日期、有无还车条款、车辆抵押合同编号、车辆抵押要求
-                finance = PartialMapper(refObj: value, outObj: finance, array: new string[] { nameof(value.LeaseMode), nameof(value.LeaseNo), nameof(value.RentPayableStartDate),nameof(value.VehicleClause),nameof(value.VehicleMortgageContractNo),nameof(value.MortgageRequirements) });
+                finance = PartialMapper(refObj: value, outObj: finance, array: new string[] { nameof(value.LeaseMode), nameof(value.LeaseNo), nameof(value.RentPayableStartDate), nameof(value.VehicleClause), nameof(value.VehicleMortgageContractNo), nameof(value.MortgageRequirements) });
 
                 ////担保人名称1、担保合同编号1、担保人名称2、担保合同编号2
                 finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: new string[] { nameof(value.GuarantorName1), nameof(value.GuarantorNo1), nameof(value.GuarantorName2), nameof(value.GuarantorNo2) });
@@ -640,8 +641,8 @@
             param.Add("[@保证人2@]", string.IsNullOrWhiteSpace(finance.FinanceExtension.GuarantorName2) ? string.Empty.PadLeft(4) : finance.FinanceExtension.GuarantorName2);
             param.Add("[@合同编号3@]", string.IsNullOrWhiteSpace(finance.FinanceExtension.GuarantorNo2) ? string.Empty.PadLeft(4) : finance.FinanceExtension.GuarantorNo2);
 
-            param.Add("【[@合同编号4@]】", finance.VehicleMortgageContractNo);
-            param.Add("【[@还车条款@]】", finance.VehicleClause.ToString());
+            param.Add("[@合同编号4@]", finance.VehicleMortgageContractNo);
+            param.Add("[@还车条款@]", finance.VehicleClause.ToString());
 
             var applicant = finance.Applicant.SingleOrDefault(m => m.Type == TypeEnum.共同申请人);
             var customer = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
@@ -658,9 +659,9 @@
 
             param.Add("[@渠道商@]", finance.CreateOf.Name);
             param.Add("[@所在区域@]", finance.Vehicle.RegisterCity);
-            param.Add("【[@抵押要求@]】", finance.MortgageRequirements.ToString());
-            param.Add("【[@上牌要求@]】", finance.Registrant.ToString());
-            param.Add("【[@客户类型@]】", finance.Vehicle.BusinessType.ToString());
+            param.Add("[@抵押要求@]", finance.MortgageRequirements.ToString());
+            param.Add("[@上牌要求@]", finance.Registrant.ToString());
+            param.Add("[@客户类型@]", finance.Vehicle.BusinessType.ToString());
 
             var upper = new MoneyToUpper();
             param.Add("[@人民币1@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
@@ -701,13 +702,44 @@
             param.Add("[@年1@]", date.Value.Year.ToString());
             param.Add("[@月1@]", date.Value.Month.ToString());
             param.Add("[@日1@]", date.Value.Day.ToString());
-            param.Add("【[@年2@]】", finance.RentPayableStartDate.Value.Year.ToString());
-            param.Add("【[@月2@]】", finance.RentPayableStartDate.Value.Month.ToString());
-            param.Add("【[@日2@]】", finance.RentPayableStartDate.Value.Day.ToString());
+            param.Add("[@年2@]", finance.RentPayableStartDate.Value.Year.ToString());
+            param.Add("[@月2@]", finance.RentPayableStartDate.Value.Month.ToString());
+            param.Add("[@日2@]", finance.RentPayableStartDate.Value.Day.ToString());
             param.Add("[@产品大类@]", finance.Produce.ProduceType.ToString());
             param.Add("[@产品代码@]", finance.Produce.Code);
 
-            //var list= JsonParseHelper.GetJObject( finance.FinanceExtension.ContactJson).Properties.
+            ////var asss = JObject.Parse("{\"array\":"+finance.FinanceExtension.ContactJson.ToString()+"}");
+            var list = JsonParseHelper.GetJProperty("{\"array\":" + finance.FinanceExtension.ContactJson + "}", "array", 4).Select(m => m.ToString());
+
+            var contacts = new string[]
+            {
+                "融资租赁合同",
+                "保证合同",
+                "车辆抵押合同",
+                "客户确认表",
+                "建行授权书",
+                "分期放款表",
+                "车辆交接声明",
+                "扣款委托书",
+                "未婚声明书",
+                "车辆处置声明书",
+                "付款指示函",
+                "收据",
+                "合格证照片",
+                "车辆销售合同",
+                "车辆照片"
+            };
+
+            foreach (var item in contacts)
+            {
+                var value = "×";
+                if (list.Contains(item))
+                {
+                    value = "√";
+                }
+
+                param.Add($"[@{item}@]", value);
+            }
 
             var pair = CreatPDF("Approval.docx", "个人按揭客户审批通知书.pdf", param);
 
