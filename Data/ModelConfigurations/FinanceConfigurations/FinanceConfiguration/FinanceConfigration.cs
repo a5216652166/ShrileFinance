@@ -31,7 +31,6 @@
             Property(m => m.LeaseNo).HasMaxLength(20);
             Property(m => m.RentPayableStartDate);
 
-
             ////// 信审报告
             ////HasOptional(m => m.CreditExamine).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();
 

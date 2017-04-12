@@ -77,13 +77,12 @@
                         // 合同全选
                         $('#Contact_dg').datagrid('selectAll')
                     }
-
+                    $("#account_tb").hide();
                     $("#account_tbl").hide();
                 }
                 else if (query.state == 2) {
                     // 客户
-                    LoadData_Cust(data);
-                    $("#account_tb").hide();
+                    LoadData_Cust(data);                    
                 }
 
                 // 加载放款信息
@@ -100,7 +99,10 @@
         //验证数据
         function ValidData() {
             var valid = $("form[name=FinanceOperation]").form("validate");
-
+            if ($("#account_dgl").datagrid("getData").total < 1 || $("#account_dg").datagrid("getData").total < 1)
+            {
+                valid = false;
+            }
             return valid;
         }
 
@@ -487,8 +489,19 @@
                         </select>
                     </div>
                     <div class="col-6">
+                        <label>有无还车条款：</label>
+                        <select name="VehicleClause" class="easyui-combobox" data-options="required:true,validType:'',value:'',readonly:false,editable:false">
+                            <option value="1">有</option>
+                            <option value="2">无</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
                         <label>融资租赁合同编号:</label>
                         <input name="LeaseNo" class="easyui-textbox" data-options="validType:'',required:true" />
+                    </div>
+                    <div class="col-6">
+                        <label>车辆抵押合同编号:</label>
+                        <input name="VehicleMortgageContractNo" class="easyui-textbox" data-options="validType:'',required:true" />
                     </div>
 
                     <div class="col-6">
@@ -524,6 +537,15 @@
                     <div class="col-6">
                         <label>客户应付租金起始日期：</label>
                         <input name="RentPayableStartDate" class="easyui-datebox" data-options="required:true,validType:'',readonly:false,editable:false,width:410" />
+                    </div>
+                    <div class="col-6">
+                        <label>车辆抵押要求:</label>
+                        <select name="MortgageRequirements" class="easyui-combobox" data-options="required:true,validType:'',value:'',readonly:false,editable:false">
+                            <option value="1">无</option>
+                            <option value="2">抵押晟融</option>
+                            <option value="3">抵押东海银行</option>
+                            <!--<option value="4">其他公司</option>-->
+                        </select>
                     </div>
                 </div>
             </fieldset>

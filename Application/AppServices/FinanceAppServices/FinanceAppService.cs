@@ -363,7 +363,7 @@
             financeAuditViewModel = PartialMapper(refObj: finance, outObj: financeAuditViewModel, array: array);
 
             financeAuditViewModel.Poundage = financeAuditViewModel.Poundage ?? finance.Produce.CustomerCostRatio * finance.FinanceItems.Sum(m => m.FinancialAmount);
-            financeAuditViewModel.Margin = financeAuditViewModel.Margin ?? finance.Produce.CustomerBailRatio*100;
+            financeAuditViewModel.Margin = financeAuditViewModel.Margin ?? finance.Produce.CustomerBailRatio * 100;
 
             // 审批保证金、审批手续费设置默认值
             financeAuditViewModel.ApprovalMargin = financeAuditViewModel.ApprovalMargin ?? financeAuditViewModel.Margin;
@@ -425,8 +425,12 @@
             var array1 = new string[] { nameof(finance.Vehicle.RegisterDate), nameof(finance.Vehicle.RunningMiles), nameof(finance.Vehicle.FactoryDate), nameof(finance.Vehicle.BusinessType), nameof(finance.Vehicle.PlateNo), nameof(finance.Vehicle.FrameNo), nameof(finance.Vehicle.EngineNo), nameof(finance.Vehicle.RegisterCity), nameof(finance.Vehicle.Condition) };
             operationReportViewModel = PartialMapper(refObj: finance.Vehicle, outObj: operationReportViewModel, array: array1);
 
+            ////租赁方式、融资租赁合同编号、客户应付租金起始日期、有无还车条款、车辆抵押合同编号、车辆抵押要求
             operationReportViewModel.LeaseMode = finance.LeaseMode;
+            operationReportViewModel.VehicleClause = finance.VehicleClause;
             operationReportViewModel.LeaseNo = finance.LeaseNo;
+            operationReportViewModel.VehicleMortgageContractNo = finance.VehicleMortgageContractNo;
+            operationReportViewModel.MortgageRequirements = finance.MortgageRequirements;
             operationReportViewModel.RentPayableStartDate = finance.RentPayableStartDate;
 
             return operationReportViewModel;
@@ -481,9 +485,10 @@
                 // 放款账户、放款账户开户行、放款账户卡号
                 finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: new string[] { "CreditAccountName", "CreditBankName", "CreditBankCard" });
 
-                //租赁方式、融资租赁合同编号、客户应付租金起始日期
-                finance = PartialMapper(refObj: value, outObj: finance, array: new string[] { nameof(value.LeaseMode), nameof(value.LeaseNo), nameof(value.RentPayableStartDate) });
-                //担保人名称1、担保合同编号1、担保人名称2、担保合同编号2
+                ////租赁方式、融资租赁合同编号、客户应付租金起始日期、有无还车条款、车辆抵押合同编号、车辆抵押要求
+                finance = PartialMapper(refObj: value, outObj: finance, array: new string[] { nameof(value.LeaseMode), nameof(value.LeaseNo), nameof(value.RentPayableStartDate),nameof(value.VehicleClause),nameof(value.VehicleMortgageContractNo),nameof(value.MortgageRequirements) });
+
+                ////担保人名称1、担保合同编号1、担保人名称2、担保合同编号2
                 finance.FinanceExtension = PartialMapper(refObj: value, outObj: finance.FinanceExtension, array: new string[] { nameof(value.GuarantorName1), nameof(value.GuarantorNo1), nameof(value.GuarantorName2), nameof(value.GuarantorNo2) });
             }
 
@@ -621,24 +626,12 @@
             var param = new Dictionary<string, string>();
             var info = finance.Applicant.Where(m => m.Type == TypeEnum.担保人).ToArray();
 
-            param.Add("【[@合同编号1@]】", string.Empty);
-            if (info.Length >= 1)
-            {
-                param.Add("[@保证人1@]", info[0].Name);
-                param.Add("【[@合同编号2@]】", string.Empty);
-                if (info.Length >= 2)
-                {
-                    param.Add("[@保证人2@]", info[1].Name);
-                    param.Add("【[@合同编号3@]】", string.Empty);
-                }
-            }
-            else
-            {
-                param.Add("【[@保证人1@]】", string.Empty);
-                param.Add("【[@合同编号2@]】", string.Empty);
-                param.Add("【[@保证人2@]】", string.Empty);
-                param.Add("【[@合同编号3@]】", string.Empty);
-            }
+            param.Add("[@合同编号1@]", finance.LeaseNo);
+
+            param.Add("[@保证人1@]", string.IsNullOrWhiteSpace(finance.FinanceExtension.GuarantorName1) ? string.Empty.PadLeft(4) : finance.FinanceExtension.GuarantorName1);
+            param.Add("[@合同编号2@]", string.IsNullOrWhiteSpace(finance.FinanceExtension.GuarantorNo1) ? string.Empty.PadLeft(10) : finance.FinanceExtension.GuarantorNo1);
+            param.Add("[@保证人2@]", string.IsNullOrWhiteSpace(finance.FinanceExtension.GuarantorName2) ? string.Empty.PadLeft(4) : finance.FinanceExtension.GuarantorName2);
+            param.Add("[@合同编号3@]", string.IsNullOrWhiteSpace(finance.FinanceExtension.GuarantorNo2) ? string.Empty.PadLeft(4) : finance.FinanceExtension.GuarantorNo2);
 
             param.Add("【[@合同编号4@]】", string.Empty);
             param.Add("【[@还车条款@]】", string.Empty);
@@ -657,17 +650,17 @@
             }
 
             param.Add("[@渠道商@]", finance.CreateOf.Name);
-            param.Add("[@所在区域@]", finance.CreateOf.ProxyArea);
+            param.Add("[@所在区域@]", finance.Vehicle.RegisterCity);
             param.Add("【[@抵押要求@]】", string.Empty);
             param.Add("【[@上牌要求@]】", string.Empty);
 
             var upper = new MoneyToUpper();
             param.Add("[@人民币1@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
             param.Add("[@金额1@]", Convert.ToString(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
-            param.Add("[@人民币2@]", upper.RMBToUpper(finance.Poundage == null ? 0 : finance.Poundage.Value));
-            param.Add("[@金额2@]", Convert.ToString(finance.Poundage == null ? 0 : finance.Poundage.Value));
-            param.Add("[@人民币3@]", upper.RMBToUpper(finance.Margin == null ? 0 : finance.Margin.Value));
-            param.Add("[@金额3@]", Convert.ToString(finance.Margin == null ? 0 : finance.Margin.Value));
+            param.Add("[@人民币2@]", upper.RMBToUpper(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value));
+            param.Add("[@金额2@]", Convert.ToString(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value));
+            param.Add("[@人民币3@]", upper.RMBToUpper(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value));
+            param.Add("[@金额3@]", Convert.ToString(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value));
             param.Add("[@人民币4@]", string.Empty.PadLeft(12));
             param.Add("[@金额4@]", string.Empty.PadLeft(8));
             param.Add("[@人民币5@]", string.Empty.PadLeft(12));
@@ -700,9 +693,9 @@
             param.Add("[@年1@]", date.Value.Year.ToString());
             param.Add("[@月1@]", date.Value.Month.ToString());
             param.Add("[@日1@]", date.Value.Day.ToString());
-            param.Add("【[@年2@]】", string.Empty.PadLeft(4));
-            param.Add("【[@月2@]】", string.Empty.PadLeft(2));
-            param.Add("【[@日2@]】", string.Empty.PadLeft(2));
+            param.Add("【[@年2@]】", finance.RentPayableStartDate.Value.Year.ToString());
+            param.Add("【[@月2@]】", finance.RentPayableStartDate.Value.Month.ToString());
+            param.Add("【[@日2@]】", finance.RentPayableStartDate.Value.Day.ToString());
             param.Add("[@产品大类@]", finance.Produce.ProduceType.ToString());
             param.Add("[@产品代码@]", finance.Produce.Code);
 

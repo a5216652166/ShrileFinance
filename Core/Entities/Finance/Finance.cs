@@ -16,21 +16,6 @@
             Contact = new HashSet<Contract>();
         }
 
-        /// <summary>
-        /// 租赁方式
-        /// </summary>
-        public LeaseModeEnum LeaseMode { get; set; }
-
-        /// <summary>
-        /// 融资租赁合同编号
-        /// </summary>
-        public string LeaseNo { get; set; }        
-
-        /// <summary>
-        /// 客户应付租金起始日期
-        /// </summary>
-        public DateTime? RentPayableStartDate { get; set; }
-
         public enum RepaymentSchemeEnum : byte
         {
             /// <summary>
@@ -55,6 +40,52 @@
 
             回租 = 2,
         }
+
+        public enum VehicleClauseEnum : byte
+        {
+            有 = 1,
+
+            无 = 2,
+        }
+
+        public enum MortgageRequirementsEnum : byte
+        {
+            无 = 1,
+
+            晟融 = 2,
+
+            东海银行 = 3,
+        }
+
+        /// <summary>
+        /// 租赁方式
+        /// </summary>
+        public LeaseModeEnum LeaseMode { get; set; }
+
+        /// <summary>
+        /// 有无还车条款
+        /// </summary>
+        public VehicleClauseEnum VehicleClause { get; set; }
+
+        /// <summary>
+        /// 车辆抵押要求
+        /// </summary>
+        public MortgageRequirementsEnum MortgageRequirements { get; set; }
+
+        /// <summary>
+        /// 融资租赁合同编号
+        /// </summary>
+        public string LeaseNo { get; set; }
+
+        /// <summary>
+        /// 车辆抵押合同编号
+        /// </summary>
+        public string VehicleMortgageContractNo { get; set; }
+
+        /// <summary>
+        /// 客户应付租金起始日期
+        /// </summary>
+        public DateTime? RentPayableStartDate { get; set; }
 
         /// <summary>
         /// 实际用款额(融资本金)

@@ -29,10 +29,29 @@
         public LeaseModeEnum? LeaseMode { get; set; }
 
         /// <summary>
+        /// 有无还车条款
+        /// </summary>
+        [Required(ErrorMessage ="有无还车条款 不可为空")]
+        public VehicleClauseEnum? VehicleClause { get; set; }
+
+        /// <summary>
+        /// 车辆抵押要求
+        /// </summary>
+        [Required(ErrorMessage = "车辆抵押要求 不可为空")]
+        public MortgageRequirementsEnum? MortgageRequirements { get; set; }
+
+        /// <summary>
         /// 融资租赁合同编号
         /// </summary>
         [Required(ErrorMessage = "融资租赁合同编号 不可为空")]
         public string LeaseNo { get; set; }
+
+        /// <summary>
+        /// 车辆抵押合同编号
+        /// </summary>
+        [Required(ErrorMessage = "车辆抵押合同编号 不可为空")]
+        public string VehicleMortgageContractNo { get; set; }
+
 
         /// <summary>
         /// 担保人名称1
