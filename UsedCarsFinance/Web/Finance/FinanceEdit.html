@@ -168,7 +168,7 @@
         //构建数据
         function BuildData() {
             var data = {};
-
+            
             data["Id"] = $("#financeId").val();
 
             var ff = $(".container").find("article")
@@ -200,10 +200,10 @@
 
             data.Email = $("input#Email").textbox('getValue');
 
-            data.Registrant = $("input[textboxname=Registrant]").combobox('getValue');
+            data.Registrant = $("select[textboxname=Registrant]").combobox('getValue');
 
             data.BranchOfficeId = $("input[textboxname=BranchOfficeId]").combobox('getValue');
-            debugger
+            
             // 构建产品信息
             data = $.extend(data, dataBuildProduce());
 
@@ -273,7 +273,7 @@
 
             // 加载 邮箱、登记对象、子公司
             $("input#Email").textbox('setValue', data.Email);
-            $("input[textboxname=Registrant]").combobox('select', data.Registrant);
+            $("select[textboxname=Registrant]").combobox('select', data.Registrant);
             $("input[textboxname=BranchOfficeId]").combobox('select', data.BranchOfficeId);
 
             // 加载车辆信息
@@ -526,20 +526,12 @@
         // 证件类型onChange事件
         function IdentityTypeChange(record)
         {
-			debugger
             $(this).parents("div.row").find("#Identity").textbox({ validType: ["length[0,18]"] });
-			debugger
+			
             if (record == "身份证")
             {
                 $(this).parents("div.row").find("#Identity").textbox({ validType: ["IdCard"] });
             }
-
-            debugger
-            var ttttt = $(this).parent("div.row").find("#Identity");
-            debugger
-            var ttsssttt = $(this).parent("div.row").find("#Identity");
-
-            debugger
         }
     </script>
 </head>

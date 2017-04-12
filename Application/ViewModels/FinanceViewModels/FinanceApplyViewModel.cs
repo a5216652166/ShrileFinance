@@ -5,11 +5,9 @@
     using System.ComponentModel.DataAnnotations;
     using AccountViewModels;
     using Application.Produce.ProduceViewModels;
-    using Application.ViewModels.FinanceViewModels.BranchOfficeViewModels;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using Application.ViewModels.PartnerViewModels;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
     using static Core.Entities.Finance.Finance;
 
     public class FinanceApplyViewModel : IEntityViewModel
@@ -63,7 +61,6 @@
         /// <summary>
         /// 登记对象
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
         [Required(ErrorMessage = "登记对象不可为空")]
         public RegistrantEnum? Registrant { get; set; }
 
