@@ -28,9 +28,12 @@
             Property(m => m.Payment);
             Property(m => m.RepayRentDate);
             Property(m => m.LeaseMode);
+            Property(m => m.VehicleClause);
+            Property(m => m.VehicleMortgageContractNo).HasMaxLength(20);
+            Property(m => m.MortgageRequirements);
             Property(m => m.LeaseNo).HasMaxLength(20);
             Property(m => m.RentPayableStartDate);
-            Property(m=>m.Email).IsRequired().HasMaxLength(30);
+            Property(m => m.Email).IsRequired().HasMaxLength(30);
             Property(m => m.Registrant).IsRequired();
 
             HasRequired(m => m.BranchOffice);

@@ -17,21 +17,6 @@
             Contact = new HashSet<Contract>();
         }
 
-        /// <summary>
-        /// 租赁方式
-        /// </summary>
-        public LeaseModeEnum LeaseMode { get; set; }
-
-        /// <summary>
-        /// 融资租赁合同编号
-        /// </summary>
-        public string LeaseNo { get; set; }
-
-        /// <summary>
-        /// 客户应付租金起始日期
-        /// </summary>
-        public DateTime? RentPayableStartDate { get; set; }
-
         public enum RepaymentSchemeEnum : byte
         {
             /// <summary>
