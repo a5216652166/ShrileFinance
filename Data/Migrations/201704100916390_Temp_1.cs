@@ -19,9 +19,9 @@ namespace Data.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
-            AddColumn("dbo.FANC_Finance", "LeaseMode", c => c.Byte(nullable: false));
-            AddColumn("dbo.FANC_Finance", "VehicleClause", c => c.Byte(nullable: false));
-            AddColumn("dbo.FANC_Finance", "MortgageRequirements", c => c.Byte(nullable: false));
+            AddColumn("dbo.FANC_Finance", "LeaseMode", c => c.Byte());
+            AddColumn("dbo.FANC_Finance", "VehicleClause", c => c.Byte());
+            AddColumn("dbo.FANC_Finance", "MortgageRequirements", c => c.Byte());
             AddColumn("dbo.FANC_Finance", "LeaseNo", c => c.String(maxLength: 20));
             AddColumn("dbo.FANC_Finance", "VehicleMortgageContractNo", c => c.String(maxLength: 20));
             AddColumn("dbo.FANC_Finance", "RentPayableStartDate", c => c.DateTime());

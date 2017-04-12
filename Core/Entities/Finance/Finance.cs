@@ -68,17 +68,17 @@
         /// <summary>
         /// 租赁方式
         /// </summary>
-        public LeaseModeEnum LeaseMode { get; set; }
+        public LeaseModeEnum? LeaseMode { get; set; }
 
         /// <summary>
         /// 有无还车条款
         /// </summary>
-        public VehicleClauseEnum VehicleClause { get; set; }
+        public VehicleClauseEnum? VehicleClause { get; set; }
 
         /// <summary>
         /// 车辆抵押要求
         /// </summary>
-        public MortgageRequirementsEnum MortgageRequirements { get; set; }
+        public MortgageRequirementsEnum? MortgageRequirements { get; set; }
 
         /// <summary>
         /// 融资租赁合同编号
