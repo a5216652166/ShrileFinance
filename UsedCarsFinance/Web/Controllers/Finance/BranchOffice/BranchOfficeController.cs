@@ -60,7 +60,7 @@
         [HttpGet]
         public IHttpActionResult Option()
         {
-            var option = branchOfficeAppService.GetOption();
+            var option = branchOfficeAppService.Option();
 
             return Ok(option);
         }

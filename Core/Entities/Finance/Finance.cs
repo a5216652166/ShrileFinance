@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Core.Entities.Finance.BranchOffices;
     using Core.Entities.Finance.Financial;
     using Core.Entities.Finance.Partners;
     using Core.Produce;
@@ -24,7 +25,7 @@
         /// <summary>
         /// 融资租赁合同编号
         /// </summary>
-        public string LeaseNo { get; set; }        
+        public string LeaseNo { get; set; }
 
         /// <summary>
         /// 客户应付租金起始日期
@@ -54,6 +55,13 @@
             直租 = 1,
 
             回租 = 2,
+        }
+
+        public enum RegistrantEnum : byte
+        {
+            晟融 = 1,
+
+            合作商 = 2
         }
 
         /// <summary>
@@ -137,6 +145,16 @@
         public DateTime? RepayRentDate { get; set; }
 
         /// <summary>
+        /// 登记对象
+        /// </summary>
+        public RegistrantEnum Registrant { get; set; }
+
+        /// <summary>
+        /// 电子邮箱
+        /// </summary>
+        public string Email{ get; set; }
+
+        /// <summary>
         /// 合作商
         /// </summary>
         public virtual Partner CreateOf { get; set; }
@@ -170,6 +188,11 @@
         /// 产品
         /// </summary>
         public virtual Produce Produce { get; set; }
+
+        /// <summary>
+        /// 分公司
+        /// </summary>
+        public virtual BranchOffice BranchOffice { get; set; }
 
         /// <summary>
         /// 融资对应产品的融资项

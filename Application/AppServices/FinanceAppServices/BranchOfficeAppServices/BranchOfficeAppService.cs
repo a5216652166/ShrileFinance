@@ -72,14 +72,11 @@
             branchOfficeRepository.Commit();
         }
 
-        public Dictionary<Guid, string> GetOption()
+        public IEnumerable<BranchOfficeViewModel> Option()
         {
-            var options = new Dictionary<Guid, string>();
+            var entities = branchOfficeRepository.GetAll();
 
-            foreach (var item in branchOfficeRepository.GetAll().Select(m => new { m.Id, m.Name }))
-            {
-                options.Add(item.Id, item.Name);
-            }
+            var options = Map<IEnumerable<BranchOfficeViewModel>>(entities);
 
             return options;
         }
