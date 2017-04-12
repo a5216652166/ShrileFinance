@@ -2,10 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using AccountViewModels;
     using Application.Produce.ProduceViewModels;
+    using Application.ViewModels.FinanceViewModels.BranchOfficeViewModels;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using Application.ViewModels.PartnerViewModels;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+    using static Core.Entities.Finance.Finance;
 
     public class FinanceApplyViewModel : IEntityViewModel
     {
@@ -48,6 +53,25 @@
         /// 自付金额
         /// </summary>
         public decimal SelfPrincipal { get; set; }
+
+        /// <summary>
+        /// 子公司标识
+        /// </summary>
+        [Required(ErrorMessage ="子公司不可为空")]
+        public Guid? BranchOfficeId { get; set; }
+
+        /// <summary>
+        /// 登记对象
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        [Required(ErrorMessage = "登记对象不可为空")]
+        public RegistrantEnum? Registrant { get; set; }
+
+        /// <summary>
+        /// 电子邮箱
+        /// </summary>
+        [Required(ErrorMessage = "电子邮箱不可为空")]
+        public string Email { get; set; }
 
         /// <summary>
         /// 创建者

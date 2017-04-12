@@ -30,6 +30,10 @@
             Property(m => m.LeaseMode);
             Property(m => m.LeaseNo).HasMaxLength(20);
             Property(m => m.RentPayableStartDate);
+            Property(m=>m.Email).IsRequired().HasMaxLength(30);
+            Property(m => m.Registrant).IsRequired();
+
+            HasRequired(m => m.BranchOffice);
 
             ////// 信审报告
             ////HasOptional(m => m.CreditExamine).WithOptionalPrincipal().Map(m => m.MapKey("FinanceId")).WillCascadeOnDelete();

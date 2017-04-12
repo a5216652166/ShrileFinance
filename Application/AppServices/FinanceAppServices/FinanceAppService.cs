@@ -14,6 +14,7 @@
     using Core.Entities.Finance.Financial;
     using Core.Entities.Identity;
     using Core.Interfaces.Repositories.FinanceRepositories;
+    using Core.Interfaces.Repositories.FinanceRepositories.BranchOfficeRepositories;
     using Core.Interfaces.Repositories.LoanRepositories;
     using Core.Interfaces.Repositories.ProcessRepositories;
     using Core.Produce;
@@ -35,6 +36,7 @@
         private readonly IProduceRepository produceRepository;
         private readonly VehicleAppService vehicleAppService;
         private readonly FileSystemAppService fileSystemAppService;
+        private readonly IBranchOfficeRepository branchOfficeRepository;
 
         public FinanceAppService(
             IFinanceRepository financeRepository,
@@ -44,7 +46,8 @@
             IPartnerRepository partnerRepository,
             IProduceRepository produceRepository,
             VehicleAppService vehicleAppService,
-            FileSystemAppService fileSystemAppService)
+            FileSystemAppService fileSystemAppService,
+            IBranchOfficeRepository branchOfficeRepository)
         {
             this.financeRepository = financeRepository;
             this.userManager = userManager;
@@ -54,6 +57,7 @@
             this.produceRepository = produceRepository;
             this.vehicleAppService = vehicleAppService;
             this.fileSystemAppService = fileSystemAppService;
+            this.branchOfficeRepository = branchOfficeRepository;
         }
 
         public KeyValuePair<string, byte[]> DownloadFiles(Guid financeId, int sign)
@@ -90,6 +94,8 @@
             finance.CreateOf = partnerRepository.GetByUser(userManager.CurrentUser());
 
             finance.Produce = produceRepository.Get(value.ProduceId);
+
+            finance.BranchOffice = branchOfficeRepository.Get(value.BranchOfficeId.Value);
 
             financeRepository.Create(finance);
             financeRepository.Commit();
