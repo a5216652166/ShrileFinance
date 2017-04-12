@@ -101,8 +101,12 @@
             var valid = $("form[name=FinanceOperation]").form("validate");
             if ($("#account_dgl").datagrid("getData").total < 1 || $("#account_dg").datagrid("getData").total < 1)
             {
-                valid = false;
+                if (query.state == 2)
+                {
+                   valid = false;
+                }
             }
+
             return valid;
         }
 
