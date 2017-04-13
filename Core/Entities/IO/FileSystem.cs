@@ -5,24 +5,30 @@
     using System.Web;
     using Interfaces;
 
+    public enum TableNameEnum : byte
+    {
+        申请人影像资料 = 1,
+        放款影像资料 = 2
+    }
+
     /// <summary>
     /// 文件封装
     /// </summary>
     public class FileSystem : Entity, IAggregateRoot
     {
-        private const string VirtualPath = @"~\Files\";
+        public const string VirtualPath = @"~\Files\";
 
         public FileSystem()
         {
         }
 
-        public FileSystem(string oldName, string extension, Stream stream = null, bool isTemp = false)
+        public FileSystem(string oldName, string extension, Stream stream = default(Stream), bool isTemp = false)
         {
             Id = Guid.Empty;
             OldName = oldName;
             Extension = extension;
 
-            if (stream != null)
+            if (stream != default(Stream))
             {
                 if (stream is MemoryStream)
                 {
@@ -41,7 +47,7 @@
         /// <summary>
         /// 文件名
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// 原文件名
@@ -56,7 +62,7 @@
         /// <summary>
         /// 路径
         /// </summary>
-        public string Path { get; private set; }
+        public string Path { get; protected set; }
 
         /// <summary>
         /// 内存流
@@ -69,6 +75,26 @@
         public bool IsTemp { get; private set; }
 
         /// <summary>
+        /// 文件创建时间
+        /// </summary>
+        public DateTime? DateOfCreate { get; set; }
+
+        /// <summary>
+        /// 引用标识
+        /// </summary>
+        public Guid ReferenceId { get; set; }
+
+        /// <summary>
+        /// 分组标识
+        /// </summary>
+        public Guid ReferencedSid { get; set; }
+
+        /// <summary>
+        /// 表单名
+        /// </summary>
+        public TableNameEnum? TableName { get; set; }
+
+        /// <summary>
         /// 保存
         /// </summary>
         public void Save()
@@ -78,7 +104,7 @@
                 throw new ArgumentNullException(nameof(Stream), "流为null");
             }
 
-            Name = GenerateName();
+            AllowName();
 
             // 文件所属文件夹路径（虚拟路径）
             var direct = IsTemp ? VirtualPath + @"Temps" : VirtualPath + DateTime.Now.ToString("yyyyMM");
@@ -103,9 +129,11 @@
         /// <returns>内存流</returns>
         public MemoryStream Read()
         {
-            if (Stream == null)
+            if (Stream == default(MemoryStream))
             {
-                throw new IOException("流为null");
+                var bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath(Path));
+
+                Stream = new MemoryStream(bytes);
             }
 
             var memorySream = new MemoryStream();
@@ -116,14 +144,30 @@
         }
 
         /// <summary>
-        /// 生成文件名
+        /// 分配文件名
         /// </summary>
         /// <returns>新文件名</returns>
-        private string GenerateName()
+        public void AllowName(string name = default(string))
         {
-            Name = Guid.NewGuid().ToString();
+            if (string.IsNullOrEmpty(name))
+            {
+                Name = Guid.NewGuid().ToString();
+            }
+            else
+            {
+                Name = name;
+            }
+        }
 
-            return Name;
+        /// <summary>
+        /// 分配路径
+        /// </summary>
+        public void AllowPath(string path = default(string))
+        {
+            if (string.IsNullOrEmpty(path) == false)
+            {
+                Path = path;
+            }
         }
     }
 }
