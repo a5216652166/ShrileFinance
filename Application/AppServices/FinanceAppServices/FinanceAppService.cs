@@ -367,7 +367,9 @@
                 VehicleBuyPriseMax = vehicleBuyPrice.Max,
 
                 ProduceRateMonth = finance.Produce.RateMonth,
-                ProducePeriods = finance.Produce.Periods
+                ProducePeriods = finance.Produce.Periods,
+
+                ProduceId = finance.Produce.Id
             };
 
             // 部分映射

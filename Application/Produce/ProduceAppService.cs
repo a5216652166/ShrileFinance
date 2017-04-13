@@ -12,10 +12,14 @@
     public class ProduceAppService
     {
         private readonly IProduceRepository repository;
+        private readonly PaymentEqualsCalculatorService paymentEqualsCalculatorService;
 
-        public ProduceAppService(IProduceRepository repository)
+        public ProduceAppService(
+            IProduceRepository repository,
+            PaymentEqualsCalculatorService paymentEqualsCalculatorService)
         {
             this.repository = repository;
+            this.paymentEqualsCalculatorService = paymentEqualsCalculatorService;
         }
 
         public IPagedList<ProduceViewModel> PagedList(string searchString, int page, int size)
@@ -59,7 +63,8 @@
 
             var entity = Mapper.Map<Produce>(model);
 
-            entity.SetPaymentFactor();
+            // 计算每年的月供系数, 本金 10000.
+            YearlyPayment(entity, 10000);
 
             repository.Create(entity);
             repository.Commit();
@@ -73,10 +78,40 @@
 
             Mapper.Map(model, entity);
 
-            entity.SetPaymentFactor();
+            // 计算每年的月供系数, 本金 10000.
+            YearlyPayment(entity, 10000);
 
             repository.Modify(entity);
             repository.Commit();
+        }
+
+        /// <summary>
+        /// 计算每年的月供额
+        /// </summary>
+        /// <param name="produceId">产品标识</param>
+        /// <param name="principal">融资总额</param>
+        /// <returns></returns>
+        public IEnumerable<PrincipalRatioViewModel> YearlyPayment(Guid produceId, decimal principal)
+        {
+            var produce = repository.Get(produceId);
+
+            var payments = YearlyPayment(produce, principal);
+
+            return Mapper.Map<IEnumerable<PrincipalRatioViewModel>>(payments);
+        }
+
+        /// <summary>
+        /// 计算每年的月供额
+        /// </summary>
+        /// <param name="produce">产品</param>
+        /// <param name="principal">融资总额</param>
+        /// <returns></returns>
+        private IEnumerable<PrincipalRatio> YearlyPayment(Produce produce, decimal principal)
+        {
+            var payments = paymentEqualsCalculatorService
+                .YearlyPayment(produce.PrincipalRatios, principal, produce.RateMonth);
+
+            return payments;
         }
     }
 }
