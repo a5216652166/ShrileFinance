@@ -18,7 +18,7 @@
 
             CreateMap<PrincipalRatio, Application.Produce.ProduceViewModels.PrincipalRatioViewModel>()
                 .ForMember(d => d.Ratio, opt => opt.MapFrom(s => s.Ratio * 100))
-                .ForMember(d => d.Factor, opt => opt.MapFrom(s => Math.Round(s.Factor, 2)));
+                .ForMember(d => d.Factor, opt => opt.MapFrom(s => Math.Round(s.Factor)));
         }
     }
 }
