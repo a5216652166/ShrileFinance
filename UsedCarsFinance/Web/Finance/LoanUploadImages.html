@@ -153,16 +153,22 @@
     <!--Button-->
     <div id="linkBtn">
         <div id="fieldsetBtn">
-            <div style="float:left;width:700px;height:25px;">
-                <a id="view" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:view,width:100">查看</a>
-                <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:del,width:100">删除</a>
+            <div style="float:left;width:700px;height:25px;m">
                 <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:downLoadall,width:100">下载全部</a>
                 <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle,width:100">下载单身证明</a>
                 <a id="downloadApproval" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadApproval,width:100">下载审批通知书</a>
                 <a id="downloadFinanceLeaseContract" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadFinanceLeaseContract,width:120">下载融资租赁合同</a>
+            </div>
+            <div style="float:left;width:700px;height:25px;margin-top:10px;">
+                <a id="view" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:view,width:100">查看</a>
+                <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:del,width:100">删除</a>
+                <!--<a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:downLoadall,width:100">下载全部</a>
+                <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle,width:100">下载单身证明</a>
+                <a id="downloadApproval" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadApproval,width:100">下载审批通知书</a>
+                <a id="downloadFinanceLeaseContract" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadFinanceLeaseContract,width:120">下载融资租赁合同</a>-->
                 <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',width:100,onClick:Add">添加</a>
             </div>
-            <div style="width:200px;height:25px; padding-top:40px;"><input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="checkall(this)"><label id="label1" style="width:30px;margin-top:2px;" for="" onclick="$(this).prev().click()">全选</label></div>
+            <div style="width:200px;height:25px; padding-top:70px;"><input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="checkall(this)"><label id="label1" style="width:30px;margin-top:2px;" for="" onclick="$(this).prev().click()">全选</label></div>
         </div>
     </div>
     <!--上传控件-->

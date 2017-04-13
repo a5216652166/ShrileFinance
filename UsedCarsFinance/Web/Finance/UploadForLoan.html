@@ -108,6 +108,14 @@
             $("#downloadApproval").linkbutton("enable");
         }
 
+        //下载融资租赁合同
+        function DownloadFinanceLeaseContract() {
+            $("#downloadApproval").linkbutton("disable");
+            $("#downloadForm input[name=financeId]").val(query.FinanceId);
+            $("#downloadForm input[name=sign]").val(3);
+            $("#downloadForm").submit();
+            $("#downloadApproval").linkbutton("enable");
+        }
 
     </script>
 </head>
@@ -118,8 +126,9 @@
                 <div style="float:left;width:700px;height:25px;">
                     <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:del,width:100">删除</a>
                     <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:downLoadall,width:100">下载全部</a>
-                    <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle,width:100">下载单身证明</a>
+                    <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle(),width:100">下载单身证明</a>
                     <a id="downloadApproval" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadApproval,width:100">下载审批通知书</a>
+                    <a id="downloadFinanceLeaseContract" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadFinanceLeaseContract,width:120">下载融资租赁合同</a>
                 </div>
                 <div style="width:200px;height:25px; padding-top:40px;">
                     <input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="Checkall(this)">
