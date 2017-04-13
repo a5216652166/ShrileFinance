@@ -32,12 +32,14 @@
 			if (data) {
 				// 加载融资审核基本信息
 				FieldsetLoadDateFactory("FinanceAudit", 'text', data);
+				$("#financeItem").form('load', data);
 
 				// 加载融资项
 				$("fieldset#financeItem table#financeItem_dg").datagrid("loadData", data.FinancialItem);
 
 				$("fieldset#financeItem input#SelfPrincipal").textbox('setValue', data.SelfPrincipal);
 				CalculateTotalPrincipal();
+				loadPrincipalRatios();
 
 				if (query.state == 0) {
 					// 禁用所有
@@ -94,17 +96,8 @@
 			});
 		}
 
-		// 设置月供额度
+		// 设置月供
 		function SetMonthPay() {
-			// 获取审批融资金额
-			var approvalMoney = $("fieldset[name=FinanceAudit] input[textboxname=ApprovalMoney]").textbox("getValue") || 0;
-			var produceRateMonth = $("fieldset[name=FinanceAudit] input[name=ProduceRateMonth]").val() || 0;
-			var producePeriods = $("fieldset[name=FinanceAudit] input[name=ProducePeriods]").val() || 0;
-
-			var payment = PMT(parseFloat(produceRateMonth), parseFloat(producePeriods), parseFloat(approvalMoney)) || 0;
-
-			$("fieldset[name=FinanceAudit] input[textboxname=Payment]").textbox("setValue", Math.round(100 * payment, 2) / 100);
-
 			loadPrincipalRatios();
 		}
 	</script>
@@ -211,28 +204,12 @@
 					<input name="ApprovalMoney" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetMonthPay" />
 					<span>元</span>
 				</div>
+			</div>
 
-				<div class="col-6">
-					<label>月供额度：</label>
-					<input name="Payment" class="easyui-textbox" data-options="readonly:true,required:false " />
-					<span>元</span>
-				</div>
-
-				<div class="col-6">
-					<label>保证金：</label>
-					<input name="Margin" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money' " />
-					<span>%</span>
-				</div>
-
+			<div class="row">
 				<div class="col-6">
 					<label>审批保证金：</label>
 					<input name="ApprovalMargin" class="easyui-textbox" data-options="required:true,validType:'Money',value:'0' " />
-					<span>%</span>
-				</div>
-
-				<div class="col-6">
-					<label>手续费：</label>
-					<input name="Poundage" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money'" />
 					<span>%</span>
 				</div>
 

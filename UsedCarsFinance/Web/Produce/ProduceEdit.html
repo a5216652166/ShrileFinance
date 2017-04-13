@@ -62,7 +62,7 @@
 
 			$("#principal_ratios").datagrid("loadData", data.PrincipalRatios);
 
-			ResetPaymentFactors();
+			loadPrincipalRatios();
 		}
 
 		function DataBuild() {
@@ -293,15 +293,35 @@
 
 				// 计算月供系数
 				function CalculatePaymentFactor(rate, ratio) {
+					return 0;
+
+					//var principal = 10000;
+					//var periods = 12;
+
+					//var pv = 10000 * (parseFloat(ratio) / 100);
+					//var payment = PMT(rate, periods, pv);
+
+					//payment = (Math.round(payment * 100) / 100) || 0;
+
+					//return payment;
+				}
+
+				function loadPrincipalRatios() {
+					var produceId = $("#produce_info input[name=Id]").val()
 					var principal = 10000;
-					var periods = 12;
 
-					var pv = 10000 * (parseFloat(ratio) / 100);
-					var payment = PMT(rate, periods, pv);
-
-					payment = (Math.round(payment * 100) / 100) || 0;
-
-					return payment;
+					if (produceId && principal) {
+						$.ajax({
+							method: "GET",
+							url: "../api/Produce/YearlyPayment",
+							data: { id: produceId, principal: principal },
+							statusCode: {
+								200: function (payments) {
+									$("#principal_ratios").datagrid("loadData", payments);
+								}
+							}
+						});
+					}
 				}
 
 				function titleFormatter(value, row, index) {
