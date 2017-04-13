@@ -147,6 +147,7 @@
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\FinancialItemViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\FinancialLoanListViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\FinancialLoanViewModel.cs" />
+    <Compile Include="ViewModels\FinanceViewModels\ImageDeleteViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\LoanViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\FinancialLoanViewModels\RepayTableViewModel.cs" />
     <Compile Include="ViewModels\FinanceViewModels\OperationViewModel.cs" />
