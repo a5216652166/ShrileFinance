@@ -18,7 +18,7 @@ function PicViewerStart(viewer) {
 function PicViewerLoadPic(UrlArray, viewerContainer) {
     // 图片加入照片查看器
     if (Object.prototype.toString.call(UrlArray) === '[object Array]') {
-        var template = '<div id="li" style="float:left"><img data-original="" src="" alt="" ><label style="text-align:center;display:block"></label></div>';
+        var template = '<div id="li" style="float:left;padding-right:10px;"><img data-original="" src="" alt="" ><label style="text-align:center;display:block;width:100px;height:40px;word-wrap:break-word;word-break:keep-all;overflow:hidden;"></label></div>';
 
         $(UrlArray).each(function (i, e) {
             $(viewerContainer).append(template);

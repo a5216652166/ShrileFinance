@@ -25,13 +25,15 @@
         div#viewerContainer div {
             float: left;
         }
-            img {
-                width: 50px;
-                height: 50px;
-            }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+
         div#AddPic div img {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
         }
     </style>
 
@@ -57,7 +59,7 @@
         // 图片上传成功回调函数
         function UploadSuccessInstance(file, data, response) {
             data = JSON.parse(data);
-            
+
             var files = GetFiles(data.referenceId);
 
             if (files == null || files.length == 0) {
@@ -77,13 +79,39 @@
             PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
         }
     </script>
+
+    <script type="text/javascript">
+        function downLoadall() {
+        }
+
+        function Checkall(obj) {
+            debugger
+            $("fieldset input[type=checkbox]").each(function (i, e) {
+                e.checked = obj.checked;
+            })
+        }
+    </script>
+
 </head>
 <body>
     <form class="container" tag="11">
+        <div id="linkBtn">
+            <div id="fieldsetBtn">
+                <div style="float:left;width:700px;height:25px;">
+                    <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:del,width:100">删除</a>
+                    <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:downLoadall,width:100">下载全部</a>
+                </div>
+                <div style="width:200px;height:25px; padding-top:40px;">
+                    <input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="Checkall(this)">
+                    <label for="cball" style="width:30px;margin-top:2px;">全选</label>
+                </div>
+            </div>
+        </div>
+
         <fieldset class="" style="float:none">
             <legend>身份类</legend>
             <div class="container" style="">
-                <label style="font-size:15px">客户融资申请表:</label>
+                <label style="font-size:17px"><input type="checkbox" /><span>客户融资申请表:</span></label>
                 <div id="viewerContainer_11">
                 </div>
                 <div>
@@ -94,9 +122,9 @@
                 <div style="width:auto;height:18px"></div>
                 <hr style="border:1px dashed;margin-bottom:20px" />
             </div>
-            
+
             <div class="container" style="">
-                <label style="font-size:15px">单身证明:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>单身证明:</span></label>
                 <div id="viewerContainer_12">
                 </div>
                 <div>
@@ -109,7 +137,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">其它:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>其它:</span></label>
                 <div id="viewerContainer_13">
                 </div>
                 <div>
@@ -125,7 +153,7 @@
         <fieldset class="" style="float:none">
             <legend>车辆类</legend>
             <div class="container" style="">
-                <label style="font-size:15px">车辆登记证书:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>车辆登记证书:</span></label>
                 <div id="viewerContainer_21">
                 </div>
                 <div>
@@ -138,7 +166,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">车辆行驶证:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>车辆行驶证:</span></label>
                 <div id="viewerContainer_22">
                 </div>
                 <div>
@@ -151,7 +179,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">车辆照片:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>车辆照片:</span></label>
                 <div id="viewerContainer_23">
                 </div>
                 <div>
@@ -167,7 +195,7 @@
         <fieldset class="" style="float:none">
             <legend>主要申请人</legend>
             <div class="container" style="">
-                <label style="font-size:15px">身份证正反面:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>身份证正反面:</span></label>
                 <div id="viewerContainer_31">
                 </div>
                 <div>
@@ -180,7 +208,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">户口本复印件:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>户口本复印件:</span></label>
                 <div id="viewerContainer_32">
                 </div>
                 <div>
@@ -193,7 +221,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">结婚证/未婚承诺书:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>结婚证/未婚承诺书:</span></label>
                 <div id="viewerContainer_33">
                 </div>
                 <div>
@@ -206,7 +234,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">驾驶证:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>驾驶证:</span></label>
                 <div id="viewerContainer_34">
                 </div>
                 <div>
@@ -219,7 +247,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">居住证明:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>居住证明:</span></label>
                 <div id="viewerContainer_35">
                 </div>
                 <div>
@@ -232,7 +260,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">家访照片:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>家访照片:</span></label>
                 <div id="viewerContainer_36">
                 </div>
                 <div>
@@ -245,7 +273,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">银行流水:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>银行流水:</span></label>
                 <div id="viewerContainer_37">
                 </div>
                 <div>
@@ -258,7 +286,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">征信报告:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>征信报告:</span></label>
                 <div id="viewerContainer_38">
                 </div>
                 <div>
@@ -271,7 +299,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">客户其他资信证明:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>客户其他资信证明:</span></label>
                 <div id="viewerContainer_39">
                 </div>
                 <div>
@@ -287,7 +315,7 @@
         <fieldset class="" style="float:none">
             <legend>共同申请人</legend>
             <div class="container" style="">
-                <label style="font-size:15px">身份证正反面:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>身份证正反面:</span></label>
                 <div id="viewerContainer_41">
                 </div>
                 <div>
@@ -300,7 +328,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">户口本复印件:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>户口本复印件:</span></label>
                 <div id="viewerContainer_42">
                 </div>
                 <div>
@@ -313,7 +341,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">结婚证/未婚承诺书:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>结婚证/未婚承诺书:</span></label>
                 <div id="viewerContainer_43">
                 </div>
                 <div>
@@ -326,7 +354,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">驾驶证:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>驾驶证:</span></label>
                 <div id="viewerContainer_44">
                 </div>
                 <div>
@@ -339,7 +367,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">居住证明:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>居住证明:</span></label>
                 <div id="viewerContainer_45">
                 </div>
                 <div>
@@ -352,7 +380,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">家访照片:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>家访照片:</span></label>
                 <div id="viewerContainer_46">
                 </div>
                 <div>
@@ -365,7 +393,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">银行流水:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>银行流水:</span></label>
                 <div id="viewerContainer_47">
                 </div>
                 <div>
@@ -378,7 +406,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">征信报告:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>征信报告:</span></label>
                 <div id="viewerContainer_48">
                 </div>
                 <div>
@@ -391,7 +419,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:15px">客户其他资信证明:</label>
+                <label style="font-size:17px"><input type="checkbox"><span>客户其他资信证明:</span></label>
                 <div id="viewerContainer_49">
                 </div>
                 <div>
@@ -404,14 +432,15 @@
             </div>
         </fieldset>
 
-        <!--<div id="viewerContainer">
+        <div id="viewerContainer">
             <template id="viewerContainer">
-                <div id="li" style="float:left"><img data-original="" src="" alt="" ondblclick="" style="margin-right:30px"><label style="text-align:center;display:block"></label></div>
+                <div id="li" style="float:left"><img data-original="" src="" alt="" ondblclick="" style="margin-right:30px"><label style="text-align:center;display:block;width:100px;height:20px;word-wrap:break-word;word-break:keep-all;overflow:hidden;"></span></label></div>
+                <div id="AddPic">
+                    <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" ondblclick="" /></div>
+                </div>
             </template>
         </div>
-        <div id="AddPic">
-            <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" ondblclick="" /></div>
-        </div>-->
+
 
         <!--上传控件-->
         <div id="dd_upload" class="easyui-dialog" data-options="title:'上传附件',buttons:'#bb_upload',onClose:uploadFormClose,width:390,height:350,closed:true">

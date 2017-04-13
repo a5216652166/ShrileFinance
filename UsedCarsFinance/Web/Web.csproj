@@ -497,8 +497,8 @@
     <Content Include="Finance\Content\viewer\viewer.min.js" />
     <Content Include="Finance\FinancialLoan\LoanEdit.html" />
     <Content Include="Finance\FinancialLoan\LoanList.html" />
-    <Content Include="Finance\LoanUploadImage_1.html" />
-    <Content Include="Finance\UploadImage_1.html" />
+    <Content Include="Finance\UploadForLoan.html" />
+    <Content Include="Finance\UploadForApplicant.html" />
     <Content Include="Scripts\finance.js" />
     <Content Include="Finance\Unused\FinanceApproval.html" />
     <Content Include="Statistics\LoanCount.html" />
