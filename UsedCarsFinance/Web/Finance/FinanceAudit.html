@@ -32,6 +32,7 @@
 			if (data) {
 				// 加载融资审核基本信息
 				FieldsetLoadDateFactory("FinanceAudit", 'text', data);
+				$("#financeItem").form('load', data);
 
 				// 加载融资项
 				$("fieldset#financeItem table#financeItem_dg").datagrid("loadData", data.FinancialItem);
@@ -207,20 +208,8 @@
 
 			<div class="row">
 				<div class="col-6">
-					<label>保证金：</label>
-					<input name="Margin" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money' " />
-					<span>%</span>
-				</div>
-
-				<div class="col-6">
 					<label>审批保证金：</label>
 					<input name="ApprovalMargin" class="easyui-textbox" data-options="required:true,validType:'Money',value:'0' " />
-					<span>%</span>
-				</div>
-
-				<div class="col-6">
-					<label>手续费：</label>
-					<input name="Poundage" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money'" />
 					<span>%</span>
 				</div>
 
