@@ -16,6 +16,8 @@ namespace Data.Migrations
                         Address = c.String(nullable: false, maxLength: 100),
                         Phone = c.String(nullable: false, maxLength: 20),
                         Fax = c.String(maxLength: 20),
+                        BankName = c.String(nullable: false, maxLength: 20),
+                        BankAcount = c.String(nullable: false, maxLength: 30),
                     })
                 .PrimaryKey(t => t.Id);
             

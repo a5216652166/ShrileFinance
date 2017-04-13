@@ -123,6 +123,15 @@
             //});
         }
 
+        //下载融资租赁合同
+        function DownloadFinanceLeaseContract() {
+            $("#downloadApproval").linkbutton("disable");
+            $("#downloadForm input[name=financeId]").val(query.FinanceId);
+            $("#downloadForm input[name=sign]").val(3);
+            $("#downloadForm").submit();
+            $("#downloadApproval").linkbutton("enable");
+        }
+
         // 验证数据
         function ValidData() {
             return true;
@@ -150,6 +159,7 @@
                 <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:downLoadall,width:100">下载全部</a>
                 <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle,width:100">下载单身证明</a>
                 <a id="downloadApproval" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadApproval,width:100">下载审批通知书</a>
+                <a id="downloadFinanceLeaseContract" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadFinanceLeaseContract,width:100">下载融资租赁合同</a>
                 <a id="add" class="easyui-linkbutton" href="javascript:void(0)" data-options="iconCls:'icon-add',width:100,onClick:Add">添加</a>
             </div>
             <div style="width:200px;height:25px; padding-top:40px;"><input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="checkall(this)"><label id="label1" style="width:30px;margin-top:2px;" for="" onclick="$(this).prev().click()">全选</label></div>

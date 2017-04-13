@@ -73,6 +73,9 @@
                 case 2:
                     file = DownLoadApproval(financeId);
                     break;
+                case 3:
+                    file = DownloadFinanceLeaseContract(financeId);
+                    break;
                 default:
                     throw new Core.Exceptions.ArgumentAppException("下载标识异常");
             }
@@ -560,23 +563,6 @@
         {
             var finance = financeRepository.Get(financeId);
 
-            ////var finance = new Finance();
-            ////finance.Applicant = new List<Applicant>() { new Applicant() { Type = TypeEnum.主要申请人 } };
-
-            ////var ssss = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
-            ////ssss.Name = "钟洪伟";
-            ////ssss.Sex = "男";
-            ////ssss.LiveHouseAddress = "浙江省杭州市萧山区缤纷小区8幢3单元601";
-            ////ssss.IdentityType = "身份证";
-            ////ssss.Identity = "339116199907158354";
-
-            ////finance.CreateOf = new Partner();
-            ////finance.CreateOf.Name = "杭州西湖法拉利4S店";
-            ////finance.Vehicle = new Core.Entities.Vehicle.Vehicle();
-            ////finance.Vehicle.MakeCode = "法拉利";
-            ////finance.Vehicle.PlateNo = "浙A888AA";
-            ////finance.Vehicle.FrameNo = "1589654E756542A69";
-
             var param = new Dictionary<string, string>();
             var info = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
             param.Add("[@姓名@]", info.Name);
@@ -623,6 +609,111 @@
 
             var pdfFile = fileSystemAppService.CreatFile(path);
             var pair = new KeyValuePair<string, byte[]>(fileName, pdfFile.Stream.GetBuffer());
+
+            return pair;
+        }
+
+        private KeyValuePair<string, byte[]> DownloadFinanceLeaseContract(Guid financeId)
+        {
+            var finance = financeRepository.Get(financeId);
+
+            var param = new Dictionary<string, string>();
+            var info = finance.Applicant.Single(m => m.Type == TypeEnum.主要申请人);
+            var lessee = finance.Applicant.Single(m => m.Type == TypeEnum.共同申请人);
+
+            param.Add("[@融资租赁合同@]", finance.LeaseNo);
+
+            param.Add("[@甲方邮箱@]", "shengrongguoji@shrile.com");
+            param.Add("[@乙方邮箱@]", finance.Email);
+            param.Add("[@甲方传真号@]", string.IsNullOrWhiteSpace(finance.BranchOffice.Fax) ? string.Empty.PadLeft(10) : finance.BranchOffice.Fax);
+            param.Add("[@乙方传真号@]", string.Empty.PadLeft(10));
+            param.Add("[@甲方地址@]", finance.BranchOffice.Address);
+            param.Add("[@乙方地址@]", info.LiveHouseAddress);
+
+            param.Add("[@甲方@]", finance.BranchOffice.Name);
+            param.Add("[@乙方@]", info.Name);
+            param.Add("[@乙方证件号@]", info.Identity);
+            param.Add("[@承租人@]", string.IsNullOrWhiteSpace(lessee.Name) ? string.Empty.PadLeft(4) : lessee.Name);
+            param.Add("[@承租人证件号@]", string.IsNullOrWhiteSpace(lessee.Identity) ? string.Empty.PadLeft(18) : lessee.Identity);
+            param.Add("[@年@]", DateTime.Now.Year.ToString());
+            param.Add("[@月@]", DateTime.Now.Month.ToString());
+            param.Add("[@日@]", DateTime.Now.Day.ToString());
+
+            var car = new VehicleAppService();
+            param.Add("[@车辆品牌@]", car.GetCarBrand(finance.Vehicle.VehicleKey));
+            param.Add("[@车牌号@]", string.IsNullOrWhiteSpace(finance.Vehicle.PlateNo) ? string.Empty.PadLeft(8) : finance.Vehicle.PlateNo);
+            param.Add("[@行驶里程@]", string.IsNullOrWhiteSpace(finance.Vehicle.RunningMiles.ToString()) ? string.Empty.PadLeft(4) : finance.Vehicle.RunningMiles.ToString());
+            param.Add("[@车架号@]", finance.Vehicle.FrameNo);
+
+            var upper = new MoneyToUpper();
+            param.Add("[@融资额@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
+            param.Add("[@融资额1@]", Convert.ToString(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
+            param.Add("[@服务费@]", upper.RMBToUpper(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value));
+            param.Add("[@服务费1@]", Convert.ToString(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value));
+            param.Add("[@保证金@]", upper.RMBToUpper(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value));
+            param.Add("[@保证金1@]", Convert.ToString(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value));
+
+            param.Add("[@期限@]", finance.Produce.Periods.ToString());
+            param.Add("[@支付日@]", Convert.ToString(finance.RepaymentDate == null ? 15 : finance.RepaymentDate.Value));
+
+            var date1 = finance.RepayRentDate.Value;
+            var date2 = date1.AddMonths(finance.Produce.Periods);
+            param.Add("[@年1@]", date1.Year.ToString());
+            param.Add("[@月1@]", date1.Month.ToString());
+            param.Add("[@日1@]", date1.Day.ToString());
+            param.Add("[@年2@]", date2.Year.ToString());
+            param.Add("[@月2@]", date2.Month.ToString());
+            param.Add("[@日2@]", date2.Day.ToString());
+
+            var ratio = finance.Produce.PrincipalRatios.ToList();
+            for (int i = 0; i < ratio.Count; i++)
+            {
+                var value = Math.Round((finance.ApprovalMoney / 10000 * ratio[i].Factor).Value, 2);
+                param.Add($"[@金额{i + 1}@]", upper.RMBToUpper(value));
+                param.Add($"[@人民币{i + 1}@]", Convert.ToString(value));
+            }
+
+            param.Add("[@甲方户名@]", finance.BranchOffice.Name);
+            param.Add("[@甲方开户行@]", finance.BranchOffice.BankName);
+            param.Add("[@甲方账号@]", finance.BranchOffice.BankAcount);
+
+            var list = JsonParseHelper.GetJProperty("{\"array\":" + finance.FinanceExtension.CustomerAccountName + "}", "array", 4);
+
+            param.Add("[@乙方户名@]", finance.FinanceExtension.CustomerAccountName);
+            param.Add("[@乙方开户行@]", finance.FinanceExtension.CustomerBankName);
+            param.Add("[@乙方账号@]", finance.FinanceExtension.CustomerBankCard);
+
+            param.Add("[@担保人@]", finance.FinanceExtension.GuarantorName1);
+            param.Add("[@担保合同编号@]", finance.FinanceExtension.GuarantorNo1);
+
+            var docName = string.Empty;
+            var pdfName = string.Empty;
+            if ((int)finance.LeaseMode == 1 && (int)finance.VehicleClause == 1)
+            {
+                ////直租有还车条款
+                docName = "DirectLeaseYes.docx";
+                pdfName = "融资租赁合同直租有还车条款.pdf";
+            }
+            else if ((int)finance.LeaseMode == 1 && (int)finance.VehicleClause == 2)
+            {
+                ////直租无还车条款
+                docName = "DirectLeaseNo.docx";
+                pdfName = "融资租赁合同直租无还车条款.pdf";
+            }
+            else if ((int)finance.LeaseMode == 2 && (int)finance.VehicleClause == 1)
+            {
+                ////回租有还车条款
+                docName = "LeasebackYes.docx";
+                pdfName = "融资租赁合同回租有还车条款.pdf";
+            }
+            else if ((int)finance.LeaseMode == 2 && (int)finance.VehicleClause == 2)
+            {
+                ////回租无还车条款
+                docName = "LeasebackNo.docx";
+                pdfName = "融资租赁合同回租无还车条款.pdf";
+            }
+
+            var pair = CreatPDF(docName, pdfName, param);
 
             return pair;
         }
@@ -676,7 +767,6 @@
             param.Add("[@金额5@]", string.Empty.PadLeft(8));
 
             var ratio = finance.Produce.PrincipalRatios.ToList();
-
             for (int i = 0; i < ratio.Count; i++)
             {
                 var value = Math.Round((finance.ApprovalMoney / 10000 * ratio[i].Factor).Value, 2);
@@ -685,17 +775,6 @@
             }
 
             param.Add("[@融资期限@]", finance.Produce.Periods.ToString());
-            ////param.Add("[@人民币6@]", string.Empty.PadLeft(12));
-            ////param.Add("[@金额6@]", string.Empty.PadLeft(8));
-            ////param.Add("[@人民币7@]", string.Empty.PadLeft(12));
-            ////param.Add("[@金额7@]", string.Empty.PadLeft(8));
-            ////param.Add("[@人民币8@]", string.Empty.PadLeft(12));
-            ////param.Add("[@金额8@]", string.Empty.PadLeft(8));
-            ////param.Add("[@人民币9@]", string.Empty.PadLeft(12));
-            ////param.Add("[@金额9@]", string.Empty.PadLeft(8));
-            ////param.Add("[@人民币10@]", string.Empty.PadLeft(12));
-            ////param.Add("[@金额10@]", string.Empty.PadLeft(8));
-
             param.Add("[@还款日@]", Convert.ToString(finance.RepaymentDate == null ? 15 : finance.RepaymentDate.Value));
 
             var date = finance.RepayRentDate;
