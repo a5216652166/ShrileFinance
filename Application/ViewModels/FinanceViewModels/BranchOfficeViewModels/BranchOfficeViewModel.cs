@@ -32,5 +32,17 @@
         /// </summary>
         [Required(ErrorMessage = "子公司地址必填")]
         public string Address { get; set; }
+
+        /// <summary>
+        /// 开户行
+        /// </summary>
+        [Required(ErrorMessage = "子公司开户行必填")]
+        public string BankName { get; set; }
+
+        /// <summary>
+        /// 账号
+        /// </summary>
+        [Required(ErrorMessage = "子公司账号必填")]
+        public string BankAcount { get; set; }
     }
 }

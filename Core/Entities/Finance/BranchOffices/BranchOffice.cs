@@ -26,5 +26,15 @@
         /// 传真
         /// </summary>
         public string Fax { get; private set; }
+
+        /// <summary>
+        /// 开户行
+        /// </summary>
+        public string BankName { get; private set; }
+
+        /// <summary>
+        /// 账号
+        /// </summary>
+        public string BankAcount { get; private set; }
     }
 }

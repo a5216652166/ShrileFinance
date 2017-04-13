@@ -15,6 +15,8 @@
             Property(m => m.Address).IsRequired().HasMaxLength(100);
             Property(m => m.Phone).IsRequired().HasMaxLength(20);
             Property(m => m.Fax).IsOptional().HasMaxLength(20);
+            Property(m => m.BankName).IsRequired().HasMaxLength(20);
+            Property(m => m.BankAcount).IsRequired().HasMaxLength(30);
 
             ToTable("FANC_BranchOffice");
         }
