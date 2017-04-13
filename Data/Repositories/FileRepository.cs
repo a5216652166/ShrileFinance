@@ -1,7 +1,6 @@
 ﻿namespace Data.Repositories
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Core.Entities.IO;
@@ -57,7 +56,7 @@
             }
 
             entity.AllowPath(FileSystem.VirtualPath + entity.Path);
-            entity.AllowName(entity.Path.Substring(entity.Path.LastIndexOf('\\')));
+            entity.AllowName(entity.Path.Substring(entity.Path.LastIndexOf('\\') + 1));
             entity.Extension = entity.Path.Substring(entity.Path.LastIndexOf('.'));
         }
     }

@@ -27,7 +27,9 @@
         /// 上传文件
         /// </summary>
         /// <returns></returns>
-        public IHttpActionResult UploadFile()
+        [HttpPost]
+        [AllowAnonymous]
+        public IHttpActionResult Upload()
         {
             if (Request.Content.IsMimeMultipartContent() == false)
             {
@@ -38,11 +40,11 @@
 
             var referenceId = Guid.Parse(HttpContext.Current.Request.Form["ReferenceId"]);
             var tableName = Convert.ToInt32(HttpContext.Current.Request.Form["TableName"]);
-            var rsid = Guid.Parse(HttpContext.Current.Request.Form["ReferencedSid"]);
+            var referencedSid = Guid.Parse(HttpContext.Current.Request.Form["ReferencedSid"]);
 
-            fileSystemAppService.CreatFile(files, referenceId, rsid, (TableNameEnum)tableName);
+            fileSystemAppService.CreatFile(files, referenceId, referencedSid, (TableNameEnum)tableName);
 
-            return Ok(new { referenceId = referenceId, filesCount = files.Count });
+            return Ok(new { referenceId = referenceId, filesCount = files.Count, tableName = tableName, referencedSid = referencedSid });
         }
 
         /// <summary>
@@ -51,6 +53,7 @@
         /// <param name="rId">引用标识</param>
         /// <param name="tableName">表单名</param>
         /// <returns></returns>
+        [HttpGet]
         public IHttpActionResult GetAll(Guid rId, TableNameEnum tableName)
         {
             var list = fileSystemAppService.GetAll(rId, tableName);
@@ -58,16 +61,24 @@
             return Ok(list);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetFiles(Guid referenceId, TableNameEnum tableName, Guid referencedSid)
+        {
+            var list = fileSystemAppService.GetAll(referenceId, tableName,new List<Guid?>() { referencedSid } );
+
+            return Ok(list);
+        }
+
+
         /// <summary>
         /// 通过引用标识和表单名删除文件
         /// </summary>
-        /// <param name="referenceId">引用标识</param>
-        /// <param name="tableName">表单名</param>
-        /// <param name="rsids">分组标识</param>
+        /// <param name="value">引用标识</param>
         /// <returns></returns>
-        public IHttpActionResult DeleteAll(ImageDeleteViewModel value)
+        [HttpPost]
+        public IHttpActionResult DeleteAll(UploadViewModel value)
         {
-            var result = fileSystemAppService.DeleteAll(value.rId, value.tableName, value.ReferencedSids);
+            var result = fileSystemAppService.DeleteAll(value.ReferenceId, value.TableName, value.ReferencedSids);
 
             return Ok(result);
         }
@@ -78,9 +89,10 @@
         /// <param name="referenceId">引用标识</param>
         /// <param name="tableName">表单名</param>
         /// <returns></returns>
-        public HttpResponseMessage DownloadFile(Guid referenceId, TableNameEnum tableName)
+        [HttpPost]
+        public HttpResponseMessage DownloadAllFile(UploadViewModel value)
         {
-            var list = fileSystemAppService.GetAll(referenceId, tableName);
+            var list = fileSystemAppService.GetAll(value.ReferenceId, value.TableName,value.ReferencedSids);
 
             var stream = fileSystemAppService.Compression(list);
 

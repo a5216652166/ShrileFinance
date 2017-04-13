@@ -1,13 +1,8 @@
 ﻿
-// 启动图片影像上传控件（ReferenceId,uploadLimit）
-function StartUploader(feferenceId, uploadLimit) {
-    if (feferenceId == null)
-    {
-        feferenceId = 2;
-    }
-
-    if (uploadLimit == null) {
-        uploadLimit = 0;
+// 启动图片影像上传控件
+function StartUploader(referenceId, tableName, referencedSid) {
+    if (referenceId == null || tableName == null || referencedSid == null) {
+        return;
     }
 
     // 文件格式扩展名
@@ -26,6 +21,7 @@ function StartUploader(feferenceId, uploadLimit) {
 
     fileTypeExts.TotalExts = fileTypeExts.PicTypeExts + fileTypeExts.WordTypeExts + fileTypeExts.ExcelTypeExts + fileTypeExts.PowerPointTypeExts + fileTypeExts.VideoTypeExts;
 
+    var uploadLimit = 0;
     $("#pic_upload").uploadify({
         auto: false,
         multi: true,
@@ -35,11 +31,11 @@ function StartUploader(feferenceId, uploadLimit) {
         height: 20,
         width: 60,
         queueID: "file_queue",
-        formData: { ReferenceId: feferenceId },
+        formData: { ReferenceId: referenceId, TableName: tableName, ReferencedSid: referencedSid },
         removeTimeout: 10,
         removeCompleted: true,
         swf: "Content/uploadify/uploadify.swf",
-        uploader: "../api/File/Upload",
+        uploader: "../api/UploadFile/Upload",
         uploadLimit: uploadLimit,
         onQueueComplete: function () {
             $("#file_queue").empty();
@@ -68,52 +64,23 @@ function uploadFormClose() {
     $("#file_queue").empty();
 }
 
-// 获取所有图片
-function LoadAllImages(financeId) {
-    if (financeId == null) {
-        financeId = "B5E95692-A6B0-E611-80C7-507B9DE4A488";
-    }
-
-    var resultData = null;
-
-    $.ajax({
-        async: false,
-        type: "Get",
-        data: { financeid: financeId },
-        url: "../api/ImageUpload/GetAll",
-        success: function (data) {
-            if (data) {
-                // 拼接产生路径
-                $(data).each(function (i, e) {
-                    e.path = e.FilePath.substring(1) + e.NewName + e.ExtName;
-                });
-
-                resultData = data;
-            }
-        }
-    });
-
-    return resultData;
-}
-
 // 获取文件
-function GetFiles(referenceId) {
-    if (referenceId == null) {
-        referenceId = 2;
+function GetFiles(referenceId, tableName, referencedSid) {
+    if (referenceId == null || tableName == null || referencedSid == null) {
+        return;
     }
 
     var resultData = null;
     $.ajax({
         async: false,
         type: "Get",
-        data: { ReferenceId: referenceId },
-        url: "../api/ImageUpload/GetFiles",
+        data: { referenceId: referenceId, tableName: tableName, referencedSid: referencedSid },
+        url: "../api/UploadFile/GetFiles",
         success: function (data) {
             if (data) {
-                debugger
                 // 拼接产生路径
                 $(data).each(function (i, e) {
-                    e.path = e.FilePath.substring(1) + e.NewName + e.ExtName;
+                    e.path = e.Path.substring(1);
                 });
 
                 resultData = data;
@@ -125,19 +92,23 @@ function GetFiles(referenceId) {
 }
 
 // 删除文件
-function DeleteFiles(referenceIds) {
-    var resultData = null;
-    if (Object.prototype.toString.call(referenceIds) === '[object Array]' && referenceIds.length > 0) {
-        $.ajax({
-            async: false,
-            type: "Get",
-            data: { referenceIds: referenceIds.join(",") },
-            url: "../api/ImageUpload/Delete",
-            success: function (data) {
-                resultData = referenceIds;
-            }
-        });
-    }
+function DeleteFiles(referenceId, tableName, referencedSids) {
+    var data = {};
+    data.ReferenceId = referenceId;
+    data.TableName = tableName;
+    data.ReferencedSids = referencedSids;
+    debugger
+    var result = false;
 
-    return resultData;
+    $.ajax({
+        async: false,
+        type: "POST",
+        data: data,
+        url: "../api/UploadFile/DeleteAll",
+        success: function (data) {
+            result = true;
+        }
+    });
+
+    return result;
 }

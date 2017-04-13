@@ -51,7 +51,12 @@
 
                 $("div#AddPic img").click(function () {
                     $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
-                    StartUploader(null, null);
+
+                    // 设置分组标识
+                    referencedSid = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE" + $("form").attr('tag');
+
+                    // 启动文件上传
+                    StartUploader(referenceId, tableName, referencedSid);
                 });
             }, 100);
         }
@@ -60,31 +65,75 @@
         function UploadSuccessInstance(file, data, response) {
             data = JSON.parse(data);
 
-            var files = GetFiles(data.referenceId);
+            var files = GetFiles(data.referenceId, data.tableName, data.referencedSid);
 
             if (files == null || files.length == 0) {
                 return false;
             }
-            debugger
+            
             var UrlArray = [];
-            for (var i = 0; i < data.filesCount; i++) {
+
+            for (var i in files)
+            {
                 var urlObj = {};
-                urlObj.Name = files[i].OldName + files[i].ExtName;
+                urlObj.Name = files[i].OldName + files[i].Extension;
                 urlObj.Path = "..\\" + files[i].path;
 
                 UrlArray.push(urlObj);
             }
-
+            debugger
             // 上传的图片加入viewer
             PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
         }
+
+
     </script>
 
     <script type="text/javascript">
-        function downLoadall() {
+        // 融资标识
+        var referenceId = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
+
+        // 表单（申请人）
+        var tableName = 1;
+
+        // 分组
+        var referencedSid = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
+
+        var flag = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE";
+
+        function Delete()
+        {
+            var referencedSids = [];
+
+            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
+                var id = $(e).parent().next("div").attr("id");
+
+                referencedSids.push(flag + id.substr(id.lastIndexOf('_') + 1));
+
+                // 移除图片预览
+                $("div#" + id).find("div#li").remove();
+            });
+            
+            DeleteFiles(referenceId, tableName, referencedSids);
         }
 
-        function Checkall(obj) {
+        function DownLoadAll() {
+            $("form#downloadForm").find("input[name=ReferenceId]").val(referenceId);
+
+            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
+                var id = $(e).parent().next("div").attr("id");
+
+                var referencedSid = flag + id.substr(id.lastIndexOf('_') + 1);
+
+                $("form#downloadForm").append('<input name="ReferencedSids" value=' + referencedSid + ' />');
+            });
+
+            $("form#downloadForm").submit();
+
+            $("form#downloadForm").find("input[name=ReferencedSids]").remove();
+        }
+
+        function CheckAll(obj) {
             debugger
             $("fieldset input[type=checkbox]").each(function (i, e) {
                 e.checked = obj.checked;
@@ -98,11 +147,11 @@
         <div id="linkBtn">
             <div id="fieldsetBtn">
                 <div style="float:left;width:700px;height:25px;">
-                    <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:del,width:100">删除</a>
-                    <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:downLoadall,width:100">下载全部</a>
+                    <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Delete,width:100">删除</a>
+                    <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadAll,width:100">下载全部</a>
                 </div>
                 <div style="width:200px;height:25px; padding-top:40px;">
-                    <input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="Checkall(this)">
+                    <input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="CheckAll(this)">
                     <label for="cball" style="width:30px;margin-top:2px;">全选</label>
                 </div>
             </div>
@@ -434,7 +483,7 @@
 
         <div id="viewerContainer">
             <template id="viewerContainer">
-                <div id="li" style="float:left"><img data-original="" src="" alt="" ondblclick="" style="margin-right:30px"><label style="text-align:center;display:block;width:100px;height:20px;word-wrap:break-word;word-break:keep-all;overflow:hidden;"></span></label></div>
+                <div id="li" style="float:left"><img data-original="" src="" alt="" ondblclick="" style="margin-right:30px"><label style="text-align:center;display:block;width:100px;height:20px;word-wrap:break-word;word-break:keep-all;overflow:hidden;"></label></div>
                 <div id="AddPic">
                     <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" ondblclick="" /></div>
                 </div>
@@ -454,5 +503,13 @@
             </div>
         </div>
     </form>
+
+    <div>
+        <form id="downloadForm" action="../api/ImageUpload/DownloadFiles" method="GET" style="display:none">
+            <input name="ReferenceId" />
+            <input name="TableName" value="1" />
+            <!--<input name="ReferencedSids" />-->
+        </form>
+    </div>
 </body>
 </html>

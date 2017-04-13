@@ -64,12 +64,18 @@
         /// <param name="referenceId">引用标识</param>
         /// <param name="tableName">表单名</param>
         /// <returns></returns>
-        public List<FileSystem> GetAll(Guid referenceId, TableNameEnum tableName)
+        public List<FileSystem> GetAll(Guid referenceId, TableNameEnum tableName, IEnumerable<Guid?> referencedSids = null)
         {
-            var list = fileSystemRepository.GetAll(m => tableName == m.TableName && m.ReferenceId == referenceId);
+            referencedSids = referencedSids ?? new List<Guid?>();
+
+            referencedSids = referencedSids.Where(m => m.HasValue);
+
+            var list = fileSystemRepository.GetAll(m => tableName == m.TableName && m.ReferenceId == referenceId && referencedSids.Contains(m.ReferencedSid));
 
             return list.ToList();
         }
+
+
 
         /// <summary>
         /// 通过引用标识和表单名删除文件
@@ -110,11 +116,11 @@
 
             var fileSystems = new List<FileSystem>();
 
-            for (int i = 0; i<postedFiles.Count; i++)
+            for (int i = 0; i < postedFiles.Count; i++)
             {
                 var name = postedFiles[i].FileName;
 
-                var fileSystem = ConvertToFileSystem(postedFiles, name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
+                var fileSystem = ConvertToFileSystem(postedFiles[i], name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
 
                 fileSystem.ReferenceId = rId;
                 fileSystem.ReferencedSid = rsid;
@@ -143,7 +149,7 @@
 
             var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf('.')), fileInfo.Extension, isTemp: isTemp);
 
-            SaveFileSystem(new FileSystem[] { fileSystem } );
+            SaveFileSystem(new FileSystem[] { fileSystem });
 
             return fileSystem;
         }
