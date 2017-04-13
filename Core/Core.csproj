@@ -98,7 +98,7 @@
     <Compile Include="Interfaces\Repositories\ProcessRepositories\IProcessTempDataRepository.cs" />
     <Compile Include="Produce\IPaymentCalculator.cs" />
     <Compile Include="Produce\IProduceRepository.cs" />
-    <Compile Include="Produce\PaymentEqualsCalculator.cs" />
+    <Compile Include="Produce\PaymentEqualsCalculatorService.cs" />
     <Compile Include="Produce\PrincipalEqualsCalculator.cs" />
     <Compile Include="Produce\PrincipalRatio.cs" />
     <Compile Include="Produce\Produce.cs" />
