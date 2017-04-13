@@ -17,10 +17,12 @@
         private static readonly BLL.Finance.ImageUpload ImageUploadInstance = new BLL.Finance.ImageUpload();
 
         private readonly FinanceAppService financeAppService;
+        private readonly FileSystemAppService fileSystemAppService;
 
-        public ImageUploadController(FinanceAppService financeAppService)
+        public ImageUploadController(FinanceAppService financeAppService, FileSystemAppService fileSystemAppService)
         {
             this.financeAppService = financeAppService;
+            this.fileSystemAppService = fileSystemAppService;
         }
 
         /// <summary>
@@ -144,7 +146,7 @@
         /// <param name="financeId">融资标识</param>
         /// <returns>单身证明</returns>
         [HttpGet]
-        public HttpResponseMessage DownloadFiles(Guid financeId,int sign)
+        public HttpResponseMessage DownloadFiles(Guid financeId, int sign)
         {
             var file = financeAppService.DownloadFiles(financeId, sign);
 

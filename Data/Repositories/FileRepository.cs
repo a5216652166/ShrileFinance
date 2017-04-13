@@ -49,7 +49,7 @@
             base.Modify(entity);
         }
 
-        IQueryable<FileSystem> IFileSystemRepository.GetByIds(ICollection<Guid> ids)
+        IQueryable<FileSystem> IFileSystemRepository.GetByIds(IEnumerable<Guid> ids)
         {
             return GetAll(m => ids.Contains(m.Id));
         }

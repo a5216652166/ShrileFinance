@@ -16,7 +16,7 @@
     /// </summary>
     public class FileSystem : Entity, IAggregateRoot
     {
-        public const string VirtualPath = @"~\Files\";
+        public const string VirtualPath = @"~\Upload\";
 
         public FileSystem()
         {
@@ -82,12 +82,12 @@
         /// <summary>
         /// 引用标识
         /// </summary>
-        public Guid ReferenceId { get; set; }
+        public Guid? ReferenceId { get; set; }
 
         /// <summary>
         /// 分组标识
         /// </summary>
-        public Guid ReferencedSid { get; set; }
+        public Guid? ReferencedSid { get; set; }
 
         /// <summary>
         /// 表单名
@@ -146,7 +146,7 @@
         /// <summary>
         /// 分配文件名
         /// </summary>
-        /// <returns>新文件名</returns>
+        /// <param name="name">文件名</param>
         public void AllowName(string name = default(string))
         {
             if (string.IsNullOrEmpty(name))
@@ -162,6 +162,7 @@
         /// <summary>
         /// 分配路径
         /// </summary>
+        /// <param name="path">路径</param>
         public void AllowPath(string path = default(string))
         {
             if (string.IsNullOrEmpty(path) == false)

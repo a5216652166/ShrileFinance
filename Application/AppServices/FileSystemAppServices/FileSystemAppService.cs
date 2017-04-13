@@ -27,20 +27,26 @@
         /// <summary>
         /// 通过标识集合获取
         /// </summary>
-        /// <param name="id">标识集合</param>
+        /// <param name="ids">标识集合</param>
         /// <returns>文件列表</returns>
-        public List<FileSystem> GetByIds(ICollection<Guid> id) => ImportStream(repository.GetByIds(id));
+        public List<FileSystem> GetByIds(IEnumerable<Guid> ids)
+        {
+            var list = ImportStream(repository.GetByIds(ids));
+
+            return list;
+        }
 
         /// <summary>
         /// 通过标识获取
         /// </summary>
         /// <param name="id">标识</param>
         /// <returns>文件</returns>
-        public FileSystem Get(Guid id) => ImportStream(
-            new List<FileSystem>()
-            {
-                repository.Get(id)
-            })?.First();
+        public FileSystem Get(Guid id)
+        {
+            var entity= ImportStream(new List<FileSystem>(){repository.Get(id)})?.First();
+
+            return entity;
+        }
 
         /// <summary>
         /// 删除
