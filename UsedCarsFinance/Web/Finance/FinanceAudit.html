@@ -1,121 +1,123 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>融资审核</title>
-    <meta charset="utf-8" />
-    <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
-    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
-    <link href="../Content/form-bootstrap.css" rel="stylesheet" />
-    <script src="../Scripts/jquery/jquery.js"></script>
-    <script src="../Scripts/easyui/jquery.easyui.js"></script>
-    <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script src="../BankInfo/JS/validType.js"></script>
-    <script src="Content/FinanceJs.js"></script>
-    <script src="../Scripts/usedcars.js"></script>
-    <script src="../Scripts/finance.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>融资审核</title>
+	<meta charset="utf-8" />
+	<link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+	<link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+	<link href="../Content/form-bootstrap.css" rel="stylesheet" />
+	<script src="../Scripts/jquery/jquery.js"></script>
+	<script src="../Scripts/easyui/jquery.easyui.js"></script>
+	<script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script src="../BankInfo/JS/validType.js"></script>
+	<script src="Content/FinanceJs.js"></script>
+	<script src="../Scripts/usedcars.js"></script>
+	<script src="../Scripts/finance.js"></script>
 
-    <script type="text/javascript">
-        var query = {};
+	<script type="text/javascript">
+		var query = {};
 
-        $(function () {
-            // 获取参数
-            query.state = GetQueryString("state");
-            query.FinanceId = parent.flow.RootKey;
+		$(function () {
+			// 获取参数
+			query.state = GetQueryString("state");
+			query.FinanceId = parent.flow.RootKey;
 
-            // 初始化
-            Init(query);
-        });
+			// 初始化
+			Init(query);
+		});
 
-        // LoadData方法
-        function LoadData(data) {
-            if (data) {
-                // 加载融资审核基本信息
-                FieldsetLoadDateFactory("FinanceAudit", 'text', data);
+		// LoadData方法
+		function LoadData(data) {
+			if (data) {
+				// 加载融资审核基本信息
+				FieldsetLoadDateFactory("FinanceAudit", 'text', data);
 
-                // 加载融资项
-                $("fieldset#financeItem table#financeItem_dg").datagrid("loadData", data.FinancialItem);
+				// 加载融资项
+				$("fieldset#financeItem table#financeItem_dg").datagrid("loadData", data.FinancialItem);
 
-                $("fieldset#financeItem input#SelfPrincipal").textbox('setValue', data.SelfPrincipal);
-                CalculateTotalPrincipal();
+				$("fieldset#financeItem input#SelfPrincipal").textbox('setValue', data.SelfPrincipal);
+				CalculateTotalPrincipal();
 
-                if (query.state == 0) {
-                    // 禁用所有
-                    Disabled($("fieldset"));
-                }
-                else if (query.state == 1) {
-                    // 初审
-                    $("fieldset[name=FinanceAudit]>input[name=IsReview]").val('false');
-                }
-                else if (query.state == 2) {
-                    // 复审   设置复审标签
-                    $("fieldset[name=FinanceAudit]>input[name=IsReview]").val('true');
-                }
-            }
-        }
+				if (query.state == 0) {
+					// 禁用所有
+					Disabled($("fieldset"));
+				}
+				else if (query.state == 1) {
+					// 初审
+					$("fieldset[name=FinanceAudit]>input[name=IsReview]").val('false');
+				}
+				else if (query.state == 2) {
+					// 复审   设置复审标签
+					$("fieldset[name=FinanceAudit]>input[name=IsReview]").val('true');
+				}
+			}
+		}
 
-        //验证数据
-        function ValidData() {
-            if (!$("form[name=FinanceAudit]").form("validate")) {
-                return false;
-            }
+		//验证数据
+		function ValidData() {
+			if (!$("form[name=FinanceAudit]").form("validate")) {
+				return false;
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        //构建数据BuildData
-        function BuildData() {
-            // 序列化融资审核
-            var value = $("fieldset[name=FinanceAudit]").serializeJson();
+		//构建数据BuildData
+		function BuildData() {
+			// 序列化融资审核
+			var value = $("fieldset[name=FinanceAudit]").serializeJson();
 
-            return value;
-        }
-    </script>
+			return value;
+		}
+	</script>
 
-    <script type="text/javascript">
-        // 初始化
-        function Init(query) {
-            // 加载远程数据
-            if (query == undefined || query.FinanceId == undefined) {
-                return;
-            }
+	<script type="text/javascript">
+		// 初始化
+		function Init(query) {
+			// 加载远程数据
+			if (query == undefined || query.FinanceId == undefined) {
+				return;
+			}
 
-            // 加载融资审核
-            $.ajax({
-                async: false,
-                method: "GET",
-                data: { financeId: query.FinanceId },
-                url: '../api/FinanceAuidt/GetFinanceAuidt',
-                statusCode: {
-                    200: function (data) {
-                        LoadData(data);
-                    }
-                }
-            });
-        }
+			// 加载融资审核
+			$.ajax({
+				async: true,
+				method: "GET",
+				data: { financeId: query.FinanceId },
+				url: '../api/FinanceAuidt/GetFinanceAuidt',
+				statusCode: {
+					200: function (data) {
+						LoadData(data);
+					}
+				}
+			});
+		}
 
-        // 设置月供额度
-        function SetMonthPay() {
-            // 获取审批融资金额
-            var approvalMoney = $("fieldset[name=FinanceAudit] input[textboxname=ApprovalMoney]").textbox("getValue") || 0;
-            var produceRateMonth = $("fieldset[name=FinanceAudit] input[name=ProduceRateMonth]").val() || 0;
-            var producePeriods = $("fieldset[name=FinanceAudit] input[name=ProducePeriods]").val() || 0;
+		// 设置月供额度
+		function SetMonthPay() {
+			// 获取审批融资金额
+			var approvalMoney = $("fieldset[name=FinanceAudit] input[textboxname=ApprovalMoney]").textbox("getValue") || 0;
+			var produceRateMonth = $("fieldset[name=FinanceAudit] input[name=ProduceRateMonth]").val() || 0;
+			var producePeriods = $("fieldset[name=FinanceAudit] input[name=ProducePeriods]").val() || 0;
 
-            var payment = PMT(parseFloat(produceRateMonth), parseFloat(producePeriods), parseFloat(approvalMoney)) || 0;
+			var payment = PMT(parseFloat(produceRateMonth), parseFloat(producePeriods), parseFloat(approvalMoney)) || 0;
 
-            $("fieldset[name=FinanceAudit] input[textboxname=Payment]").textbox("setValue", Math.round(100 * payment, 2) / 100);
-        }
-    </script>
+			$("fieldset[name=FinanceAudit] input[textboxname=Payment]").textbox("setValue", Math.round(100 * payment, 2) / 100);
+
+			loadPrincipalRatios();
+		}
+	</script>
 </head>
 <body>
-    <form class="container" name="FinanceAudit">
-        <fieldset id="financeItem">
-            <legend>融资项</legend>
-            <table id="financeItem_dg" class="easyui-datagrid" data-options="singleSelect: true, rownumbers: true ">
-                <thead>
-                    <tr>
-                        <th data-options="field:'Id',hidden:true"></th>
-                        <th data-options="field:'Name',width:440,align:'center',
+	<form class="container" name="FinanceAudit">
+		<fieldset id="financeItem">
+			<legend>融资项</legend>
+			<table id="financeItem_dg" class="easyui-datagrid" data-options="singleSelect: true, rownumbers: true ">
+				<thead>
+					<tr>
+						<th data-options="field:'Id',hidden:true"></th>
+						<th data-options="field:'Name',width:440,align:'center',
                         editor:{
                             type:'combobox',
                             options:{
@@ -132,7 +134,7 @@
                             }
                         }">项目名称</th>
 
-                        <th data-options="field:'Principal',width:440,align:'center',
+						<th data-options="field:'Principal',width:440,align:'center',
                         editor:{
                             type:'textbox',
                             options:{
@@ -140,114 +142,154 @@
                                 validType:''
                             }
                         }">融资本金（元）</th>
-                    </tr>
-                </thead>
-            </table>
+					</tr>
+				</thead>
+			</table>
 
-            <div class="row">
-                <div class="col-6">
-                    <label>客户自付金额:</label>
-                    <input id="SelfPrincipal" class="easyui-textbox" required data-options="value:'',validType:''" readonly />
-                    <unit>元</unit>
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>客户自付金额:</label>
+					<input id="SelfPrincipal" class="easyui-textbox" required data-options="value:'',validType:''" readonly />
+					<unit>元</unit>
+				</div>
 
-                <div class="col-6">
-                    <label>融资总额:</label>
-                    <input id="TotalPrincipal" class="easyui-textbox" readonly />
-                    <unit>元</unit>
-                </div>
-                <script type="text/javascript">
-                    function CalculateTotalPrincipal() {
-                        var totalPrincipal = 0;
+				<div class="col-6">
+					<label>融资总额:</label>
+					<input id="TotalPrincipal" class="easyui-textbox" readonly />
+					<unit>元</unit>
+				</div>
+				<script type="text/javascript">
+					function CalculateTotalPrincipal() {
+						var totalPrincipal = 0;
 
-                        $($("#financeItem_dg").datagrid("getRows")).each(function (i, e) {
-                            totalPrincipal += parseFloat(e.Principal) || 0;
-                        });
+						$($("#financeItem_dg").datagrid("getRows")).each(function (i, e) {
+							totalPrincipal += parseFloat(e.Principal) || 0;
+						});
 
-                        var selfPrincipal = $("#SelfPrincipal").textbox("getValue");
+						var selfPrincipal = $("#SelfPrincipal").textbox("getValue");
 
-                        totalPrincipal -= parseFloat(selfPrincipal) || 0;
+						totalPrincipal -= parseFloat(selfPrincipal) || 0;
 
-                        $("#TotalPrincipal").textbox("setValue", totalPrincipal);
+						$("#TotalPrincipal").textbox("setValue", totalPrincipal);
 
-                        if ($("input[textboxname=ApprovalMoney]").textbox("getValue") == "")
-                        {
-                            $("input[textboxname=ApprovalMoney]").textbox("setValue", totalPrincipal);
-                        }
-                    }
-                </script>
-            </div>
-        </fieldset>
+						if ($("input[textboxname=ApprovalMoney]").textbox("getValue") == "") {
+							$("input[textboxname=ApprovalMoney]").textbox("setValue", totalPrincipal);
+						}
+					}
+				</script>
+			</div>
+		</fieldset>
 
-        <fieldset name="FinanceAudit">
-            <legend>融资审核</legend>
+		<fieldset name="FinanceAudit">
+			<legend>融资审核</legend>
 
-            <input type="hidden" name="FinanceId" value="00000000-0000-0000-0000-000000000000" placeholder="融资标识" />
-            <input type="hidden" name="IsReview" value="false" placeholder="是否为复审" />
+			<input type="hidden" name="FinanceId" value="00000000-0000-0000-0000-000000000000" placeholder="融资标识" />
+			<input name="ProduceId" type="hidden" />
+			<input type="hidden" name="IsReview" value="false" placeholder="是否为复审" />
 
-            <input type="hidden" name="ProduceRateMonth" value="0" placeholder="产品利率" />
-            <input type="hidden" name="ProducePeriods" value="0" placeholder="产品期限" />
+			<input type="hidden" name="ProduceRateMonth" value="0" placeholder="产品利率" />
+			<input type="hidden" name="ProducePeriods" value="0" placeholder="产品期限" />
 
-            <div class="row">
-                <div class="col-6">
-                    <label>审批融资总额：</label>
-                    <input name="ApprovalMoney" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetMonthPay" />
-                    <span>元</span>
-                </div>
+			<div class="row">
+				<div class="col-6">
+					<label>审批融资总额：</label>
+					<input name="ApprovalMoney" class="easyui-textbox" data-options="required:true,validType:'Money',onChange:SetMonthPay" />
+					<span>元</span>
+				</div>
 
-                <div class="col-6">
-                    <label>月供额度：</label>
-                    <input name="Payment" class="easyui-textbox" data-options="readonly:true,required:false " />
-                    <span>元</span>
-                </div>
+				<div class="col-6">
+					<label>月供额度：</label>
+					<input name="Payment" class="easyui-textbox" data-options="readonly:true,required:false " />
+					<span>元</span>
+				</div>
 
-                <div class="col-6">
-                    <label>保证金：</label>
-                    <input name="Margin" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money' " />
-                    <span>%</span>
-                </div>
+				<div class="col-6">
+					<label>保证金：</label>
+					<input name="Margin" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money' " />
+					<span>%</span>
+				</div>
 
-                <div class="col-6">
-                    <label>审批保证金：</label>
-                    <input name="ApprovalMargin" class="easyui-textbox" data-options="required:true,validType:'Money',value:'0' " />
-                    <span>%</span>
-                </div>
+				<div class="col-6">
+					<label>审批保证金：</label>
+					<input name="ApprovalMargin" class="easyui-textbox" data-options="required:true,validType:'Money',value:'0' " />
+					<span>%</span>
+				</div>
 
-                <div class="col-6">
-                    <label>手续费：</label>
-                    <input name="Poundage" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money'" />
-                    <span>%</span>
-                </div>
+				<div class="col-6">
+					<label>手续费：</label>
+					<input name="Poundage" class="easyui-textbox" data-options="readonly:true,required:true,validType:'Money'" />
+					<span>%</span>
+				</div>
 
-                <div class="col-6">
-                    <label>审批手续费：</label>
-                    <input name="ApprovalPoundage" class="easyui-textbox" data-options="readonly:false,required:true,validType:'Money',value:'0' " />
-                    <span>%</span>
-                </div>
+				<div class="col-6">
+					<label>审批手续费：</label>
+					<input name="ApprovalPoundage" class="easyui-textbox" data-options="readonly:false,required:true,validType:'Money',value:'0' " />
+					<span>%</span>
+				</div>
 
-                <div class="col-6">
-                    <label>车辆销售指导价:</label>
-                    <input name="VehicleSalePriseMin" class="easyui-textbox" style="width:190px;" readonly />
-                    <span style="display:inline-block;width:22px; text-align:center;">-</span>
-                    <input name="VehicleSalePriseMax" class="easyui-textbox" style="width:190px;" readonly />
-                    <span class="unit">万元</span>
-                </div>
+				<div class="col-6">
+					<label>车辆销售指导价:</label>
+					<input name="VehicleSalePriseMin" class="easyui-textbox" style="width:190px;" readonly />
+					<span style="display:inline-block;width:22px; text-align:center;">-</span>
+					<input name="VehicleSalePriseMax" class="easyui-textbox" style="width:190px;" readonly />
+					<span class="unit">万元</span>
+				</div>
 
-                <div class="col-6">
-                    <label>车辆收购指导价:</label>
-                    <input name="VehicleBuyPriseMin" class="easyui-textbox" style="width:190px;" readonly />
-                    <span style="display:inline-block;width:22px; text-align:center;">-</span>
-                    <input name="VehicleBuyPriseMax" class="easyui-textbox" style="width:190px;" readonly />
-                    <span class="unit">万元</span>
-                </div>
+				<div class="col-6">
+					<label>车辆收购指导价:</label>
+					<input name="VehicleBuyPriseMin" class="easyui-textbox" style="width:190px;" readonly />
+					<span style="display:inline-block;width:22px; text-align:center;">-</span>
+					<input name="VehicleBuyPriseMax" class="easyui-textbox" style="width:190px;" readonly />
+					<span class="unit">万元</span>
+				</div>
 
-                <div class="col-6">
-                    <label>车辆厂商指导价：</label>
-                    <input name="ManufacturerGuidePrice" class="easyui-textbox" data-options="readonly:true,value:'0'" />
-                    <span>万元</span>
-                </div>
-            </div>
-        </fieldset>
-    </form>
+				<div class="col-6">
+					<label>车辆厂商指导价：</label>
+					<input name="ManufacturerGuidePrice" class="easyui-textbox" data-options="readonly:true,value:'0'" />
+					<span>万元</span>
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="col-12">
+					<label>月供表:</label>
+					<table id="principal_ratios" class="easyui-datagrid" data-options="height:152, singleSelect: true, rownumbers: true">
+						<thead>
+							<tr>
+								<th data-options="field:'Title',width:400,align:'center',formatter:titleFormatter">期次</th>
+								<th data-options="field:'Factor',width:400,align:'center'">月供</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+
+			<script>
+					// principal_ratios
+					function titleFormatter(value, row, index) {
+						return "第" + row.Period + "年";
+					}
+
+					function loadPrincipalRatios() {
+						var produceId = $("input[name=ProduceId]").val()
+						var principal = $("input[textboxname=ApprovalMoney]").textbox("getValue");
+
+						if (produceId && principal) {
+							$.ajax({
+								method: "GET",
+								url: "../api/Produce/YearlyPayment",
+								data: { id: produceId, principal: principal },
+								statusCode: {
+									200: function (payments) {
+										$("#principal_ratios").datagrid("loadData", payments);
+									}
+								}
+							});
+						}
+					}
+			</script>
+		</fieldset>
+	</form>
 </body>
 </html>
