@@ -18,9 +18,9 @@
             Property(m => m.IsTemp).IsRequired();
             Property(m => m.DateOfCreate).IsRequired();
             Ignore(m => m.Stream);
-            Property(m => m.ReferenceId).IsRequired();
-            Property(m => m.ReferencedSid).IsRequired();
-            Property(m=>m.TableName).IsRequired();
+            Property(m => m.ReferenceId).IsOptional();
+            Property(m => m.ReferencedSid).IsOptional();
+            Property(m=>m.TableName).IsOptional();
 
             ToTable("SYS_FileSystem");
         }
