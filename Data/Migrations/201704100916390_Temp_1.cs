@@ -22,9 +22,9 @@ namespace Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             AddColumn("dbo.SYS_FileSystem", "DateOfCreate", c => c.DateTime(nullable: false));
-            AddColumn("dbo.SYS_FileSystem", "ReferenceId", c => c.Guid(nullable: false));
-            AddColumn("dbo.SYS_FileSystem", "ReferencedSid", c => c.Guid(nullable: false));
-            AddColumn("dbo.SYS_FileSystem", "TableName", c => c.Byte(nullable: false));
+            AddColumn("dbo.SYS_FileSystem", "ReferenceId", c => c.Guid());
+            AddColumn("dbo.SYS_FileSystem", "ReferencedSid", c => c.Guid());
+            AddColumn("dbo.SYS_FileSystem", "TableName", c => c.Byte());
             AddColumn("dbo.FANC_Finance", "LeaseMode", c => c.Byte());
             AddColumn("dbo.FANC_Finance", "VehicleClause", c => c.Byte());
             AddColumn("dbo.FANC_Finance", "MortgageRequirements", c => c.Byte());
