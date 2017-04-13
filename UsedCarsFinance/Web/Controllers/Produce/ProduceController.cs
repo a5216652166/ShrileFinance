@@ -64,5 +64,13 @@
 
             return Ok(model);
         }
+
+        [HttpGet]
+        public IHttpActionResult YearlyPayment(Guid id, decimal principal)
+        {
+            var payments = service.YearlyPayment(id, principal);
+
+            return Ok(payments);
+        }
     }
 }
