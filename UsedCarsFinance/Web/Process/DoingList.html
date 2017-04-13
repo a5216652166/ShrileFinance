@@ -42,7 +42,7 @@
 
         function SetFilters(params) {
             params.searchString = $("#SearchString").textbox("getValue");
-            params.currentNode = $("#CurrentNode").textbox("getValue");
+            //params.currentNode = $("#CurrentNode").textbox("getValue");
 
             if ($("#BeginTime").datebox("isValid")) {
                 params.beginTime = $("#BeginTime").datebox("getValue");
@@ -112,8 +112,8 @@
     <div id="tb">
         <form id="search_form">
             <input id="SearchString" name="SearchString" class="easyui-textbox" data-options="width:200,prompt: '输入标题查询'" />
-            <label for="CurrentNode">当前节点:</label>
-            <select id="CurrentNode" name="CurrentNode" class="easyui-combobox" data-options="width:120,editable:false,method:'GET',url:'../api/Flow/NodeOption'"></select>
+            <!--<label for="CurrentNode">当前节点:</label>
+            <select id="CurrentNode" name="CurrentNode" class="easyui-combobox" data-options="width:120,editable:false,method:'GET',url:'../api/Flow/NodeOption'"></select>-->
             <label for="BeginTime">发起时间 从:</label>
             <input id="BeginTime" name="BeginTime" class="easyui-datebox" data-options="width:100,validType:'Date'">
             <label for="EndTime">至:</label>
