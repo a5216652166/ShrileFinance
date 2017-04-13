@@ -179,24 +179,27 @@
         /// <returns>打包后的内存流</returns>
         public MemoryStream Compression(IEnumerable<FileSystem> fileInfos)
         {
-            if (fileInfos == null)
+            if (fileInfos == default(IEnumerable<FileSystem>))
             {
-                return null;
+                return default(MemoryStream);
             }
 
             var dictonary = new Dictionary<string, byte[]>();
 
             foreach (var item in fileInfos)
             {
-                var ms = new MemoryStream();
-                item.Stream.CopyTo(ms);
+                if (dictonary.Keys.Contains(item.OldName) == false)
+                {
+                    var ms = new MemoryStream();
+                    item.Stream.CopyTo(ms);
 
-                dictonary.Add(item.Name, ms.ToArray());
+                    dictonary.Add(item.OldName, ms.ToArray());
+                }
             }
 
             if (dictonary.Count == 1)
             {
-                return new MemoryStream(dictonary.First().Value);
+                return new MemoryStream(dictonary.Single().Value);
             }
 
             return FileHelper.Compression(dictonary);
