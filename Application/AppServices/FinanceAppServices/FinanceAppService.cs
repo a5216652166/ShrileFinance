@@ -13,6 +13,7 @@
     using Core.Entities.Finance;
     using Core.Entities.Finance.Financial;
     using Core.Entities.Identity;
+    using Core.Entities.IO;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using Core.Interfaces.Repositories.FinanceRepositories.BranchOfficeRepositories;
     using Core.Interfaces.Repositories.LoanRepositories;
@@ -366,7 +367,9 @@
                 VehicleBuyPriseMax = vehicleBuyPrice.Max,
 
                 ProduceRateMonth = finance.Produce.RateMonth,
-                ProducePeriods = finance.Produce.Periods
+                ProducePeriods = finance.Produce.Periods,
+
+                ProduceId = finance.Produce.Id
             };
 
             // 部分映射
@@ -603,7 +606,7 @@
             var tempFile = fileSystemAppService.CreatFile(virtualPath + "Template\\" + templateName, true);
 
             var count = tempFile.Path.LastIndexOf("\\");
-            var ss = tempFile.Path.Substring(0, count);
+            var ss = FileSystem.VirtualPath + tempFile.Path.Substring(0, count);
 
             var path = wtp.TransformWordToPDF(wtp.GetPath(ss) + tempFile.Path.Substring(count, tempFile.Path.Length - count), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
 
@@ -635,6 +638,14 @@
             param.Add("[@乙方证件号@]", info.Identity);
             param.Add("[@承租人@]", string.IsNullOrWhiteSpace(lessee.Name) ? string.Empty.PadLeft(4) : lessee.Name);
             param.Add("[@承租人证件号@]", string.IsNullOrWhiteSpace(lessee.Identity) ? string.Empty.PadLeft(18) : lessee.Identity);
+
+            ////格式对齐
+            param.Add("[@空格1@]", string.Empty.PadRight(25- finance.BranchOffice.Name.Length));
+            param.Add("[@空格2@]", string.Empty.PadRight(15 - info.Name.Length));
+            param.Add("[@空格3@]", string.Empty.PadRight(50));
+            param.Add("[@空格4@]", string.Empty.PadRight(10 - lessee.Name.Length));
+
+
             param.Add("[@年@]", DateTime.Now.Year.ToString());
             param.Add("[@月@]", DateTime.Now.Month.ToString());
             param.Add("[@日@]", DateTime.Now.Day.ToString());

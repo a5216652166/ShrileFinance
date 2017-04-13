@@ -94,7 +94,10 @@
         /// </summary>
         public bool IsReview { get; set; }
 
+        /// <summary>
+        /// 产品标识
+        /// </summary>
+        public Guid ProduceId { get; set; }
 
-        
     }
 }

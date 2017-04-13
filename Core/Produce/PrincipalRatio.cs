@@ -6,9 +6,9 @@
     {
         public Guid ProduceId { get; private set; }
 
-        public int Period { get; private set; }
+        public int Period { get; set; }
 
-        public decimal Ratio { get; private set; }
+        public decimal Ratio { get; set; }
 
         public decimal Factor { get; set; }
 
