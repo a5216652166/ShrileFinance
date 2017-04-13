@@ -677,11 +677,11 @@
             param.Add("[@甲方开户行@]", finance.BranchOffice.BankName);
             param.Add("[@甲方账号@]", finance.BranchOffice.BankAcount);
 
-            var list = JsonParseHelper.GetJProperty("{\"array\":" + finance.FinanceExtension.CustomerAccountName + "}", "array", 4);
+            var list = JsonParseHelper.GetJProperty("{\"array\":" + finance.FinanceExtension.CustomerAccountName + "}", "array", 2).ToArray();
 
-            param.Add("[@乙方户名@]", finance.FinanceExtension.CustomerAccountName);
-            param.Add("[@乙方开户行@]", finance.FinanceExtension.CustomerBankName);
-            param.Add("[@乙方账号@]", finance.FinanceExtension.CustomerBankCard);
+            param.Add("[@乙方户名@]", list[0]["CustomerAccountName"].ToString());
+            param.Add("[@乙方开户行@]", list[0]["CustomerBankName"].ToString());
+            param.Add("[@乙方账号@]", list[0]["CustomerBankCard"].ToString());
 
             param.Add("[@担保人@]", finance.FinanceExtension.GuarantorName1);
             param.Add("[@担保合同编号@]", finance.FinanceExtension.GuarantorNo1);
