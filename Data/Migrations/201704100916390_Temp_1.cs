@@ -21,6 +21,10 @@ namespace Data.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
+            AddColumn("dbo.SYS_FileSystem", "DateOfCreate", c => c.DateTime(nullable: false));
+            AddColumn("dbo.SYS_FileSystem", "ReferenceId", c => c.Guid(nullable: false));
+            AddColumn("dbo.SYS_FileSystem", "ReferencedSid", c => c.Guid(nullable: false));
+            AddColumn("dbo.SYS_FileSystem", "TableName", c => c.Byte(nullable: false));
             AddColumn("dbo.FANC_Finance", "LeaseMode", c => c.Byte());
             AddColumn("dbo.FANC_Finance", "VehicleClause", c => c.Byte());
             AddColumn("dbo.FANC_Finance", "MortgageRequirements", c => c.Byte());
@@ -38,14 +42,22 @@ namespace Data.Migrations
             AddColumn("dbo.FANC_FinanceExtension", "GuarantorNo2", c => c.String(maxLength: 20));
             AlterColumn("dbo.FLOW_Log", "Opinion_InternalOpinion", c => c.String(maxLength: 1000));
             AlterColumn("dbo.FLOW_Log", "Opinion_ExnernalOpinion", c => c.String(maxLength: 1000));
+            AlterColumn("dbo.SYS_FileSystem", "OldName", c => c.String(nullable: false, maxLength: 60));
+            AlterColumn("dbo.SYS_FileSystem", "Path", c => c.String(nullable: false, maxLength: 100));
             CreateIndex("dbo.FANC_Finance", "BranchOffice_Id");
             AddForeignKey("dbo.FANC_Finance", "BranchOffice_Id", "dbo.FANC_BranchOffice", "Id");
+            DropColumn("dbo.SYS_FileSystem", "Name");
+            DropColumn("dbo.SYS_FileSystem", "Extension");
         }
         
         public override void Down()
         {
+            AddColumn("dbo.SYS_FileSystem", "Extension", c => c.String(nullable: false, maxLength: 20));
+            AddColumn("dbo.SYS_FileSystem", "Name", c => c.String(nullable: false, maxLength: 36));
             DropForeignKey("dbo.FANC_Finance", "BranchOffice_Id", "dbo.FANC_BranchOffice");
             DropIndex("dbo.FANC_Finance", new[] { "BranchOffice_Id" });
+            AlterColumn("dbo.SYS_FileSystem", "Path", c => c.String(nullable: false, maxLength: 200));
+            AlterColumn("dbo.SYS_FileSystem", "OldName", c => c.String(nullable: false, maxLength: 100));
             AlterColumn("dbo.FLOW_Log", "Opinion_ExnernalOpinion", c => c.String(maxLength: 500));
             AlterColumn("dbo.FLOW_Log", "Opinion_InternalOpinion", c => c.String(maxLength: 500));
             DropColumn("dbo.FANC_FinanceExtension", "GuarantorNo2");
@@ -63,6 +75,10 @@ namespace Data.Migrations
             DropColumn("dbo.FANC_Finance", "MortgageRequirements");
             DropColumn("dbo.FANC_Finance", "VehicleClause");
             DropColumn("dbo.FANC_Finance", "LeaseMode");
+            DropColumn("dbo.SYS_FileSystem", "TableName");
+            DropColumn("dbo.SYS_FileSystem", "ReferencedSid");
+            DropColumn("dbo.SYS_FileSystem", "ReferenceId");
+            DropColumn("dbo.SYS_FileSystem", "DateOfCreate");
             DropTable("dbo.FANC_BranchOffice");
         }
     }
