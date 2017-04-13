@@ -7,6 +7,5 @@
 
     public interface IFileSystemRepository : IRepository<FileSystem>
     {
-        IQueryable<FileSystem> GetByIds(IEnumerable<Guid> ids);
     }
 }

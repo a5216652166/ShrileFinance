@@ -11,80 +11,121 @@
 
     public class FileSystemAppService
     {
-        private readonly IFileSystemRepository repository;
+        private readonly IFileSystemRepository fileSystemRepository;
 
-        public FileSystemAppService(IFileSystemRepository repository)
+        public FileSystemAppService(IFileSystemRepository fileSystemRepository)
         {
-            this.repository = repository;
+            this.fileSystemRepository = fileSystemRepository;
         }
 
         /// <summary>
         /// 获取所有
         /// </summary>
         /// <returns>文件列表</returns>
-        public List<FileSystem> GetAll() => ImportStream(repository.GetAll());
+        public List<FileSystem> GetAll()
+        {
+            var list = fileSystemRepository.GetAll();
+
+            return ImportStream(list);
+        }
 
         /// <summary>
         /// 通过标识集合获取
         /// </summary>
         /// <param name="ids">标识集合</param>
         /// <returns>文件列表</returns>
-        public List<FileSystem> GetByIds(IEnumerable<Guid> ids)
+        public List<FileSystem> GetAllByIds(IEnumerable<Guid> ids)
         {
-            var list = ImportStream(repository.GetByIds(ids));
+            var list = fileSystemRepository.GetAll(m => ids.Contains(m.Id));
 
-            return list;
-        }
-
-        /// <summary>
-        /// 通过标识获取
-        /// </summary>
-        /// <param name="id">标识</param>
-        /// <returns>文件</returns>
-        public FileSystem Get(Guid id)
-        {
-            var entity= ImportStream(new List<FileSystem>(){repository.Get(id)})?.First();
-
-            return entity;
+            return ImportStream(list);
         }
 
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="fileSystemIds">标识集合</param>
+        /// <param name="ids">标识集合</param>
         /// <returns>删除数目</returns>
-        public int Delete(IEnumerable<Guid> fileSystemIds)
+        public int Delete(IEnumerable<Guid> ids)
         {
-            var fileSystems = repository.GetByIds(fileSystemIds.ToList());
+            var fileSystems = fileSystemRepository.GetAll(m => ids.Contains(m.Id));
 
             foreach (var item in fileSystems)
             {
-                repository.Remove(item);
+                fileSystemRepository.Remove(item);
             }
 
-            return repository.Commit();
+            return fileSystemRepository.Commit();
+        }
+
+        /// <summary>
+        /// 通过引用标识和表单名获取文件
+        /// </summary>
+        /// <param name="referenceId">引用标识</param>
+        /// <param name="tableName">表单名</param>
+        /// <returns></returns>
+        public List<FileSystem> GetAll(Guid referenceId, TableNameEnum tableName)
+        {
+            var list = fileSystemRepository.GetAll(m => tableName == m.TableName && m.ReferenceId == referenceId);
+
+            return list.ToList();
+        }
+
+        /// <summary>
+        /// 通过引用标识和表单名删除文件
+        /// </summary>
+        /// <param name="referenceId">引用标识</param>
+        /// <param name="tableName">表单名</param>
+        /// <param name="rsids">分组标识</param>
+        /// <returns></returns>
+        public int DeleteAll(Guid referenceId, TableNameEnum tableName, IEnumerable<Guid?> rsids = default(IEnumerable<Guid?>))
+        {
+            rsids = rsids == default(IEnumerable<Guid?>) ? new List<Guid?>() : rsids.Where(m => m.HasValue);
+
+            var list = fileSystemRepository.GetAll(m => tableName == m.TableName && m.ReferenceId == referenceId && rsids.Contains(m.ReferencedSid));
+
+            foreach (var item in list)
+            {
+                fileSystemRepository.Remove(item);
+            }
+
+            return fileSystemRepository.Commit();
         }
 
         /// <summary>
         /// 创建文件
         /// </summary>
-        /// <param name="postedFile">文件信息</param>
+        /// <param name="postedFiles">文件信息</param>
+        /// <param name="rId">引用标识</param>
+        /// <param name="rsid">分组标识</param>
+        /// <param name="tableName">表单名</param>
         /// <param name="isTemp">临时文件</param>
-        /// <returns>文件</returns>
-        public FileSystem CreatFile(HttpPostedFile postedFile, bool isTemp = false)
+        /// <returns></returns>
+        public List<FileSystem> CreatFile(HttpFileCollection postedFiles, Guid rId, Guid rsid, TableNameEnum tableName, bool isTemp = false)
         {
-            if (postedFile == null)
+            if (postedFiles == null)
             {
-                throw new ArgumentNullException(nameof(postedFile), "创建文件使用的参数为null");
+                throw new ArgumentNullException(nameof(postedFiles), "创建文件使用的参数为null");
             }
 
-            var name = postedFile.FileName;
+            var fileSystems = new List<FileSystem>();
 
-            var fileSystem = ConvertToFileSystem(postedFile, name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
+            for (int i = 0; i<postedFiles.Count; i++)
+            {
+                var name = postedFiles[i].FileName;
 
-            SaveFileSystem(fileSystem);
+                var fileSystem = ConvertToFileSystem(postedFiles, name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
 
-            return fileSystem;
+                fileSystem.ReferenceId = rId;
+                fileSystem.ReferencedSid = rsid;
+                fileSystem.TableName = tableName;
+
+                fileSystems.Add(fileSystem);
+            }
+
+            SaveFileSystem(fileSystems);
+
+            return fileSystems;
         }
 
         /// <summary>
@@ -102,7 +143,7 @@
 
             var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf('.')), fileInfo.Extension, isTemp: isTemp);
 
-            SaveFileSystem(fileSystem);
+            SaveFileSystem(new FileSystem[] { fileSystem } );
 
             return fileSystem;
         }
@@ -129,7 +170,7 @@
 
             var fileSystem = ConvertToFileSystem(path, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
 
-            SaveFileSystem(fileSystem);
+            SaveFileSystem(new FileSystem[] { fileSystem });
 
             return fileSystem;
         }
@@ -151,7 +192,7 @@
 
             var fileSystem = ConvertToFileSystem(stream, name, extension, isTemp: isTemp);
 
-            SaveFileSystem(fileSystem);
+            SaveFileSystem(new FileSystem[] { fileSystem });
 
             return fileSystem;
         }
@@ -173,7 +214,7 @@
 
             var fileSystem = ConvertToFileSystem(buffer, name, extension, isTemp: isTemp);
 
-            SaveFileSystem(fileSystem);
+            SaveFileSystem(new FileSystem[] { fileSystem });
 
             return fileSystem;
         }
@@ -203,17 +244,12 @@
                 }
             }
 
-            if (dictonary.Count == 1)
-            {
-                return new MemoryStream(dictonary.Single().Value);
-            }
-
             return FileHelper.Compression(dictonary);
         }
 
         private FileSystem ConvertToFileSystem<T>(T value, string name, string extension, bool isTemp = false)
         {
-           var stream = default(Stream);
+            var stream = default(Stream);
 
             if (value is HttpPostedFile)
             {
@@ -246,20 +282,23 @@
             return fileSystem;
         }
 
-        private void SaveFileSystem(FileSystem fileSystem)
+        private void SaveFileSystem(IEnumerable<FileSystem> fileSystems)
         {
-            fileSystem.Save();
-
-            if (fileSystem.Id == Guid.Empty)
+            foreach (var item in fileSystems)
             {
-                repository.Create(fileSystem);
-            }
-            else
-            {
-                repository.Modify(fileSystem);
+                item.Save();
+
+                if (item.Id == Guid.Empty)
+                {
+                    fileSystemRepository.Create(item);
+                }
+                else
+                {
+                    fileSystemRepository.Modify(item);
+                }
             }
 
-            repository.Commit();
+            fileSystemRepository.Commit();
         }
 
         private List<FileSystem> ImportStream(IEnumerable<FileSystem> fileInfos)
@@ -276,6 +315,7 @@
                         item.Stream = new MemoryStream();
 
                         fs.CopyTo(item.Stream);
+                        fs.Flush();
                         fs.Dispose();
                     }
                 }
