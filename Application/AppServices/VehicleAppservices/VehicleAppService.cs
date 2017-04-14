@@ -14,6 +14,21 @@
             context = new CarHomeContext();
         }
 
+        public VehicleModel Get(string vehicleKey)
+        {
+            var query = context.Database.SqlQuery<VehicleModel>(
+                @"SELECT sv.VehicleCode, sb.CarBrand AS Make, ss.Series AS Series, sv.Vehicle
+                FROM Sys_Vehicle AS sv
+                    LEFT JOIN Sys_Brand AS sb ON sv.BrandCode = sb.BrandCode
+                    LEFT JOIN Sys_Series AS ss ON sv.SeriesCode = ss.SeriesCode
+                WHERE sv.VehicleCode = @p0",
+                vehicleKey);
+
+            var entity = query.FirstAsync().Result;
+
+            return entity;
+        }
+
         public string GetCarBrand(string vehicleKey)
         {
             var result = context.Database.SqlQuery<string>("SELECT sb.CarBrand FROM Sys_Vehicle AS sv LEFT JOIN Sys_Series AS ss ON sv.SeriesCode = ss.SeriesCode LEFT JOIN Sys_Brand AS sb ON sb.BrandCode = ss.BrandCode WHERE sv.VehicleCode = @p0", vehicleKey);
