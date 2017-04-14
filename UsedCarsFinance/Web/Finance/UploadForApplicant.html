@@ -16,6 +16,7 @@
 
     <script src="Content/viewerUpload/uploadFile.js"></script>
     <script src="Content/viewerUpload/PictureViewer.js"></script>
+    <script src="Content/FinanceJs.js"></script>
 
     <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
     <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
@@ -62,11 +63,11 @@
                 e.checked = false;
             });
 
-            ////// 获取参数
-            ////query.state = GetQueryString("state");
-            ////query.FinanceId = parent.flow.RootKey;
+            // 获取参数
+            query.state = GetQueryString("state");
+            query.FinanceId = parent.flow.RootKey;
 
-            ////referenceId = query.FinanceId;
+            referenceId = query.FinanceId;
 
             var value = {};
             value.referenceId = referenceId;

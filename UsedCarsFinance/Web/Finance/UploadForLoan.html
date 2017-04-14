@@ -16,6 +16,7 @@
 
     <script src="Content/viewerUpload/uploadFile.js"></script>
     <script src="Content/viewerUpload/PictureViewer.js"></script>
+    <script src="Content/FinanceJs.js"></script>
 
     <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
     <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
@@ -38,6 +39,8 @@
     </style>
 
     <script type="text/javascript">
+        var query = {};
+
         // 融资标识
         var referenceId = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEF00";
 
@@ -57,6 +60,12 @@
             $("input[type=checkbox]:checked").each(function (i, e) {
                 e.checked = false;
             });
+
+            // 获取参数
+            query.state = GetQueryString("state");
+            query.FinanceId = parent.flow.RootKey;
+
+            referenceId = query.FinanceId;
 
             var value = {};
             value.referenceId = referenceId;
@@ -82,19 +91,19 @@
         }
 
         function DownLoadAll() {
-            $("form#downloadForm").find("input[name=ReferenceId]").val(referenceId);
+            $("form#DownloadForm").find("input[name=ReferenceId]").val(referenceId);
 
             $("fieldset input[type=checkbox]:checked").each(function (i, e) {
                 var id = $(e).parent().next("div").attr("id");
 
                 var referenceSid = flag + id.substr(id.lastIndexOf('_') + 1);
 
-                $("form#downloadForm").append('<input name="referenceSids" value=' + referenceSid + ' />');
+                $("form#DownloadForm").append('<input name="referenceSids" value=' + referenceSid + ' />');
             });
 
-            $("form#downloadForm").submit();
+            $("form#DownloadForm").submit();
 
-            $("form#downloadForm").find("input[name=referenceSids]").remove();
+            $("form#DownloadForm").find("input[name=referenceSids]").remove();
         }
 
         function CheckAll(obj) {
@@ -156,7 +165,8 @@
 
     <script type="text/javascript">
         //下载单身证明
-        function DownloadSignle() {
+            function DownloadSignle() {
+                debugger;
             $("#downloadSignle").linkbutton("disable");
             $("#downloadForm input[name=financeId]").val(query.FinanceId);
             $("#downloadForm input[name=sign]").val(1);
@@ -446,7 +456,7 @@
     </div>
 
     <div>
-        <form id="downloadForm" action="../api/UploadFile/DownloadAllFile" method="POST" style="display:none">
+        <form id="DownloadForm" action="../api/UploadFile/DownloadAllFile" method="POST" style="display:none">
             <input name="ReferenceId" />
             <input name="referenceType" value="1" />
             <!--<input name="referenceSids" />-->
