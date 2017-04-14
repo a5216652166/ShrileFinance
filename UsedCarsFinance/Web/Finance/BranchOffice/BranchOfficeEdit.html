@@ -11,6 +11,7 @@
     <script src="../../Scripts/easyui/jquery.easyui.js"></script>
     <script src="../../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script src="../../Scripts/usedcars.js"></script>
+    <script src="../../Borrowers/JS/validType.js"></script>
     <style>
         td > .textbox[style*="height: 22px;"] {
             height: 22px !important;
@@ -196,7 +197,7 @@
 
                 <div class="col-6">
                     <label>电话:</label>
-                    <input class="easyui-textbox" name="Phone" data-options="value:'',editable:true,required:true,validType:'PhoneOrMobile',validType:'length[0,20]' " />
+                    <input class="easyui-textbox" name="Phone" data-options="value:'',editable:true,required:true,validType:['Phone','N'] " />
                 </div>
 
                 <div class="col-6">
@@ -216,7 +217,7 @@
 
                 <div class="col-6">
                     <label>账号:</label>
-                    <input class="easyui-textbox" name="BankAcount" data-options="value:'',editable:true,required:true,validType:'length[0,30]' " />
+                    <input class="easyui-textbox" name="BankAcount" data-options="value:'',editable:true,required:true,validType:['length[0,19]','N'] " />
                 </div>
             </div>
         </fieldset>
