@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using Core.Entities.Finance;
+    using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using Core.Interfaces.Repositories.ProcessRepositories;
 
@@ -54,6 +55,11 @@
         {
             var finance = financeRepository.Get(financeId);
 
+            if (finance == default(Finance))
+            {
+                throw new ArgumentAppException(financeId.ToString()); ;
+            }
+
             finance.PayBail();
             financeRepository.Commit();
         }
@@ -65,6 +71,11 @@
         public void RevertBail(Guid financeId)
         {
             var finance = financeRepository.Get(financeId);
+
+            if (finance == default(Finance))
+            {
+                throw new ArgumentAppException(financeId.ToString()); ;
+            }
 
             finance.RevertBail();
             financeRepository.Commit();
