@@ -7,6 +7,7 @@
     using System.IO;
     using System.Linq;
     using Application.AppServices.VehicleAppservices;
+    using Application.Produce;
     using Application.ViewModels.FinanceViewModels.FinancialLoanViewModels;
     using AutoMapper;
     using Core.Entities;
@@ -40,6 +41,7 @@
         private readonly VehicleAppService vehicleAppService;
         private readonly FileSystemAppService fileSystemAppService;
         private readonly IBranchOfficeRepository branchOfficeRepository;
+        private readonly ProduceAppService produceAppService;
 
         public FinanceAppService(
             IFinanceRepository financeRepository,
@@ -50,6 +52,7 @@
             IProduceRepository produceRepository,
             VehicleAppService vehicleAppService,
             FileSystemAppService fileSystemAppService,
+            ProduceAppService produceAppService,
             IBranchOfficeRepository branchOfficeRepository)
         {
             this.financeRepository = financeRepository;
@@ -61,6 +64,7 @@
             this.vehicleAppService = vehicleAppService;
             this.fileSystemAppService = fileSystemAppService;
             this.branchOfficeRepository = branchOfficeRepository;
+            this.produceAppService = produceAppService;
         }
 
         public KeyValuePair<string, byte[]> DownloadFiles(Guid financeId, int sign)
@@ -637,15 +641,14 @@
             param.Add("[@乙方@]", info.Name);
             param.Add("[@乙方证件号@]", info.Identity);
 
-            param.Add("[@承租人@]", lessee==null ? string.Empty.PadLeft(4) : lessee.Name);
+            param.Add("[@承租人@]", lessee == null ? string.Empty.PadLeft(4) : lessee.Name);
             param.Add("[@承租人证件号@]", lessee == null ? string.Empty.PadLeft(18) : lessee.Identity);
 
             ////格式对齐
-            param.Add("[@空格1@]", string.Empty.PadRight(25- finance.BranchOffice.Name.Length));
+            param.Add("[@空格1@]", string.Empty.PadRight(25 - finance.BranchOffice.Name.Length));
             param.Add("[@空格2@]", string.Empty.PadRight(15 - info.Name.Length));
             param.Add("[@空格3@]", string.Empty.PadRight(50));
             param.Add("[@空格4@]", string.Empty.PadRight(10 - (lessee == null ? 4 : lessee.Name.Length)));
-
 
             param.Add("[@年@]", DateTime.Now.Year.ToString());
             param.Add("[@月@]", DateTime.Now.Month.ToString());
@@ -660,7 +663,7 @@
             var upper = new MoneyToUpper();
             param.Add("[@融资额@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
             param.Add("[@融资额1@]", Convert.ToString(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
-            param.Add("[@服务费@]", upper.RMBToUpper(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value/100* finance.ApprovalMoney.Value));
+            param.Add("[@服务费@]", upper.RMBToUpper(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value));
             param.Add("[@服务费1@]", Convert.ToString(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value));
             param.Add("[@保证金@]", upper.RMBToUpper(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value));
             param.Add("[@保证金1@]", Convert.ToString(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value));
@@ -684,6 +687,8 @@
                 param.Add($"[@金额{i + 1}@]", upper.RMBToUpper(value));
                 param.Add($"[@人民币{i + 1}@]", Convert.ToString(value));
             }
+
+            var money = produceAppService.YearlyPayment(financeId, finance.ApprovalMoney.Value);
 
             param.Add("[@甲方户名@]", finance.BranchOffice.Name);
             param.Add("[@甲方开户行@]", finance.BranchOffice.BankName);
