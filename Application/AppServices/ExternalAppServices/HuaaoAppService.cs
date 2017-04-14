@@ -43,7 +43,7 @@
             var finance = query
                 .OrderByDescending(m => m.Id)
                 .FirstOrDefault();
-            
+
             return finance;
         }
 
@@ -57,7 +57,7 @@
 
             if (finance == default(Finance))
             {
-                throw new ArgumentAppException(financeId.ToString()); ;
+                throw new ArgumentAppException(financeId.ToString());
             }
 
             finance.PayBail();
@@ -74,7 +74,7 @@
 
             if (finance == default(Finance))
             {
-                throw new ArgumentAppException(financeId.ToString()); ;
+                throw new ArgumentAppException(financeId.ToString());
             }
 
             finance.RevertBail();
