@@ -1561,6 +1561,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\External\HuaaoController.cs" />
     <Compile Include="Controllers\Finance\BranchOffice\BranchOfficeController.cs" />
     <Compile Include="Controllers\Finance\FinanceController.cs" />
     <Compile Include="Controllers\Finance\Financial\FinancialLoanController.cs" />

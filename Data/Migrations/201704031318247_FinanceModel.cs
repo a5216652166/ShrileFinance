@@ -1,7 +1,8 @@
 namespace Data.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
-
+    
     public partial class FinanceModel : DbMigration
     {
         public override void Up()
@@ -11,6 +12,12 @@ namespace Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false, identity: true),
+                        LeaseMode = c.Byte(),
+                        VehicleClause = c.Byte(),
+                        MortgageRequirements = c.Byte(),
+                        LeaseNo = c.String(maxLength: 20),
+                        VehicleMortgageContractNo = c.String(maxLength: 20),
+                        RentPayableStartDate = c.DateTime(),
                         Principal = c.Decimal(precision: 18, scale: 2),
                         RepaymentDate = c.Int(),
                         RepaymentScheme = c.Byte(nullable: false),
@@ -19,22 +26,29 @@ namespace Data.Migrations
                         DateEffective = c.DateTime(),
                         Financing = c.Decimal(precision: 18, scale: 2),
                         Poundage = c.Decimal(precision: 18, scale: 2),
+                        ApprovalPoundage = c.Decimal(precision: 18, scale: 2),
                         OncePayMonths = c.Int(),
-                        AdviceMoney = c.Decimal(precision: 18, scale: 2),
-                        AdviceRatio = c.Decimal(precision: 18, scale: 2),
+                        Margin = c.Decimal(precision: 18, scale: 2),
+                        ApprovalMargin = c.Decimal(precision: 18, scale: 2),
+                        BailPaid = c.Decimal(nullable: false, precision: 18, scale: 8),
                         ApprovalMoney = c.Decimal(precision: 18, scale: 2),
-                        ApprovalRatio = c.Decimal(precision: 18, scale: 2),
                         Payment = c.Decimal(precision: 18, scale: 2),
+                        SelfPrincipal = c.Decimal(nullable: false, precision: 18, scale: 2),
                         RepayRentDate = c.DateTime(),
+                        Registrant = c.Byte(nullable: false),
+                        Email = c.String(nullable: false, maxLength: 30),
                         DateCreated = c.DateTime(nullable: false),
+                        BranchOffice_Id = c.Guid(nullable: false),
                         CreateBy_Id = c.String(maxLength: 128),
                         CreateOf_Id = c.Guid(),
                         Produce_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.FANC_BranchOffice", t => t.BranchOffice_Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.CreateBy_Id)
                 .ForeignKey("dbo.CRET_Partner", t => t.CreateOf_Id)
                 .ForeignKey("dbo.PROD_Produce", t => t.Produce_Id)
+                .Index(t => t.BranchOffice_Id)
                 .Index(t => t.CreateBy_Id)
                 .Index(t => t.CreateOf_Id)
                 .Index(t => t.Produce_Id);
@@ -82,6 +96,20 @@ namespace Data.Migrations
                 .Index(t => t.FinanceId);
             
             CreateTable(
+                "dbo.FANC_BranchOffice",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                        Name = c.String(nullable: false, maxLength: 60),
+                        Address = c.String(nullable: false, maxLength: 100),
+                        Phone = c.String(nullable: false, maxLength: 20),
+                        Fax = c.String(maxLength: 20),
+                        BankName = c.String(nullable: false, maxLength: 20),
+                        BankAcount = c.String(nullable: false, maxLength: 30),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.FANC_Contact",
                 c => new
                     {
@@ -106,9 +134,13 @@ namespace Data.Migrations
                         CreditBankName = c.String(maxLength: 40),
                         CreditBankCard = c.String(maxLength: 40),
                         ContactJson = c.String(maxLength: 800),
-                        CustomerAccountName = c.String(maxLength: 40),
+                        CustomerAccountName = c.String(),
                         CustomerBankName = c.String(maxLength: 40),
                         CustomerBankCard = c.String(maxLength: 40),
+                        GuarantorName1 = c.String(maxLength: 20),
+                        GuarantorNo1 = c.String(maxLength: 20),
+                        GuarantorName2 = c.String(maxLength: 20),
+                        GuarantorNo2 = c.String(maxLength: 20),
                         FinanceId = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -121,8 +153,8 @@ namespace Data.Migrations
                     {
                         Id = c.Guid(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 200),
-                        FinancialAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Principal = c.Decimal(precision: 18, scale: 2),
+                        Principal = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        FinancialAmount = c.Decimal(precision: 18, scale: 2),
                         Rate = c.Decimal(precision: 18, scale: 2),
                         VATamount = c.Decimal(precision: 18, scale: 2),
                         InvoiceAmount = c.Decimal(precision: 18, scale: 2),
@@ -192,6 +224,7 @@ namespace Data.Migrations
             DropForeignKey("dbo.FANC_Finance", "CreateOf_Id", "dbo.CRET_Partner");
             DropForeignKey("dbo.FANC_Finance", "CreateBy_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.FANC_Contact", "FinanceId", "dbo.FANC_Finance");
+            DropForeignKey("dbo.FANC_Finance", "BranchOffice_Id", "dbo.FANC_BranchOffice");
             DropForeignKey("dbo.FANC_Applicant", "FinanceId", "dbo.FANC_Finance");
             DropIndex("dbo.FANC_FinancialLoan", new[] { "Produce_Id" });
             DropIndex("dbo.FANC_Vehicle", new[] { "FinanceId" });
@@ -203,11 +236,13 @@ namespace Data.Migrations
             DropIndex("dbo.FANC_Finance", new[] { "Produce_Id" });
             DropIndex("dbo.FANC_Finance", new[] { "CreateOf_Id" });
             DropIndex("dbo.FANC_Finance", new[] { "CreateBy_Id" });
+            DropIndex("dbo.FANC_Finance", new[] { "BranchOffice_Id" });
             DropTable("dbo.FANC_FinancialLoan");
             DropTable("dbo.FANC_Vehicle");
             DropTable("dbo.FANC_FinancialItem");
             DropTable("dbo.FANC_FinanceExtension");
             DropTable("dbo.FANC_Contact");
+            DropTable("dbo.FANC_BranchOffice");
             DropTable("dbo.FANC_Applicant");
             DropTable("dbo.FANC_Finance");
         }

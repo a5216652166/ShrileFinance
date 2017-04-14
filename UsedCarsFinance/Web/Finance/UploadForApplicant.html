@@ -70,11 +70,10 @@
             if (files == null || files.length == 0) {
                 return false;
             }
-            
+
             var UrlArray = [];
 
-            for (var i in files)
-            {
+            for (var i in files) {
                 var urlObj = {};
                 urlObj.Name = files[i].OldName + files[i].Extension;
                 urlObj.Path = "..\\" + files[i].path;
@@ -85,8 +84,6 @@
             // 上传的图片加入viewer
             PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
         }
-
-
     </script>
 
     <script type="text/javascript">
@@ -101,8 +98,35 @@
 
         var flag = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE";
 
-        function Delete()
-        {
+        $(function () {
+            var value = {};
+            value.referenceId = referenceId;
+            value.tableName = tableName;
+            value.referencedSid = referencedSid;
+
+            LoadAllFiles(value);
+        });
+
+        // 加载所有影像资料
+        function LoadAllFiles(value) {
+            var picData = GetFiles(value.referenceId, value.tableName, value.referencedSid);
+
+            $("fieldset input[type=checkbox]").each(function (i, e) {
+                var id = $(e).parent().next("div").attr("id");
+                var referencedSid = flag + id.substr(id.lastIndexOf('_') + 1);
+
+                var urlArray = $(picData).map(function (j, k) {
+                    if (k.tableName = 1 && k.referencedSid == referencedSid) {
+                        return k;
+                    }
+                }).toArray();
+                debugger
+                // 上传的图片加入viewer
+                PicViewerLoadPic(urlArray, $("div#" + id));
+            });
+        }
+
+        function Delete() {
             var referencedSids = [];
 
             $("fieldset input[type=checkbox]:checked").each(function (i, e) {
@@ -113,7 +137,7 @@
                 // 移除图片预览
                 $("div#" + id).find("div#li").remove();
             });
-            
+
             DeleteFiles(referenceId, tableName, referencedSids);
         }
 
@@ -140,7 +164,6 @@
             })
         }
     </script>
-
 </head>
 <body>
     <form class="container" tag="11">
@@ -505,7 +528,7 @@
     </form>
 
     <div>
-        <form id="downloadForm" action="../api/ImageUpload/DownloadFiles" method="GET" style="display:none">
+        <form id="downloadForm" action="../api/UploadFile/DownloadAllFile" method="POST" style="display:none">
             <input name="ReferenceId" />
             <input name="TableName" value="1" />
             <!--<input name="ReferencedSids" />-->

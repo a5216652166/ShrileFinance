@@ -346,9 +346,9 @@
 
             var seriesCode = vehicleAppService.GetSeriesCode(finance.Vehicle.VehicleKey) ?? string.Empty;
 
-            var vehicleSalePrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.VehicleKey, seriesCode).Result.Sale.Good;
-
-            var vehicleBuyPrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.VehicleKey, seriesCode).Result.Buy.Good;
+            var vehiclePrice = vehicleAppService.PostToGetVehiclePrise(finance.Vehicle.VehicleKey, seriesCode).Result;
+            var vehicleSalePrice = vehiclePrice.Sale.Good;
+            var vehicleBuyPrice = vehiclePrice.Buy.Good;
 
             // 实体转ViewModel
             var financeAuditViewModel = new FinanceAuidtViewModel()

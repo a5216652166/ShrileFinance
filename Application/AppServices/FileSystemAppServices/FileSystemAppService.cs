@@ -70,12 +70,10 @@
 
             referencedSids = referencedSids.Where(m => m.HasValue);
 
-            var list = fileSystemRepository.GetAll(m => tableName == m.TableName && m.ReferenceId == referenceId && referencedSids.Contains(m.ReferencedSid));
+            var list = fileSystemRepository.GetAll(m => tableName == m.ReferenceType && m.ReferenceId == referenceId && referencedSids.Contains(m.ReferenceSid));
 
             return list.ToList();
         }
-
-
 
         /// <summary>
         /// 通过引用标识和表单名删除文件
@@ -88,7 +86,7 @@
         {
             rsids = rsids == default(IEnumerable<Guid?>) ? new List<Guid?>() : rsids.Where(m => m.HasValue);
 
-            var list = fileSystemRepository.GetAll(m => tableName == m.TableName && m.ReferenceId == referenceId && rsids.Contains(m.ReferencedSid));
+            var list = fileSystemRepository.GetAll(m => tableName == m.ReferenceType && m.ReferenceId == referenceId && rsids.Contains(m.ReferenceSid));
 
             foreach (var item in list)
             {
@@ -123,8 +121,8 @@
                 var fileSystem = ConvertToFileSystem(postedFiles[i], name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
 
                 fileSystem.ReferenceId = rId;
-                fileSystem.ReferencedSid = rsid;
-                fileSystem.TableName = tableName;
+                fileSystem.ReferenceSid = rsid;
+                fileSystem.ReferenceType = tableName;
 
                 fileSystems.Add(fileSystem);
             }

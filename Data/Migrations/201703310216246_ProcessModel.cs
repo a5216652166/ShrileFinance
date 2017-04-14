@@ -85,8 +85,8 @@ namespace Data.Migrations
                         ProcessUserId = c.String(nullable: false, maxLength: 128),
                         ProcessTime = c.DateTime(nullable: false),
                         Content = c.String(maxLength: 500),
-                        Opinion_InternalOpinion = c.String(maxLength: 500),
-                        Opinion_ExnernalOpinion = c.String(maxLength: 500),
+                        Opinion_InternalOpinion = c.String(maxLength: 1000),
+                        Opinion_ExnernalOpinion = c.String(maxLength: 1000),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.FLOW_Action", t => t.ActionId)

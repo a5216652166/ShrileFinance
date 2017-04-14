@@ -15,6 +15,7 @@
             DateEffective = DateTime.Now;
             Applicant = new HashSet<Applicant>();
             Contact = new HashSet<Contract>();
+            BailPaid = 0;
         }
 
         public enum RepaymentSchemeEnum : byte
@@ -156,6 +157,11 @@
         public decimal? ApprovalMargin { get; set; }
 
         /// <summary>
+        /// 已付保证金
+        /// </summary>
+        public decimal BailPaid { get; private set; }
+
+        /// <summary>
         /// 审批融资金额
         /// </summary>
         public decimal? ApprovalMoney { get; set; }
@@ -234,5 +240,32 @@
         /// 创建日期
         /// </summary>
         public DateTime DateCreated { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 获取保证金
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetBail()
+        {
+            return (ApprovalMoney ?? 0) * (Margin ?? 0);
+        }
+
+        /// <summary>
+        /// 保证金缴费
+        /// </summary>
+        public void PayBail()
+        {
+            // 表示已还清[伪逻辑]
+            BailPaid = GetBail();
+        }
+
+        /// <summary>
+        /// 撤销已缴保证金
+        /// </summary>
+        public void RevertBail()
+        {
+            // 清空已缴金额。
+            BailPaid = 0;
+        }
     }
 }

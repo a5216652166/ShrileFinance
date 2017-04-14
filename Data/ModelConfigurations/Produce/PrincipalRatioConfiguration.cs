@@ -12,7 +12,7 @@
             Property(m => m.ProduceId);
             Property(m => m.Period);
             Property(m => m.Ratio).HasPrecision(18, 8);
-            Property(m => m.Factor).HasPrecision(18, 8);
+            Ignore(m => m.Factor);
 
             ToTable("PROD_PrincipalRatio");
         }
