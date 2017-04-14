@@ -658,6 +658,7 @@
                            onUnselect:ContactUnselect,
                            onSelectAll:SelectAll,
                            onUnselectAll:SelectAll,
+                           rowStyler:BindColor,
                            title:'合同列表'
                    ">
                     <thead>
@@ -674,6 +675,13 @@
                     <a id="Contact_Save" style="display:none" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:ContactSave,iconCls:'icon-save',plain:true,disabled:true,">保存</a>
                 </div>-->
                 <script type="text/javascript">
+
+                    function BindColor(index, row) {
+                        if (row.IsEdit == false) {
+                            return 'background-color:#d9fcfb;color:blue;font-weight:bold;';
+                        }
+                    }
+
                     // table onSelect事件
                     function ContactSelect(index, row) {
                         if (index == -1 || ContactCheck == false) {
