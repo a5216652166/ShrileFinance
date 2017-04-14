@@ -62,7 +62,7 @@
         }
 
         [HttpGet]
-        public IHttpActionResult GetFiles(Guid referenceId, TableNameEnum tableName, Guid referencedSid)
+        public IHttpActionResult GetFiles(Guid referenceId, TableNameEnum tableName, Guid? referencedSid)
         {
             var list = fileSystemAppService.GetAll(referenceId, tableName,new List<Guid?>() { referencedSid } );
 
