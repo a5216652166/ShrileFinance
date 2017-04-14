@@ -36,16 +36,29 @@
         public override Guid Create(FileSystem entity)
         {
             entity.DateOfCreate = DateTime.Now;
-            entity.AllowPath(entity.Path.Replace(FileSystem.VirtualPath, string.Empty));
+
+            SimplifyEntity(entity);
 
             return base.Create(entity);
         }
 
         public override void Modify(FileSystem entity)
         {
-            entity.AllowPath(entity.Path.Replace(FileSystem.VirtualPath, string.Empty));
+            SimplifyEntity(entity);
 
             base.Modify(entity);
+        }
+
+        private void SimplifyEntity(FileSystem entity)
+        {
+            if (string.IsNullOrEmpty(entity.Path))
+            {
+                return;
+            }
+
+            entity.AllowPath(entity.Path.Replace(FileSystem.VirtualPath, string.Empty));
+
+            entity.AllowPath(entity.Path.Substring(0, entity.Path.LastIndexOf('\\') + 1));
         }
 
         private void PerfectEntity(FileSystem entity)
@@ -55,9 +68,10 @@
                 return;
             }
 
-            entity.AllowPath(FileSystem.VirtualPath + entity.Path);
-            entity.AllowName(entity.Path.Substring(entity.Path.LastIndexOf('\\') + 1));
-            entity.Extension = entity.Path.Substring(entity.Path.LastIndexOf('.'));
+            entity.IsTemp = entity.Path.StartsWith("Temps\\");
+            entity.Extension = entity.OldName.Substring(entity.OldName.LastIndexOf('.'));
+            entity.AllowName(entity.Id.ToString() + entity.Extension);
+            entity.AllowPath(FileSystem.VirtualPath + entity.Path + entity.Name);
         }
     }
 }

@@ -302,7 +302,7 @@
         {
             foreach (var item in fileSystems)
             {
-                item.Save();
+                item.CreatePath();
 
                 if (item.Id == Guid.Empty)
                 {
@@ -315,6 +315,13 @@
             }
 
             fileSystemRepository.Commit();
+
+            foreach (var item in fileSystems)
+            {
+                item.AllowName(item.Id + item.Extension);
+
+                item.Save();
+            }
         }
 
         private List<FileSystem> ImportStream(IEnumerable<FileSystem> fileInfos)
