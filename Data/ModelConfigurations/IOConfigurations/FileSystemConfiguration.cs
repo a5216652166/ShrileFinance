@@ -11,18 +11,20 @@
             HasKey(m => m.Id);
             Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            Ignore(m => m.Name);
-            Property(m => m.OldName).IsRequired().HasMaxLength(60);
-            Ignore(m => m.Extension);
-            Property(m => m.Path).IsRequired().HasMaxLength(100);
-            Property(m => m.IsTemp).IsRequired();
+            Property(m => m.OldName).HasColumnName("Name").IsRequired().HasMaxLength(200);
+            Property(m => m.Path).IsRequired().HasMaxLength(400);
             Property(m => m.DateOfCreate).IsRequired();
-            Ignore(m => m.Stream);
-            Property(m => m.ReferenceId).IsOptional();
-            Property(m => m.ReferencedSid).IsOptional();
-            Property(m=>m.TableName).IsOptional();
 
-            ToTable("SYS_FileSystem");
+            Property(m => m.ReferenceId).IsOptional();
+            Property(m => m.ReferenceSid).IsOptional();
+            Property(m => m.ReferenceType).IsOptional();
+
+            Ignore(m => m.Name);
+            Ignore(m => m.Extension);
+            Ignore(m => m.Stream);
+            Ignore(m => m.IsTemp);
+
+            ToTable("SYS_File");
         }
     }
 }
