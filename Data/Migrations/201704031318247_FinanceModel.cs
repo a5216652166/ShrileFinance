@@ -30,6 +30,7 @@ namespace Data.Migrations
                         OncePayMonths = c.Int(),
                         Margin = c.Decimal(precision: 18, scale: 2),
                         ApprovalMargin = c.Decimal(precision: 18, scale: 2),
+                        BailPaid = c.Decimal(nullable: false, precision: 18, scale: 8),
                         ApprovalMoney = c.Decimal(precision: 18, scale: 2),
                         Payment = c.Decimal(precision: 18, scale: 2),
                         SelfPrincipal = c.Decimal(nullable: false, precision: 18, scale: 2),
