@@ -680,16 +680,14 @@
             param.Add("[@月2@]", date2.Month.ToString());
             param.Add("[@日2@]", date2.Day.ToString());
 
-            var ratio = finance.Produce.PrincipalRatios.ToList();
-            for (int i = 0; i < ratio.Count; i++)
+            var money = produceAppService.YearlyPayment(finance.Produce.Id, finance.ApprovalMoney.Value).ToList();
+            for (int i = 0; i < money.Count; i++)
             {
-                var value = Math.Round((finance.ApprovalMoney / 10000 * ratio[i].Factor).Value, 2);
+                var value = money[i].Factor;
                 param.Add($"[@金额{i + 1}@]", upper.RMBToUpper(value));
                 param.Add($"[@人民币{i + 1}@]", Convert.ToString(value));
-            }
-
-            var money = produceAppService.YearlyPayment(financeId, finance.ApprovalMoney.Value);
-
+            }      
+            
             param.Add("[@甲方户名@]", finance.BranchOffice.Name);
             param.Add("[@甲方开户行@]", finance.BranchOffice.BankName);
             param.Add("[@甲方账号@]", finance.BranchOffice.BankAcount);
@@ -783,10 +781,10 @@
             param.Add("[@人民币5@]", string.Empty.PadLeft(12));
             param.Add("[@金额5@]", string.Empty.PadLeft(8));
 
-            var ratio = finance.Produce.PrincipalRatios.ToList();
-            for (int i = 0; i < ratio.Count; i++)
+            var money = produceAppService.YearlyPayment(finance.Produce.Id, finance.ApprovalMoney.Value).ToList();
+            for (int i = 0; i < money.Count; i++)
             {
-                var value = Math.Round((finance.ApprovalMoney / 10000 * ratio[i].Factor).Value, 2);
+                var value = money[i].Factor;
                 param.Add($"[@人民币{i + 6}@]", upper.RMBToUpper(value));
                 param.Add($"[@金额{i + 6}@]", Convert.ToString(value));
             }
