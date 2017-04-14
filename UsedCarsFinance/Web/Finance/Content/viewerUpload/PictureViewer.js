@@ -15,15 +15,25 @@ function PicViewerLoadPic(UrlArray, viewerContainer) {
     if (Object.prototype.toString.call(UrlArray) === '[object Array]') {
         var template = '<div id="li" style="float:left;padding-right:10px;"><img data-original="" src="" alt="" ><label style="text-align:center;display:block;width:100px;height:40px;word-wrap:break-word;word-break:keep-all;overflow:hidden;"></label></div>';
 
+        // 图片格式
+        var picTypeExts = ['.jpg','.JPEG','.png','.PNG','.jpeg','.JPEG','.gif','.GIF','.bmp','.BMP'];
+
         // 清空预览
         $(viewerContainer).find("div#li").remove();
 
         $(UrlArray).each(function (i, e) {
             $(viewerContainer).append(template);
 
-            $(viewerContainer).find("div#li:last").find("img").attr("data-original", e.Path.toString());
+            var picPath = e.Path.toString();
+            
+            if ($.inArray(picPath.substr(picPath.lastIndexOf('.')), picTypeExts) == -1)
+            {
+                picPath = "Content/img/默认图片.jpg";
+            }
 
-            $(viewerContainer).find("div#li:last").find("img").attr("src", e.Path.toString());
+            $(viewerContainer).find("div#li:last").find("img").attr("data-original", picPath);
+
+            $(viewerContainer).find("div#li:last").find("img").attr("src", picPath);
 
             $(viewerContainer).find("div#li:last").find("img").attr("alt", e.Name);
 

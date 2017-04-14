@@ -69,6 +69,11 @@
 
             referenceId = query.FinanceId;
 
+            if (query.state == '0')
+            {
+                $("a#del").linkbutton('disable');
+            }
+
             var value = {};
             value.referenceId = referenceId;
             value.referenceType = referenceType;
@@ -126,15 +131,18 @@
                 // 实例化图片查看器
                 viewer = InitPicViewer($("div#viewerContainer_11"));
 
-                $("div#AddPic img").click(function () {
-                    $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
+                if (query.state != '0')
+                {
+                    $("div#AddPic img").click(function () {
+                        $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
 
-                    // 设置分组标识
-                    referenceSid = flag + $("form").attr('tag');
+                        // 设置分组标识
+                        referenceSid = flag + $("form").attr('tag');
 
-                    // 启动文件上传
-                    StartUploader(referenceId, referenceType, referenceSid);
-                });
+                        // 启动文件上传
+                        StartUploader(referenceId, referenceType, referenceSid);
+                    });
+                }
             }, 100);
         }
 

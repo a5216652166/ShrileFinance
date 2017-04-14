@@ -67,6 +67,10 @@
 
             referenceId = query.FinanceId;
 
+            if (query.state == '0') {
+                $("a#del").linkbutton('disable');
+            }
+
             var value = {};
             value.referenceId = referenceId;
             value.referenceType = referenceType;
@@ -124,15 +128,19 @@
                     // 实例化图片查看器
                     viewer = InitPicViewer($("div#viewerContainer_11"));
 
-                    $("div#AddPic img").click(function () {
-                        $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
+                    if (query.state != '0')
+                    {
+                        $("div#AddPic img").click(function () {
+                            $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
 
-                        // 设置分组标识
-                        referenceSid = flag + $("form").attr('tag');
+                            // 设置分组标识
+                            referenceSid = flag + $("form").attr('tag');
 
-                        // 启动文件上传
-                        StartUploader(referenceId, referenceType, referenceSid);
-                    });
+                            // 启动文件上传
+                            StartUploader(referenceId, referenceType, referenceSid);
+                        });
+                    }
+
                 }, 100);
             }
 
@@ -402,11 +410,11 @@
 
             <div class="container" style="">
                 <label style="font-size:17px"><input type="checkbox" /><span>渠向经销商转账证明:</span></label>
-                <div id="viewerContainer_291">
+                <div id="viewerContainer_2A">
                 </div>
                 <div>
                     <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',291)" /></div>
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag','2A')" /></div>
                     </div>
                 </div>
                 <div style="width:auto;height:18px"></div>
@@ -415,11 +423,11 @@
 
             <div class="container" style="">
                 <label style="font-size:17px"><input type="checkbox" /><span>单身证明:</span></label>
-                <div id="viewerContainer_292">
+                <div id="viewerContainer_2B">
                 </div>
                 <div>
                     <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',292)" /></div>
+                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag','2B')" /></div>
                     </div>
                 </div>
                 <div style="width:auto;height:18px"></div>
