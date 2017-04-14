@@ -19,6 +19,8 @@
                 query = query.Where(m => m.Code.Contains(searchString));
             }
 
+            query = query.OrderByDescending(m => m.Id);
+
             return query.ToPagedList(page, size);
         }
     }
