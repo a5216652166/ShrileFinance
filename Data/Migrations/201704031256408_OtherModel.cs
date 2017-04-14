@@ -2,7 +2,7 @@ namespace Data.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class OtherModel : DbMigration
     {
         public override void Up()
@@ -22,15 +22,16 @@ namespace Data.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.SYS_FileSystem",
+                "dbo.SYS_File",
                 c => new
                     {
                         Id = c.Guid(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 36),
-                        OldName = c.String(nullable: false, maxLength: 100),
-                        Extension = c.String(nullable: false, maxLength: 20),
-                        Path = c.String(nullable: false, maxLength: 200),
-                        IsTemp = c.Boolean(nullable: false),
+                        Name = c.String(nullable: false, maxLength: 200),
+                        Path = c.String(nullable: false, maxLength: 400),
+                        DateOfCreate = c.DateTime(nullable: false),
+                        ReferenceId = c.Guid(),
+                        ReferenceSid = c.Guid(),
+                        ReferenceType = c.Byte(),
                     })
                 .PrimaryKey(t => t.Id);
         }
@@ -39,7 +40,7 @@ namespace Data.Migrations
         {
             DropForeignKey("dbo.SYS_Draft", "UserId", "dbo.AspNetUsers");
             DropIndex("dbo.SYS_Draft", new[] { "UserId" });
-            DropTable("dbo.SYS_FileSystem");
+            DropTable("dbo.SYS_File");
             DropTable("dbo.SYS_Draft");
         }
     }

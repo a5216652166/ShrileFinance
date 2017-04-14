@@ -87,12 +87,12 @@
         /// <summary>
         /// 分组标识
         /// </summary>
-        public Guid? ReferencedSid { get; set; }
+        public Guid? ReferenceSid { get; set; }
 
         /// <summary>
         /// 表单名
         /// </summary>
-        public TableNameEnum? TableName { get; set; }
+        public TableNameEnum? ReferenceType { get; set; }
 
         /// <summary>
         /// 保存

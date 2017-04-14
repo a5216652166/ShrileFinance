@@ -22,7 +22,8 @@
             Property(m => m.EmployeeCommissionRatio).HasPrecision(18, 8);
 
             HasMany(m => m.PrincipalRatios)
-                .WithRequired(m => m.Produce)
+                .WithRequired()
+                .HasForeignKey(m => m.ProduceId)
                 .WillCascadeOnDelete();
 
             ToTable("PROD_Produce");
