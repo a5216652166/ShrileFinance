@@ -11,7 +11,5 @@
         public decimal Ratio { get; set; }
 
         public decimal Factor { get; set; }
-
-        public virtual Produce Produce { get; private set; }
     }
 }
