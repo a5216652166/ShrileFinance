@@ -62,15 +62,19 @@
         /// 通过引用标识和表单名获取文件
         /// </summary>
         /// <param name="referenceId">引用标识</param>
-        /// <param name="tableName">表单名</param>
+        /// <param name="referenceType">表单名</param>
+        /// <param name="referenceSids">分组</param>
         /// <returns></returns>
-        public List<FileSystem> GetAll(Guid referenceId, TableNameEnum tableName, IEnumerable<Guid?> referencedSids = null)
+        public List<FileSystem> GetAll(Guid referenceId, ReferenceTypeEnum referenceType, IEnumerable<Guid?> referenceSids = default(IEnumerable<Guid?>))
         {
-            referencedSids = referencedSids ?? new List<Guid?>();
+            referenceSids = referenceSids == default(IEnumerable<Guid?>) ? new List<Guid?>() : referenceSids.Where(m => m.HasValue);
 
-            referencedSids = referencedSids.Where(m => m.HasValue);
+            var list = fileSystemRepository.GetAll(m => referenceType == m.ReferenceType && m.ReferenceId == referenceId);
 
-            var list = fileSystemRepository.GetAll(m => tableName == m.ReferenceType && m.ReferenceId == referenceId && referencedSids.Contains(m.ReferenceSid));
+            if (referenceSids.Count() > 0)
+            {
+                list = list.Where(m => referenceSids.Contains(m.ReferenceSid));
+            }
 
             return list.ToList();
         }
@@ -79,18 +83,25 @@
         /// 通过引用标识和表单名删除文件
         /// </summary>
         /// <param name="referenceId">引用标识</param>
-        /// <param name="tableName">表单名</param>
-        /// <param name="rsids">分组标识</param>
+        /// <param name="referenceType">表单名</param>
+        /// <param name="referenceSids">分组标识</param>
         /// <returns></returns>
-        public int DeleteAll(Guid referenceId, TableNameEnum tableName, IEnumerable<Guid?> rsids = default(IEnumerable<Guid?>))
+        public int DeleteAll(Guid referenceId, ReferenceTypeEnum referenceType, IEnumerable<Guid?> referenceSids = default(IEnumerable<Guid?>))
         {
-            rsids = rsids == default(IEnumerable<Guid?>) ? new List<Guid?>() : rsids.Where(m => m.HasValue);
+            referenceSids = referenceSids == default(IEnumerable<Guid?>) ? new List<Guid?>() : referenceSids.Where(m => m.HasValue);
 
-            var list = fileSystemRepository.GetAll(m => tableName == m.ReferenceType && m.ReferenceId == referenceId && rsids.Contains(m.ReferenceSid));
+            var list = fileSystemRepository.GetAll(m => referenceType == m.ReferenceType && m.ReferenceId == referenceId && referenceSids.Contains(m.ReferenceSid));
 
             foreach (var item in list)
             {
                 fileSystemRepository.Remove(item);
+
+                // 删除磁盘文件
+                var path = HttpContext.Current.Server.MapPath(item.Path);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
             }
 
             return fileSystemRepository.Commit();
@@ -100,14 +111,14 @@
         /// 创建文件
         /// </summary>
         /// <param name="postedFiles">文件信息</param>
-        /// <param name="rId">引用标识</param>
-        /// <param name="rsid">分组标识</param>
-        /// <param name="tableName">表单名</param>
+        /// <param name="referenceId">引用标识</param>
+        /// <param name="referenceSid">分组标识</param>
+        /// <param name="referenceType">表单名</param>
         /// <param name="isTemp">临时文件</param>
         /// <returns></returns>
-        public List<FileSystem> CreatFile(HttpFileCollection postedFiles, Guid rId, Guid rsid, TableNameEnum tableName, bool isTemp = false)
+        public List<FileSystem> CreatFile(HttpFileCollection postedFiles, Guid referenceId, Guid referenceSid, ReferenceTypeEnum? referenceType, bool isTemp = false)
         {
-            if (postedFiles == null)
+            if (postedFiles == default(HttpFileCollection) || referenceType.HasValue == false)
             {
                 throw new ArgumentNullException(nameof(postedFiles), "创建文件使用的参数为null");
             }
@@ -118,11 +129,13 @@
             {
                 var name = postedFiles[i].FileName;
 
-                var fileSystem = ConvertToFileSystem(postedFiles[i], name.Substring(0, name.LastIndexOf('.')), name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
+                CheckFileName(referenceId, referenceSid, referenceType, name);
 
-                fileSystem.ReferenceId = rId;
-                fileSystem.ReferenceSid = rsid;
-                fileSystem.ReferenceType = tableName;
+                var fileSystem = ConvertToFileSystem(postedFiles[i], name, name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
+
+                fileSystem.ReferenceId = referenceId;
+                fileSystem.ReferenceSid = referenceSid;
+                fileSystem.ReferenceType = referenceType;
 
                 fileSystems.Add(fileSystem);
             }
@@ -145,7 +158,7 @@
                 throw new ArgumentNullException(nameof(fileInfo), "创建文件使用的参数为null");
             }
 
-            var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf('.')), fileInfo.Extension, isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
 
             SaveFileSystem(new FileSystem[] { fileSystem });
 
@@ -239,12 +252,11 @@
 
             foreach (var item in fileInfos)
             {
-                if (dictonary.Keys.Contains(item.OldName) == false)
+                if (dictonary.Keys.Contains(item.OldName + item.Extension) == false)
                 {
-                    var ms = new MemoryStream();
-                    item.Stream.CopyTo(ms);
+                    var ms = item.Read();
 
-                    dictonary.Add(item.OldName, ms.ToArray());
+                    dictonary.Add(item.OldName + item.Extension, ms.ToArray());
                 }
             }
 
@@ -261,11 +273,11 @@
             }
             else if (value is FileInfo)
             {
-                stream = GetStreamFormFs(value as FileInfo);
+                stream = ParseFileInfo(value as FileInfo);
             }
             else if (value is string)
             {
-                stream = GetStreamFormFs(new FileInfo(value as string));
+                stream = ParseFileInfo(new FileInfo(value as string));
             }
             else if (value is Stream)
             {
@@ -328,20 +340,31 @@
             return fileInfos?.ToList();
         }
 
-        private MemoryStream GetStreamFormFs(FileInfo fileInfo)
+        private MemoryStream ParseFileInfo(FileInfo fileInfo)
         {
             var ms = default(MemoryStream);
 
-            if (fileInfo != null)
+            if (fileInfo != default(FileInfo))
             {
                 var fs = fileInfo.OpenRead();
                 ms = new MemoryStream();
 
                 fs.CopyTo(ms);
+                fs.Flush();
                 fs.Dispose();
             }
 
             return ms;
+        }
+
+        private void CheckFileName(Guid referenceId, Guid referenceSid, ReferenceTypeEnum? referenceType, string name)
+        {
+            var files = fileSystemRepository.GetAll(m => m.ReferenceId == referenceId && m.ReferenceSid == referenceSid && m.ReferenceType == referenceType && m.OldName == name);
+
+            if (files.Count() > 0)
+            {
+                throw new Core.Exceptions.ArgumentAppException(message: $"{name}该文件已存在！");
+            }
         }
     }
 }

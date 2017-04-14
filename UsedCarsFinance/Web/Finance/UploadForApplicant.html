@@ -38,11 +38,87 @@
     </style>
 
     <script type="text/javascript">
+        var query = {};
+
+        // 融资标识
+        var referenceId = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
+
+        // 表单（申请人）
+        var referenceType = 1;
+
+        // 分组
+        var referenceSid = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
+
+        var flag = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE";
+
+        $(function () {
+            // 初始化
+            Init();
+        });
+
+        function Init()
+        {
+            $("input[type=checkbox]:checked").each(function (i, e) {
+                e.checked = false;
+            });
+
+            ////// 获取参数
+            ////query.state = GetQueryString("state");
+            ////query.FinanceId = parent.flow.RootKey;
+
+            ////referenceId = query.FinanceId;
+
+            var value = {};
+            value.referenceId = referenceId;
+            value.referenceType = referenceType;
+            value.referenceSid = null;
+
+            LoadAllFiles(value);
+        }
+
+        function Delete() {
+            var referenceSids = [];
+
+            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
+                var id = $(e).parent().next("div").attr("id");
+
+                referenceSids.push(flag + id.substr(id.lastIndexOf('_') + 1));
+
+                // 移除图片预览
+                $("div#" + id).find("div#li").remove();
+            });
+
+            DeleteFiles(referenceId, referenceType, referenceSids);
+        }
+
+        function DownLoadAll() {
+            $("form#downloadForm").find("input[name=ReferenceId]").val(referenceId);
+
+            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
+                var id = $(e).parent().next("div").attr("id");
+
+                var referenceSid = flag + id.substr(id.lastIndexOf('_') + 1);
+
+                $("form#downloadForm").append('<input name="referenceSids" value=' + referenceSid + ' />');
+            });
+
+            $("form#downloadForm").submit();
+
+            $("form#downloadForm").find("input[name=referenceSids]").remove();
+        }
+
+        function CheckAll(obj) {
+            debugger
+            $("fieldset input[type=checkbox]").each(function (i, e) {
+                e.checked = obj.checked;
+            })
+        }
+    </script>
+
+    <script type="text/javascript">
         $(function () {
             jsPicViewerUploderInit();
         });
-
-        var viewer = null;
 
         function jsPicViewerUploderInit() {
             setTimeout(function () {
@@ -53,10 +129,10 @@
                     $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
 
                     // 设置分组标识
-                    referencedSid = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE" + $("form").attr('tag');
+                    referenceSid = flag + $("form").attr('tag');
 
                     // 启动文件上传
-                    StartUploader(referenceId, tableName, referencedSid);
+                    StartUploader(referenceId, referenceType, referenceSid);
                 });
             }, 100);
         }
@@ -65,103 +141,24 @@
         function UploadSuccessInstance(file, data, response) {
             data = JSON.parse(data);
 
-            var files = GetFiles(data.referenceId, data.tableName, data.referencedSid);
+            var files = GetFiles(data.referenceId, data.referenceType, data.referenceSid);
 
             if (files == null || files.length == 0) {
                 return false;
             }
 
             var UrlArray = [];
-
+            
             for (var i in files) {
                 var urlObj = {};
-                urlObj.Name = files[i].OldName + files[i].Extension;
-                urlObj.Path = "..\\" + files[i].path;
+                urlObj.Name = files[i].Name;
+                urlObj.Path = files[i].Path;
 
                 UrlArray.push(urlObj);
             }
-            debugger
+            
             // 上传的图片加入viewer
             PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
-        }
-    </script>
-
-    <script type="text/javascript">
-        // 融资标识
-        var referenceId = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
-
-        // 表单（申请人）
-        var tableName = 1;
-
-        // 分组
-        var referencedSid = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
-
-        var flag = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE";
-
-        $(function () {
-            var value = {};
-            value.referenceId = referenceId;
-            value.tableName = tableName;
-            value.referencedSid = referencedSid;
-
-            LoadAllFiles(value);
-        });
-
-        // 加载所有影像资料
-        function LoadAllFiles(value) {
-            var picData = GetFiles(value.referenceId, value.tableName, value.referencedSid);
-
-            $("fieldset input[type=checkbox]").each(function (i, e) {
-                var id = $(e).parent().next("div").attr("id");
-                var referencedSid = flag + id.substr(id.lastIndexOf('_') + 1);
-
-                var urlArray = $(picData).map(function (j, k) {
-                    if (k.tableName = 1 && k.referencedSid == referencedSid) {
-                        return k;
-                    }
-                }).toArray();
-                debugger
-                // 上传的图片加入viewer
-                PicViewerLoadPic(urlArray, $("div#" + id));
-            });
-        }
-
-        function Delete() {
-            var referencedSids = [];
-
-            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
-                var id = $(e).parent().next("div").attr("id");
-
-                referencedSids.push(flag + id.substr(id.lastIndexOf('_') + 1));
-
-                // 移除图片预览
-                $("div#" + id).find("div#li").remove();
-            });
-
-            DeleteFiles(referenceId, tableName, referencedSids);
-        }
-
-        function DownLoadAll() {
-            $("form#downloadForm").find("input[name=ReferenceId]").val(referenceId);
-
-            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
-                var id = $(e).parent().next("div").attr("id");
-
-                var referencedSid = flag + id.substr(id.lastIndexOf('_') + 1);
-
-                $("form#downloadForm").append('<input name="ReferencedSids" value=' + referencedSid + ' />');
-            });
-
-            $("form#downloadForm").submit();
-
-            $("form#downloadForm").find("input[name=ReferencedSids]").remove();
-        }
-
-        function CheckAll(obj) {
-            debugger
-            $("fieldset input[type=checkbox]").each(function (i, e) {
-                e.checked = obj.checked;
-            })
         }
     </script>
 </head>
@@ -530,8 +527,8 @@
     <div>
         <form id="downloadForm" action="../api/UploadFile/DownloadAllFile" method="POST" style="display:none">
             <input name="ReferenceId" />
-            <input name="TableName" value="1" />
-            <!--<input name="ReferencedSids" />-->
+            <input name="referenceType" value="1" />
+            <!--<input name="referenceSids" />-->
         </form>
     </div>
 </body>

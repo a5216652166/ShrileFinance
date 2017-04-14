@@ -1,7 +1,7 @@
 ﻿
 // 启动图片影像上传控件
-function StartUploader(referenceId, tableName, referencedSid) {
-    if (referenceId == null || tableName == null || referencedSid == null) {
+function StartUploader(referenceId, referenceType, ReferenceSid) {
+    if (referenceId == null || referenceType == null || ReferenceSid == null) {
         return;
     }
 
@@ -31,7 +31,7 @@ function StartUploader(referenceId, tableName, referencedSid) {
         height: 20,
         width: 60,
         queueID: "file_queue",
-        formData: { ReferenceId: referenceId, TableName: tableName, ReferencedSid: referencedSid },
+        formData: { ReferenceId: referenceId, ReferenceType: referenceType, ReferenceSid: ReferenceSid },
         removeTimeout: 10,
         removeCompleted: true,
         swf: "Content/uploadify/uploadify.swf",
@@ -42,6 +42,7 @@ function StartUploader(referenceId, tableName, referencedSid) {
             uploadFormClose();
         },
         onUploadSuccess: function (file, data, response) {
+            debugger
             // 上传成功回调函数
             UploadSuccess(file, data, response);
         }
@@ -64,9 +65,34 @@ function uploadFormClose() {
     $("#file_queue").empty();
 }
 
+// 加载所有影像资料
+function LoadAllFiles(value) {
+    var picData = GetFiles(value.referenceId, value.referenceType, value.referenceSid);
+
+    if (picData.length == 0) {
+        return;
+    }
+
+    $("fieldset input[type=checkbox]").each(function (i, e) {
+        var id = $(e).parent().next("div").attr("id");
+        var referenceSid = flag + id.substr(id.lastIndexOf('_') + 1);
+
+        var urlArray = $(picData).map(function (j, k) {
+            if (k.ReferenceType = 1 && k.ReferenceSid == referenceSid.toLowerCase()) {
+                return k;
+            }
+        }).toArray();
+
+        if (urlArray.length > 0) {
+            // 上传的图片加入viewer
+            PicViewerLoadPic(urlArray, $("div#" + id));
+        }
+    });
+}
+
 // 获取文件
-function GetFiles(referenceId, tableName, referencedSid) {
-    if (referenceId == null || tableName == null || referencedSid == null) {
+function GetFiles(referenceId, referenceType, referenceSid) {
+    if (referenceId == null || referenceType == null) {
         return;
     }
 
@@ -74,13 +100,14 @@ function GetFiles(referenceId, tableName, referencedSid) {
     $.ajax({
         async: false,
         type: "Get",
-        data: { referenceId: referenceId, tableName: tableName, referencedSid: referencedSid },
+        data: { referenceId: referenceId, referenceType: referenceType, referenceSid: referenceSid },
         url: "../api/UploadFile/GetFiles",
         success: function (data) {
             if (data) {
                 // 拼接产生路径
                 $(data).each(function (i, e) {
-                    e.path = e.Path.substring(1);
+                    e.Path = "..\\" + e.Path.substring(1);
+                    e.Name = e.OldName;
                 });
 
                 resultData = data;
@@ -92,11 +119,11 @@ function GetFiles(referenceId, tableName, referencedSid) {
 }
 
 // 删除文件
-function DeleteFiles(referenceId, tableName, referencedSids) {
+function DeleteFiles(referenceId, referenceType, ReferenceSids) {
     var data = {};
     data.ReferenceId = referenceId;
-    data.TableName = tableName;
-    data.ReferencedSids = referencedSids;
+    data.ReferenceType = referenceType;
+    data.ReferenceSids = ReferenceSids;
     debugger
     var result = false;
 

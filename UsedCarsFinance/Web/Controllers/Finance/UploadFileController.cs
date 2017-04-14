@@ -17,7 +17,9 @@
         private readonly FinanceAppService financeAppService;
         private readonly FileSystemAppService fileSystemAppService;
 
-        public UploadFileController(FinanceAppService financeAppService, FileSystemAppService fileSystemAppService)
+        public UploadFileController(
+            FinanceAppService financeAppService,
+            FileSystemAppService fileSystemAppService)
         {
             this.financeAppService = financeAppService;
             this.fileSystemAppService = fileSystemAppService;
@@ -39,36 +41,21 @@
             var files = HttpContext.Current.Request.Files;
 
             var referenceId = Guid.Parse(HttpContext.Current.Request.Form["ReferenceId"]);
-            var tableName = Convert.ToInt32(HttpContext.Current.Request.Form["TableName"]);
-            var referencedSid = Guid.Parse(HttpContext.Current.Request.Form["ReferencedSid"]);
+            var referenceType = (ReferenceTypeEnum?)Convert.ToInt32(HttpContext.Current.Request.Form["ReferenceType"]);
+            var referenceSid = Guid.Parse(HttpContext.Current.Request.Form["ReferenceSid"]);
 
-            fileSystemAppService.CreatFile(files, referenceId, referencedSid, (TableNameEnum)tableName);
+            fileSystemAppService.CreatFile(files, referenceId, referenceSid, referenceType);
 
-            return Ok(new { referenceId = referenceId, filesCount = files.Count, tableName = tableName, referencedSid = referencedSid });
-        }
-
-        /// <summary>
-        /// 通过引用标识和表单名获取文件
-        /// </summary>
-        /// <param name="rId">引用标识</param>
-        /// <param name="tableName">表单名</param>
-        /// <returns></returns>
-        [HttpGet]
-        public IHttpActionResult GetAll(Guid rId, TableNameEnum tableName)
-        {
-            var list = fileSystemAppService.GetAll(rId, tableName);
-
-            return Ok(list);
+            return Ok(new { referenceId = referenceId, filesCount = files.Count, referenceType = referenceType, referenceSid = referenceSid });
         }
 
         [HttpGet]
-        public IHttpActionResult GetFiles(Guid referenceId, TableNameEnum tableName, Guid? referencedSid)
+        public IHttpActionResult GetFiles(Guid referenceId, ReferenceTypeEnum referenceType, Guid? referenceSid)
         {
-            var list = fileSystemAppService.GetAll(referenceId, tableName,new List<Guid?>() { referencedSid } );
+            var list = fileSystemAppService.GetAll(referenceId, referenceType, new List<Guid?>() { referenceSid });
 
             return Ok(list);
         }
-
 
         /// <summary>
         /// 通过引用标识和表单名删除文件
@@ -78,7 +65,7 @@
         [HttpPost]
         public IHttpActionResult DeleteAll(UploadViewModel value)
         {
-            var result = fileSystemAppService.DeleteAll(value.ReferenceId, value.TableName, value.ReferencedSids);
+            var result = fileSystemAppService.DeleteAll(value.ReferenceId, value.ReferenceType, value.ReferenceSids);
 
             return Ok(result);
         }
@@ -86,17 +73,16 @@
         /// <summary>
         /// 下载文件
         /// </summary>
-        /// <param name="referenceId">引用标识</param>
-        /// <param name="tableName">表单名</param>
+        /// <param name="value">视图</param>
         /// <returns></returns>
         [HttpPost]
         public HttpResponseMessage DownloadAllFile(UploadViewModel value)
         {
-            var list = fileSystemAppService.GetAll(value.ReferenceId, value.TableName,value.ReferencedSids);
+            var list = fileSystemAppService.GetAll(value.ReferenceId, value.ReferenceType, value.ReferenceSids);
 
             var stream = fileSystemAppService.Compression(list);
 
-            var file = new KeyValuePair<string, MemoryStream>(DateTime.Now.ToShortDateString() + ".zip", stream);
+            var file = new KeyValuePair<string, MemoryStream>($"{value.ReferenceType.ToString()}{DateTime.Now.ToShortDateString()}.zip", stream);
 
             try
             {
@@ -112,6 +98,7 @@
         /// 下载单身证明
         /// </summary>
         /// <param name="financeId">融资标识</param>
+        /// <param name="sign">标记</param>
         /// <returns>单身证明</returns>
         [HttpGet]
         public HttpResponseMessage DownloadFiles(Guid financeId, int sign)

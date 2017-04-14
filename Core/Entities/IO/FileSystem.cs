@@ -5,7 +5,7 @@
     using System.Web;
     using Interfaces;
 
-    public enum TableNameEnum : byte
+    public enum ReferenceTypeEnum : byte
     {
         申请人影像资料 = 1,
         放款影像资料 = 2
@@ -92,7 +92,7 @@
         /// <summary>
         /// 表单名
         /// </summary>
-        public TableNameEnum? ReferenceType { get; set; }
+        public ReferenceTypeEnum? ReferenceType { get; set; }
 
         /// <summary>
         /// 保存

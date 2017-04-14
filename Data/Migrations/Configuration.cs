@@ -273,7 +273,7 @@
                 new Form { Id = new Guid("{10DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "融资申请", Link = "../Finance/FinanceEdit.html", Sort = 200 },
 
                 // 申请人资料上传
-                new Form { Id = new Guid("{11DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "申请人资料上传", Link = "../Finance/UploadImages.html", Sort = 200 },
+                new Form { Id = new Guid("{11DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "申请人资料上传", Link = "../Finance/UploadForApplicant.html", Sort = 200 },
 
                 // 融资审核  (风控初审、风控复审)
                 new Form { Id = new Guid("{12DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "融资审核", Link = "../Finance/FinanceAudit.html", Sort = 200 },
@@ -282,7 +282,7 @@
                 new Form { Id = new Guid("{13DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "信息补充", Link = "../Finance/FinanceOperation.html", Sort = 200 },
 
                 // 放款资料上传
-                new Form { Id = new Guid("{14DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "放款资料上传", Link = "../Finance/LoanUploadImages.html", Sort = 200 },
+                new Form { Id = new Guid("{14DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "放款资料上传", Link = "../Finance/UploadForLoan.html", Sort = 200 },
 
                 ////// 运营审核  (运营初审、运营复审)
                 ////new Form { Id = new Guid("{15DC5FCF-18A4-E611-80C5-507B9DE4A488}"), FlowId = new Guid("{228C8C80-06A4-E611-80C5-507B9DE4A488}"), Name = "运营审核", Link = "../Finance/FinanceApproval.html", Sort = 200 },

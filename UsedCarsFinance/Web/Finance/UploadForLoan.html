@@ -38,58 +38,123 @@
     </style>
 
     <script type="text/javascript">
+        // 融资标识
+        var referenceId = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEF00";
+
+        // 表单（放款）
+        var referenceType = 2;
+
+        // 分组
+        var referenceSid = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEF00";
+
+        var flag = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEF";
+
         $(function () {
-            jsPicViewerUploderInit();
+            Init();
         });
 
-        var viewer = null;
+        function Init() {
+            $("input[type=checkbox]:checked").each(function (i, e) {
+                e.checked = false;
+            });
 
-        function jsPicViewerUploderInit() {
-            setTimeout(function () {
-                // 实例化图片查看器
-                viewer = InitPicViewer($("div#viewerContainer_11"));
+            var value = {};
+            value.referenceId = referenceId;
+            value.referenceType = referenceType;
+            value.referenceSid = null;
 
-                $("div#AddPic img").click(function () {
-                    $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
-                    StartUploader(null, null);
-                });
-            }, 100);
+            LoadAllFiles(value);
         }
 
-        // 图片上传成功回调函数
-        function UploadSuccessInstance(file, data, response) {
-            data = JSON.parse(data);
+        function Delete() {
+            var referenceSids = [];
 
-            var files = GetFiles(data.referenceId);
+            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
+                var id = $(e).parent().next("div").attr("id");
 
-            if (files == null || files.length == 0) {
-                return false;
-            }
-            =
-            var UrlArray = [];
-            for (var i = 0; i < data.filesCount; i++) {
-                var urlObj = {};
-                urlObj.Name = files[i].OldName + files[i].ExtName;
-                urlObj.Path = "..\\" + files[i].path;
+                referenceSids.push(flag + id.substr(id.lastIndexOf('_') + 1));
 
-                UrlArray.push(urlObj);
-            }
+                // 移除图片预览
+                $("div#" + id).find("div#li").remove();
+            });
 
-            // 上传的图片加入viewer
-            PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
+            DeleteFiles(referenceId, referenceType, referenceSids);
         }
-    </script>
 
-    <script type="text/javascript">
-        function downLoadall() {
+        function DownLoadAll() {
+            $("form#downloadForm").find("input[name=ReferenceId]").val(referenceId);
+
+            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
+                var id = $(e).parent().next("div").attr("id");
+
+                var referenceSid = flag + id.substr(id.lastIndexOf('_') + 1);
+
+                $("form#downloadForm").append('<input name="referenceSids" value=' + referenceSid + ' />');
+            });
+
+            $("form#downloadForm").submit();
+
+            $("form#downloadForm").find("input[name=referenceSids]").remove();
         }
-        
-        function Checkall(obj) {
+
+        function CheckAll(obj) {
+            debugger
             $("fieldset input[type=checkbox]").each(function (i, e) {
                 e.checked = obj.checked;
             })
         }
+    </script>
 
+    <script type="text/javascript">
+            $(function () {
+                jsPicViewerUploderInit();
+            });
+
+            function jsPicViewerUploderInit() {
+                setTimeout(function () {
+                    // 实例化图片查看器
+                    viewer = InitPicViewer($("div#viewerContainer_11"));
+
+                    $("div#AddPic img").click(function () {
+                        $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
+
+                        // 设置分组标识
+                        referenceSid = flag + $("form").attr('tag');
+
+                        // 启动文件上传
+                        StartUploader(referenceId, referenceType, referenceSid);
+                    });
+                }, 100);
+            }
+
+            // 图片上传成功回调函数
+            function UploadSuccessInstance(file, data, response) {
+                data = JSON.parse(data);
+
+                var files = GetFiles(data.referenceId, data.referenceType, data.referenceSid);
+
+                if (files == null || files.length == 0) {
+                    return false;
+                }
+
+                var UrlArray = [];
+
+                for (var i in files) {
+                    var urlObj = {};
+                    urlObj.Name = files[i].Name;
+                    urlObj.Path = files[i].Path;
+
+                    UrlArray.push(urlObj);
+                }
+
+                // 上传的图片加入viewer
+                PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
+            }
+    </script>
+
+    
+
+    <script type="text/javascript">
         //下载单身证明
         function DownloadSignle() {
             $("#downloadSignle").linkbutton("disable");
@@ -124,14 +189,14 @@
         <div id="linkBtn">
             <div id="fieldsetBtn">
                 <div style="float:left;width:700px;height:25px;">
-                    <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:del,width:100">删除</a>
-                    <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:downLoadall,width:100">下载全部</a>
-                    <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle(),width:100">下载单身证明</a>
+                    <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Delete,width:100">删除</a>
+                    <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadAll,width:100">下载全部</a>
+                    <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle,width:100">下载单身证明</a>
                     <a id="downloadApproval" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadApproval,width:100">下载审批通知书</a>
                     <a id="downloadFinanceLeaseContract" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadFinanceLeaseContract,width:120">下载融资租赁合同</a>
                 </div>
                 <div style="width:200px;height:25px; padding-top:40px;">
-                    <input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="Checkall(this)">
+                    <input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="CheckAll(this)">
                     <label for="cball" style="width:30px;margin-top:2px;">全选</label>
                 </div>
             </div>
@@ -141,7 +206,7 @@
         <fieldset class="" style="float:none">
             <legend>车辆类</legend>
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>抵押登记后的车辆登记证书:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>抵押登记后的车辆登记证书:</span></label>
                 <div id="viewerContainer_11">
                 </div>
                 <div>
@@ -154,7 +219,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>新办理的行驶证:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>新办理的行驶证:</span></label>
                 <div id="viewerContainer_12">
                 </div>
                 <div>
@@ -167,7 +232,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>建设银行卡:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>建设银行卡:</span></label>
                 <div id="viewerContainer_13">
                 </div>
                 <div>
@@ -180,7 +245,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>客户面签视频及照片:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>客户面签视频及照片:</span></label>
                 <div id="viewerContainer_14">
                 </div>
                 <div>
@@ -193,7 +258,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>商业保险保单:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>商业保险保单:</span></label>
                 <div id="viewerContainer_15">
                 </div>
                 <div>
@@ -209,7 +274,7 @@
         <fieldset class="" style="float:none">
             <legend>合同类</legend>
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>融资租赁合同:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>融资租赁合同:</span></label>
                 <div id="viewerContainer_21">
                 </div>
                 <div>
@@ -222,7 +287,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>新办理的行驶证:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>新办理的行驶证:</span></label>
                 <div id="viewerContainer_22">
                 </div>
                 <div>
@@ -235,7 +300,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>车辆抵押合同:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>车辆抵押合同:</span></label>
                 <div id="viewerContainer_23">
                 </div>
                 <div>
@@ -248,7 +313,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>渠道保证合同:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>渠道保证合同:</span></label>
                 <div id="viewerContainer_24">
                 </div>
                 <div>
@@ -261,7 +326,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>付款指示函:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>付款指示函:</span></label>
                 <div id="viewerContainer_25">
                 </div>
                 <div>
@@ -274,7 +339,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>收据:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>收据:</span></label>
                 <div id="viewerContainer_26">
                 </div>
                 <div>
@@ -287,7 +352,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>建行扣划款授权书:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>建行扣划款授权书:</span></label>
                 <div id="viewerContainer_27">
                 </div>
                 <div>
@@ -300,7 +365,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>还款计划表:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>还款计划表:</span></label>
                 <div id="viewerContainer_28">
                 </div>
                 <div>
@@ -313,7 +378,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>车辆买卖合同:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>车辆买卖合同:</span></label>
                 <div id="viewerContainer_29">
                 </div>
                 <div>
@@ -326,7 +391,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>渠向经销商转账证明:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>渠向经销商转账证明:</span></label>
                 <div id="viewerContainer_291">
                 </div>
                 <div>
@@ -339,7 +404,7 @@
             </div>
 
             <div class="container" style="">
-                <label style="font-size:17px" ><input type="checkbox" /><span>单身证明:</span></label>
+                <label style="font-size:17px"><input type="checkbox" /><span>单身证明:</span></label>
                 <div id="viewerContainer_292">
                 </div>
                 <div>
@@ -360,7 +425,6 @@
         <div id="AddPic">
             <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" ondblclick="" /></div>
         </div>-->
-
         <!--上传控件-->
         <div id="dd_upload" class="easyui-dialog" data-options="title:'上传附件',buttons:'#bb_upload',onClose:uploadFormClose,width:390,height:350,closed:true">
             <div id="file_queue"></div>
@@ -381,5 +445,12 @@
         </form>
     </div>
 
+    <div>
+        <form id="downloadForm" action="../api/UploadFile/DownloadAllFile" method="POST" style="display:none">
+            <input name="ReferenceId" />
+            <input name="referenceType" value="1" />
+            <!--<input name="referenceSids" />-->
+        </form>
+    </div>
 </body>
 </html>

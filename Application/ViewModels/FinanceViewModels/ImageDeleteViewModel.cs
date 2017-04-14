@@ -8,8 +8,8 @@
     {
         public Guid ReferenceId { get; set; }
 
-        public TableNameEnum TableName { get; set; }
+        public ReferenceTypeEnum ReferenceType { get; set; }
         
-        public IEnumerable<Guid?> ReferencedSids { get; set; }
+        public IEnumerable<Guid?> ReferenceSids { get; set; }
     }
 }

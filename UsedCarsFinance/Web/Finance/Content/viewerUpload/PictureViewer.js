@@ -7,12 +7,7 @@ function InitPicViewer(Obj) {
     return new Viewer($(Obj)[0], options);
 }
 
-// 启动照片查看器 viewer：照片查看器
-function PicViewerStart(viewer) {
-    if (viewer != null) {
-        viewer.show();
-    }
-}
+var viewer = null;
 
 // 图片查看器加载图片 UrlArray：图片路径数组，viewerContainer：照片查看器对应的DOM节点
 function PicViewerLoadPic(UrlArray, viewerContainer) {
@@ -35,17 +30,19 @@ function PicViewerLoadPic(UrlArray, viewerContainer) {
             $(viewerContainer).find("div#li:last").find("label").text(e.Name);
 
             $(viewerContainer).find("div#li:last").find("img").click(function () {
-                viewer.destroy();
+                if (viewer) {
+                    viewer.destroy();
+                }
+
                 viewer = InitPicViewer($(viewerContainer));
 
-                if (viewer) {
-                    viewer.show();
-                }
+                viewer.show();
             });
         });
 
-        // 重新实例化照片查看器
-        viewer.destroy();
-        viewer = InitPicViewer($(viewerContainer));
+        // 销毁照片查看器
+        if (viewer) {
+            viewer.destroy();
+        }
     }
 }
