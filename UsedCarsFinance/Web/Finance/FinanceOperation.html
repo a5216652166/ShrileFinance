@@ -232,7 +232,6 @@
 
             // 加载放款信息
             FieldsetLoadDateFactory("CreditBankInfo", 'text', data);
-
             // 加载还款信息
             $("fieldset[name=CustomerBankInfo]>div.row>div.col-6").remove();
             $("fieldset[name=CustomerBankInfo]>div.row").append($("fieldset[name=CustomerBankInfo]>div.row>template#CustomerBankInfo").html());
@@ -355,7 +354,7 @@
 
                             var ed = $("#account_dg").datagrid('getEditor', {
                                 index: editIndex,
-                                field: 'Username'
+                                field: 'CreditAccountName'
                             });
                             $(ed.target).textbox("readonly", false).textbox("enableValidation");
                         }
@@ -377,7 +376,7 @@
             <fieldset name="CustomerBankInfo">
                 <legend>还款信息</legend>
                 <table id="account_dgl" class="easyui-datagrid" data-options="singleSelect: true,
-                            toolbar: '#account_tbl', onClickCell: onClickCell, onEndEdit: onEndEdit">
+                            toolbar: '#account_tbl', onClickCell: onClickCell1, onEndEdit: onEndEdit1">
                     <thead>
                         <tr>
                             <th data-options="field:'CustomerAccountName',width:200,
@@ -426,6 +425,7 @@
                         }
                     }
                     function onClickCell1(index, field) {
+                        debugger;
                         if (editIndex1 != index) {
                             if (endEditing1()) {
                                 $("#account_dgl").datagrid("selectRow", index)
@@ -459,7 +459,7 @@
 
                             var ed = $("#account_dgl").datagrid('getEditor', {
                                 index: editIndex1,
-                                field: 'Username'
+                                field: 'CustomerAccountName'
                             });
                             $(ed.target).textbox("readonly", false).textbox("enableValidation");
                         }
@@ -677,8 +677,8 @@
                 <script type="text/javascript">
 
                     function BindColor(index, row) {
-                        if (row.IsEdit == false) {
-                            return 'background-color:#d9fcfb;color:blue;font-weight:bold;';
+                        if (row.IsEdit == false || row.IsEdit == undefined) {
+                            return 'background-color:#FFFFFF;color:blue;font-weight:bold;';
                         }
                     }
 
@@ -874,7 +874,6 @@
                     // table 选择所有
                     function SelectAll() {
                         //$('#Contact_dg').datagrid('uncheckRow', 0)
-
                         var rows = $('#Contact_dg').datagrid('getSelections');
 
                         if (rows.length > 0) {
