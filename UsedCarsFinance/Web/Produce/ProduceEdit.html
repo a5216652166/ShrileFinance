@@ -316,8 +316,8 @@
 							url: "../api/Produce/YearlyPayment",
 							data: { id: produceId, principal: principal },
 							statusCode: {
-								200: function (payments) {
-									$("#principal_ratios").datagrid("loadData", payments);
+								200: function (data) {
+									$("#principal_ratios").datagrid("loadData", data.Payments);
 								}
 							}
 						});

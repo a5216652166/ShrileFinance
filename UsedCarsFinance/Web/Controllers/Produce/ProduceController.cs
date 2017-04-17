@@ -1,6 +1,7 @@
 ﻿namespace Web.Controllers.Produce
 {
     using System;
+    using System.Linq;
     using System.Web.Http;
     using Application.Produce;
     using Application.Produce.ProduceViewModels;
@@ -70,7 +71,10 @@
         {
             var payments = service.YearlyPayment(id, principal);
 
-            return Ok(payments);
+            return Ok(new {
+                Payments = payments,
+                Sum = payments.Sum(m => m.Factor * 12)
+            });
         }
     }
 }
