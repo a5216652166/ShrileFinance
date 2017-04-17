@@ -57,8 +57,6 @@
             }
 
             entity.AllowPath(entity.Path.Replace(FileSystem.VirtualPath, string.Empty));
-
-            entity.AllowPath(entity.Path.Substring(0, entity.Path.LastIndexOf('\\') + 1));
         }
 
         private void PerfectEntity(FileSystem entity)
@@ -69,9 +67,12 @@
             }
 
             entity.IsTemp = entity.Path.StartsWith("Temps\\");
+
             entity.Extension = entity.OldName.Substring(entity.OldName.LastIndexOf('.'));
+
             entity.AllowName(entity.Id.ToString() + entity.Extension);
-            entity.AllowPath(FileSystem.VirtualPath + entity.Path + entity.Name);
+
+            entity.AllowPath(FileSystem.VirtualPath + entity.Path);
         }
     }
 }
