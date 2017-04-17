@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Application.ViewModels.FinanceViewModels.BranchOfficeViewModels;
     using Core.Entities.Finance.BranchOffices;
     using Core.Exceptions;
@@ -36,6 +37,8 @@
         {
             var entity = Map<BranchOffice>(model);
 
+            CheckName(entity.Name);
+
             branchOfficeRepository.Create(entity);
             branchOfficeRepository.Commit();
         }
@@ -50,6 +53,8 @@
             {
                 throw new ArgumentAppException(message: "参数错误");
             }
+
+            CheckName(entity.Name);
 
             Map(model, entity);
 
@@ -77,6 +82,18 @@
             var options = Map<IEnumerable<BranchOfficeViewModel>>(entities);
 
             return options;
+        }
+
+        private void CheckName(string name)
+        {
+            var branchOffices = branchOfficeRepository.GetAll(m=>m.Name==name);
+
+            var result = branchOffices.Count() > 0;
+
+            if (result)
+            {
+                throw new ArgumentAppException(message:$"该分公司名{name}已存在");
+            }
         }
     }
 }
