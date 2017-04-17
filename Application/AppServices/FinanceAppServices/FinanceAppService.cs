@@ -693,10 +693,16 @@
             param.Add("[@甲方账号@]", finance.BranchOffice.BankAcount);
 
             var list = JsonParseHelper.GetJProperty("{\"array\":" + finance.FinanceExtension.CustomerAccountName + "}", "array", 2).ToArray();
-
-            param.Add("[@乙方户名@]", list[0]["CustomerAccountName"].ToString());
-            param.Add("[@乙方开户行@]", list[0]["CustomerBankName"].ToString());
-            param.Add("[@乙方账号@]", list[0]["CustomerBankCard"].ToString());
+            foreach (var item in list)
+            {
+                if (item.Count() == 4)
+                {
+                    param.Add("[@乙方户名@]", item["CustomerAccountName"].ToString());
+                    param.Add("[@乙方开户行@]", item["CustomerBankName"].ToString());
+                    param.Add("[@乙方账号@]", item["CustomerBankCard"].ToString());
+                    break;
+                }
+            }
 
             param.Add("[@担保人@]", finance.FinanceExtension.GuarantorName1);
             param.Add("[@担保合同编号@]", finance.FinanceExtension.GuarantorNo1);
