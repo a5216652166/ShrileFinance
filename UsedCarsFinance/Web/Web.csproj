@@ -865,7 +865,7 @@
     <Content Include="Content\bootstrap\bootstrap-theme.css.map" />
     <Content Include="Finance\Content\uploadimages.css" />
     <Content Include="Finance\Content\UploadImages.js" />
-    <Content Include="Finance\LoanUploadImages.html" />
+    <Content Include="Finance\Unused\LoanUploadImages.html" />
     <Content Include="Finance\Unused\PrintContract.html" />
     <Content Include="Finance\Unused\Review.html" />
     <Content Include="Process\ExamineOpinion.html" />
@@ -1500,7 +1500,7 @@
     <Content Include="Finance\Content\Webppt\image\right-arrow.png" />
     <Content Include="Finance\Unused\CreditExamineReport.html" />
     <Content Include="Finance\Unused\FinanceEdit.html" />
-    <Content Include="Finance\UploadImages.html" />
+    <Content Include="Finance\Unused\UploadImages.html" />
     <Content Include="Scripts\bootstrap\bootstrap.js" />
     <Content Include="Scripts\bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\jquery\jquery.js" />

@@ -23,11 +23,11 @@
         {
         }
 
-        public FileSystem(string oldName, string extension, Stream stream = default(Stream), bool isTemp = false)
+        public FileSystem(string oldName, Stream stream = default(Stream), bool isTemp = false)
         {
             Id = Guid.Empty;
             OldName = oldName;
-            Extension = extension;
+            Extension = oldName.Substring(oldName.LastIndexOf('.'));
 
             if (stream != default(Stream))
             {
@@ -59,6 +59,11 @@
         /// 文件扩展名
         /// </summary>
         public string Extension { get; set; }
+
+        /// <summary>
+        /// 全名
+        /// </summary>
+        public string FullName => Path + Name;
 
         /// <summary>
         /// 路径
@@ -95,6 +100,18 @@
         /// </summary>
         public ReferenceTypeEnum? ReferenceType { get; set; }
 
+        /// <summary>
+        /// 虚拟路径转物理路径
+        /// </summary>
+        /// <param name="virtualPath">虚拟路径</param>
+        /// <returns>物理路径</returns>
+        public static string PhysicalPath(string virtualPath)
+        {
+            var physicalPath = HttpContext.Current.Server.MapPath(virtualPath);
+
+            return physicalPath;
+        }
+
         public void CreatePath()
         {
             if (Stream == default(MemoryStream))
@@ -103,12 +120,10 @@
             }
 
             // 文件所属文件夹路径（虚拟路径）
-            var direct = IsTemp ? VirtualPath + @"Temps" : VirtualPath + DateTime.Now.ToString("yyyyMM");
-
-            Path = $"{direct}\\{Name}";
+            Path = IsTemp ? VirtualPath + @"Temps\\" : VirtualPath + DateTime.Now.ToString("yyyyMM") + "\\";
 
             // 创建文件夹
-            Directory.CreateDirectory(HttpContext.Current.Server.MapPath(direct));
+            Directory.CreateDirectory(PhysicalPath(Path));
         }
 
         /// <summary>
@@ -116,20 +131,20 @@
         /// </summary>
         public void Save()
         {
-            if (Stream == default(MemoryStream))
+            if (Stream == default(MemoryStream) || Stream.Length == 0)
             {
                 throw new ArgumentNullException(nameof(Stream), "流为null");
             }
 
-            Path = VirtualPath + Path + Name;
+            var physicalPath = PhysicalPath(Path);
 
-            if (Directory.Exists(HttpContext.Current.Server.MapPath(Path.Replace(Name, string.Empty))) == false)
+            if (Directory.Exists(physicalPath) == false)
             {
                 throw new ArgumentAppException(message: "文件夹不存在");
             }
 
             // 在文件夹下创建新文件，返回文件流
-            var fs = File.Create(HttpContext.Current.Server.MapPath(Path));
+            var fs = File.Create(physicalPath + Name);
 
             // 新文件写入内容
             var buffer = Stream.ToArray();
@@ -146,7 +161,7 @@
         {
             if (Stream == default(MemoryStream))
             {
-                var bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath(Path));
+                var bytes = File.ReadAllBytes(PhysicalPath(FullName));
 
                 Stream = new MemoryStream(bytes);
             }

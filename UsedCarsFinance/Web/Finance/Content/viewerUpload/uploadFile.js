@@ -42,7 +42,6 @@ function StartUploader(referenceId, referenceType, ReferenceSid) {
             uploadFormClose();
         },
         onUploadSuccess: function (file, data, response) {
-            debugger
             // 上传成功回调函数
             UploadSuccess(file, data, response);
         }
@@ -106,7 +105,7 @@ function GetFiles(referenceId, referenceType, referenceSid) {
             if (data) {
                 // 拼接产生路径
                 $(data).each(function (i, e) {
-                    e.Path = "..\\" + e.Path.substring(1);
+                    e.Path = "..\\" + e.FullName.substring(1);
                     e.Name = e.OldName;
                 });
 
@@ -124,7 +123,7 @@ function DeleteFiles(referenceId, referenceType, ReferenceSids) {
     data.ReferenceId = referenceId;
     data.ReferenceType = referenceType;
     data.ReferenceSids = ReferenceSids;
-    debugger
+    
     var result = false;
 
     $.ajax({

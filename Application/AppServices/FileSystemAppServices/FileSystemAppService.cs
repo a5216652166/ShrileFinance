@@ -97,10 +97,10 @@
                 fileSystemRepository.Remove(item);
 
                 // 删除磁盘文件
-                var path = HttpContext.Current.Server.MapPath(item.Path);
-                if (File.Exists(path))
+                var file = FileSystem.PhysicalPath(item.FullName);
+                if (File.Exists(file))
                 {
-                    File.Delete(path);
+                    File.Delete(file);
                 }
             }
 
@@ -131,7 +131,7 @@
 
                 CheckFileName(referenceId, referenceSid, referenceType, name);
 
-                var fileSystem = ConvertToFileSystem(postedFiles[i], name, name.Substring(name.LastIndexOf('.')), isTemp: isTemp);
+                var fileSystem = ConvertToFileSystem(postedFiles[i], name, isTemp: isTemp);
 
                 fileSystem.ReferenceId = referenceId;
                 fileSystem.ReferenceSid = referenceSid;
@@ -158,7 +158,7 @@
                 throw new ArgumentNullException(nameof(fileInfo), "创建文件使用的参数为null");
             }
 
-            var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(fileInfo, fileInfo.Name, isTemp: isTemp);
 
             SaveFileSystem(new FileSystem[] { fileSystem });
 
@@ -185,7 +185,7 @@
 
             var fileInfo = new FileInfo(path);
 
-            var fileSystem = ConvertToFileSystem(path, fileInfo.Name, fileInfo.Extension, isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(path, fileInfo.Name, isTemp: isTemp);
 
             SaveFileSystem(new FileSystem[] { fileSystem });
 
@@ -200,14 +200,14 @@
         /// <param name="extension">扩展名</param>
         /// <param name="isTemp">临时文件</param>
         /// <returns>文件</returns>
-        public FileSystem CreatFile(Stream stream, string name, string extension, bool isTemp = false)
+        public FileSystem CreatFile(Stream stream, string name, bool isTemp = false)
         {
             if (stream == null)
             {
                 throw new ArgumentNullException(nameof(stream), "流为null");
             }
 
-            var fileSystem = ConvertToFileSystem(stream, name, extension, isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(stream, name, isTemp: isTemp);
 
             SaveFileSystem(new FileSystem[] { fileSystem });
 
@@ -222,14 +222,14 @@
         /// <param name="extension">扩展名</param>
         /// <param name="isTemp">临时文件</param>
         /// <returns>文件</returns>
-        public FileSystem CreatFile(byte[] buffer, string name, string extension, bool isTemp = false)
+        public FileSystem CreatFile(byte[] buffer, string name, bool isTemp = false)
         {
             if (buffer == default(byte[]))
             {
                 throw new ArgumentNullException(nameof(buffer), "buffer为null");
             }
 
-            var fileSystem = ConvertToFileSystem(buffer, name, extension, isTemp: isTemp);
+            var fileSystem = ConvertToFileSystem(buffer, name, isTemp: isTemp);
 
             SaveFileSystem(new FileSystem[] { fileSystem });
 
@@ -263,7 +263,7 @@
             return FileHelper.Compression(dictonary);
         }
 
-        private FileSystem ConvertToFileSystem<T>(T value, string name, string extension, bool isTemp = false)
+        private FileSystem ConvertToFileSystem<T>(T value, string name, bool isTemp = false)
         {
             var stream = default(Stream);
 
@@ -293,7 +293,7 @@
                 throw new ArgumentNullException(nameof(stream), "不支持的类型:" + value.GetType().FullName);
             }
 
-            var fileSystem = new FileSystem(name, extension, stream: stream, isTemp: isTemp);
+            var fileSystem = new FileSystem(name, stream: stream, isTemp: isTemp);
 
             return fileSystem;
         }
@@ -319,6 +319,7 @@
             foreach (var item in fileSystems)
             {
                 item.AllowName(item.Id + item.Extension);
+                item.AllowPath(FileSystem.VirtualPath + item.Path);
 
                 item.Save();
             }
@@ -328,9 +329,9 @@
         {
             foreach (var item in fileInfos)
             {
-                if (!string.IsNullOrEmpty(item.Path))
+                if (!string.IsNullOrEmpty(item.FullName))
                 {
-                    var path = HttpContext.Current.Server.MapPath(item.Path);
+                    var path = FileSystem.PhysicalPath(item.FullName);
 
                     if (File.Exists(path))
                     {
