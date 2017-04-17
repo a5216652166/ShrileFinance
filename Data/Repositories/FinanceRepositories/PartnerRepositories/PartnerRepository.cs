@@ -16,7 +16,16 @@
         {
             var query = Context.Database.SqlQuery<Guid>("SELECT PartnerId FROM CRET_PartnerAccount WHERE AccountId = @p0", user.Id);
 
-            var partnerId = query.Single();
+            var partnerId = default(Guid);
+
+            try
+            {
+                partnerId = query.Single();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new Core.Exceptions.InvalidOperationAppException(message: "无法找到当前用户的所属合作商。", innerException: ex);
+            }
 
             return Get(partnerId);
         }

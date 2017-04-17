@@ -243,7 +243,6 @@
 			</div>
 
 			<div class="row">
-
 				<div class="col-12">
 					<label>月供表:</label>
 					<table id="principal_ratios" class="easyui-datagrid" data-options="height:152, singleSelect: true, rownumbers: true">
@@ -254,6 +253,14 @@
 							</tr>
 						</thead>
 					</table>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-offset-6 col-6">
+					<label>月供总额:</label>
+					<input name="PaymentSum" class="easyui-textbox" readonly />
+					<unit>元</unit>
 				</div>
 			</div>
 
@@ -273,8 +280,9 @@
 								url: "../api/Produce/YearlyPayment",
 								data: { id: produceId, principal: principal },
 								statusCode: {
-									200: function (payments) {
-										$("#principal_ratios").datagrid("loadData", payments);
+									200: function (data) {
+										$("#principal_ratios").datagrid("loadData", data.Payments);
+										$(".textbox-f[textboxname=PaymentSum]").textbox("setValue", data.Sum);
 									}
 								}
 							});

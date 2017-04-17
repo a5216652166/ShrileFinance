@@ -953,6 +953,14 @@
 						</div>
 					</div>
 
+					<div class="row">
+						<div class="col-offset-6 col-6">
+							<label>月供总额:</label>
+							<input name="PaymentSum" class="easyui-textbox" readonly />
+							<unit>元</unit>
+						</div>
+					</div>
+
 					<!--产品列表-->
 					<div id="produce_dialog" class="easyui-dialog" data-options="title:'产品详情',width:'60%',height:'480px',modal:true,closed:true">
 						<table id="produce_dg" class="easyui-datagrid" data-options="
@@ -1029,8 +1037,9 @@
 									url: "../api/Produce/YearlyPayment",
 									data: { id: produceId, principal: principal },
 									statusCode: {
-										200: function (payments) {
-											$("#principal_ratios").datagrid("loadData", payments);
+										200: function (data) {
+											$("#principal_ratios").datagrid("loadData", data.Payments);
+											$(".textbox-f[textboxname=PaymentSum]").textbox("setValue", data.Sum);
 										}
 									}
 								});

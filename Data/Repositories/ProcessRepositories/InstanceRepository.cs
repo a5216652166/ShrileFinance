@@ -25,7 +25,7 @@
             instances = GetAll(m =>
                 m.Status == InstanceStatusEnum.正常
                 && (m.CurrentNode.RoleId == currentUser.RoleId)
-                ////&& (m.CurrentUserId == null || m.CurrentUserId == currentUser.Id)
+                && (m.CurrentUserId == null || m.CurrentUserId == currentUser.Id)
                 && (m.RootKey != null && m.RootKey != Guid.Empty));
 
             // 标题模糊搜索
