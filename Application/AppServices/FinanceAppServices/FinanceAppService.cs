@@ -15,6 +15,7 @@
     using Core.Entities.Finance.Financial;
     using Core.Entities.Identity;
     using Core.Entities.IO;
+    using Core.Interfaces;
     using Core.Interfaces.Repositories.FinanceRepositories;
     using Core.Interfaces.Repositories.FinanceRepositories.BranchOfficeRepositories;
     using Core.Interfaces.Repositories.LoanRepositories;
@@ -605,12 +606,12 @@
         private KeyValuePair<string, byte[]> CreatPDF(string templateName, string fileName, Dictionary<string, string> param)
         {
             var wtp = new WordToPDF();
-            var virtualPath = wtp.GetPath(@"~\Upload\");
+            var virtualPath = wtp.GetPath(FileSystem.VirtualPath);
 
             var tempFile = fileSystemAppService.CreatFile(virtualPath + "Template\\" + templateName, true);
 
             var count = tempFile.Path.LastIndexOf("\\");
-            var ss = FileSystem.VirtualPath + tempFile.Path.Substring(0, count);
+            var ss = tempFile.Path.Substring(0, count);
 
             var path = wtp.TransformWordToPDF(wtp.GetPath(ss) + tempFile.Path.Substring(count, tempFile.Path.Length - count), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
 
@@ -697,6 +698,7 @@
             {
                 if (item.Count() == 4)
                 {
+                    ////判断放款账户信息是否为空
                     param.Add("[@乙方户名@]", item["CustomerAccountName"].ToString());
                     param.Add("[@乙方开户行@]", item["CustomerBankName"].ToString());
                     param.Add("[@乙方账号@]", item["CustomerBankCard"].ToString());
