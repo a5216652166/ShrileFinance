@@ -28,7 +28,7 @@ function PicViewerLoadPic(UrlArray, viewerContainer) {
             
             if ($.inArray(picPath.substr(picPath.lastIndexOf('.')), picTypeExts) == -1)
             {
-                picPath = "Content/img/默认图片.jpg";
+                picPath = "Content/img/默认图片.png";
             }
 
             $(viewerContainer).find("div#li:last").find("img").attr("data-original", picPath);

@@ -471,7 +471,7 @@
     <Content Include="Finance\Content\easyui\themes\metro\validatebox.css" />
     <Content Include="Finance\Content\easyui\themes\metro\window.css" />
     <Content Include="Finance\Content\easyui\themes\mobile.css" />
-    <Content Include="Finance\Content\img\默认图片.jpg" />
+    <Content Include="Finance\Content\img\默认图片.png" />
     <Content Include="Finance\Content\img\thumbnails\tibet-1.jpg" />
     <Content Include="Finance\Content\img\thumbnails\tibet-2.jpg" />
     <Content Include="Finance\Content\img\thumbnails\tibet-3.jpg" />
