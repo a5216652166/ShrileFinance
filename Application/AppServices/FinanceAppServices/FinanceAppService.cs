@@ -606,14 +606,11 @@
         private KeyValuePair<string, byte[]> CreatPDF(string templateName, string fileName, Dictionary<string, string> param)
         {
             var wtp = new WordToPDF();
-            var virtualPath = wtp.GetPath(FileSystem.VirtualPath);
+            var virtualPath = FileSystem.PhysicalPath(FileSystem.VirtualPath);
 
             var tempFile = fileSystemAppService.CreatFile(virtualPath + "Template\\" + templateName, true);
 
-            var count = tempFile.Path.LastIndexOf("\\");
-            var ss = tempFile.Path.Substring(0, count);
-
-            var path = wtp.TransformWordToPDF(wtp.GetPath(ss) + tempFile.Path.Substring(count, tempFile.Path.Length - count), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
+            var path = wtp.TransformWordToPDF(FileSystem.PhysicalPath(tempFile.FullName), virtualPath + "Temps\\" + Guid.NewGuid() + ".pdf", param);
 
             var pdfFile = fileSystemAppService.CreatFile(path);
             var pair = new KeyValuePair<string, byte[]>(fileName, pdfFile.Stream.GetBuffer());
@@ -662,12 +659,12 @@
             param.Add("[@车架号@]", finance.Vehicle.FrameNo);
 
             var upper = new MoneyToUpper();
-            param.Add("[@融资额@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
-            param.Add("[@融资额1@]", Convert.ToString(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
-            param.Add("[@服务费@]", upper.RMBToUpper(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value));
-            param.Add("[@服务费1@]", Convert.ToString(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value));
-            param.Add("[@保证金@]", upper.RMBToUpper(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value));
-            param.Add("[@保证金1@]", Convert.ToString(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value));
+            param.Add("[@融资额@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : Math.Ceiling(finance.ApprovalMoney.Value)));
+            param.Add("[@融资额1@]", Convert.ToString(finance.ApprovalMoney == null ? 0 : Math.Ceiling(finance.ApprovalMoney.Value)));
+            param.Add("[@服务费@]", upper.RMBToUpper(finance.ApprovalPoundage == null ? 0 : Math.Ceiling(finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value)));
+            param.Add("[@服务费1@]", Convert.ToString(finance.ApprovalPoundage == null ? 0 : Math.Ceiling(finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value)));
+            param.Add("[@保证金@]", upper.RMBToUpper(finance.ApprovalMargin == null ? 0 : Math.Ceiling(finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value)));
+            param.Add("[@保证金1@]", Convert.ToString(finance.ApprovalMargin == null ? 0 : Math.Ceiling(finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value)));
 
             param.Add("[@期限@]", finance.Produce.Periods.ToString());
             param.Add("[@支付日@]", Convert.ToString(finance.RepaymentDate == null ? 15 : finance.RepaymentDate.Value));
@@ -778,12 +775,12 @@
             param.Add("[@客户类型@]", finance.Vehicle.BusinessType.ToString());
 
             var upper = new MoneyToUpper();
-            param.Add("[@人民币1@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
-            param.Add("[@金额1@]", Convert.ToString(finance.ApprovalMoney == null ? 0 : finance.ApprovalMoney.Value));
-            param.Add("[@人民币2@]", upper.RMBToUpper(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value));
-            param.Add("[@金额2@]", Convert.ToString(finance.ApprovalPoundage == null ? 0 : finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value));
-            param.Add("[@人民币3@]", upper.RMBToUpper(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value));
-            param.Add("[@金额3@]", Convert.ToString(finance.ApprovalMargin == null ? 0 : finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value));
+            param.Add("[@人民币1@]", upper.RMBToUpper(finance.ApprovalMoney == null ? 0 : Math.Ceiling(finance.ApprovalMoney.Value)));
+            param.Add("[@金额1@]", Convert.ToString(finance.ApprovalMoney == null ? 0 : Math.Ceiling(finance.ApprovalMoney.Value)));
+            param.Add("[@人民币2@]", upper.RMBToUpper(finance.ApprovalPoundage == null ? 0 : Math.Ceiling(finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value)));
+            param.Add("[@金额2@]", Convert.ToString(finance.ApprovalPoundage == null ? 0 : Math.Ceiling(finance.ApprovalPoundage.Value / 100 * finance.ApprovalMoney.Value)));
+            param.Add("[@人民币3@]", upper.RMBToUpper(finance.ApprovalMargin == null ? 0 : Math.Ceiling(finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value)));
+            param.Add("[@金额3@]", Convert.ToString(finance.ApprovalMargin == null ? 0 : Math.Ceiling(finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value)));
             param.Add("[@人民币4@]", string.Empty.PadLeft(12));
             param.Add("[@金额4@]", string.Empty.PadLeft(8));
             param.Add("[@人民币5@]", string.Empty.PadLeft(12));
