@@ -1,15 +1,13 @@
 ﻿namespace Application.AppServices.FinanceAppServices.BranchOfficeAppServices
 {
     using System;
-    using System.Collections.Specialized;
-    using System.Linq;
+    using System.Collections.Generic;
     using Application.ViewModels.FinanceViewModels.BranchOfficeViewModels;
     using Core.Entities.Finance.BranchOffices;
     using Core.Exceptions;
     using Core.Interfaces.Repositories.FinanceRepositories.BranchOfficeRepositories;
     using X.PagedList;
     using static AutoMapper.Mapper;
-    using System.Collections.Generic;
 
     public class BranchOfficeAppService
     {

@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Web;
+    using Core.Exceptions;
     using Interfaces;
 
     public enum ReferenceTypeEnum : byte
@@ -72,7 +73,7 @@
         /// <summary>
         /// 是否为临时文件
         /// </summary>
-        public bool IsTemp { get; private set; }
+        public bool IsTemp { get; set; }
 
         /// <summary>
         /// 文件创建时间
@@ -94,6 +95,22 @@
         /// </summary>
         public ReferenceTypeEnum? ReferenceType { get; set; }
 
+        public void CreatePath()
+        {
+            if (Stream == default(MemoryStream))
+            {
+                throw new ArgumentNullException(nameof(Stream), "流为null");
+            }
+
+            // 文件所属文件夹路径（虚拟路径）
+            var direct = IsTemp ? VirtualPath + @"Temps" : VirtualPath + DateTime.Now.ToString("yyyyMM");
+
+            Path = $"{direct}\\{Name}";
+
+            // 创建文件夹
+            Directory.CreateDirectory(HttpContext.Current.Server.MapPath(direct));
+        }
+
         /// <summary>
         /// 保存
         /// </summary>
@@ -104,14 +121,12 @@
                 throw new ArgumentNullException(nameof(Stream), "流为null");
             }
 
-            AllowName();
+            Path = VirtualPath + Path + Name;
 
-            // 文件所属文件夹路径（虚拟路径）
-            var direct = IsTemp ? VirtualPath + @"Temps" : VirtualPath + DateTime.Now.ToString("yyyyMM");
-            Path = direct + @"\" + Name + Extension;
-
-            // 创建文件夹
-            Directory.CreateDirectory(HttpContext.Current.Server.MapPath(direct));
+            if (Directory.Exists(HttpContext.Current.Server.MapPath(Path.Replace(Name, string.Empty))) == false)
+            {
+                throw new ArgumentAppException(message: "文件夹不存在");
+            }
 
             // 在文件夹下创建新文件，返回文件流
             var fs = File.Create(HttpContext.Current.Server.MapPath(Path));

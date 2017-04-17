@@ -55,7 +55,7 @@
         /// <summary>
         /// 子公司标识
         /// </summary>
-        [Required(ErrorMessage ="子公司不可为空")]
+        [Required(ErrorMessage = "子公司不可为空")]
         public Guid? BranchOfficeId { get; set; }
 
         /// <summary>

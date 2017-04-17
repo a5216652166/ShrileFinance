@@ -31,7 +31,7 @@
         /// <summary>
         /// 有无还车条款
         /// </summary>
-        [Required(ErrorMessage ="有无还车条款 不可为空")]
+        [Required(ErrorMessage = "有无还车条款 不可为空")]
         public VehicleClauseEnum? VehicleClause { get; set; }
 
         /// <summary>
@@ -51,7 +51,6 @@
         /// </summary>
         [Required(ErrorMessage = "车辆抵押合同编号 不可为空")]
         public string VehicleMortgageContractNo { get; set; }
-
 
         /// <summary>
         /// 担保人名称1
@@ -78,7 +77,6 @@
         /// </summary>
         [Required(ErrorMessage = "客户应付租金起始日期 不可为空")]
         public DateTime? RentPayableStartDate { get; set; }
-
 
         /// <summary>
         /// 选择还款日

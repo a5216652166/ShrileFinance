@@ -189,7 +189,7 @@
         /// <summary>
         /// 电子邮箱
         /// </summary>
-        public string Email{ get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// 合作商
