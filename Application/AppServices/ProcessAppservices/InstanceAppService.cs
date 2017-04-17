@@ -102,13 +102,8 @@
 
             var action = instance.CurrentNode.Actions.Single(m => m.Id == model.ActionId);
 
-            ////if ((instance.CurrentUser != CurrentUser && instance.CurrentUser != null) ||
-            ////    (instance.Status != InstanceStatusEnum.正常))
-            ////{
-            ////    throw new InvalidOperationAppException("无法操作该流程.");
-            ////}
-
-            if (instance.Status != InstanceStatusEnum.正常)
+            if ((instance.CurrentUser != CurrentUser && instance.CurrentUser != null) ||
+                (instance.Status != InstanceStatusEnum.正常))
             {
                 throw new InvalidOperationAppException("无法操作该流程.");
             }
@@ -146,9 +141,6 @@
 
                             // 审核人
                             user = partner.Approvers.SingleOrDefault(m => m.RoleId == action.Transfer.RoleId);
-
-                            // 客户经理
-                            user = user ?? partner.Accounts.SingleOrDefault(m => m.RoleId == action.Transfer.RoleId && m.Id == instance.StartUserId);
 
                             if (user == default(AppUser) || user.LockoutEnabled)
                             {
