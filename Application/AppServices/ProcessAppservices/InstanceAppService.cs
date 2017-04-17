@@ -102,8 +102,13 @@
 
             var action = instance.CurrentNode.Actions.Single(m => m.Id == model.ActionId);
 
-            if ((instance.CurrentUser != CurrentUser && instance.CurrentUser != null) ||
-                (instance.Status != InstanceStatusEnum.正常))
+            ////if ((instance.CurrentUser != CurrentUser && instance.CurrentUser != null) ||
+            ////    (instance.Status != InstanceStatusEnum.正常))
+            ////{
+            ////    throw new InvalidOperationAppException("无法操作该流程.");
+            ////}
+
+            if (instance.Status != InstanceStatusEnum.正常)
             {
                 throw new InvalidOperationAppException("无法操作该流程.");
             }
@@ -136,11 +141,14 @@
                         var presidentRoleId = "C242BEE1-05A4-E611-80C5-507B9DE4A488";
                         if (action.Transfer.RoleId.Equals(presidentRoleId) == false)
                         {
+                            // 合作商
                             var partner = financeRepository.Get(instance.RootKey.Value).CreateOf;
 
+                            // 审核人
                             user = partner.Approvers.SingleOrDefault(m => m.RoleId == action.Transfer.RoleId);
 
-                            user = user ?? partner.Accounts.FirstOrDefault(m => m.RoleId == action.Transfer.RoleId);
+                            // 客户经理
+                            user = user ?? partner.Accounts.SingleOrDefault(m => m.RoleId == action.Transfer.RoleId && m.Id == instance.StartUserId);
 
                             if (user == default(AppUser) || user.LockoutEnabled)
                             {
