@@ -107,6 +107,14 @@
                 }
             }
 
+            if (!endEditing()) {
+                return false;
+            }
+
+            if (!endEditing1()) {
+                return false;
+            }
+
             return valid;
         }
 
