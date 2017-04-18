@@ -1,271 +1,267 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>框架</title>
-    <meta charset="utf-8" />
-    <link href="../Content/easyui/themes/gray/easyui.css" rel="stylesheet" />
-    <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
-    <script src="../Scripts/jquery/jquery.js"></script>
-    <script src="../Scripts/easyui/jquery.easyui.js"></script>
-    <script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script src="../Scripts/usedcars.js"></script>
-    <script src="../Scripts/draft.js"></script>
-    <style>
-        #opinion, #buttons {
-            text-align: center;
-            margin: 7px auto;
-        }
+	<title>框架</title>
+	<meta charset="utf-8" />
+	<link href="../Content/easyui/themes/gray/easyui.css" rel="stylesheet" />
+	<link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
+	<script src="../Scripts/jquery/jquery.js"></script>
+	<script src="../Scripts/easyui/jquery.easyui.js"></script>
+	<script src="../Scripts/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script src="../Scripts/usedcars.js"></script>
+	<script src="../Scripts/draft.js"></script>
+	<style>
+		#opinion, #buttons { text-align: center; margin: 7px auto; }
 
-            #buttons .l-btn {
-                width: 80px;
-                margin: 0 15px;
-            }
+		#buttons .l-btn { width: 80px; margin: 0 15px; }
 
-                #buttons .l-btn .l-btn-text {
-                    line-height: 30px;
-                }
-    </style>
-    <script>
-        var flow = {
-            InstanceId: "",
-            RootKey: "",
-            statusCode: "",
-            Forms: [],
-            InnerOpinions: [],
-            ExnerOpinions: []
+		#buttons .l-btn .l-btn-text { line-height: 30px; }
+	</style>
+	<script>
+		var flow = {
+			InstanceId: "",
+			RootKey: "",
+			statusCode: "",
+			Forms: [],
+			InnerOpinions: [],
+			ExnerOpinions: []
 		};
 
-        var draft = new Draft(BuildData, LoadData);
+		var draft = new Draft(BuildData, LoadData);
 
-        $(function () {
-            flow.InstanceId = uc.GetParams().instanceId;
-            flow.statusCode = uc.GetParams().statusCode;
-            if (flow.InstanceId) {
-                LoadFrame(flow.InstanceId);
-            }
+		$(function () {
+			flow.InstanceId = uc.GetParams().instanceId;
+			flow.statusCode = uc.GetParams().statusCode;
+			if (flow.InstanceId) {
+				LoadFrame(flow.InstanceId);
+			}
 
-            // 开启草稿保存
-            draft.AutoSave(3 * 60 * 1000);
-        });
+			// 开启草稿保存
+			draft.AutoSave(3 * 60 * 1000);
+		});
 
-        function LoadFrame(instanceId) {
-            $.ajax({
-                async: true,
-                data: { instanceId: instanceId },
-                method: "GET",
-                url: "../api/Instance/GetFrame",
-                statusCode: {
-                    200: function (data) {
-                        flow.RootKey = data.RootKey;
-                        if (uc.GetParams().LoanId != undefined && uc.GetParams().LoanId != "") {
-                            flow.RootKey = uc.GetParams().LoanId;
-                        }
-                        RanderTabs(data.Forms);
-                        RanderButtons(data.Actions);
+		function LoadFrame(instanceId) {
+			$.ajax({
+				async: true,
+				data: { instanceId: instanceId },
+				method: "GET",
+				url: "../api/Instance/GetFrame",
+				statusCode: {
+					200: function (data) {
+						flow.RootKey = data.RootKey;
+						if (uc.GetParams().LoanId != undefined && uc.GetParams().LoanId != "") {
+							flow.RootKey = uc.GetParams().LoanId;
+						}
+						RanderTabs(data.Forms);
+						RanderButtons(data.Actions);
 
-                        if (data.HasInnerOpinion) {
-                            $("#InOpinion").parent().show();
-                        }
+						if (data.HasInnerOpinion) {
+							$("#InOpinion").parent().show();
+						}
 
-                        flow.InnerOpinions = data.InnerOpinions;
-                        flow.ExnerOpinions = data.ExnerOpinions;
-                    }
-                }
-            });
-        }
+						flow.InnerOpinions = data.InnerOpinions;
+						flow.ExnerOpinions = data.ExnerOpinions;
+					}
+				}
+			});
+		}
 
-        function RanderTabs(forms) {
-            var openIndex;
-            $(forms).each(function (i, form) {
-                var link = form.Link;
+		function RanderTabs(forms) {
+			var openIndex;
+			$(forms).each(function (i, form) {
+				var link = form.Link;
 
-                if (link.indexOf('?') >= 0) {
-                    link += "&&state=" + form.State;
-                }
-                else {
-                    link += "?state=" + form.State;
-                }
+				if (link.indexOf('?') >= 0) {
+					link += "&&state=" + form.State;
+				}
+				else {
+					link += "?state=" + form.State;
+				}
 
-                if (form.IsHandler) {
-                    flow.Forms.push(form);
-                }
+				if (form.IsHandler) {
+					flow.Forms.push(form);
+				}
 
-                if (openIndex == undefined && form.IsOpen) {
-                    openIndex = i;
-                }
-                $("#tabs").tabs("add", {
-                    id: form.Id,
-                    title: form.Name
-                }).tabs("getTab", i).data("url", link);
+				if (openIndex == undefined && form.IsOpen) {
+					openIndex = i;
+				}
+				$("#tabs").tabs("add", {
+					id: form.Id,
+					title: form.Name
+				}).tabs("getTab", i).data("url", link);
 			});
 
-            // 加载草稿
+			// 加载草稿
 			draft.Load();
 
-            if (forms.length > 0) {
-                $("#tabs").tabs("select", openIndex || 0);
-            }
-        }
+			if (forms.length > 0) {
+				$("#tabs").tabs("select", openIndex || 0);
+			}
+		}
 
-        function TabSelect(title, index) {
-            var tab = $("#tabs").tabs("getSelected");
-            var url = tab.data("url");
-            if (url) {
-                var formId = tab.attr("id");
+		function TabSelect(title, index) {
+			var tab = $("#tabs").tabs("getSelected");
+			var url = tab.data("url");
+			if (url) {
+				var formId = tab.attr("id");
 
-                $("#tabs").tabs("update", {
-                    tab: tab,
-                    options: {
-                        content: "<iframe name='" + formId + "' scrolling='auto' frameborder='0'  src='" + url + "' style='width:100%;height:99%;'></iframe>"
-                    }
-                });
+				$("#tabs").tabs("update", {
+					tab: tab,
+					options: {
+						content: "<iframe name='" + formId + "' scrolling='auto' frameborder='0'  src='" + url + "' style='width:100%;height:99%;'></iframe>"
+					}
+				});
 
-                tab.removeData("url");
+				tab.removeData("url");
 
-                setTimeout(function () {
-                    var draft = tab.data("draft");
-                    if (draft) {
-                        var frame = frames[formId];
+				setTimeout(function () {
+					var draft = tab.data("draft");
+					if (draft) {
+						var frame = frames[formId];
 
-                        if (frame.LoadData) {
-                            frame.LoadData(draft);
-                        }
-                    }
-                }, 1000);
-            }
-        }
+						if (frame.LoadData) {
+							frame.LoadData(draft);
+						}
+					}
+				}, 1000);
+			}
+		}
 
-        function RanderButtons(actions) {
-            $(actions).each(function (i, action) {
-                $("<a>").linkbutton({
-                    id: "action_" + action.Id,
-                    text: action.Name,
-                    plain: false,
-                    onClick: action.Method ? TransferWithData : Transfer
-                }).appendTo("#buttons");
-            });
-        }
+		function RanderButtons(actions) {
+			$(actions).each(function (i, action) {
+				$("<a>").linkbutton({
+					id: "action_" + action.Id,
+					text: action.Name,
+					plain: false,
+					onClick: action.Method ? TransferWithData : Transfer
+				}).appendTo("#buttons");
+			});
+		}
 
-        function Transfer(data) {
-            $("#buttons .l-btn").not(":first").linkbutton("disable");
+		function Transfer(data) {
+			$("#buttons .l-btn").not(":first").linkbutton("disable");
 
-			var actionId = this.id.substr(7);
-            var dataString = JSON.stringify(data);
+			var actionId = this.id.substr(7).toLocaleUpperCase();
+			var dataString = JSON.stringify(data);
 
-            var dataPosted = {
-                InstanceId: flow.InstanceId,
+			var dataPosted = {
+				InstanceId: flow.InstanceId,
 				ActionId: actionId,
-                InternalOpinion: $("#InOpinion").textbox("getValue"),
-                ExnernalOpinion: $("#ExOpinion").textbox("getValue"),
-                Data: dataString
-            };
+				InternalOpinion: $("#InOpinion").textbox("getValue"),
+				ExnernalOpinion: $("#ExOpinion").textbox("getValue"),
+				Data: dataString
+			};
 
-            $.ajax({
-                async: true,
-                data: dataPosted,
-                method: "POST",
-                url: "../api/Instance/Transfer",
-                statusCode: {
-                    200: function (data) {
-                        $.messager.show({ msg: "执行流程成功！" });
+			$.ajax({
+				async: true,
+				data: dataPosted,
+				method: "POST",
+				url: "../api/Instance/Transfer",
+				statusCode: {
+					200: function (data) {
+						$.messager.show({ msg: "执行流程成功！" });
 
 						draft.Clear();
 
-                        uc.CloseWindow();
-                    },
-                    400: uc.E400
-                },
-                error: function () {
-                    $("#buttons .l-btn").not(":first").linkbutton("enable");
-                }
-            });
-        }
+						if (actionId === "294B41DB-14A4-E611-80C5-507B9DE4A488" || actionId === "3C4B41DB-14A4-E611-80C5-507B9DE4A488") {
+							self.location.reload();
+						} else {
+							uc.CloseWindow();
+						}
+					},
+					400: uc.E400
+				},
+				error: function () {
+					$("#buttons .l-btn").not(":first").linkbutton("enable");
+				}
+			});
+		}
 
-        function TransferWithData() {
-            var isValid = true;
+		function TransferWithData() {
+			var isValid = true;
 
-            $(flow.Forms).each(function (i, form) {
-                var frame = frames[form.Id];
-                if (frame.ValidData) {
-                    isValid &= frame.ValidData();
+			$(flow.Forms).each(function (i, form) {
+				var frame = frames[form.Id];
+				if (frame.ValidData) {
+					isValid &= frame.ValidData();
 
-                    if (!isValid) {
-                        $.messager.show({ msg: form.Name + "验证未通过." });
+					if (!isValid) {
+						$.messager.show({ msg: form.Name + "验证未通过." });
 
-                        return false;
-                    }
-                } else {
-                    isValid = false;
-                    $.messager.show({ msg: form.Name + "尚未处理." });
+						return false;
+					}
+				} else {
+					isValid = false;
+					$.messager.show({ msg: form.Name + "尚未处理." });
 
-                    return false;
-                }
-            });
-            if (isValid) {
-                var data = BuildData();
-                Transfer.call(this, data);
-            }
-        }
+					return false;
+				}
+			});
+			if (isValid) {
+				var data = BuildData();
+				Transfer.call(this, data);
+			}
+		}
 
-        function BuildData() {
-            var data = {};
-            $(flow.Forms).each(function (i, form) {
-                var frame = frames[form.Id];
-                if (frame.BuildData) {
-                    data[form.Id] = frame.BuildData();
-                }
-            });
-            return data;
-        }
+		function BuildData() {
+			var data = {};
+			$(flow.Forms).each(function (i, form) {
+				var frame = frames[form.Id];
+				if (frame.BuildData) {
+					data[form.Id] = frame.BuildData();
+				}
+			});
+			return data;
+		}
 
-        function LoadData(data) {
-            $(flow.Forms).each(function (i, form) {
-                if (data[form.Id]) {
-                    $("#" + form.Id).data("draft", data[form.Id]);
-                }
-            });
-        }
+		function LoadData(data) {
+			$(flow.Forms).each(function (i, form) {
+				if (data[form.Id]) {
+					$("#" + form.Id).data("draft", data[form.Id]);
+				}
+			});
+		}
 
-        function GetProcessData(instanceId) {
-            var processData = null;
+		function GetProcessData(instanceId) {
+			var processData = null;
 
-            $.ajax({
-                async: false,
-                data: { instanceId: instanceId },
-                method: "GET",
-                url: "../api/Process/GetProcessData",
-                statusCode: {
-                    200: function (data) {
-                        processData = data;
-                    }
-                }
-            });
-            
-            return processData;
-        }
-    </script>
+			$.ajax({
+				async: false,
+				data: { instanceId: instanceId },
+				method: "GET",
+				url: "../api/Process/GetProcessData",
+				statusCode: {
+					200: function (data) {
+						processData = data;
+					}
+				}
+			});
+
+			return processData;
+		}
+	</script>
 </head>
 
 <body class="easyui-layout" data-options="fit:true">
-    <div data-options="region:'center'">
-        <div id="tabs" class="easyui-tabs" data-options="fit:true,onSelect:TabSelect"></div>
-    </div>
+	<div data-options="region:'center'">
+		<div id="tabs" class="easyui-tabs" data-options="fit:true,onSelect:TabSelect"></div>
+	</div>
 
-    <div data-options="region:'south',height:120">
-        <div id="opinion">
-            <div style="padding-left:24px;">
-                <label for="ExOpinion">意见:</label>
-                <input id="ExOpinion" name="ExOpinion" class="easyui-textbox" data-options="width:600,height:32,validType:'length[0,10000]' " />
-            </div>
+	<div data-options="region:'south',height:120">
+		<div id="opinion">
+			<div style="padding-left:24px;">
+				<label for="ExOpinion">意见:</label>
+				<input id="ExOpinion" name="ExOpinion" class="easyui-textbox" data-options="width:600,height:32,validType:'length[0,10000]' " />
+			</div>
 
-            <div style="display:none;">
-                <label for="InOpinion">内部意见:</label>
-                <input id="InOpinion" name="InOpinion" class="easyui-textbox" data-options="width:600,height:32,validType:'length[0,10000]'" />
-            </div>
-        </div>
-        <div id="buttons">
-            <a id="saveTempData" class="easyui-linkbutton" data-options="onClick:draft.Save">存至草稿</a>
-        </div>
-    </div>
+			<div style="display:none;">
+				<label for="InOpinion">内部意见:</label>
+				<input id="InOpinion" name="InOpinion" class="easyui-textbox" data-options="width:600,height:32,validType:'length[0,10000]'" />
+			</div>
+		</div>
+		<div id="buttons">
+			<a id="saveTempData" class="easyui-linkbutton" data-options="onClick:draft.Save">存至草稿</a>
+		</div>
+	</div>
 </body>
 </html>

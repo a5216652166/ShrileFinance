@@ -667,10 +667,10 @@
             param.Add("[@保证金1@]", Convert.ToString(finance.ApprovalMargin == null ? 0 : Math.Ceiling(finance.ApprovalMargin.Value / 100 * finance.ApprovalMoney.Value)));
 
             param.Add("[@期限@]", finance.Produce.Periods.ToString());
-            param.Add("[@支付日@]", Convert.ToString(finance.RepaymentDate == null ? 15 : finance.RepaymentDate.Value));
+            param.Add("[@支付日@]", Convert.ToString(finance.RepaymentDate == null ? 25 : finance.RepaymentDate.Value));
 
             var date1 = finance.RepayRentDate.Value;
-            var date2 = date1.AddMonths(finance.Produce.Periods);
+            var date2 = date1.AddMonths(finance.Produce.Periods-1);
             param.Add("[@年1@]", date1.Year.ToString());
             param.Add("[@月1@]", date1.Month.ToString());
             param.Add("[@日1@]", date1.Day.ToString());
