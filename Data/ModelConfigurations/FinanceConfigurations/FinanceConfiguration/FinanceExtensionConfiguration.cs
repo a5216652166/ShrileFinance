@@ -14,7 +14,7 @@
 
             Property(m => m.LoanPrincipal).HasMaxLength(20);
 
-            Property(m => m.CreditAccountName).HasMaxLength(null);
+            Property(m => m.CreditAccountName).HasMaxLength(4000);
 
             Property(m => m.CreditBankName).HasMaxLength(40);
 
@@ -22,7 +22,7 @@
 
             Property(m => m.ContactJson).HasMaxLength(800);
 
-            Property(m => m.CustomerAccountName).HasMaxLength(null);
+            Property(m => m.CustomerAccountName).HasMaxLength(4000);
 
             Property(m => m.CustomerBankName).HasMaxLength(40);
 
