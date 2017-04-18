@@ -422,7 +422,7 @@ $.extend($.fn.validatebox.defaults.rules, {
                     }
                 }
             });
-            debugger;
+
             return result;
         },
         message: '用户名已使用!'
