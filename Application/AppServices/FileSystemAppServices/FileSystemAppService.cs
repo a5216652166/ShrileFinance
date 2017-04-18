@@ -58,22 +58,29 @@
             return fileSystemRepository.Commit();
         }
 
+        public List<FileSystem> GetAll(Guid referenceId, ReferenceTypeEnum referenceType, IEnumerable<Guid?> ids)
+        {
+            ids = ids == default(IEnumerable<Guid?>) ? new List<Guid?>() : ids.Where(m => m.HasValue);
+
+            var list = fileSystemRepository.GetAll(m => m.ReferenceId==referenceId && referenceType == m.ReferenceType && ids.Contains(m.Id));
+
+            return list.ToList();
+        }
+
         /// <summary>
         /// 通过引用标识和表单名获取文件
         /// </summary>
         /// <param name="referenceId">引用标识</param>
         /// <param name="referenceType">表单名</param>
-        /// <param name="referenceSids">分组</param>
+        /// <param name="referenceSid">分组</param>
         /// <returns></returns>
-        public List<FileSystem> GetAll(Guid referenceId, ReferenceTypeEnum referenceType, IEnumerable<Guid?> referenceSids = default(IEnumerable<Guid?>))
+        public List<FileSystem> GetAll(Guid referenceId, ReferenceTypeEnum referenceType, Guid? referenceSid = default(Guid?))
         {
-            referenceSids = referenceSids == default(IEnumerable<Guid?>) ? new List<Guid?>() : referenceSids.Where(m => m.HasValue);
-
             var list = fileSystemRepository.GetAll(m => referenceType == m.ReferenceType && m.ReferenceId == referenceId);
 
-            if (referenceSids.Count() > 0)
+            if (referenceSid.HasValue)
             {
-                list = list.Where(m => referenceSids.Contains(m.ReferenceSid));
+                list = list.Where(m => m.ReferenceSid == referenceSid.Value);
             }
 
             return list.ToList();
@@ -84,13 +91,13 @@
         /// </summary>
         /// <param name="referenceId">引用标识</param>
         /// <param name="referenceType">表单名</param>
-        /// <param name="referenceSids">分组标识</param>
+        /// <param name="ids">分组标识</param>
         /// <returns></returns>
-        public int DeleteAll(Guid referenceId, ReferenceTypeEnum referenceType, IEnumerable<Guid?> referenceSids = default(IEnumerable<Guid?>))
+        public int DeleteAll(Guid referenceId, ReferenceTypeEnum referenceType, IEnumerable<Guid?> ids = default(IEnumerable<Guid?>))
         {
-            referenceSids = referenceSids == default(IEnumerable<Guid?>) ? new List<Guid?>() : referenceSids.Where(m => m.HasValue);
+            ids = ids == default(IEnumerable<Guid?>) ? new List<Guid?>() : ids.Where(m => m.HasValue);
 
-            var list = fileSystemRepository.GetAll(m => referenceType == m.ReferenceType && m.ReferenceId == referenceId && referenceSids.Contains(m.ReferenceSid));
+            var list = fileSystemRepository.GetAll(m => referenceType == m.ReferenceType && m.ReferenceId == referenceId && ids.Contains(m.Id));
 
             foreach (var item in list)
             {

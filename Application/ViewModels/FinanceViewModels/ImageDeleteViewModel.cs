@@ -6,6 +6,8 @@
 
     public class UploadViewModel
     {
+        public IEnumerable<Guid?> Ids { get; set; }
+
         public Guid ReferenceId { get; set; }
 
         public ReferenceTypeEnum ReferenceType { get; set; }

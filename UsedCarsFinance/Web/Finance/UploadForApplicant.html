@@ -10,7 +10,8 @@
 
     <script src="Content/easyui/jquery.easyui.js"></script>
     <script src="Content/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <link href="Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <!--<link href="Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />-->
+    <link href="../Content/bootstrap/bootstrap.css" rel="stylesheet" />
     <script src="Content/uploadify/jquery.uploadify.js"></script>
     <link href="Content/uploadify/uploadify.css" rel="stylesheet" />
 
@@ -22,19 +23,10 @@
     <link href="../Content/easyui/themes/icon.css" rel="stylesheet" />
     <link href="../Content/form-bootstrap.css" rel="stylesheet" />
 
-    <style type="text/css">
-        div#viewerContainer div {
-            float: left;
-        }
-
+    <style>
         img {
-            width: 100px;
-            height: 100px;
-        }
-
-        div#AddPic div img {
-            width: 100px;
-            height: 100px;
+            width:120px;
+            height:120px;
         }
     </style>
 
@@ -509,14 +501,96 @@
             </div>
         </fieldset>
 
-        <div id="viewerContainer">
+        <!--<div id="viewerContainer">
             <template id="viewerContainer">
                 <div id="li" style="float:left"><img data-original="" src="" alt="" ondblclick="" style="margin-right:30px"><label style="text-align:center;display:block;width:100px;height:20px;word-wrap:break-word;word-break:keep-all;overflow:hidden;"></label></div>
+                <div class=""></div>
                 <div id="AddPic">
                     <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" ondblclick="" /></div>
                 </div>
             </template>
-        </div>
+        </div>-->
+
+        <!--<div id="images" class="row">
+            <div class="col-sm-6 col-md-2">
+                <div class="">
+                    <img src="Content/img/默认图片.png">
+                    <div class="" style="height:47px;word-break:break-all;overflow:hidden">
+                        <div class="checkbox">
+                            <label style="height:55px">
+                                <input type="checkbox">
+                                <span>aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccdddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffffffffff</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-2">
+                <div class="">
+                    <img src="Content/img/田型图片.png">
+                    <div class="" style="height:47px;word-break:break-all;overflow:hidden">
+                        <div class="checkbox">
+                            <label style="height:55px">
+                                <input type="hidden">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <template>
+            <div class="container">
+                <label style="font-size:17px"><input type="checkbox" onclick="CheckChildren(this)" /><span>模板:</span></label>
+                <div class="row">
+                    <div id="viewerContainer_00">
+                        <div class="col-sm-6 col-md-2">
+                            <div class="">
+                                <img src="Content/img/默认图片.png">
+                                <div class="" style="height:47px;word-break:break-all;overflow:hidden">
+                                    <div class="checkbox">
+                                        <label style="height:55px">
+                                            <input type="checkbox">
+                                            <span>aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccdddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffffffffff</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-2">
+                        <div class="">
+                            <img src="Content/img/田型图片.png" onclick="">
+                            <div class="" style="height:47px;word-break:break-all;overflow:hidden">
+                                <div class="checkbox">
+                                    <label style="height:55px">
+                                        <input type="hidden">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script type="text/javascript">
+                        function CheckChildren(obj) {
+                            debugger
+                            var aaa = $(obj).parent().next().find("input[type=checkbox]");
+                            debugger
+                            $(obj).parent().next().find("input[type=checkbox]").each(function (i, e) {
+                                e.checked = obj.checked;
+                            });
+                        }
+                    </script>
+                </div>
+
+                <div style="width:auto;height:18px"></div>
+                <hr style="border:1px dashed;margin-bottom:20px" />
+            </div>
+        </template>
 
 
         <!--上传控件-->
