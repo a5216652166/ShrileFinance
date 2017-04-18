@@ -14,12 +14,12 @@
 
     public class UserController : ApiController
     {
-        private readonly AccountAppService accountAppService;
+        private readonly AccountAppService service;
 
         public UserController(AccountAppService userService)
         {
-            accountAppService = userService;
-            accountAppService.User = User;
+            service = userService;
+            service.User = User;
         }
 
         private IAuthenticationManager AuthManager => Request.GetOwinContext().Authentication;
@@ -33,7 +33,7 @@
         /// <returns></returns>
         public IHttpActionResult GetAll(string searchString, int page, int rows)
         {
-            var list = accountAppService.List(searchString, page, rows);
+            var list = service.List(searchString, page, rows);
 
             return Ok(new
             {
@@ -49,7 +49,7 @@
         /// <returns></returns>
         public IHttpActionResult Get(string id)
         {
-            var user = accountAppService.GetUser(id);
+            var user = service.GetUser(id);
 
             return user != null ? (IHttpActionResult)Ok(user) : NotFound();
         }
@@ -61,7 +61,7 @@
         /// <returns></returns>
         [HttpGet]
         public IEnumerable<ComboInfo> Option(string roleId)
-            => accountAppService.GetByRole(roleId).Select(m => new ComboInfo(m.Id, m.Name));
+            => service.GetByRole(roleId).Select(m => new ComboInfo(m.Id, m.Name));
 
         /// <summary>
         /// 注册帐号
@@ -76,7 +76,7 @@
                 return BadRequest(ModelState);
             }
 
-            if (accountAppService.CheckUsername(model.Username))
+            if (service.CheckUsername(model.Username))
             {
                 return BadRequest("用户名已存在");
             }
@@ -85,7 +85,7 @@
 
             try
             {
-                result = await accountAppService.CreateUserAsync(model);
+                result = await service.CreateUserAsync(model);
             }
             catch (Exception ex)
             {
@@ -124,7 +124,7 @@
                 return BadRequest(ModelState);
             }
 
-            var result = await accountAppService.ModifyUserAsync(model);
+            var result = await service.ModifyUserAsync(model);
 
             if (!result.Succeeded)
             {
@@ -147,7 +147,7 @@
                 return BadRequest(ModelState);
             }
 
-            var result = await accountAppService.ModifyMyInfoAsync(model);
+            var result = await service.ModifyMyInfoAsync(model);
 
             if (!result.Succeeded)
             {
@@ -183,7 +183,7 @@
                         // 设置登陆有效时长 6h
                         ExpiresUtc = new DateTimeOffset(DateTime.UtcNow.AddHours(6))
                     },
-                    await accountAppService.Login(model));
+                    await service.Login(model));
 
                 return Ok();
             }
@@ -212,7 +212,7 @@
         [HttpGet]
         public IHttpActionResult CurrentUser()
         {
-            var user = accountAppService.CurrentUser();
+            var user = service.CurrentUser();
 
             return Ok(user);
         }
@@ -225,9 +225,7 @@
         [HttpGet]
         public IHttpActionResult CheckUsername(string username)
         {
-            var userIsExists = accountAppService.CheckUsername(username);
-
-            return userIsExists ? (IHttpActionResult)Ok(userIsExists) : BadRequest(userIsExists.ToString());
+            return !service.CheckUsername(username) ? (IHttpActionResult)Ok() : BadRequest();
         }
 
         /// <summary>
@@ -243,7 +241,7 @@
                 return BadRequest($"{nameof(id)} 不可为空.");
             }
 
-            var result = await accountAppService.EnableAsync(id);
+            var result = await service.EnableAsync(id);
 
             if (!result.Succeeded)
             {
@@ -266,7 +264,7 @@
                 return BadRequest($"{nameof(id)} 不可为空.");
             }
 
-            var result = await accountAppService.DisableAsync(id);
+            var result = await service.DisableAsync(id);
 
             if (!result.Succeeded)
             {
@@ -289,7 +287,7 @@
                 return BadRequest($"{nameof(id)} 不可为空.");
             }
 
-            var result = await accountAppService.ResetPasswordAsync(id);
+            var result = await service.ResetPasswordAsync(id);
 
             if (!result.Succeeded)
             {
@@ -314,7 +312,7 @@
 
             model.Id = User.Identity.GetUserId();
 
-            var result = await accountAppService.ChangePasswordAsync(model);
+            var result = await service.ChangePasswordAsync(model);
 
             if (!result.Succeeded)
             {

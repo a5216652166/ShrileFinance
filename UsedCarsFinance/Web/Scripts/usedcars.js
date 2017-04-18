@@ -409,7 +409,7 @@ $.extend($.fn.validatebox.defaults.rules, {
     // 帐号重复验证 [否决的]
     checkUsernameRepeat: {
         validator: function (value, param) {
-            var result = true;
+            var result = false;
 
             $.ajax({
                 async: false,
@@ -418,13 +418,11 @@ $.extend($.fn.validatebox.defaults.rules, {
                 url: "../api/User/CheckUsername",
                 statusCode: {
                     200: function (data) {
-                        result = data === "False" ? false : true;
-                    },
-                    400: function (data) {
+                        result = true;
                     }
                 }
             });
-
+            debugger;
             return result;
         },
         message: '用户名已使用!'

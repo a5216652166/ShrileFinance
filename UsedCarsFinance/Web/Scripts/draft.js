@@ -15,8 +15,6 @@ function Draft(onSave, onLoad) {
 			PageData: jsonData
 		};
 
-		var result = 'success';
-
 		$.ajax({
 			async: true,
 			data: postedData,
@@ -33,13 +31,9 @@ function Draft(onSave, onLoad) {
 					clearInterval(interval);
                     
 					top.$.messager.show({ msg: "登录失效, 草稿自动保存已关闭！" });
-
-					result = 'error';
 				}
 			}
 		});
-
-		return result;
 	}
 
 	// 加载草稿
@@ -60,9 +54,6 @@ function Draft(onSave, onLoad) {
 					onLoad(json);
 
 					top.$.messager.show({ msg: "草稿加载成功！" });
-				},
-				404: function () {
-					// console.log("draft not found, link: " + pageLink);
 				}
 			}
 		});
@@ -74,15 +65,11 @@ function Draft(onSave, onLoad) {
 			PageLink: pageLink
 		};
 
-		$.ajax({
-			async: false,
+        $.ajax({
+            async: true,
 			data: searchData,
 			method: "DELETE",
-			url: "../api/Draft/Clear",
-			statusCode: {
-				200: function () {
-				}
-			}
+			url: "../api/Draft/Clear"
 		});
 	}
 
@@ -91,7 +78,7 @@ function Draft(onSave, onLoad) {
 		var millisec = millisec || (3 * 60 * 1000);
 
 		setTimeout(function () {
-		    interval = setInterval(this.Save, millisec); setInterval()
+		    interval = setInterval(this.Save, millisec);
 		}, millisec);
 
 		top.$.messager.show({ msg: "自动保存草稿已开启（" + (millisec / 60 / 1000) + "分钟）！" });
