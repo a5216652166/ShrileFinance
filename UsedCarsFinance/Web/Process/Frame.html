@@ -33,7 +33,8 @@
             Forms: [],
             InnerOpinions: [],
             ExnerOpinions: []
-        };
+		};
+
         var draft = new Draft(BuildData, LoadData);
 
         $(function () {
@@ -44,15 +45,7 @@
             }
 
             // 开启草稿保存
-            ////draft.AutoSave(3 * 60 * 1000);
-
-            var timer = setInterval(draftSava, 3 * 60 * 1000);
-
-            function draftSava() {
-                if ($("a#saveTempData:hidden").length > 0 || $("a#saveTempData").click() == 'error') {
-                    clearInterval(timer);
-                }
-            }
+            draft.AutoSave(3 * 60 * 1000);
         });
 
         function LoadFrame(instanceId) {
@@ -104,9 +97,11 @@
                     id: form.Id,
                     title: form.Name
                 }).tabs("getTab", i).data("url", link);
-            });
+			});
+
             // 加载草稿
-            draft.Load();
+			draft.Load();
+
             if (forms.length > 0) {
                 $("#tabs").tabs("select", openIndex || 0);
             }
@@ -154,11 +149,12 @@
         function Transfer(data) {
             $("#buttons .l-btn").not(":first").linkbutton("disable");
 
+			var actionId = this.id.substr(7);
             var dataString = JSON.stringify(data);
 
             var dataPosted = {
                 InstanceId: flow.InstanceId,
-                ActionId: this.id.substr(7),
+				ActionId: actionId,
                 InternalOpinion: $("#InOpinion").textbox("getValue"),
                 ExnernalOpinion: $("#ExOpinion").textbox("getValue"),
                 Data: dataString
@@ -173,7 +169,8 @@
                     200: function (data) {
                         $.messager.show({ msg: "执行流程成功！" });
 
-                        draft.Clear();
+						draft.Clear();
+
                         uc.CloseWindow();
                     },
                     400: uc.E400
