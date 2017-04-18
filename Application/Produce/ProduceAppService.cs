@@ -108,8 +108,15 @@
         /// <returns></returns>
         private IEnumerable<PrincipalRatio> YearlyPayment(Produce produce, decimal principal)
         {
+            var rate = produce.RateMonth;
+
+            if (produce.ProduceType == "均匀贷" | produce.ProduceType == "低息贷")
+            {
+                rate = 0m;
+            }
+
             var payments = paymentEqualsCalculatorService
-                .YearlyPayment(produce.PrincipalRatios, principal, produce.RateMonth);
+                .YearlyPayment(produce.PrincipalRatios, principal, rate);
 
             return payments;
         }
