@@ -10,7 +10,6 @@
 
     <script src="Content/easyui/jquery.easyui.js"></script>
     <script src="Content/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <!--<link href="Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />-->
     <link href="../Content/bootstrap/bootstrap.css" rel="stylesheet" />
     <script src="Content/uploadify/jquery.uploadify.js"></script>
     <link href="Content/uploadify/uploadify.css" rel="stylesheet" />
@@ -163,8 +162,6 @@
 
         // 图片上传成功回调函数
         function UploadSuccessInstance(file, data, response) {
-            data = JSON.parse(data);
-
             var files = GetFiles(data.referenceId, data.referenceType, data.referenceSid);
 
             if (files == null || files.length == 0) {
@@ -175,6 +172,7 @@
 
             for (var i in files) {
                 var urlObj = {};
+                urlObj.Id = files[i].Id;
                 urlObj.Name = files[i].Name;
                 urlObj.Path = files[i].Path;
 

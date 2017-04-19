@@ -52,7 +52,8 @@ function StartUploader(referenceId, referenceType, ReferenceSid) {
 
 // 上传成功回调函数
 function UploadSuccess(file, data, response) {
-    debugger
+    data = JSON.parse(data);
+
     UploadSuccessInstance(file, data, response);
 }
 

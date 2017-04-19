@@ -10,7 +10,6 @@
 
     <script src="Content/easyui/jquery.easyui.js"></script>
     <script src="Content/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <!--<link href="Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />-->
     <link href="../Content/bootstrap/bootstrap.css" rel="stylesheet" />
     <script src="Content/uploadify/jquery.uploadify.js"></script>
     <link href="Content/uploadify/uploadify.css" rel="stylesheet" />
@@ -25,8 +24,8 @@
 
     <style>
         img {
-            width:120px;
-            height:120px;
+            width: 120px;
+            height: 120px;
         }
     </style>
 
@@ -34,35 +33,35 @@
         var query = {};
 
         // 融资标识
-        var referenceId = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
+        var referenceId = null;
 
         // 表单（申请人）
         var referenceType = 1;
 
         // 分组
-        var referenceSid = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
+        var referenceSid = null;
 
-        var flag = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE";
+        var flag = "92AB-1A24-E711-80CC-507B9DE4A488";
 
         $(function () {
             // 初始化
             Init();
+            
+            jsPicViewerUploderInit();
         });
 
-        function Init()
-        {
+        function Init() {
+            LoadPage();
+
             $("input[type=checkbox]:checked").each(function (i, e) {
                 e.checked = false;
             });
 
             // 获取参数
             query.state = GetQueryString("state");
-            query.FinanceId = parent.flow.RootKey;
+            referenceId = parent.flow.RootKey;
 
-            referenceId = query.FinanceId;
-
-            if (query.state == '0')
-            {
+            if (query.state == '0') {
                 $("a#del").linkbutton('disable');
             }
 
@@ -75,29 +74,25 @@
         }
 
         function Delete() {
-            var referenceSids = [];
+            var ids = [];
 
-            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
-                var id = $(e).parent().next("div").attr("id");
-
-                referenceSids.push(flag + id.substr(id.lastIndexOf('_') + 1));
+            $("fieldset div.picBox input[type=checkbox]:checked").each(function (i, e) {
+                ids.push($(e).parents("div.picBox").attr("name"));
 
                 // 移除图片预览
-                $("div#" + id).find("div#li").remove();
+                $(e).parents("div.picBox").parent().remove();
             });
 
-            DeleteFiles(referenceId, referenceType, referenceSids);
+            DeleteFiles(referenceId, referenceType, ids);
         }
 
         function DownLoadAll() {
             $("form#downloadForm").find("input[name=ReferenceId]").val(referenceId);
 
-            $("fieldset input[type=checkbox]:checked").each(function (i, e) {
-                var id = $(e).parent().next("div").attr("id");
-
-                var referenceSid = flag + id.substr(id.lastIndexOf('_') + 1);
-
-                $("form#downloadForm").append('<input name="referenceSids" value=' + referenceSid + ' />');
+            $("fieldset div.picBox input[type=checkbox]:checked").each(function (i, e) {
+                var id = $(e).parents("div.picBox").attr("name");
+                debugger
+                $("form#downloadForm").append('<input name="Ids" value=' + id + ' />');
             });
 
             $("form#downloadForm").submit();
@@ -110,26 +105,94 @@
                 e.checked = obj.checked;
             })
         }
+
+        function LoadPage() {
+            var fieldset1 = {
+                Title: "身份类",
+                Children: [
+                    { Id: "0001", Title: "客户融资申请表" },
+                    { Id: "0002", Title: "单身证明" },
+                    { Id: "0003", Title: "其它" }
+                ]
+            };
+
+            var fieldset2 = {
+                Title: "车辆类",
+                Children: [
+                    { Id: "0101", Title: "车辆登记证书" },
+                    { Id: "0102", Title: "车辆行驶证" },
+                    { Id: "0103", Title: "车辆照片" }
+                ]
+            };
+
+            var fieldset3 = {
+                Title: "主要申请人",
+                Children: [
+                    { Id: "0201", Title: "身份证正反面" },
+                    { Id: "0202", Title: "户口本复印件" },
+                    { Id: "0203", Title: "结婚证/未婚承诺书" },
+                    { Id: "0204", Title: "驾驶证" },
+                    { Id: "0205", Title: "居住证明" },
+                    { Id: "0206", Title: "家访照片" },
+                    { Id: "0207", Title: "银行流水" },
+                    { Id: "0208", Title: "征信报告" },
+                    { Id: "0209", Title: "客户其他资信证明" }
+                ]
+            };
+
+            var fieldset4 = {
+                Title: "共同申请人",
+                Children: [
+                    { Id: "0301", Title: "身份证正反面" },
+                    { Id: "0302", Title: "户口本复印件" },
+                    { Id: "0303", Title: "结婚证/未婚承诺书" },
+                    { Id: "0304", Title: "驾驶证" },
+                    { Id: "0305", Title: "居住证明" },
+                    { Id: "0306", Title: "家访照片" },
+                    { Id: "0307", Title: "银行流水" },
+                    { Id: "0308", Title: "征信报告" },
+                    { Id: "0309", Title: "客户其他资信证明" }
+                ]
+            };
+
+            var fieldsets = [fieldset1, fieldset2, fieldset3, fieldset4];
+
+            $(fieldsets).each(function (i, e) {
+
+                $("form.container").append($("form.container template.fieldset").html());
+
+                $("form.container fieldset:last").find("legend").text(e.Title);
+
+                $(e.Children).each(function (j, f) {
+                    // 加载项
+                    $("form.container fieldset:last").append($("form.container template.item").html());
+
+                    // 赋值
+                    $("form.container fieldset:last").find("div.container:last >label>span").text(f.Title);
+                    $("form.container fieldset:last").find("div.container:last >div.row>div#viewerContainer_").attr('id', "viewerContainer_" + f.Id);
+
+                    // 田型图片onClick事件绑定
+                    $("form.container fieldset:last").find("div.container:last >div.row div.AddPic img").click(function () {
+                        $('form').attr('tag', f.Id);
+                    });
+                });
+            });
+        }
     </script>
 
     <script type="text/javascript">
-        $(function () {
-            jsPicViewerUploderInit();
-        });
-
         function jsPicViewerUploderInit() {
             setTimeout(function () {
                 // 实例化图片查看器
-                viewer = InitPicViewer($("div#viewerContainer_11"));
-
-                if (query.state != '0')
-                {
-                    $("div#AddPic img").click(function () {
+                viewer = InitPicViewer($("div[id*=viewerContainer]").eq(0));
+                
+                if (query.state != '0') {
+                    $("div.AddPic img").click(function () {
                         $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
-
+                        
                         // 设置分组标识
-                        referenceSid = flag + $("form").attr('tag');
-
+                        referenceSid = $("form").attr('tag') + flag;
+                        
                         // 启动文件上传
                         StartUploader(referenceId, referenceType, referenceSid);
                     });
@@ -139,8 +202,6 @@
 
         // 图片上传成功回调函数
         function UploadSuccessInstance(file, data, response) {
-            data = JSON.parse(data);
-
             var files = GetFiles(data.referenceId, data.referenceType, data.referenceSid);
 
             if (files == null || files.length == 0) {
@@ -148,27 +209,28 @@
             }
 
             var UrlArray = [];
-            
+
             for (var i in files) {
                 var urlObj = {};
+                urlObj.Id = files[i].Id;
                 urlObj.Name = files[i].Name;
                 urlObj.Path = files[i].Path;
 
                 UrlArray.push(urlObj);
             }
-            
+
             // 上传的图片加入viewer
             PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
         }
     </script>
 </head>
 <body>
-    <form class="container" tag="11">
+    <form class="container" tag="00">
         <div id="linkBtn">
             <div id="fieldsetBtn">
-                <div style="float:left;width:700px;height:25px;">
-                    <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Delete,width:100">删除</a>
+                <div style="float:left;width:700px;height:25px;margin-top:20px;">
                     <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadAll,width:100">下载全部</a>
+                    <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Delete,width:100">删除</a>
                 </div>
                 <div style="width:200px;height:25px; padding-top:40px;">
                     <input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="CheckAll(this)">
@@ -177,392 +239,38 @@
             </div>
         </div>
 
-        <fieldset class="" style="float:none">
-            <legend>身份类</legend>
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox" /><span>客户融资申请表:</span></label>
-                <div id="viewerContainer_11">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',11)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed;margin-bottom:20px" />
-            </div>
+        <template class="fieldset">
+            <fieldset style="float:none">
+                <legend></legend>
+            </fieldset>
+        </template>
 
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>单身证明:</span></label>
-                <div id="viewerContainer_12">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',12)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>其它:</span></label>
-                <div id="viewerContainer_13">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',13)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-        </fieldset>
-
-        <fieldset class="" style="float:none">
-            <legend>车辆类</legend>
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>车辆登记证书:</span></label>
-                <div id="viewerContainer_21">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',21)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed;margin-bottom:20px" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>车辆行驶证:</span></label>
-                <div id="viewerContainer_22">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',22)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>车辆照片:</span></label>
-                <div id="viewerContainer_23">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',23)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-        </fieldset>
-
-        <fieldset class="" style="float:none">
-            <legend>主要申请人</legend>
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>身份证正反面:</span></label>
-                <div id="viewerContainer_31">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',31)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed;margin-bottom:20px" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>户口本复印件:</span></label>
-                <div id="viewerContainer_32">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',32)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>结婚证/未婚承诺书:</span></label>
-                <div id="viewerContainer_33">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',33)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>驾驶证:</span></label>
-                <div id="viewerContainer_34">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',34)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>居住证明:</span></label>
-                <div id="viewerContainer_35">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',35)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>家访照片:</span></label>
-                <div id="viewerContainer_36">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',36)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>银行流水:</span></label>
-                <div id="viewerContainer_37">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',37)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>征信报告:</span></label>
-                <div id="viewerContainer_38">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',38)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>客户其他资信证明:</span></label>
-                <div id="viewerContainer_39">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',39)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-        </fieldset>
-
-        <fieldset class="" style="float:none">
-            <legend>共同申请人</legend>
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>身份证正反面:</span></label>
-                <div id="viewerContainer_41">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',41)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed;margin-bottom:20px" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>户口本复印件:</span></label>
-                <div id="viewerContainer_42">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',42)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>结婚证/未婚承诺书:</span></label>
-                <div id="viewerContainer_43">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',43)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>驾驶证:</span></label>
-                <div id="viewerContainer_44">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',44)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>居住证明:</span></label>
-                <div id="viewerContainer_45">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',45)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>家访照片:</span></label>
-                <div id="viewerContainer_46">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',46)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>银行流水:</span></label>
-                <div id="viewerContainer_47">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',47)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>征信报告:</span></label>
-                <div id="viewerContainer_48">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',48)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-
-            <div class="container" style="">
-                <label style="font-size:17px"><input type="checkbox"><span>客户其他资信证明:</span></label>
-                <div id="viewerContainer_49">
-                </div>
-                <div>
-                    <div id="AddPic">
-                        <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" onclick="$('form').attr('tag',49)" /></div>
-                    </div>
-                </div>
-                <div style="width:auto;height:18px"></div>
-                <hr style="border:1px dashed ;" />
-            </div>
-        </fieldset>
-
-        <!--<div id="viewerContainer">
-            <template id="viewerContainer">
-                <div id="li" style="float:left"><img data-original="" src="" alt="" ondblclick="" style="margin-right:30px"><label style="text-align:center;display:block;width:100px;height:20px;word-wrap:break-word;word-break:keep-all;overflow:hidden;"></label></div>
-                <div class=""></div>
-                <div id="AddPic">
-                    <div><img data-original="Content/img/田型图片.png" src="Content/img/田型图片.png" ondblclick="" /></div>
-                </div>
-            </template>
-        </div>-->
-
-        <!--<div id="images" class="row">
-            <div class="col-sm-6 col-md-2">
-                <div class="">
-                    <img src="Content/img/默认图片.png">
-                    <div class="" style="height:47px;word-break:break-all;overflow:hidden">
-                        <div class="checkbox">
-                            <label style="height:55px">
-                                <input type="checkbox">
-                                <span>aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccdddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffffffffff</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-md-2">
-                <div class="">
-                    <img src="Content/img/田型图片.png">
-                    <div class="" style="height:47px;word-break:break-all;overflow:hidden">
-                        <div class="checkbox">
-                            <label style="height:55px">
-                                <input type="hidden">
-                                <span></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-
-        <template>
+        <template class="item">
             <div class="container">
                 <label style="font-size:17px"><input type="checkbox" onclick="CheckChildren(this)" /><span>模板:</span></label>
                 <div class="row">
-                    <div id="viewerContainer_00">
+                    <div id="viewerContainer_">
+                    </div>
+                    <template>
                         <div class="col-sm-6 col-md-2">
-                            <div class="">
-                                <img src="Content/img/默认图片.png">
-                                <div class="" style="height:47px;word-break:break-all;overflow:hidden">
+                            <div class="picBox">
+                                <div style="height:120px;width:120px;margin:0;padding:0;background-image:url('Content/img/默认图片.png');background-repeat:no-repeat;background-size:inherit;background-size:120px">
+                                    <img src="Content/img/默认图片.png">
+                                </div>
+                                <div class="" style="height:47px;word-break:break-all;overflow:hidden;margin:0">
                                     <div class="checkbox">
                                         <label style="height:55px">
                                             <input type="checkbox">
-                                            <span>aaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccdddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffffffffff</span>
+                                            <span class="picName"></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </template>
 
                     <div class="col-sm-6 col-md-2">
-                        <div class="">
+                        <div class="AddPic">
                             <img src="Content/img/田型图片.png" onclick="">
                             <div class="" style="height:47px;word-break:break-all;overflow:hidden">
                                 <div class="checkbox">
@@ -587,7 +295,6 @@
                     </script>
                 </div>
 
-                <div style="width:auto;height:18px"></div>
                 <hr style="border:1px dashed;margin-bottom:20px" />
             </div>
         </template>
