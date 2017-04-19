@@ -193,11 +193,11 @@
 
         //下载融资租赁合同
         function DownloadFinanceLeaseContract() {
-            $("#downloadApproval").linkbutton("disable");
+            $("#downloadFinanceLeaseContract").linkbutton("disable");
             $("#downloadForm input[name=financeId]").val(query.FinanceId);
             $("#downloadForm input[name=sign]").val(3);
             $("#downloadForm").submit();
-            $("#downloadApproval").linkbutton("enable");
+            $("#downloadFinanceLeaseContract").linkbutton("enable");
         }
 
     </script>

@@ -670,7 +670,7 @@
             param.Add("[@支付日@]", Convert.ToString(finance.RepaymentDate == null ? 25 : finance.RepaymentDate.Value));
 
             var date1 = finance.RepayRentDate.Value;
-            var date2 = date1.AddMonths(finance.Produce.Periods-1);
+            var date2 = date1.AddMonths(finance.Produce.Periods - 1);
             param.Add("[@年1@]", date1.Year.ToString());
             param.Add("[@月1@]", date1.Month.ToString());
             param.Add("[@日1@]", date1.Day.ToString());
@@ -679,11 +679,19 @@
             param.Add("[@日2@]", date2.Day.ToString());
 
             var money = produceAppService.YearlyPayment(finance.Produce.Id, finance.ApprovalMoney.Value).ToList();
-            for (int i = 0; i < money.Count; i++)
+            for (int i = 0; i < 5; i++)
             {
-                var value = money[i].Factor;
-                param.Add($"[@金额{i + 1}@]", upper.RMBToUpper(value));
-                param.Add($"[@人民币{i + 1}@]", Convert.ToString(value));
+                if (money.Count > i)
+                {
+                    var value = money[i].Factor;
+                    param.Add($"[@金额{i + 1}@]", upper.RMBToUpper(value));
+                    param.Add($"[@人民币{i + 1}@]", Convert.ToString(value));
+                }
+                else
+                {
+                    param.Add($"[@金额{i + 1}@]", "——");
+                    param.Add($"[@人民币{i + 1}@]", "——");
+                }                
             }      
             
             param.Add("[@甲方户名@]", finance.BranchOffice.Name);
@@ -787,11 +795,19 @@
             param.Add("[@金额5@]", string.Empty.PadLeft(8));
 
             var money = produceAppService.YearlyPayment(finance.Produce.Id, finance.ApprovalMoney.Value).ToList();
-            for (int i = 0; i < money.Count; i++)
+            for (int i = 0; i < 5; i++)
             {
-                var value = money[i].Factor;
-                param.Add($"[@人民币{i + 6}@]", upper.RMBToUpper(value));
-                param.Add($"[@金额{i + 6}@]", Convert.ToString(value));
+                if (money.Count > i)
+                {
+                    var value = money[i].Factor;
+                    param.Add($"[@金额{i + 6}@]", upper.RMBToUpper(value));
+                    param.Add($"[@人民币{i + 6}@]", Convert.ToString(value));
+                }
+                else
+                {
+                    param.Add($"[@金额{i + 6}@]", "——");
+                    param.Add($"[@人民币{i + 6}@]", "——");
+                }
             }
 
             param.Add("[@融资期限@]", finance.Produce.Periods.ToString());
