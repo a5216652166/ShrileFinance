@@ -11,11 +11,15 @@
     <script src="Content/easyui/jquery.easyui.js"></script>
     <script src="Content/easyui/locale/easyui-lang-zh_CN.js"></script>
     <link href="../Content/bootstrap/bootstrap.css" rel="stylesheet" />
-    <script src="Content/uploadify/jquery.uploadify.js"></script>
-    <link href="Content/uploadify/uploadify.css" rel="stylesheet" />
+
+    <!--<script src="Content/uploadify/jquery.uploadify.js"></script>
+    <link href="Content/uploadify/uploadify.css" rel="stylesheet" />-->
+    <script src="Content/uploadifive/jquery.uploadifive.js"></script>
+    <link href="Content/uploadifive/uploadifive.css" rel="stylesheet" />
 
     <script src="Content/viewerUpload/uploadFile.js"></script>
     <script src="Content/viewerUpload/PictureViewer.js"></script>
+
     <script src="Content/FinanceJs.js"></script>
 
     <link href="../Content/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
@@ -24,8 +28,8 @@
 
     <style>
         img {
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            height: 100%;
         }
     </style>
 
@@ -252,15 +256,16 @@
                     <div id="viewerContainer_">
                     </div>
                     <template>
-                        <div class="col-sm-6 col-md-2">
-                            <div class="picBox">
-                                <div style="height:120px;width:120px;margin:0;padding:0;background-image:url('Content/img/默认图片.png');background-repeat:no-repeat;background-size:inherit;background-size:120px">
-                                    <img src="Content/img/默认图片.png">
+                        <div class="col-sm-3 col-md-2" style="margin-bottom:10px;border:1px solid #DDD;padding:5px;margin:5px;">
+                            <div class="picBox" style="">
+                                <div style="background-image:url('Content/img/默认图片.png');margin-bottom:6px;height:140px;background-repeat:no-repeat;background-size:140px;">
+                                    <img style="width:100%" src="Content/img/默认图片.png">
+                                    <div></div>
                                 </div>
-                                <div class="" style="height:47px;word-break:break-all;overflow:hidden;margin:0">
-                                    <div class="checkbox">
-                                        <label style="height:55px">
-                                            <input type="checkbox">
+                                <div class="" style="height:42px;word-break:break-all;overflow:hidden;margin:0 auto">
+                                    <div class="checkbox" style="margin:0 auto">
+                                        <label>
+                                            <input type="checkbox" style="padding-left:2px" />
                                             <span class="picName"></span>
                                         </label>
                                     </div>
@@ -269,12 +274,12 @@
                         </div>
                     </template>
 
-                    <div class="col-sm-6 col-md-2">
+                    <div class="col-sm-6 col-md-2" style="border:1px solid #DDD;padding:5px;margin:5px;">
                         <div class="AddPic">
                             <img src="Content/img/田型图片.png" onclick="">
-                            <div class="" style="height:47px;word-break:break-all;overflow:hidden">
+                            <div class="" style="height:39px;word-break:break-all;overflow:hidden">
                                 <div class="checkbox">
-                                    <label style="height:55px">
+                                    <label>
                                         <input type="hidden">
                                         <span></span>
                                     </label>
@@ -285,9 +290,6 @@
 
                     <script type="text/javascript">
                         function CheckChildren(obj) {
-                            debugger
-                            var aaa = $(obj).parent().next().find("input[type=checkbox]");
-                            debugger
                             $(obj).parent().next().find("input[type=checkbox]").each(function (i, e) {
                                 e.checked = obj.checked;
                             });
@@ -299,15 +301,15 @@
             </div>
         </template>
 
-
         <!--上传控件-->
         <div id="dd_upload" class="easyui-dialog" data-options="title:'上传附件',buttons:'#bb_upload',onClose:uploadFormClose,width:390,height:350,closed:true">
             <div id="file_queue"></div>
 
             <div id="bb_upload">
                 <span id="pic_area">
-                    <input type="file" id="pic_upload" name="pic_upload" />
-                    <a class="easyui-linkbutton" data-options="width:80" href="javascript:$('#pic_upload').uploadify('upload','*')">开始上传</a>
+                    <input id="file_upload" name="file_upload" type="file" multiple="multiple">
+
+                    <a class="easyui-linkbutton" data-options="width:80" href="javascript:$('#file_upload').uploadifive('upload')">开始上传</a>
                 </span>
             </div>
         </div>

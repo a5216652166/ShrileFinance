@@ -22,39 +22,67 @@ function StartUploader(referenceId, referenceType, ReferenceSid) {
     fileTypeExts.TotalExts = fileTypeExts.PicTypeExts + fileTypeExts.WordTypeExts + fileTypeExts.ExcelTypeExts + fileTypeExts.PowerPointTypeExts + fileTypeExts.VideoTypeExts;
 
     var uploadLimit = 0;
-    $("#pic_upload").uploadify({
-        auto: false,
-        multi: true,
-        buttonText: "选择",
-        fileSizeLimit: "500MB",
-        fileTypeExts: fileTypeExts.TotalExts,
-        height: 20,
-        width: 60,
-        queueID: "file_queue",
-        formData: { ReferenceId: referenceId, ReferenceType: referenceType, ReferenceSid: ReferenceSid },
-        removeTimeout: 10,
-        removeCompleted: true,
-        swf: "Content/uploadify/uploadify.swf",
-        uploader: "../api/UploadFile/Upload",
-        uploadLimit: uploadLimit,
-        onQueueComplete: function () {
-            $("#file_queue").empty();
-            uploadFormClose();
+
+    ////$("#file_upload").uploadifive({
+    ////    auto: false,
+    ////    multi: true,
+    ////    buttonText: "选择",
+    ////    fileSizeLimit: "500MB",
+    ////    fileTypeExts: fileTypeExts.TotalExts,
+    ////    height: 20,
+    ////    width: 60,
+    ////    queueID: "file_queue",
+    ////    formData: { ReferenceId: referenceId, ReferenceType: referenceType, ReferenceSid: ReferenceSid },
+    ////    removeTimeout: 10,
+    ////    removeCompleted: true,
+    ////    //swf: "Content/uploadify/uploadify.swf",
+    ////    uploader: "../api/UploadFile/Upload",
+    ////    uploadScript: '../api/UploadFile/Upload',
+    ////    uploadLimit: uploadLimit,
+    ////    onQueueComplete: function (file, data) {
+    ////        debugger
+    ////        // 上传成功回调函数
+    ////        UploadSuccess(file, data);
+    ////        debugger
+    ////        $("#file_queue").empty();
+    ////        uploadFormClose();
+    ////    },
+    ////    onUploadSuccess: function (file, data, response) {
+    ////        // 上传成功回调函数
+    ////        //UploadSuccess(file, data);
+    ////    }
+    ////});
+
+    $('#file_upload').uploadifive({
+        'auto': false,
+        'buttonText': "选择",
+        'fileSizeLimit': '500MB',
+        'height': 25,
+        'width':60,
+        'fileTypeExts': fileTypeExts.TotalExts,
+        'queueID': 'file_queue',
+        'formData': { ReferenceId: referenceId, ReferenceType: referenceType, ReferenceSid: ReferenceSid },
+        'uploadScript': '../api/UploadFile/Upload',
+        'onUploadComplete': function (file, data) {
+                // 上传成功回调函数
+                UploadSuccess(file, data);
+
+                // 上传窗体关闭
+                uploadFormClose();
         },
-        onUploadSuccess: function (file, data, response) {
-            // 上传成功回调函数
-            UploadSuccess(file, data, response);
+        'onError': function (error) {
+            return error;
         }
     });
 
-    $("#pic_upload").css("float", "left").find("object").css("left", "0");
+    $("#file_upload").css("float", "left").find("object").css("left", "0");
 }
 
 // 上传成功回调函数
-function UploadSuccess(file, data, response) {
+function UploadSuccess(file, data) {
     data = JSON.parse(data);
 
-    UploadSuccessInstance(file, data, response);
+    UploadSuccessInstance(file, data);
 }
 
 // 上传窗体关闭
@@ -125,7 +153,7 @@ function DeleteFiles(referenceId, referenceType, Ids) {
     data.ReferenceId = referenceId;
     data.ReferenceType = referenceType;
     data.Ids = Ids;
-    debugger
+    
     var result = false;
 
     $.ajax({

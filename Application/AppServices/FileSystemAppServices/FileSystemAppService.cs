@@ -136,8 +136,8 @@
             {
                 var name = postedFiles[i].FileName;
 
-                CheckFileName(referenceId, referenceSid, referenceType, name);
-
+                CheckFileName(referenceId, referenceSid, referenceType, name,true);
+                
                 var fileSystem = ConvertToFileSystem(postedFiles[i], name, isTemp: isTemp);
 
                 fileSystem.ReferenceId = referenceId;
@@ -321,7 +321,10 @@
                 }
             }
 
-            fileSystemRepository.Commit();
+            if (fileSystems.Count() > 0)
+            {
+                fileSystemRepository.Commit();
+            }
 
             foreach (var item in fileSystems)
             {
@@ -372,14 +375,18 @@
             return ms;
         }
 
-        private void CheckFileName(Guid referenceId, Guid referenceSid, ReferenceTypeEnum? referenceType, string name)
+        private bool CheckFileName(Guid referenceId, Guid referenceSid, ReferenceTypeEnum? referenceType, string name,bool showError=false)
         {
             var files = fileSystemRepository.GetAll(m => m.ReferenceId == referenceId && m.ReferenceSid == referenceSid && m.ReferenceType == referenceType && m.OldName == name);
 
-            if (files.Count() > 0)
+            var result = files.Count() > 0;
+
+            if (result && showError)
             {
                 throw new Core.Exceptions.ArgumentAppException(message: $"{name}该文件已存在！");
             }
+
+            return result;
         }
     }
 }

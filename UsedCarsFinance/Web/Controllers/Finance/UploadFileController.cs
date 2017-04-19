@@ -30,7 +30,6 @@
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
         public IHttpActionResult Upload()
         {
             if (Request.Content.IsMimeMultipartContent() == false)
@@ -39,6 +38,11 @@
             }
 
             var files = HttpContext.Current.Request.Files;
+
+            if (files.Count == 0)
+            {
+                return BadRequest("无文件！");
+            }
 
             var referenceId = Guid.Parse(HttpContext.Current.Request.Form["ReferenceId"]);
             var referenceType = (ReferenceTypeEnum?)Convert.ToInt32(HttpContext.Current.Request.Form["ReferenceType"]);
