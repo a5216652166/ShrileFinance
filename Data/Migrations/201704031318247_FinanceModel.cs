@@ -88,7 +88,7 @@ namespace Data.Migrations
                         Degree = c.String(maxLength: 50),
                         FamilyNumber = c.Int(),
                         OwnHouseCount = c.Int(nullable: false),
-                        OwnHouse = c.String(maxLength: 1000),
+                        OwnHouse = c.String(maxLength: 4000),
                         FinanceId = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -130,11 +130,11 @@ namespace Data.Migrations
                     {
                         Id = c.Guid(nullable: false, identity: true),
                         LoanPrincipal = c.String(maxLength: 20),
-                        CreditAccountName = c.String(),
+                        CreditAccountName = c.String(maxLength: 4000),
                         CreditBankName = c.String(maxLength: 40),
                         CreditBankCard = c.String(maxLength: 40),
                         ContactJson = c.String(maxLength: 800),
-                        CustomerAccountName = c.String(),
+                        CustomerAccountName = c.String(maxLength: 4000),
                         CustomerBankName = c.String(maxLength: 40),
                         CustomerBankCard = c.String(maxLength: 40),
                         GuarantorName1 = c.String(maxLength: 20),

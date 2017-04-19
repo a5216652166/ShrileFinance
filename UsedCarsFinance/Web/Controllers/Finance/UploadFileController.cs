@@ -52,7 +52,7 @@
         [HttpGet]
         public IHttpActionResult GetFiles(Guid referenceId, ReferenceTypeEnum referenceType, Guid? referenceSid)
         {
-            var list = fileSystemAppService.GetAll(referenceId, referenceType, new List<Guid?>() { referenceSid });
+            var list = fileSystemAppService.GetAll(referenceId, referenceType, referenceSid );
 
             return Ok(list);
         }
@@ -65,7 +65,7 @@
         [HttpPost]
         public IHttpActionResult DeleteAll(UploadViewModel value)
         {
-            var result = fileSystemAppService.DeleteAll(value.ReferenceId, value.ReferenceType, value.ReferenceSids);
+            var result = fileSystemAppService.DeleteAll(value.ReferenceId, value.ReferenceType, value.Ids);
 
             return Ok(result);
         }
@@ -78,7 +78,7 @@
         [HttpPost]
         public HttpResponseMessage DownloadAllFile(UploadViewModel value)
         {
-            var list = fileSystemAppService.GetAll(value.ReferenceId, value.ReferenceType, value.ReferenceSids);
+            var list = fileSystemAppService.GetAll(value.ReferenceId, value.ReferenceType, value.Ids);
 
             var stream = fileSystemAppService.Compression(list);
 

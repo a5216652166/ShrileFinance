@@ -485,6 +485,7 @@
     <Content Include="Finance\Content\img\tibet-5.jpg" />
     <Content Include="Finance\Content\img\tibet-6.jpg" />
     <Content Include="Finance\Content\img\田型图片.png" />
+    <Content Include="Finance\UploadForTest.html" />
     <Content Include="Finance\Content\uploadify\jquery.uploadify.js" />
     <Content Include="Finance\Content\uploadify\jquery.uploadify.min.js" />
     <Content Include="Finance\Content\uploadify\uploadify-cancel.png" />

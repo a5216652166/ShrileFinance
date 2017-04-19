@@ -2,7 +2,7 @@
 <html lang="zh-Hans">
 <head>
     <meta charset="utf-8">
-    <title>放款影像资料上传</title>
+    <title>影像资料测试</title>
     <script src="Content/viewer/jquery.min.js"></script>
 
     <script src="Content/viewer/viewer.min.js"></script>
@@ -33,20 +33,20 @@
         var query = {};
 
         // 融资标识
-        var referenceId = null;
+        var referenceId = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
 
-        // 表单（放款）
-        var referenceType = 2;
+        // 表单（申请人）
+        var referenceType = 1;
 
         // 分组
-        var referenceSid = null;
+        var referenceSid = "EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEE00";
 
-        var flag = "92AB-1A24-E711-80CC-607B9DE4A488";
+        var flag = "92AB-1A24-E711-80CC-507B9DE4A488";
 
         $(function () {
             // 初始化
             Init();
-
+            debugger
             jsPicViewerUploderInit();
         });
 
@@ -59,10 +59,7 @@
 
             // 获取参数
             query.state = GetQueryString("state");
-
-            query.FinanceId = parent.flow.RootKey;
-
-            referenceId = parent.flow.RootKey;
+            //referenceId = parent.flow.RootKey;
 
             if (query.state == '0') {
                 $("a#del").linkbutton('disable');
@@ -72,7 +69,7 @@
             value.referenceId = referenceId;
             value.referenceType = referenceType;
             value.referenceSid = null;
-
+            
             LoadAllFiles(value);
         }
 
@@ -90,17 +87,17 @@
         }
 
         function DownLoadAll() {
-            $("form#DownloadForm").find("input[name=ReferenceId]").val(referenceId);
+            $("form#downloadForm").find("input[name=ReferenceId]").val(referenceId);
 
             $("fieldset div.picBox input[type=checkbox]:checked").each(function (i, e) {
                 var id = $(e).parents("div.picBox").attr("name");
                 debugger
-                $("form#DownloadForm").append('<input name="Ids" value=' + id + ' />');
+                $("form#downloadForm").append('<input name="Ids" value=' + id + ' />');
             });
 
-            $("form#DownloadForm").submit();
+            $("form#downloadForm").submit();
 
-            $("form#DownloadForm").find("input[name=referenceSids]").remove();
+            $("form#downloadForm").find("input[name=referenceSids]").remove();
         }
 
         function CheckAll(obj) {
@@ -110,39 +107,20 @@
         }
 
         function LoadPage() {
-            var fieldset1 = {
-                Title: "车辆类",
-                Children: [
-                    { Id: '0001', Title: "抵押登记后的车辆登记证书" },
-                    { Id: '0002', Title: "新办理的行驶证" },
-                    { Id: '0003', Title: "建设银行卡" },
-                    { Id: '0004', Title: "客户面签视频及照片" },
-                    { Id: '0005', Title: "商业保险保单" }]
-            };
+            var fieldset1 = { Title: "身份类", Children: [{ Id: "0001", Title: "客户融资申请表" }, { Id: "0002", Title: "单身证明" }, { Id: "0003", Title: "其它" }] };
 
-            var fieldset2 = {
-                Title: "合同类",
-                Children: [
-                    { Id: '0101', Title: "融资租赁合同" },
-                    { Id: '0102', Title: "新办理的行驶证" },
-                    { Id: '0103', Title: "车辆抵押合同" },
-                    { Id: '0104', Title: "渠道保证合同" },
-                    { Id: '0105', Title: "付款指示函" },
-                    { Id: '0106', Title: "收据" },
-                    { Id: '0107', Title: "建行扣划款授权书" },
-                    { Id: '0108', Title: "还款计划表" },
-                    { Id: '0109', Title: "车辆买卖合同" },
-                    { Id: '010A', Title: "渠向经销商转账证明" },
-                    { Id: '010B', Title: "单身证明" }
-                ]
-            };
+            var fieldset2 = { Title: "车辆类", Children: [{ Id: "0101", Title: "车辆登记证书" }, { Id: "0102", Title: "车辆行驶证" }, { Id: "0103", Title: "车辆照片" }] };
 
-            var fieldsets = [fieldset1, fieldset2];
+            var fieldset3 = { Title: "主要申请人", Children: [{ Id: "0201", Title: "身份证正反面" }, { Id: "0202", Title: "户口本复印件" }, { Id: "0203", Title: "结婚证/未婚承诺书" }, { Id: "0204", Title: "驾驶证" }, { Id: "0205", Title: "居住证明" }, { Id: "0206", Title: "家访照片" }, { Id: "0207", Title: "银行流水" }, { Id: "0208", Title: "征信报告" }, { Id: "0209", Title: "客户其他资信证明" }] };
+
+            var fieldset4 = { Title: "共同申请人", Children: [{ Id: "0301", Title: "身份证正反面" }, { Id: "0302", Title: "户口本复印件" }, { Id: "0303", Title: "结婚证/未婚承诺书" }, { Id: "0304", Title: "驾驶证" }, { Id: "0305", Title: "居住证明" }, { Id: "0306", Title: "家访照片" }, { Id: "0307", Title: "银行流水" }, { Id: "0308", Title: "征信报告" }, { Id: "0309", Title: "客户其他资信证明" }] };
+
+            var fieldsets = [fieldset1, fieldset2, fieldset3, fieldset4];
 
             $(fieldsets).each(function (i, e) {
 
                 $("form.container").append($("form.container template.fieldset").html());
-
+                
                 $("form.container fieldset:last").find("legend").text(e.Title);
 
                 $(e.Children).each(function (j, f) {
@@ -167,14 +145,14 @@
             setTimeout(function () {
                 // 实例化图片查看器
                 viewer = InitPicViewer($("div[id*=viewerContainer]").eq(0));
-
+                debugger
                 if (query.state != '0') {
                     $("div.AddPic img").click(function () {
                         $("#dd_upload").dialog({ top: $(document).scrollTop() + 300 }).dialog("open");
-
+                        debugger
                         // 设置分组标识
                         referenceSid = $("form").attr('tag') + flag;
-
+                        debugger
                         // 启动文件上传
                         StartUploader(referenceId, referenceType, referenceSid);
                     });
@@ -205,48 +183,14 @@
             PicViewerLoadPic(UrlArray, $("div#viewerContainer_" + $("form").attr("tag")));
         }
     </script>
-
-    <script type="text/javascript">
-        //下载单身证明
-        function DownloadSignle() {
-            debugger;
-            $("#downloadSignle").linkbutton("disable");
-            $("#downloadForm input[name=financeId]").val(query.FinanceId);
-            $("#downloadForm input[name=sign]").val(1);
-            $("#downloadForm").submit();
-            $("#downloadSignle").linkbutton("enable");
-        }
-
-        //下载审批通知书
-        function DownLoadApproval() {
-            $("#downloadApproval").linkbutton("disable");
-            $("#downloadForm input[name=financeId]").val(query.FinanceId);
-            $("#downloadForm input[name=sign]").val(2);
-            $("#downloadForm").submit();
-            $("#downloadApproval").linkbutton("enable");
-        }
-
-        //下载融资租赁合同
-        function DownloadFinanceLeaseContract() {
-            $("#downloadFinanceLeaseContract").linkbutton("disable");
-            $("#downloadForm input[name=financeId]").val(query.FinanceId);
-            $("#downloadForm input[name=sign]").val(3);
-            $("#downloadForm").submit();
-            $("#downloadFinanceLeaseContract").linkbutton("enable");
-        }
-    </script>
-
 </head>
 <body>
     <form class="container" tag="00">
         <div id="linkBtn">
             <div id="fieldsetBtn">
-                <div style="float:left;width:700px;height:25px;margin-top:20px;">
-                    <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadAll,width:100">下载全部</a>
+                <div style="float:left;width:700px;height:25px;">
                     <a id="del" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:Delete,width:100">删除</a>
-                    <a id="downloadSignle" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadSignle,width:100">下载单身证明</a>
-                    <a id="downloadApproval" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadApproval,width:100">下载审批通知书</a>
-                    <a id="downloadFinanceLeaseContract" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownloadFinanceLeaseContract,width:120">下载融资租赁合同</a>
+                    <a id="downloadall" class="easyui-linkbutton" href="javascript:void(0)" data-options="onClick:DownLoadAll,width:100">下载全部</a>
                 </div>
                 <div style="width:200px;height:25px; padding-top:40px;">
                     <input id="cball" style="float:left;width:30px " name="cball" type="checkbox" class="easyui-validatebox" onclick="CheckAll(this)">
@@ -329,18 +273,11 @@
         </div>
     </form>
 
-    <div title="附件">
-        <form id="DownloadForm" action="../api/UploadFile/DownloadAllFile" method="POST" style="display:none">
+    <div>
+        <form id="downloadForm" action="../api/UploadFile/DownloadAllFile" method="POST" style="display:none">
             <input name="ReferenceId" />
             <input name="referenceType" value="1" />
             <!--<input name="referenceSids" />-->
-        </form>
-    </div>
-
-    <div title="合同">
-        <form id="downloadForm" action="../api/UploadFile/DownloadFiles" method="get" style="display:none">
-            <input name="financeId" />
-            <input name="sign" />
         </form>
     </div>
 </body>

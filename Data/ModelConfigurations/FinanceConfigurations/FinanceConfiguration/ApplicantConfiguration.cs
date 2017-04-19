@@ -43,7 +43,7 @@
             Property(m => m.HomeMonthlyExpend);
             Property(m => m.Degree).HasMaxLength(50);
             Property(m => m.FamilyNumber);
-            Property(m => m.OwnHouse).HasMaxLength(1000);
+            Property(m => m.OwnHouse).HasMaxLength(4000);
             Property(m => m.OwnHouseCount);
 
             ToTable("FANC_Applicant");

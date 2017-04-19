@@ -52,6 +52,8 @@ function StartUploader(referenceId, referenceType, ReferenceSid) {
 
 // 上传成功回调函数
 function UploadSuccess(file, data, response) {
+    data = JSON.parse(data);
+
     UploadSuccessInstance(file, data, response);
 }
 
@@ -73,8 +75,8 @@ function LoadAllFiles(value) {
     }
 
     $("fieldset input[type=checkbox]").each(function (i, e) {
-        var id = $(e).parent().next("div").attr("id");
-        var referenceSid = flag + id.substr(id.lastIndexOf('_') + 1);
+        var id = $(e).parents("div.container").find("div[id*=viewerContainer]").attr("id");
+        var referenceSid = id.substr(id.lastIndexOf('_') + 1) + flag;
 
         var urlArray = $(picData).map(function (j, k) {
             if (k.ReferenceType = 1 && k.ReferenceSid == referenceSid.toLowerCase()) {
@@ -118,12 +120,12 @@ function GetFiles(referenceId, referenceType, referenceSid) {
 }
 
 // 删除文件
-function DeleteFiles(referenceId, referenceType, ReferenceSids) {
+function DeleteFiles(referenceId, referenceType, Ids) {
     var data = {};
     data.ReferenceId = referenceId;
     data.ReferenceType = referenceType;
-    data.ReferenceSids = ReferenceSids;
-    
+    data.Ids = Ids;
+    debugger
     var result = false;
 
     $.ajax({

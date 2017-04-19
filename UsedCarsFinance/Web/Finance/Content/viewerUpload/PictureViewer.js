@@ -15,39 +15,44 @@ function PicViewerLoadPic(UrlArray, viewerContainer) {
     if (Object.prototype.toString.call(UrlArray) === '[object Array]') {
         var template = '<div id="li" style="float:left;padding-right:10px;"><img data-original="" src="" alt="" ><label style="text-align:center;display:block;width:100px;height:40px;word-wrap:break-word;word-break:keep-all;overflow:hidden;"></label></div>';
 
+        template = $(viewerContainer).next("template").html();
+
         // 图片格式
         var picTypeExts = ['.jpg','.JPEG','.png','.PNG','.jpeg','.JPEG','.gif','.GIF','.bmp','.BMP'];
 
         // 清空预览
-        $(viewerContainer).find("div#li").remove();
+        $(viewerContainer).find("div").remove();
 
         $(UrlArray).each(function (i, e) {
             $(viewerContainer).append(template);
 
             var picPath = e.Path.toString();
             
-            if ($.inArray(picPath.substr(picPath.lastIndexOf('.')), picTypeExts) == -1)
-            {
-                picPath = "Content/img/默认图片.png";
+            $(viewerContainer).find("div.picBox:last img").attr("data-original", picPath);
+
+            $(viewerContainer).find("div.picBox:last img").attr("src", picPath);
+
+            $(viewerContainer).find("div.picBox:last img").attr("alt", e.Name);
+
+            $(viewerContainer).find("div.picBox:last").attr("name", e.Id);
+
+            $(viewerContainer).find("div.picBox:last span.picName").text(e.Name);
+
+            if ($.inArray(picPath.substr(picPath.lastIndexOf('.')), picTypeExts) == -1) {
+                $(viewerContainer).find("div.picBox:last img").remove();
+                //$(viewerContainer).find("div.picBox:last div:first").css('background-image','Content/img/默认图片.png');
             }
+            else {
+                $(viewerContainer).find("div.picBox:last img").click(function () {
+                    if (viewer) {
+                        viewer.destroy();
+                    }
 
-            $(viewerContainer).find("div#li:last").find("img").attr("data-original", picPath);
+                    viewer = InitPicViewer($(viewerContainer));
 
-            $(viewerContainer).find("div#li:last").find("img").attr("src", picPath);
-
-            $(viewerContainer).find("div#li:last").find("img").attr("alt", e.Name);
-
-            $(viewerContainer).find("div#li:last").find("label").text(e.Name);
-
-            $(viewerContainer).find("div#li:last").find("img").click(function () {
-                if (viewer) {
-                    viewer.destroy();
-                }
-
-                viewer = InitPicViewer($(viewerContainer));
-
-                viewer.show();
-            });
+                    viewer.show();
+                });
+            }
         });
 
         // 销毁照片查看器
