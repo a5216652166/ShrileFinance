@@ -37,7 +37,7 @@
         {
             var entity = Map<BranchOffice>(model);
 
-            CheckName(entity.Name);
+            CheckName(entity.Name,true);
 
             branchOfficeRepository.Create(entity);
             branchOfficeRepository.Commit();
@@ -54,7 +54,10 @@
                 throw new ArgumentAppException(message: "参数错误");
             }
 
-            CheckName(entity.Name);
+            if (model.Name != entity.Name)
+            {
+                CheckName(model.Name,true);
+            }
 
             Map(model, entity);
 
@@ -84,16 +87,24 @@
             return options;
         }
 
-        private void CheckName(string name)
+        /// <summary>
+        /// 检查分公司名称
+        /// </summary>
+        /// <param name="name">分公司名称</param>
+        /// <param name="showError">是否抛出异常</param>
+        /// <returns></returns>
+        private bool CheckName(string name, bool showError = false)
         {
-            var branchOffices = branchOfficeRepository.GetAll(m=>m.Name==name);
+            var branchOffices = branchOfficeRepository.GetAll(m => m.Name == name);
 
             var result = branchOffices.Count() > 0;
 
-            if (result)
+            if (result && showError)
             {
-                throw new ArgumentAppException(message:$"该分公司名{name}已存在");
+                throw new ArgumentAppException(message: $"该分公司名{name}已存在");
             }
+
+            return result;
         }
     }
 }
