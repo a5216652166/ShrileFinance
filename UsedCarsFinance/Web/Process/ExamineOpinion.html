@@ -13,19 +13,35 @@
     <script src="../Scripts/usedcars.js"></script>
     <script>
         $(function () {
+            debugger
+            $(parent.flow.ExnerOpinions).each(function (i, e) {
+                if (e.Opinion)
+                {
+                    e.Opinion = e.Opinion.replace(/ /g, "&nbsp;");
+                }
+            });
+            debugger
             $("#ExOpinion").datagrid("loadData", parent.flow.ExnerOpinions);
 
             if (parent.flow.InnerOpinions) {
+                $(parent.flow.InnerOpinions).each(function (i, e) {
+                    if (e.Opinion) {
+                        e.Opinion = e.Opinion.replace(/ /g, "&nbsp;");
+                    }
+                });
+
+
                 $("#In_div").show();
 
                 $("#InOpinion").datagrid("resize");
+                
                 $("#InOpinion").datagrid("loadData", parent.flow.InnerOpinions);
             }
         });
 
         // 显示意见详细
-        function ShowOpinion(value) {
-            $('div#ShowDialog p').text(value.name == 'undefined' ? '' : value.name);
+        function ShowOpinion(obj) {
+            $('div#ShowDialog p').text($(obj).text());
 
             $('div#ShowDialog').dialog({
                 title: '意见详情',
